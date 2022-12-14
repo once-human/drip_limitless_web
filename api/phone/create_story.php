@@ -1,12 +1,12 @@
 <?php
 // +------------------------------------------------------------------------+
-// | @author Deen Doughouz (DoughouzForest)
-// | @author_url 1: http://www.wowonder.com
-// | @author_url 2: http://codecanyon.net/user/doughouzforest
-// | @author_email: wowondersocial@gmail.com   
+// | @author Onkar Yaglewad (Sparck Tech Pvt. Ltd.)
+// | @author_url 1: https://www.drip.sparck.tk/yaglewad_onkar
+// | @author_url 2: https://sparck.tk/founder
+// | @author_email: founder@sparck.tk  
 // +------------------------------------------------------------------------+
-// | WoWonder - The Ultimate Social Networking Platform
-// | Copyright (c) 2016 WoWonder. All rights reserved.
+// | Drip Limitless - Connecting Mankind Together
+// | Copyright (c) 2021-22 Sparck Tech Pvt. Ltd. All rights reserved.
 // +------------------------------------------------------------------------+
 
 $json_error_data   = array();
