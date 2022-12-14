@@ -1,0 +1,39 @@
+<?php if (Wo_IsMobile() == false) { ?>
+<div class="col-lg-3 sidebar rightcol sidebar_fixed tag_main_right_side">
+	<?php
+		$sidebar_ad = Wo_GetAd('sidebar', false);
+		if (!empty($sidebar_ad)) {
+	?>
+        <div class="wow_content mb-15 tag_sidebar_widget sidebar-ad">
+            <?php echo $sidebar_ad; ?>
+        </div>
+	<?php } ?>
+	
+	<?php
+        if ($wo['config']['classified'] == 1) {
+		$get_latest_products = Wo_GetProducts(array('limit' => 6));
+		if (count($get_latest_products) > 0) {
+	?>
+		<div class="wow_content mb-15 tag_sidebar_widget">
+			<div class="valign tag_sidebar_widget_title">
+				<b><?php echo $wo['lang']['latest_products'] ?></b>
+				<a href="<?php echo Wo_SeoLink('index.php?link1=products') ?>" class="refresh"><?php echo $wo['lang']['see_all'] ?></a>
+			</div>
+			<div class="sidebar-product-slider">
+				<?php 
+                    foreach ($get_latest_products as $key => $wo['product']) {
+                         echo Wo_LoadPage('sidebar/product-style');
+                    }
+				?>
+			</div>
+            <div class="clear"></div>
+		</div>
+	<?php } } ?>
+</div>
+	
+<script>
+$(document).ready(function() {
+	$('.sidebar_fixed').theiaStickySidebar({additionalMarginTop: 30});
+});
+</script>
+<?php } ?>

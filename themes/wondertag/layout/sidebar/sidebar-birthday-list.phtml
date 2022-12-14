@@ -1,0 +1,12 @@
+<div class="col-6 col-sm-6 col-md-4 nearby_user_wrapper user-data">
+	<div class="nearby_user_wrapper_innr text-center">
+		<div class="avatar">
+			<a href="<?php echo $wo['UsersList']['url'];?>" data-ajax="?link1=timeline&u=<?php echo $wo['UsersList']['username']?>"><img src="<?php echo $wo['UsersList']['avatar'];?>" alt="<?php echo $wo['UsersList']['name']; ?>"></a>
+		</div>
+		<a href="<?php echo $wo['UsersList']['url'];?>" data-ajax="?link1=timeline&u=<?php echo $wo['UsersList']['username']?>" class="truncate user_wrapper_link"><?php echo $wo['UsersList']['name']; ?></a>
+		<div class="user-lastseen"><?php echo date_diff(date_create($wo['UsersList']['birthday']), date_create('today'))->y;?> <?php echo $wo['lang']['years_old'];?></div>
+		<div class="user-follow-button" data-dismiss="modal" aria-label="Close">
+			<?php echo Wo_GetMessageButton($wo['UsersList']['user_id']);?>
+		</div>
+	</div>
+</div>

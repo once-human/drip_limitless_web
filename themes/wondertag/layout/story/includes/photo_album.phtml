@@ -1,0 +1,92 @@
+<?php if (!empty($wo['story']['photo_album']) && $wo['story']['blur'] == 1) { ?>
+	<div class="show_album_<?php echo $wo['story']['id']; ?> blur_multi_images" id="fullsizeimg">
+		<button class='btn btn-main btn-mat btn-mat-raised image_blur_btn remover_blur_btn_<?php echo $wo['story']['id']; ?>' onclick='Wo_RemoveBlurAlbum(this,<?php echo $wo['story']['id']; ?>)'><?php echo $wo['lang']['view_image']; ?></button>
+        <img src="<?php echo(Wo_GetMedia($wo['story']['photo_album'][0]['image_org'])) ?>" alt='image' class='image-file pointer image_blur remover_blur_<?php echo $wo['story']['id']; ?>'>
+	</div>
+<?php } ?>
+<?php if (!empty($wo['story']['photo_album'])) {
+	$class = '';
+	$small = '';
+	if (count($wo['story']['photo_album']) == 2) {
+		$class = 'width-2';
+	}
+	$delete  = '';
+
+	if (count($wo['story']['photo_album']) == 3) {
+		echo "<div class='wo_adaptive_media'>";
+		foreach ($wo['story']['photo_album'] as $photo) {
+			if ($wo['story']['admin'] === true) {
+				$delete = "<span onclick='Wo_RemoveAlbumImage(" . $photo['parent_id'] . "," . $photo['id'] . ");' class='btn btn-mat thumb-image-delete-btn'><svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24'><path fill='currentColor' d='M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z'></path></svg></span>";
+			}
+			$multi_image_function = "Wo_OpenAlbumLightBox(" . $photo['id'] . ", \"album\");";
+			if (!empty($photo['parent_id'])) {
+				$multi_image_function = "Wo_OpenLightBox(" . $photo['parent_id'] . ", \"album\");";
+			}
+			echo  "<div class='album-image " . $class . "' id='image-" . $photo['id'] . "' data_image_parent='image-" . $photo['parent_id'] . "'>{$delete}<img src='" . Wo_GetMedia($photo['image_org']) . "' alt='image' class='image-file pointer' onclick='".$multi_image_function."'></div>";
+		}
+		echo "</div>";
+	}
+	else if (count($wo['story']['photo_album']) == 4) {
+		echo "<div class='wo_adaptive_media_4'>";
+		foreach ($wo['story']['photo_album'] as $photo) {
+			if ($wo['story']['admin'] === true) {
+				$delete = "<span onclick='Wo_RemoveAlbumImage(" . $photo['parent_id'] . "," . $photo['id'] . ");' class='btn btn-mat thumb-image-delete-btn'><svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24'><path fill='currentColor' d='M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z'></path></svg></span>";
+			}
+			$multi_image_function = "Wo_OpenAlbumLightBox(" . $photo['id'] . ", \"album\");";
+			if (!empty($photo['parent_id'])) {
+				$multi_image_function = "Wo_OpenLightBox(" . $photo['parent_id'] . ", \"album\");";
+			}
+			echo  "<div class='album-image " . $class . "' id='image-" . $photo['id'] . "' data_image_parent='image-" . $photo['parent_id'] . "'>{$delete}<img src='" . Wo_GetMedia($photo['image_org']) . "' alt='image' class='image-file pointer' onclick='".$multi_image_function."'></div>";
+		}
+		echo "</div>";
+	}
+	else if (count($wo['story']['photo_album']) == 5) {
+		echo "<div class='wo_adaptive_media_5'>";
+		foreach ($wo['story']['photo_album'] as $photo) {
+			if ($wo['story']['admin'] === true) {
+				$delete = "<span onclick='Wo_RemoveAlbumImage(" . $photo['parent_id'] . "," . $photo['id'] . ");' class='btn btn-mat thumb-image-delete-btn'><svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24'><path fill='currentColor' d='M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z'></path></svg></span>";
+			}
+			$multi_image_function = "Wo_OpenAlbumLightBox(" . $photo['id'] . ", \"album\");";
+			if (!empty($photo['parent_id'])) {
+				$multi_image_function = "Wo_OpenLightBox(" . $photo['parent_id'] . ", \"album\");";
+			}
+			echo  "<div class='album-image " . $class . "' id='image-" . $photo['id'] . "' data_image_parent='image-" . $photo['parent_id'] . "'>{$delete}<img src='" . Wo_GetMedia($photo['image_org']) . "' alt='image' class='image-file pointer' onclick='".$multi_image_function."'></div>";
+		}
+		echo "</div>";
+	}
+	else if (count($wo['story']['photo_album']) > 5) {
+		echo "<div class='wo_adaptive_media_5'>";
+		foreach (array_slice($wo['story']['photo_album'],0,5) as $key => $photo) {
+			$multi_image_function = "Wo_OpenAlbumLightBox(" . $photo['id'] . ", \"album\");";
+			if (!empty($photo['parent_id'])) {
+				$multi_image_function = "Wo_OpenLightBox(" . $photo['parent_id'] . ", \"album\");";
+			}
+			if ($key == 4) {
+				echo "<div onclick='".$multi_image_function."' class='album-collapse pointer'> 
+                  <img src='".Wo_GetMedia($photo['image_org'])."' class='image-file'>
+                  <span class='valign'>+".count(array_slice($wo['story']['photo_album'],4))."</span>
+              </div>
+              "; 
+			} else {
+				if ($wo['story']['admin'] === true) {
+					$delete = "<span onclick='Wo_RemoveAlbumImage(" . $photo['parent_id'] . "," . $photo['id'] . ");' class='btn btn-mat thumb-image-delete-btn'><svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24'><path fill='currentColor' d='M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z'></path></svg></span>";
+				}
+				echo  "<div class='album-image " . $class . "' id='image-" . $photo['id'] . "' data_image_parent='image-" . $photo['parent_id'] . "'>{$delete}<img src='" . Wo_GetMedia($photo['image_org']) . "' alt='image' class='image-file  pointer' onclick='".$multi_image_function."'></div>";
+			}
+		}
+		echo "</div>";
+	}
+	else{
+		foreach ($wo['story']['photo_album'] as $photo) {
+			if ($wo['story']['admin'] === true) {
+				$delete = "<span onclick='Wo_RemoveAlbumImage(" . $photo['post_id'] . "," . $photo['id'] . ");' class='btn btn-mat thumb-image-delete-btn'><svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24'><path fill='currentColor' d='M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z'></path></svg></span>";
+			}
+			$multi_image_function = "Wo_OpenAlbumLightBox(" . $photo['id'] . ", \"album\");";
+			if (!empty($photo['parent_id'])) {
+				$multi_image_function = "Wo_OpenLightBox(" . $photo['parent_id'] . ", \"album\");";
+			}
+			echo  "<div class='album-image " . $class . "' id='image-" . $photo['id'] . "' data_image_parent='image-" . $photo['parent_id'] . "'>{$delete}<img src='" . Wo_GetMedia($photo['image_org']) . "' alt='image' class='image-file pointer' onclick='".$multi_image_function."'></div>";
+		}
+	}
+}
+?>

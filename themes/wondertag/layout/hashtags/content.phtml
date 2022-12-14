@@ -1,0 +1,121 @@
+<?php
+	function Tag_GetHashtagPosts($s_query, $after_post_id = 0, $limit = 50000, $before_post_id = 0) {
+		global $sqlConnect;
+		$data         = array();
+		$search_query = str_replace('#', '', Wo_Secure($s_query));
+		$hashdata     = Wo_GetHashtag($search_query, false);
+		if (is_array($hashdata) && count($hashdata) > 0) {
+			$search_string = "#[" . $hashdata['id'] . "]";
+			$query_one     = "SELECT id FROM " . T_POSTS . " WHERE `postText` LIKE '%{$search_string}%'";
+			if (isset($after_post_id) && !empty($after_post_id) && is_numeric($after_post_id)) {
+				$after_post_id = Wo_Secure($after_post_id);
+				$query_one .= " AND id < {$after_post_id}";
+			}
+			if (isset($before_post_id) && !empty($before_post_id) && is_numeric($before_post_id)) {
+				$before_post_id = Wo_Secure($before_post_id);
+				$query_one .= " AND id > {$before_post_id}";
+			}
+			$query_one .= " ORDER BY `id` DESC LIMIT {$limit}";
+			$sql_query_one = mysqli_query($sqlConnect, $query_one);
+			while ($sql_fetch_one = mysqli_fetch_assoc($sql_query_one)) {
+				$posts = Wo_PostData($sql_fetch_one['id']);
+				if (is_array($posts)) {
+					$data[] = $posts;
+				}
+			}
+		}
+		return $data;
+	}
+?>
+
+<div class="page-margin">
+	<div class="container">
+		<h2 class="tag_page_title m5">#<?php echo $_GET['hash'];?> <span class="badge badge-secondary bold"><?php $stories = Tag_GetHashtagPosts($_GET['hash']); echo count($stories); ?> <?php echo $wo['lang']['posts'];?></span></h2>
+		<ul class="list-unstyled tag_page_nav">
+			<?php 
+				$hashtags = Wa_GetTrendingHashs('popular');
+				if (count($hashtags) > 0) {
+					foreach ($hashtags as $wo['hashtag']) { 
+			?>
+				<li><a href="<?php echo $wo['hashtag']['url'];?>" data-ajax="?link1=hashtag&hash=<?php echo $wo['hashtag']['tag'];?>" class="btn-mat">#<?php echo $wo['hashtag']['tag'];?></a></li>
+			<?php } } ?>
+		</ul>
+		<div class="page-margin">
+			<div class="row">
+				<div class="col-lg-7 middlecol">
+					<?php 
+						if($wo['loggedin'] == true) {
+							echo Wo_LoadPage('story/publisher-box'); 
+						}
+					?>
+					<div class="posts-count posts-hashtag-count" onclick="Wo_GetNewHashTagPosts();"></div>
+					<div class="hashtag-posts" id="posts_hashtag">
+						<?php
+							$stories = Wo_GetHashtagPosts($_GET['hash']);
+							if (count($stories) <= 0) {
+								echo Wo_LoadPage('hashtags/no-tag-found');
+							} else {
+								foreach ($stories as $wo['story']) {
+									echo Wo_LoadPage('story/content');
+								}
+							}
+						?>
+					</div>
+					<input type="hidden" value="<?php echo $_GET['hash'];?>" id="hashtagName">
+					<?php if (count($stories) > 4) { ?>
+						<div class="load-more pointer" id="load-more-posts" onclick="Wo_GetMoreHashTagsPosts();">
+							<span class="btn btn-default text-center pointer"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"></path></svg></span> <?php echo $wo['lang']['load_more_posts'];?><span>
+						</div>
+					<?php } ?>
+				</div>
+				<?php 
+					if($wo['loggedin'] == true) {
+						echo Wo_LoadPage('sidebar/content');
+					} else {
+						echo Wo_LoadPage('sidebar/guest');
+					}
+				?>
+			</div>
+		</div>
+	</div>
+</div>
+
+<?php if (count($stories) > 0) {  ?>
+<script type="text/javascript">
+$(function () {
+  scrolled_hash = 0;
+  // Stick the home side bar if the screen width is > than 900
+  if(current_width > 90) {
+    $(window).scroll(function () {
+      var nearToBottom = 500;
+      if($('#posts_hashtag').length > 0) {
+          if ($(window).scrollTop() + $(window).height() > $(document).height() - nearToBottom) {
+            if (scrolled_hash == 0) {
+               scrolled_hash = 1;
+               Wo_GetMoreHashTagsPosts();
+            }
+          }
+      }
+    });
+  }
+});
+function Wo_GetMoreHashTagsPosts() {
+    var more_posts = $('#load-more-posts');
+    var after_post_id = $('.post:last').attr('data-post-id');
+    var hashtagName = $('#hashtagName').val();
+    Wo_progressIconLoader($('#load-more-posts'));
+    $.post(Wo_Ajax_Requests_File() + '?f=get_more_hashtag_posts', {after_post_id: after_post_id,hashtagName:hashtagName}, function(data) {
+        if (data.status == 200) {
+            if (data.html.length == 0) {
+                $('#posts_hashtag').append(data.html);
+                more_posts.html('<span class="btn btn-default"><?php echo $wo["lang"]["no_more_posts"];?><span>');
+            } else {
+              $('#posts_hashtag').append(data.html);
+            }
+            Wo_progressIconLoader($('#load-more-posts'));
+            scrolled_hash = 0;
+        }
+    });
+}
+</script>
+<?php } ?>

@@ -1,0 +1,14 @@
+<div class="notification-list" data_story_user_id="{{notificationRecipientId}}" data_story_type="user">
+	<a href="{{notificationUrl}}" title="{{notificationNotifierName}}" {{#if viewedStory}} data-ajax="{{notificationAjaxUrl}}" {{/if}}>
+		<div class="valign">
+			<div class="notification-user-avatar">
+				<img src="{{notificationNotifierIcon}}" alt="{{notificationNotifierName}}">
+			</div>
+			<div class="notification-text">
+				<span>{{#unless type2NoName}}{{notificationNotifierName}}{{/unless}}</span> <span class="sec_text">{{notificationTypeText}}</span>
+				<div class="ajax-time" title="<?php echo date('c',{{notificationTime}}); ?>">{{notificationTime}}</div>
+				{{notificationIcon}}
+			</div>
+		</div>
+	</a>
+</div>

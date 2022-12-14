@@ -1,0 +1,20 @@
+<div class="col-12 col-sm-6 col-md-4 col-lg-3 nearby_user_wrapper user-data">
+	<div class="nearby_user_wrapper_innr text-center tag_search_user_data_mobi">
+		<div>
+			<div class="cover">
+				<a href="<?php echo $wo['result']['url']. $wo['marker'];?>ref=se" data-ajax="?link1=timeline&u=<?php echo $wo['result']['username']?>&ref=se"><img src="<?php echo $wo['result']['cover'];?>" alt="<?php echo $wo['result']['name']; ?>" /></a>
+			</div>
+			<div class="avatar">
+				<a href="<?php echo $wo['result']['url']. $wo['marker'];?>ref=se" data-ajax="?link1=timeline&u=<?php echo $wo['result']['username']?>&ref=se"><img src="<?php echo $wo['result']['avatar'];?>" alt="<?php echo $wo['result']['name']; ?>" /></a>
+			</div>
+			<span class="user-popover" data-type="<?php echo $wo['result']['type']; ?>" data-id="<?php echo $wo['result']['id']; ?>" data-search-type="<?php echo $wo['result']['type']; ?>">
+				<a href="<?php echo $wo['result']['url']. $wo['marker'];?>ref=se" data-ajax="?link1=timeline&u=<?php echo $wo['result']['username']?>&ref=se" class="truncate user_wrapper_link"><?php echo $wo['result']['name']; ?></a>
+			</span>
+		</div>
+		<?php if (!isset($wo['result']['no_btn'])) { ?>
+			<div class="user-follow-button">
+				<?php echo Wo_GetFollowButton($wo['result']['user_id']);?>
+			</div>
+		<?php } ?>
+	</div>
+</div>

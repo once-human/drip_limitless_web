@@ -1,0 +1,30 @@
+<div class="ads-cont-wrapper">
+	<?php if (count($wo['trans']) > 0): ?>
+		<table class="table table-responsive wow_wallet_trans">
+			<thead>
+				<tr>
+					<th><?php echo $wo['lang']['id']; ?></th>
+					<th width="260"><?php echo $wo['lang']['status']; ?></th>
+					<th><?php echo $wo['lang']['date']; ?></th>
+					<th><?php echo $wo['lang']['amount']; ?></th>
+				</tr>
+			</thead>
+			<tbody id="user-ads">
+				<?php foreach ($wo['trans'] as $key => $transaction): ?>
+					<?php if ($transaction['kind'] == "PRO"): ?>
+					<tr data-ad-id="<?php echo $transaction['id']; ?>">
+						<td><span><?php echo $transaction['id']; ?></span></td>
+						<td width="260"><span><?php echo $transaction['notes']; ?></span></td>
+						<td><span><?php echo $transaction['transaction_dt']; ?></span></td>
+						<td><span><?php echo Wo_GetCurrency($wo['config']['ads_currency']); ?><?php echo sprintf('%.2f', $transaction['amount'] ); ?></span></td>
+					</tr>
+					<?php endif; ?>
+				<?php endforeach; ?>
+			</tbody>
+		</table>
+	<?php else: ?>
+		<div class="empty_state">
+			<svg enable-background="new 0 0 32 32" height="512" viewBox="0 0 32 32" width="512" xmlns="http://www.w3.org/2000/svg"><path d="m26 32h-20c-3.314 0-6-2.686-6-6v-20c0-3.314 2.686-6 6-6h20c3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6z" fill="#f5e6fe"/><g fill="#d9a4fc"><path d="m16 20.667h-2.167c-.276 0-.5-.224-.5-.5s.224-.5.5-.5h1.667v-4c0-.276.224-.5.5-.5s.5.224.5.5v4.5c0 .276-.224.5-.5.5z"/><path d="m18.167 20.667h-2.167c-.276 0-.5-.224-.5-.5s.224-.5.5-.5h2.167c.276 0 .5.224.5.5s-.224.5-.5.5z"/><circle cx="21.333" cy="19.333" r="1.333"/><path d="m22.167 21.333h-1.667c-1.011 0-1.833.822-1.833 1.833v.334c0 .276.224.5.5.5h4.333c.276 0 .5-.224.5-.5v-.333c0-1.011-.822-1.834-1.833-1.834z"/><circle cx="10.667" cy="19.333" r="1.333"/><path d="m11.5 21.333h-1.667c-1.011 0-1.833.823-1.833 1.834v.333c0 .276.224.5.5.5h4.333c.276 0 .5-.224.5-.5v-.333c0-1.011-.822-1.834-1.833-1.834z"/></g><path d="m16 8c-2.206 0-4 1.794-4 4s1.794 4 4 4 4-1.794 4-4-1.794-4-4-4zm-.083 3.5h.167c.689 0 1.25.561 1.25 1.25 0 .542-.349 1.001-.833 1.173v.243c0 .276-.224.5-.5.5s-.5-.224-.5-.5v-.166h-.333c-.276 0-.5-.224-.5-.5s.224-.5.5-.5h.917c.138 0 .25-.112.25-.25s-.112-.25-.25-.25h-.167c-.689 0-1.25-.561-1.25-1.25 0-.542.349-1.001.833-1.173v-.244c0-.276.224-.5.5-.5s.5.224.5.5v.167h.333c.276 0 .5.224.5.5s-.224.5-.5.5h-.917c-.138 0-.25.112-.25.25s.112.25.25.25z" fill="#be63f9"/></svg> <?php echo $wo['lang']['no_transactions_found']; ?>
+		</div>
+	<?php endif; ?>
+</div>

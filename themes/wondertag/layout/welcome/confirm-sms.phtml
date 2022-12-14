@@ -1,0 +1,64 @@
+<div class="valign tag_welcome">
+	<div class="tag_wel_upper">
+		<?php echo Wo_LoadPage('welcome/welcome-header');?>
+	</div>
+	<div class="tag_wel_middle">
+		<div class="container">
+			<div class="wow_content tag_auth_box tag_auth_box_auto">
+				<div class="valign tag_auth_animation d-none"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 367.805 367.805" xml:space="preserve"> <g> <path style="fill:#3BB54A;" d="M183.903,0.001c101.566,0,183.902,82.336,183.902,183.902s-82.336,183.902-183.902,183.902 S0.001,285.469,0.001,183.903l0,0C-0.288,82.625,81.579,0.29,182.856,0.001C183.205,0,183.554,0,183.903,0.001z"/> <polygon style="fill:#fff;" points="285.78,133.225 155.168,263.837 82.025,191.217 111.805,161.96 155.168,204.801 256.001,103.968"/> </g></svg><?php echo $wo['lang']['welcome_'] ?></div>
+				<form id="confirm-form" method="post">
+					<p class="title">Confrim your phone</p>
+					<div class="errors"></div>
+					<label class="tag_field">
+						<input name="phone_num" type="tel" autocomplete="off" placeholder=" " value="<?php echo $wo['confirm_user']['phone_number'];?>" required>
+						<span><?php echo $wo['lang']['phone_number']?></span>
+					</label>
+					<label class="tag_field">
+						<input name="confirm_code" type="text" autocomplete="off" placeholder=" " autofocus required>
+						<span><?php echo $wo['lang']['confirmation_code']?></span>
+					</label>
+					<input type="hidden" name="user_id" id="confirm-user-id" value="<?php echo $wo['confirm_user']['user_id'];?>"/>
+					<div id="hideMsg" class="item">
+						<h2><span>60</span></h2>
+					</div>
+					<div class="form-group" id="re-send" style="display:none">
+						<div class="text-center"><?php echo $wo['lang']['activation_get_code_again'];?> <a href="javascript:void(0);" onclick="Wo_ResendCode();"><?php echo $wo['lang']['activation_resend'];?></a></div>
+					</div>
+					<button type="submit" class="btn btn-main btn-mat tag_wel_btn"><?php echo $wo['lang']['confirm']?></button>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="tag_wel_bottom">
+		<?php echo Wo_LoadPage('footer/welcome');?>
+	</div>
+</div>
+
+<script>
+var working = false;
+var $this = $('#confirm-form');
+var $state = $this.find('.errors');
+var $login_anim = $('.tag_auth_animation');
+
+$(function() {
+	Wo_SetTimer();
+	$this.ajaxForm({
+		url: Wo_Ajax_Requests_File() + '?f=confirm_user',
+		beforeSend: function() {
+			working = true;$this.find('button').attr("disabled", true);
+		},
+		success: function(data) {
+			if (data.status == 200) {
+				$login_anim.removeClass('d-none');
+				setTimeout(function () {
+					window.location.href = data.location;
+				}, 1000);
+			} else {
+				$this.find('button').attr("disabled", false);
+				$state.html(data.errors);
+			}
+			working = false;
+		}
+	});
+});
+</script>

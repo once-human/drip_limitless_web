@@ -1,0 +1,57 @@
+<?php echo Wo_LoadPage('forum/headers/header'); ?>
+<div role="tabpanel" class="tab-pane active" id="home">
+	<div id="sections">
+		<?php 
+			if (count($wo['sections']) > 0) {
+				foreach ($wo['sections'] as $wo['section']) {
+					echo Wo_LoadPage("forum/includes/section-list");
+				}
+			}
+			else {
+				echo '<div class="empty_state"><svg height="512" viewBox="0 0 32 32" width="512" xmlns="http://www.w3.org/2000/svg"><path d="m26 32h-20c-3.314 0-6-2.686-6-6v-20c0-3.314 2.686-6 6-6h20c3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6z" fill="#ffe6e2"/><path d="m11 12.167v-3c0-.173.02-.34.067-.5h-1.9c-.64 0-1.167.526-1.167 1.166v3c0 .64.527 1.167 1.167 1.167h.247l.853 1.133c.093.12.233.193.38.2h.02c.147 0 .28-.06.373-.173l1-1.14c-.62-.387-1.04-1.073-1.04-1.853z" fill="#fd907e"/><path d="m22.833 8.667h-1.9c.047.16.067.326.067.5v3c0 .78-.42 1.467-1.04 1.853l1 1.14c.093.113.227.173.373.173h.02c.147-.007.287-.08.38-.2l.847-1.133h.253c.64 0 1.167-.527 1.167-1.167v-3c0-.64-.527-1.166-1.167-1.166z" fill="#fd907e"/><path d="m16 14.667c-.006 0-.012 0-.019 0-.151-.006-.291-.079-.381-.2l-.85-1.133h-1.583c-.643 0-1.167-.523-1.167-1.167v-3c0-.644.523-1.167 1.167-1.167h5.667c.643 0 1.166.523 1.166 1.167v3c0 .643-.523 1.167-1.167 1.167h-1.44l-1.017 1.162c-.095.108-.232.171-.376.171z" fill="#fd907e"/><g fill="#fc573b"><circle cx="10.667" cy="18" r="1.333"/><path d="m12.447 20.267c-.673.507-1.113 1.32-1.113 2.233v.167h-2.834c-.273 0-.5-.227-.5-.5v-.333c0-1.014.82-1.834 1.833-1.834h1.667c.347 0 .673.1.947.267z"/><circle cx="21.333" cy="18" r="1.333"/><path d="m24 21.833v.333c0 .273-.227.5-.5.5h-2.833v-.166c0-.913-.44-1.727-1.113-2.233.273-.167.599-.267.946-.267h1.667c1.013 0 1.833.82 1.833 1.833z"/><circle cx="16" cy="17.667" r="2"/><path d="m17.833 20.667h-3.667c-1.011 0-1.833.822-1.833 1.833v1c0 .276.224.5.5.5h6.333c.276 0 .5-.224.5-.5v-1c.001-1.011-.822-1.833-1.833-1.833z"/></g></svg>' . $wo['lang']['no_forums_found'] .  '</div>';
+			}
+		?>
+		<div class="clear"></div>
+	</div>
+	<div class="posts_load">
+		<?php if (count($wo['sections']) >= 10): ?>
+			<div class="load-more">
+				<button class="btn btn-default text-center pointer" id="hren"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"></path></svg></span> <?php echo $wo['lang']['load_more_posts'] ?></button>
+			</div>
+		<?php endif ?>
+	</div>	
+</div>
+<?php echo Wo_LoadPage('forum/headers/footer'); ?>
+<?php if (count($wo['sections']) > 0): ?>
+<script>
+	jQuery(document).ready(function($) {
+	  var delay = (function(){
+		var timer = 0;
+		return function(callback, ms){
+		  clearTimeout (timer);
+		  timer = setTimeout(callback, ms);
+		};
+	  })();
+
+	  $("#search-forums").keyup(function(event) {
+	      delay(function(){
+	      if ($("#search-forums").val().trim()) {
+		      $.ajax({
+		        url: Wo_Ajax_Requests_File(),
+		        type: 'GET',
+		        data: {f:"search-forums",keyword:$("#search-forums").val()},
+		        dataType: "json",
+		        success: function(data){
+		          if (data['status'] == 200) {
+		          	$("#sections").html(data['html'])
+		          }
+		          else if(data['status'] == 404){
+		         	$("#sections").html('<h5 class="search-filter-center-text"> ' + data['html'] + '</h5>')
+		          }
+		        }
+		      })}
+	      }, 1000 );
+	  });
+ });
+</script>
+<?php endif ?>

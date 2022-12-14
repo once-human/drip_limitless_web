@@ -1,0 +1,52 @@
+<?php
+
+if (strlen($wo['page_message']['message']['text']) > 100) {
+   $wo['page_message']['message']['text'] = mb_substr( $wo['page_message']['message']['text'], 0, 97, "utf-8") . '...';
+}
+$unread_class = '';
+if (!empty($wo['page_message']['message']) && isset($wo['page_message']['message']['time']) && isset($wo['page_message']['message']['from_id']) && $wo['page_message']['message']['from_id'] != $wo['user']['id']) {
+   if ($wo['page_message']['message']['time'] > $wo['user']['lastseen']) {
+       $unread_class = ' unread';
+   }
+}
+
+
+$page_info = Wo_PageData($wo['page_message']['message']['page_id']);
+if ($page_info['user_id'] == $wo['page_message']['message']['from_id']) {
+   $message_event = "Wo_OpenChatTab(0,0,0,".$wo['page_message']['message']['page_id'].",".$wo['page_message']['message']['to_id'].");";
+}
+else{
+   $message_event = "Wo_OpenChatTab(0,0,0,".$wo['page_message']['message']['page_id'].",".$wo['page_message']['message']['from_id'].");";
+}
+$avatar = $page_info['avatar'];
+$name = $page_info['page_name'];
+if ($page_info['is_page_onwer'] == 1) {
+   if ($page_info['user_id'] != $wo['page_message']['message']['from_id']) {
+      $user_info = Wo_UserData($wo['page_message']['message']['from_id']);
+   }
+   else{
+      $user_info = Wo_UserData($wo['page_message']['message']['to_id']);
+   }
+   
+   $avatar = $user_info['avatar'];
+   $name = $user_info['name'].' ('.$page_info['page_name'].')';
+}
+$wo['page_message']['message']['text'] = Wo_Emo($wo['page_message']['message']['text']);
+?>
+<div class="notification-list pointer messages-list <?php echo $unread_class;?>" onclick="<?php echo $message_event ?>">
+	<div class="valign">
+		<div class="notification-user-avatar">
+			<img src="<?php echo $avatar;?>" alt="<?php echo $name; ?>">
+		</div>
+		<div class="notification-text">
+			<div class="ajax-time" title="<?php echo (!empty($wo['page_message']['message']['time'])) ? date('c',$wo['page_message']['message']['time']) : '';?>"><?php echo (!empty($wo['page_message']['message']['time'])) ? Wo_Time_Elapsed_String($wo['page_message']['message']['time']) : '';?></div>
+            <span><?php echo $name; ?></span>
+            <?php if (!empty($wo['page_message']['message']['from_id'])): ?>
+				<div class="header-message">
+					<?php echo ($wo['user']['id'] == $wo['page_message']['message']['from_id']) ? $wo['lang']['me'] . ': ' : '';?>
+					<?php echo (!empty($wo['page_message']['message']['media'])) ? '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"><path fill="#000000" d="M7.5,18A5.5,5.5 0 0,1 2,12.5A5.5,5.5 0 0,1 7.5,7H18A4,4 0 0,1 22,11A4,4 0 0,1 18,15H9.5A2.5,2.5 0 0,1 7,12.5A2.5,2.5 0 0,1 9.5,10H17V11.5H9.5A1,1 0 0,0 8.5,12.5A1,1 0 0,0 9.5,13.5H18A2.5,2.5 0 0,0 20.5,11A2.5,2.5 0 0,0 18,8.5H7.5A4,4 0 0,0 3.5,12.5A4,4 0 0,0 7.5,16.5H17V18H7.5Z" /></svg> ' . $wo['lang']['file_n_label'] : $wo['page_message']['message']['text']; ?>
+				</div>
+            <?php endif ?>
+		</div>
+	</div>
+</div>

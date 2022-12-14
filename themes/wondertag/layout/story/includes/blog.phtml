@@ -1,0 +1,17 @@
+<?php if(!empty($wo['story']['blog_id'])) { ?>
+	<div class="post-fetched-url wo_post_fetch_blog">
+		<a href="<?php echo $wo['story']['blog']['url'];?>">
+			<?php if (!empty($wo['story']['blog']['thumbnail'])) {?>
+				<div class="post-fetched-url-con">
+					<img src="<?php echo $wo['story']['blog']['thumbnail'];?>" alt="<?php echo $wo['story']['blog']['title'];?>"/>
+				</div>
+			<?php } ?>
+			<div class="fetched-url-text">
+				<span class="postCategory"><?php echo $wo['blog_categories'][$wo['story']['blog']['category']]; ?></span>
+				<h4 class="truncate"><?php echo $wo['story']['blog']['title'];?></h4>
+				<div class="description"><?php echo $wo['story']['blog']['description'];?></div>
+			</div>
+			<div class="clear"></div>
+		</a>
+	</div>
+<?php } ?>

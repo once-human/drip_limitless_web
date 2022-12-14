@@ -1,0 +1,18 @@
+<div class="valign tag_welcome">
+	<div class="tag_wel_upper">
+		<?php echo Wo_LoadPage('welcome/welcome-header');?>
+	</div>
+	<div class="tag_wel_middle">
+		<div class="container">
+			<div class="wow_content tag_auth_box tag_auth_box_auto">
+				<form class="login" id="forgot-form" method="post">
+					<p class="title"><?php echo $wo['lang']['invalid_markup']; ?></p>
+					<a href="<?php echo Wo_SeoLink('index.php?link1=welcome');?>" class="btn btn-main btn-mat tag_wel_btn"><?php echo $wo['lang']['go_back'] ?></a>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="tag_wel_bottom">
+		<?php echo Wo_LoadPage('footer/welcome');?>
+	</div>
+</div>

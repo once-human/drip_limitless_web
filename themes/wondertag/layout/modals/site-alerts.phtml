@@ -1,0 +1,99 @@
+<div class="modal fade image-modal" id="modal_light_box" role="dialog">
+	<div class="valign tag_lbox_toolbar"><div class="btn btn-mat close-lightbox" data-dismiss="modal" aria-label="Close"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M7.828 11H20v2H7.828l5.364 5.364-1.414 1.414L4 12l7.778-7.778 1.414 1.414z"></path></svg></div></div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<img class="image">
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="views-info-modal" role="dialog">
+	<div class="modal-dialog wow_mat_mdl modal-md">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title"><span id="views_info_title"></span></h4>
+			</div>
+			<div class="modal-body">
+				<div id="views_info" class="wo_react_ursrs_list"></div>
+				<div class="clearfix"></div>
+				<div id="views_info_load" style="display: none;">
+					<div class="load-more views_info_load_ wo_react_ursrs_list_lod_mor">
+						<button class="btn btn-default text-center views_info_load_more" data-type="" post-id="" table-type="" onclick="Wo_LoadViewsInfo(this);"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"></path></svg></span> <span class="no_load_more_btn_span" id="load_more_info_btn"><?php echo $wo['lang']['load_more'] ?></span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="users-reacted-modal" role="dialog">
+	<div class="modal-dialog wow_mat_mdl modal-md">
+		<div class="modal-content">
+			<div class="valign mb-15 who_react_modal">
+				<?php if (!empty($wo['reactions_types'])) {
+					foreach ($wo['reactions_types'] as $key => $value) {
+					if ($value['status'] == 1) {
+                 ?>
+					<span class="tag_check_who_how_react how_reacted like-btn-like pointer" id="_post333" onclick="Wo_LoadReactedUsers(<?php echo $key; ?>);$('.tag_check_who_how_react').removeClass('active');$(this).addClass('active');">
+						<?php if (preg_match("/<[^<]+>/",$value['wowonder_icon'],$m)) {
+						if ($key == 1) { ?>
+							<div class="inline_post_emoji inline_act_emoji no_anim"><div class="emoji emoji--like"><div class="emoji__hand"><div class="emoji__thumb"></div></div></div></div>
+						<?php  }elseif ($key == 2) { ?>
+							<div class="inline_post_emoji inline_act_emoji no_anim"><div class="emoji emoji--love"><div class="emoji__heart"></div></div></div>
+						<?php  }elseif ($key == 3) { ?>
+							<div class="inline_post_emoji inline_act_emoji no_anim"><div class="emoji emoji--haha"><div class="emoji__face"><div class="emoji__eyes"></div><div class="emoji__mouth"><div class="emoji__tongue"></div></div></div></div></div>
+						<?php }elseif ($key == 4) { ?>
+							<div class="inline_post_emoji inline_act_emoji no_anim"><div class="emoji emoji--wow"><div class="emoji__face"><div class="emoji__eyebrows"></div><div class="emoji__eyes"></div><div class="emoji__mouth"></div></div></div></div>
+						<?php }elseif ($key == 5) { ?>
+							<div class="inline_post_emoji inline_act_emoji no_anim"><div class="emoji emoji--sad"><div class="emoji__face"><div class="emoji__eyebrows"></div><div class="emoji__eyes"></div><div class="emoji__mouth"></div></div></div></div>
+						<?php }elseif ($key == 6) { ?>
+							<div class="inline_post_emoji inline_act_emoji no_anim"><div class="emoji emoji--angry"><div class="emoji__face"><div class="emoji__eyebrows"></div><div class="emoji__eyes"></div><div class="emoji__mouth"></div></div></div></div>
+						<?php } } else{ ?>
+							<div class="inline_post_emoji no_anim"><div class="reaction"><img src="<?php echo($value['wowonder_icon']) ?>"></div></div>
+						<?php } ?>
+					</span>
+				<?php } } } ?>
+			</div>
+			<div class="modal-body">
+				<div id="reacted_users_box" class="wo_react_ursrs_list"></div>
+				<div class="clearfix"></div>
+				<div id="reacted_users_load" style="display: none;">
+					<div class="load-more wo_react_ursrs_list_lod_mor">
+						<button class="btn btn-default text-center reacted_users_load_more" data-type="" post-id="" col-type="" onclick="Wo_LoadMoreReactedUsers(this);"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"></path></svg></span> <span class="no_load_more_btn_span" id="load_more_reacted_btn"><?php echo $wo['lang']['load_more'] ?></span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="error_post" role="dialog">
+    <div class="modal-dialog wow_mat_mdl">
+		<div class="modal-content">
+			<p class="text-center" id="error_post_text"></p>
+		</div>
+    </div>
+</div>
+
+<div class="modal fade" id="edit-offer-modal" role="dialog">
+	<div class="modal-dialog wow_mat_mdl">
+		<div class="modal-content">
+            <div class="modal-header">
+				<h4 class="modal-title"><?php echo $wo['lang']['edit_offer'] ?></h4>
+            </div>
+			<form class="edit-offer-form form-horizontal" method="post">
+				<div class="modal-body tag_field_full_margin">
+					<div class="app-offer-alert app-general-alert"></div>
+					<div class="clear"></div>
+					<div class="edit_offer_modal_form"></div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default btn-mat disable_btn" data-dismiss="modal" aria-label="Close"><?php echo $wo['lang']['cancel'] ?></button>
+					<button type="submit" class="btn btn-main btn-mat disable_btn"><?php echo $wo['lang']['update']; ?></button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

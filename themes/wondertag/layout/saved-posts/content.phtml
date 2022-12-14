@@ -1,0 +1,24 @@
+<div class="page-margin">
+	<div class="container">
+		<h2 class="tag_page_title m5"><?php echo $wo['lang']['saved_posts'] ?></h2>
+		<div class="page-margin">
+			<div class="row">
+				<div class="col-lg-7 middlecol">
+					<div class="saved-posts">
+						<?php
+							$stories = Wo_GetSavedPosts($wo['user']['user_id']);
+							if (count($stories) <= 0) {
+								echo Wo_LoadPage('saved-posts/no-posts');
+							} else {
+								foreach ($stories as $wo['story']) {
+									echo Wo_LoadPage('story/content');
+								}
+							}
+						?>
+					</div>
+				</div>
+				<?php echo Wo_LoadPage('sidebar/content');?>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,92 @@
+<div class="page-margin">
+	<div class="container">
+		<h2 class="tag_page_title m5"><?php echo $wo['lang']['popular_posts'] ?></h2>
+		<div class="page-margin">
+			<div class="row">
+				<div class="col-lg-7 middlecol">
+					<div id="mlposts">
+						<?php
+							$most_liked = $wo['most_liked'];
+							if (count($most_liked) <= 0) {
+								echo '<div class="wow_content p15"><div class="empty_state"><svg height="512pt" viewBox="0 0 512 512" width="512pt" xmlns="http://www.w3.org/2000/svg"><path d="m416 512h-320c-53.023438 0-96-42.976562-96-96v-320c0-53.023438 42.976562-96 96-96h320c53.023438 0 96 42.976562 96 96v320c0 53.023438-42.976562 96-96 96zm0 0" fill="#fff9dd"/><path d="m221.328125 128c-16.191406 0-29.328125 13.136719-29.328125 29.328125v144c0 16.207031 13.136719 29.328125 29.328125 29.328125h122.671875c16.207031 0 29.328125-13.136719 29.328125-29.328125v-141.328125c0-17.679688-14.320313-32-32-32zm101.34375 154.671875h-80c-4.414063 0-8-3.582031-8-8 0-4.414063 3.585937-8 8-8h80c4.417969 0 8 3.585937 8 8 0 4.417969-3.582031 8-8 8zm0-32h-80c-4.414063 0-8-3.582031-8-8 0-4.414063 3.585937-8 8-8h80c4.417969 0 8 3.585937 8 8 0 4.417969-3.582031 8-8 8zm0-32h-80c-4.414063 0-8-3.582031-8-8 0-4.414063 3.585937-8 8-8h80c4.417969 0 8 3.585937 8 8 0 4.417969-3.582031 8-8 8zm0 0" fill="#ffd200"/><path d="m221.328125 346.671875c-25.007813 0-45.328125-20.335937-45.328125-45.328125v-144c0-.910156.222656-1.757812.273438-2.671875h-8.273438c-16.175781 0-29.328125 13.152344-29.328125 29.328125v170.671875c0 16.175781 13.152344 29.328125 29.328125 29.328125h128c16.175781 0 29.328125-13.152344 29.328125-29.328125v-8zm0 0" fill="#ffe777"/></svg>' . $wo['lang']['no_posts_found'] . '</div></div>';
+							} else {
+								foreach ($most_liked as $wo['story']) {
+									if( is_array($wo['story']) && isset( $wo['story']['id']) ){
+										echo Wo_LoadPage('story/content');
+									}
+								}
+							}
+						?>
+					</div>
+					<?php if (count($most_liked) > 0) { ?>
+						<div class="load-more pointer" id="load-more-posts" onclick="Wo_GetMoreMostLiked();"></div>
+					<?php } ?>
+					<!-- .load-more pointer -->
+					<div id="load-more-filter"><span class="filter-by-more hidden" data-filter-by="most_liked"></span></div>
+					<!-- #load-more-filter -->
+					<div class="clear"></div>
+				</div>
+				<?php echo Wo_LoadPage('sidebar/content');?>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+$(function () {
+	xscrolled = 0;
+	var api = $('#api').val();
+	current_width = $(window).width();
+	if(current_width > 90 || api) {
+    	$(window).scroll(function () {
+			var nearToBottom = 500;
+			if($('#mlposts').length > 0) {
+				if ($(window).scrollTop() + $(window).height() > $(document).height() - nearToBottom) {
+					if (xscrolled == 0) {
+						xscrolled = 1;
+						Wo_GetMoreMostLiked();
+					}
+				}
+			}
+		});
+  	}
+});
+
+function Wo_GetMoreMostLiked() {
+  var more_posts = $('#load-more-posts');
+  var after_post_id = $('div.post:last').attr('data-post-id');
+  var after_last_id = $('div.post:last').attr('data-post-id');
+  var lasttotal = $('div.post:last').attr('data-post-total');
+  var ids = $('div.post:last').attr('data-post-ids');
+  var dt = $('div.post:last').attr('data-post-dt');
+  $('#mlposts').append('<div class="hidden loading-status loading-single"></div>');
+  $('#load-more-posts').hide();
+  $('.loading-status').hide().html('<div class="wow_content p15 tag_post_skel"><div class="valign"><div class="skel skel_50 skel_avatar"></div><div><div class="skel skel_2 skel_noti_name"></div><div class="skel skel_2 skel_noti_time"></div></div></div><div class="valign tag_post_skel_foot"><div class="skel skel_2 skel_action"></div><div class="skel skel_2 skel_action"></div><div class="skel skel_2 skel_action"></div></div></div><div class="wow_content p15 tag_post_skel"><div class="valign"><div class="skel skel_50 skel_avatar"></div><div><div class="skel skel_2 skel_noti_name"></div><div class="skel skel_2 skel_noti_time"></div></div></div><div class="valign tag_post_skel_foot"><div class="skel skel_2 skel_action"></div><div class="skel skel_2 skel_action"></div><div class="skel skel_2 skel_action"></div></div></div>').removeClass('hidden').show();
+  posts_count = 0;
+  if ($('.post').length > 0) {
+    posts_count = $('.post').length;
+  }
+  $.get(Wo_Ajax_Requests_File(), {
+	f: 'get_more_most_liked',
+	after_last_id: after_last_id,
+	lasttotal: lasttotal,
+	ids:ids,
+	dt: dt
+  }, function (data) {
+	  console.log( data );
+	if(data.status == 200) {
+		if(data.html == "") {
+			console.log('empty')
+			xscrolled = 1;
+			$('#load-more-posts').show().html('<div class="wow_content p15"><div class="empty_state"><svg height="512" viewBox="0 0 32 32" width="512" xmlns="http://www.w3.org/2000/svg"><path d="m26 32h-20c-3.314 0-6-2.686-6-6v-20c0-3.314 2.686-6 6-6h20c3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6z" fill="#fff9dd"/><path d="m20.167 8h-8.333c-1.012 0-1.834.822-1.834 1.833v12.333c0 1.012.822 1.834 1.833 1.834h8.333c1.012 0 1.834-.822 1.834-1.833v-12.334c0-1.011-.822-1.833-1.833-1.833zm-7.5 3.333h3.5c.368 0 .667.299.667.667s-.299.667-.667.667h-3.5c-.369 0-.667-.299-.667-.667s.298-.667.667-.667zm6.666 9.334h-6.667c-.368 0-.666-.299-.666-.667s.299-.667.667-.667h6.667c.368 0 .666.299.666.667s-.298.667-.667.667zm0-2.667h-6.667c-.368 0-.666-.298-.666-.667s.299-.667.667-.667h6.667c.368 0 .667.299.667.667s-.299.667-.668.667zm0-2.667h-6.667c-.368 0-.667-.299-.667-.667s.299-.666.668-.666h6.667c.368 0 .666.298.666.667s-.298.666-.667.666z" fill="#ffd200"/></svg><?php echo $wo['lang']['no_more_posts_to_show']; ?></div></div>');
+		} else {
+			$('#mlposts').append(data.html);
+			xscrolled = 0;
+		}
+	}
+    
+	$('.loading-status').remove();
+	$('#load-more-posts').show();
+  });
+}
+</script>

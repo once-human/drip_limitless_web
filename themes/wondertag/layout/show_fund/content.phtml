@@ -1,0 +1,670 @@
+<?php if ($wo['config']['credit_card'] == 'yes') { ?>
+<script src="https://js.stripe.com/v3/"></script>
+<?php } ?>
+
+<style>.tag_create_dropup {bottom: 90px;}</style>
+
+<div class="page-margin">
+	<div class="container">
+		<h2 class="tag_page_title m5 tag_show_fnd_title"><?php echo stripslashes($wo['fund']['title']); ?></h2>
+		<div class="show-fund-info-user">
+			<div class="postMeta--author-avatar">
+				<a href="<?php echo $wo['fund']['user_data']['url']?>">
+					<img src="<?php echo $wo['fund']['user_data']['avatar']?>" alt="User Image">
+				</a>
+			</div>
+			<div class="postMeta--author-text">
+				<a href="<?php echo $wo['fund']['user_data']['url']; ?>" data-ajax="?link1=timeline&u=<?php echo $wo['fund']['user_data']['username']; ?>"><?php echo $wo['fund']['user_data']['name']; ?></a>
+				<span class="middot">·</span>
+				<time><?php echo date("d M Y",$wo['fund']['time']); ?></time>
+			</div>
+		</div>
+		<div class="tag_sF_bar_mobi">
+			<div class="fund_raise_bar">
+				<p class="show_fnd_stats"><?php echo $wo['config']['currency_symbol_array'][$wo['config']['currency']].$wo['fund']['raised']; ?> <?php echo $wo['lang']['raised_of']; ?> <?php echo $wo['config']['currency_symbol_array'][$wo['config']['currency']].$wo['fund']['amount']; ?></p>
+				<div class="progress">
+					<div class="progress-bar" role="progressbar" style="width: <?php echo $wo['fund']['bar']; ?>%" aria-valuenow="<?php echo $wo['fund']['bar']; ?>" aria-valuemin="0" aria-valuemax="<?php echo($wo['fund']['amount']) ?>"></div>
+				</div>
+			</div>
+		</div>
+		<div class="page-margin pb-15">
+			<div class="row">
+				<div class="col-lg-8">
+					<div class="wow_content margin-b30">
+						<div class="fund_main_img">
+							<img src="<?php echo($wo['fund']['image']); ?>" alt="<?php echo stripslashes($wo['fund']['title']); ?>">
+						</div>
+						<p><?php echo stripslashes($wo['fund']['description']); ?></p>
+					</div>
+				</div>
+				<div class="col-lg-4 pl-lg-0">
+					<div class="wow_content wow_sett_content">
+						<?php $wo['recent'] = GetRecentRaise($wo['fund']['id'],20); ?>
+						<div class="valign wo_page_hdng mb-0">
+							<span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M9.33 11.5h2.17A4.5 4.5 0 0 1 16 16H8.999L9 17h8v-1a5.578 5.578 0 0 0-.886-3H19a5 5 0 0 1 4.516 2.851C21.151 18.972 17.322 21 13 21c-2.761 0-5.1-.59-7-1.625L6 10.071A6.967 6.967 0 0 1 9.33 11.5zM4 9a1 1 0 0 1 .993.883L5 10V19a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h2zm9.646-5.425L14 3.93l.354-.354a2.5 2.5 0 1 1 3.535 3.536L14 11l-3.89-3.89a2.5 2.5 0 1 1 3.536-3.535z"></path></svg></span> <?php echo $wo['fund']['all_donation']; ?> <?php echo $wo['lang']['total_donations'];?>
+						</div>
+						<?php if (!empty($wo['recent'])) { ?>
+							<div class="fund">
+								<div class="fluid list tag_scroll">
+									<?php if ($wo['recent']) { foreach ($wo['recent'] as $key => $user) { ?>
+										<div class="item fund_item" data-recent="<?php echo($user['id']) ?>">
+											<div class="wrapper">
+												<img class="rounded-circle" src="<?php echo($user['user_data']['avatar']) ?>" alt="Picture" />
+											</div>
+											<div class="caption">
+												<a class="truncate bold" href="<?php echo($user['user_data']['url']) ?>" data-ajax="?link1=timeline&u=<?php echo($user['user_data']['username']) ?>"><?php echo $user['user_data']['name']; ?></a>
+												<p class="truncate">
+													<?php echo $wo['config']['currency_symbol_array'][$wo['config']['currency']].$user['amount']; ?>
+													<span class="middot">·</span>
+													<time class="time-ago"><?php echo(Wo_Time_Elapsed_String($user['time'])); ?></time>
+												</p>
+											</div>
+										</div>
+									<?php } } ?>
+								</div>
+							</div>
+						<?php } else { ?>
+							<div class="empty_state">
+								<svg height="512" viewBox="0 0 32 32" width="512" xmlns="http://www.w3.org/2000/svg"><path d="m26 32h-20c-3.314 0-6-2.686-6-6v-20c0-3.314 2.686-6 6-6h20c3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6z" fill="#f5e6fe"/><path d="m8.328 16.001c-.182.004-.328.152-.328.334v5.999c0 .184.149.333.333.333h1.415c.149 0 .28-.099.321-.242l1.475-5.199c.095-.336-.085-.689-.413-.808-.604-.221-1.531-.438-2.803-.417z" fill="#be63f9"/><path d="m22.667 19.667c-1.333 0-4 1.688-5.333 1.688s-2.834-1.022-2.834-1.022 1.796.333 2.833.333 1.333-.354 1.333-.833c0-1.167-1.982-1.348-2.984-1.5-.984-.548-1.495-.981-3.125-1.119-.01.095-.025.189-.051.284l-1.339 4.72c1.517.689 4.129 1.782 5.5 1.782 2 0 7.333-2.667 7.333-3.333 0-.667-.667-1-1.333-1z" fill="#be63f9"/><path d="m23.205 8.878c-.523-.566-1.221-.878-1.967-.878-.745 0-1.443.312-1.966.878l-.272.294-.272-.295c-.523-.565-1.221-.877-1.966-.877s-1.444.312-1.967.878c-1.054 1.141-1.054 2.999 0 4.141l3.838 4.154c.094.103.228.161.367.161s.273-.058.367-.161l3.838-4.154c1.054-1.142 1.054-3 0-4.141z" fill="#d9a4fc"/></svg> <?php echo $wo['lang']['no_recent_donation'];?>
+							</div>
+						<?php } ?>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="tag_show_fnd_bottom">
+	<div class="container">
+		<div class="valign">
+			<?php if (Wo_IsMobile() == false) { ?>
+			<div class="tag_sF_bar_pc">
+				<div class="fund_raise_bar">
+					<p class="show_fnd_stats"><?php echo $wo['config']['currency_symbol_array'][$wo['config']['currency']].$wo['fund']['raised']; ?> <?php echo $wo['lang']['raised_of']; ?> <?php echo $wo['config']['currency_symbol_array'][$wo['config']['currency']].$wo['fund']['amount']; ?></p>
+					<div class="progress">
+						<div class="progress-bar" role="progressbar" style="width: <?php echo $wo['fund']['bar']; ?>%" aria-valuenow="<?php echo $wo['fund']['bar']; ?>" aria-valuemin="0" aria-valuemax="<?php echo($wo['fund']['amount']) ?>"></div>
+					</div>
+				</div>
+			</div>
+			<?php } ?>
+			<div class="fund_raise_btns">
+				<div class="dropdown">
+					<button class="btn btn-default btn-mat dropdown-toggle" type="button" id="shr_dropdwn" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false"><?php echo $wo['lang']['share'];?></button>
+					<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="shr_dropdwn">
+						<li><a class="dropdown-item" href="https://www.facebook.com/sharer.php?u=<?php echo $wo['config']['site_url'].'/show_fund/'. $wo['fund']['hashed_id']; ?>" target="_blank" title="<?php echo $wo['lang']['facebook'];?>"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12.001,2.002c-5.522,0-9.999,4.477-9.999,9.999c0,4.99,3.656,9.126,8.437,9.879v-6.988h-2.54v-2.891h2.54V9.798	c0-2.508,1.493-3.891,3.776-3.891c1.094,0,2.24,0.195,2.24,0.195v2.459h-1.264c-1.24,0-1.628,0.772-1.628,1.563v1.875h2.771	l-0.443,2.891h-2.328v6.988C18.344,21.129,22,16.992,22,12.001C22,6.479,17.523,2.002,12.001,2.002z"/></svg></a></li>
+						<li><a class="dropdown-item" href="http://twitter.com/intent/tweet?text=<?php echo $wo['fund']['title'] ?>&amp;url=<?php echo $wo['config']['site_url'].'/show_fund/'. $wo['fund']['hashed_id']; ?>" target="_blank" title="<?php echo $wo['lang']['twitter'];?>"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M19.633,7.997c0.013,0.175,0.013,0.349,0.013,0.523c0,5.325-4.053,11.461-11.46,11.461c-2.282,0-4.402-0.661-6.186-1.809	c0.324,0.037,0.636,0.05,0.973,0.05c1.883,0,3.616-0.636,5.001-1.721c-1.771-0.037-3.255-1.197-3.767-2.793	c0.249,0.037,0.499,0.062,0.761,0.062c0.361,0,0.724-0.05,1.061-0.137c-1.847-0.374-3.23-1.995-3.23-3.953v-0.05	c0.537,0.299,1.16,0.486,1.82,0.511C3.534,9.419,2.823,8.184,2.823,6.787c0-0.748,0.199-1.434,0.548-2.032	c1.983,2.443,4.964,4.04,8.306,4.215c-0.062-0.3-0.1-0.611-0.1-0.923c0-2.22,1.796-4.028,4.028-4.028	c1.16,0,2.207,0.486,2.943,1.272c0.91-0.175,1.782-0.512,2.556-0.973c-0.299,0.935-0.936,1.721-1.771,2.22	c0.811-0.088,1.597-0.312,2.319-0.624C21.104,6.712,20.419,7.423,19.633,7.997z"/></svg></a></li>
+						<li><a class="dropdown-item" href="https://api.whatsapp.com/send?text=<?php echo $wo['config']['site_url'].'/show_fund/'. $wo['fund']['hashed_id']; ?>" data-action="share/whatsapp/share" target="_blank" title="<?php echo $wo['lang']['whatsapp'];?>"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M7.253 18.494l.724.423A7.953 7.953 0 0 0 12 20a8 8 0 1 0-8-8c0 1.436.377 2.813 1.084 4.024l.422.724-.653 2.401 2.4-.655zM2.004 22l1.352-4.968A9.954 9.954 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10a9.954 9.954 0 0 1-5.03-1.355L2.004 22zM8.391 7.308c.134-.01.269-.01.403-.004.054.004.108.01.162.016.159.018.334.115.393.249.298.676.588 1.357.868 2.04.062.152.025.347-.093.537a4.38 4.38 0 0 1-.263.372c-.113.145-.356.411-.356.411s-.099.118-.061.265c.014.056.06.137.102.205l.059.095c.256.427.6.86 1.02 1.268.12.116.237.235.363.346.468.413.998.75 1.57 1l.005.002c.085.037.128.057.252.11.062.026.126.049.191.066a.35.35 0 0 0 .367-.13c.724-.877.79-.934.796-.934v.002a.482.482 0 0 1 .378-.127c.06.004.121.015.177.04.531.243 1.4.622 1.4.622l.582.261c.098.047.187.158.19.265.004.067.01.175-.013.373-.032.259-.11.57-.188.733a1.155 1.155 0 0 1-.21.302 2.378 2.378 0 0 1-.33.288 3.71 3.71 0 0 1-.125.09 5.024 5.024 0 0 1-.383.22 1.99 1.99 0 0 1-.833.23c-.185.01-.37.024-.556.014-.008 0-.568-.087-.568-.087a9.448 9.448 0 0 1-3.84-2.046c-.226-.199-.435-.413-.649-.626-.89-.885-1.562-1.84-1.97-2.742A3.47 3.47 0 0 1 6.9 9.62a2.729 2.729 0 0 1 .564-1.68c.073-.094.142-.192.261-.305.127-.12.207-.184.294-.228a.961.961 0 0 1 .371-.1z"/></svg></a></li>
+					</ul>
+				</div>
+				<?php if ($wo['user']['id'] != $wo['fund']['user_id'] && $wo['fund']['amount'] > $wo['fund']['raised']) { ?>
+					<button type="button" class="btn btn-main btn-mat" data-toggle="modal" data-target="#dont_modal"><?php echo $wo['lang']['donate']; ?></button>
+				<?php } ?>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="dont_modal" tabindex="-1" role="dialog">
+	<div class="modal-dialog wow_mat_mdl modal-sm" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title"><?php echo $wo['lang']['donate']; ?> <?php echo $wo['lang']['amount']; ?></h4>
+			</div>
+			<div class="modal-body">
+				<div id="amount_fund_alert"></div>
+				<div class="fund_input text-center">
+					<input type="text" name="amount" placeholder="0.00" id="fund_donate_amount" onkeyup="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+					<div id="place"></div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default btn-mat disable_btn" data-dismiss="modal" aria-label="Close"><?php echo $wo['lang']['cancel'] ?></button>
+				<button class="bank_payment btn btn-main btn-mat" onclick="Wo_GetPaymentMethods(this);"><?php echo $wo['lang']['donate']; ?></button>
+				<input type="hidden" class="form-control" id="fund_donate_id" value="<?php echo $wo['fund']['id']; ?>">
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="donate_for_fund_modal"></div>
+
+<div class="modal fade" id="bank_transfer_donate_modal" role="dialog" data-keyboard="false">
+	<div class="modal-dialog wow_mat_mdl">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title"><?php echo $wo['lang']['bank_transfer'] ?></h4>
+			</div>
+			<form class="form form-horizontal" method="post" id="bank_transfer_form_donate" action="#">
+				<div class="modal-body dt_bank_trans_modal">
+					<div id="blog-alert"></div>
+					
+					<?php echo $wo['config']['bank_description'];?>
+					
+					<?php if (!empty($wo['config']['bank_transfer_note'])) { ?>
+						<div class="dt_user_profile hide_alert_info_bank_trans">
+							<ul class="dt_prof_vrfy">
+								<li><?php echo $wo['config']['bank_transfer_note'];?></li>
+							</ul>
+						</div>
+					<?php } ?>
+					<div class="upload_bank_receipts">
+						<div onclick="document.getElementById('upload').click(); return false">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M13.5,16V19H10.5V16H8L12,12L16,16H13.5M13,9V3.5L18.5,9H13Z"></path></svg>
+							<p><?php echo $wo['lang']['browse_to_upload']; ?></p>
+							<img id="receipt_img_preview" src="">
+						</div>
+					</div>
+					<input name="price" type="hidden" id="bank_donate_price" class="hidden">
+					<input name="fund_id" type="hidden" id="bank_donate_fund_id" class="hidden">
+					<input type="hidden" name="hash_id" value="<?php echo Wo_CreateSession();?>">
+					<input name="thumbnail" type="file" id="upload" class="hidden" accept="image/*">
+					<input type="reset" id="configreset" value="Reset" class="hidden">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-mat btn-default disable_btn" data-dismiss="modal" aria-label="Close"><?php echo $wo['lang']['cancel']; ?></button>
+					<button type="submit" class="btn btn-main btn-mat disable_btn"><?php echo $wo['lang']['send']; ?></button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="2checkout_wallet_donate_modal" role="dialog" data-keyboard="false">
+	<div class="modal-dialog wow_mat_mdl modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title"><?php echo $wo['lang']['2checkout'] ?></h4>
+			</div>
+			<form class="form form-horizontal" method="post" id="2checkout_form_donate_wallet" action="#">
+				<div class="modal-body twocheckout_modal">
+					<div id="2checkout_alert_donate_wallet"></div>
+					<div class="clear"></div>
+					<div class="row">
+						<div class="col-lg-6">
+							<label class="tag_field">
+								<input id="card_name" type="text" autocomplete="off" placeholder=" " value="<?php echo($wo['user']['name']) ?>">
+								<span><?php echo $wo['lang']['name']; ?></span>
+							</label>
+							<label class="tag_field">
+								<input id="card_email" type="email" autocomplete="off" placeholder=" " value="<?php echo($wo['user']['email']) ?>">
+								<span><?php echo $wo['lang']['email']; ?></span>
+							</label>
+							<label class="tag_field">
+								<input id="card_phone" type="tel" autocomplete="off" placeholder=" " value="<?php echo($wo['user']['phone_number']) ?>">
+								<span><?php echo $wo['lang']['phone_number']; ?></span>
+							</label>
+							<label class="tag_field">
+								<input id="card_address" type="text" autocomplete="off" placeholder=" " value="<?php echo($wo['user']['address']) ?>">
+								<span><?php echo $wo['lang']['address']; ?></span>
+							</label>
+							<div class="row">
+								<div class="col-md-6">
+									<label class="tag_field">
+										<input id="card_city" type="text" autocomplete="off" placeholder=" " value="<?php echo($wo['user']['city']) ?>">
+										<span><?php echo $wo['lang']['city']; ?></span>
+									</label>
+								</div>
+								<div class="col-md-6">
+									<label class="tag_field">
+										<input id="card_zip" type="text" autocomplete="off" placeholder=" " value="<?php echo($wo['user']['zip']) ?>">
+										<span><?php echo $wo['lang']['zip']; ?></span>
+									</label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<label class="tag_field">
+										<input id="card_state" type="text" autocomplete="off" placeholder=" " value="<?php echo($wo['user']['state']) ?>">
+										<span><?php echo $wo['lang']['state']; ?></span>
+									</label>
+								</div>
+								<div class="col-md-6">
+									<label class="tag_field">
+										<select id="card_country" name="card_country">
+											<?php 
+												foreach ($wo['countries_name'] as $country_ids => $country) { 
+													$country_id = $wo['user']['country_id'];
+													$selected_contry = ($country_ids == $country_id) ? ' selected' : '' ;
+											?>
+												<option value="<?php echo $country_ids;?>" <?php echo $selected_contry;?> ><?php echo $country;?></option>
+											<?php } ?>
+										</select>
+										<span><?php echo $wo['lang']['country']; ?></span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-6">
+							<div class="two_check_card">
+								<label class="tag_field">
+									<input id="_number_" type="text" autocomplete="off" placeholder=" ">
+									<span><?php echo $wo['lang']['card_number']; ?></span>
+									<input id="card_number" name="card_number" type="hidden" autocomplete="off">
+								</label>
+								<label class="tag_field">
+									<select id="card_month" name="card_month">
+										<option value="01">01</option>
+										<option value="02">02</option>
+										<option value="03">03</option>
+										<option value="04">04</option>
+										<option value="05">05</option>
+										<option value="06">06</option>
+										<option value="07">07</option>
+										<option value="08">08</option>
+										<option value="09">09</option>
+										<option value="10">10</option>
+										<option value="11">11</option>
+										<option value="12">12</option>
+									</select>
+									<span><?php echo $wo['lang']['month']; ?></span>
+								</label>
+								<label class="tag_field">
+									<select id="card_year" name="card_year">
+										<?php for ($i=date('Y'); $i <= date('Y')+15; $i++) {  ?>
+											<option value="<?php echo($i) ?>"><?php echo($i) ?></option>
+										<?php } ?>
+									</select>
+									<span><?php echo $wo['lang']['year']; ?></span>
+								</label>
+								<label class="tag_field">
+									<input id="card_cvc" name="card_cvc" type="text" autocomplete="off" placeholder=" " maxlength="3" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+									<span>CVC</span>
+								</label>
+							</div>
+						</div>
+					</div>
+					<div class="clear"></div>
+					<input id="card_token" name="token" type="hidden" value="">
+					<input id="donate_check_amount" name="amount" type="hidden" value="">
+					<input id="donate_check_fund_id" name="fund_id" type="hidden" value="">
+				</div>
+				<div class="clear"></div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-mat btn-default disable_btn" data-dismiss="modal" aria-label="Close"><?php echo $wo['lang']['cancel']; ?></button>
+					<button type="button" class="btn btn-main btn-mat disable_btn" onclick="tokenRequest()" id="2checkout_btn_wallet"><?php echo $wo['lang']['pay']; ?></button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="paystack_fund_modal" role="dialog" data-keyboard="false">
+	<div class="modal-dialog wow_mat_mdl modal-md">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title"><?php echo $wo['lang']['paystack'] ?></h4>
+			</div>
+			<form class="form form-horizontal" method="post" id="paystack_fund_form" action="#">
+				<div class="modal-body">
+					<div id="paystack_fund_alert"></div>
+					<div class="clear"></div>
+					<label class="tag_field">
+						<input id="paystack_fund_email" type="email" autocomplete="off" placeholder=" " value="<?php echo($wo['user']['email']) ?>">
+						<span><?php echo $wo['lang']['email']; ?></span>
+					</label>
+					<div class="clear"></div>
+				</div>
+				<div class="clear"></div>
+				<input type="hidden" name="paystack_fund_id" id="paystack_fund_id">
+				<input type="hidden" name="paystack_fund_amount" id="paystack_fund_amount">
+				<div class="modal-footer">
+					<button type="button" class="btn btn-mat btn-default disable_btn" data-dismiss="modal" aria-label="Close"><?php echo $wo['lang']['cancel']; ?></button>
+					<button type="button" class="btn btn-main btn-mat disable_btn" id="paystack_btn" onclick="InitializeFundPaystack()"><?php echo $wo['lang']['pay']; ?></button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="cashfree_wallet_modal" role="dialog" data-keyboard="false">
+	<div class="modal-dialog wow_mat_mdl modal-md">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title"><?php echo $wo['lang']['cashfree'] ?></h4>
+			</div>
+			<form class="form form-horizontal" method="post" id="cashfree_form" action="#">
+				<div class="modal-body">
+					<div id="cashfree_wallet_alert"></div>
+					<div class="clear"></div>
+					<label class="tag_field">
+						<input id="cashfree_name" type="text" autocomplete="off" placeholder=" " value="<?php echo($wo['user']['name']) ?>">
+						<span><?php echo $wo['lang']['name']; ?></span>
+					</label>
+					<label class="tag_field">
+						<input id="cashfree_email" type="email" autocomplete="off" placeholder=" " value="<?php echo($wo['user']['email']) ?>">
+						<span><?php echo $wo['lang']['email']; ?></span>
+					</label>
+					<label class="tag_field">
+						<input id="cashfree_phone" type="text" autocomplete="off" placeholder=" " value="<?php echo($wo['user']['phone_number']) ?>">
+						<span><?php echo $wo['lang']['phone_number']; ?></span>
+					</label>
+					<input type="hidden" name="cashfree_type" id="cashfree_type">
+					<input type="hidden" name="cashfree_fund_id" id="cashfree_fund_id">
+				    <input type="hidden" name="cashfree_fund_amount" id="cashfree_fund_amount">
+					<div class="clear"></div>
+				</div>
+				<div class="clear"></div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-mat btn-default disable_btn" data-dismiss="modal" aria-label="Close"><?php echo $wo['lang']['cancel']; ?></button>
+					<button type="button" class="btn btn-main btn-mat disable_btn" id="cashfree_btn" onclick="SignatureWalletCashfree()"><?php echo $wo['lang']['pay']; ?></button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<?php if ($wo['config']['razorpay_payment'] == 'yes' && !empty($wo['config']['razorpay_key_id']) && !empty($wo['config']['razorpay_key_secret'])) { ?>
+<div class="modal fade" id="razorpay_modal" role="dialog" data-keyboard="false">
+	<div class="modal-dialog wow_mat_mdl modal-md">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title"><?php echo $wo['lang']['razorpay'] ?></h4>
+			</div>
+			<form class="form form-horizontal" method="post" id="razorpay_form" action="#">
+				<div class="modal-body">
+					<div id="razorpay_alert"></div>
+					<div class="clear"></div>
+					<label class="tag_field">
+						<input id="razorpay_name" type="text" autocomplete="off" placeholder=" " value="<?php echo($wo['user']['name']) ?>">
+						<span><?php echo $wo['lang']['name']; ?></span>
+					</label>
+					<label class="tag_field">
+						<input id="razorpay_email" type="email" autocomplete="off" placeholder=" " value="<?php echo($wo['user']['email']) ?>">
+						<span><?php echo $wo['lang']['email']; ?></span>
+					</label>
+					<label class="tag_field">
+						<input id="razorpay_phone" type="text" autocomplete="off" placeholder=" " value="<?php echo($wo['user']['phone_number']) ?>">
+						<span><?php echo $wo['lang']['phone_number']; ?></span>
+					</label>
+					<input type="hidden" name="razorpay_fund_id" id="razorpay_fund_id">
+					<input type="hidden" name="razorpay_fund_amount" id="razorpay_fund_amount">
+					<div class="clear"></div>
+				</div>
+				<div class="clear"></div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-mat btn-default disable_btn" data-dismiss="modal" aria-label="Close"><?php echo $wo['lang']['cancel']; ?></button>
+					<button type="button" class="btn btn-main btn-mat disable_btn" id="razorpay_btn" onclick="SignatureRazorpay()"><?php echo $wo['lang']['pay']; ?></button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<?php } ?>
+<script type="text/javascript">
+<?php if ($wo['config']['razorpay_payment'] == 'yes' && !empty($wo['config']['razorpay_key_id']) && !empty($wo['config']['razorpay_key_secret'])) { ?>
+function pay_using_razorpay_fund(fund_id,amount) {
+	$("#razorpay_fund_id").val(fund_id);
+	$("#razorpay_fund_amount").val(amount);
+	$("#razorpay_alert").html('');
+	$('#fund_payment_donate_modal').modal('hide');
+	$('#razorpay_modal').modal({
+        show: true
+    });
+}
+
+function SignatureRazorpay() {
+	$('#razorpay_btn').html("<?php echo($wo['lang']['please_wait']) ?>");
+	$('#razorpay_btn').attr('disabled','true');
+    var merchant_order_id = "<?php echo(round(111111,9999999)) ?>";
+    var card_holder_name_id = $('#razorpay_name').val();
+    var type = $('#razorpay_type').val();
+    var email = $('#razorpay_email').val();
+    var phone = $('#razorpay_phone').val();
+    //var currency_code_id = "<?php echo($wo['config']['currency']) ?>";
+    var currency_code_id = "INR";
+
+    if (!email || !phone || !card_holder_name_id) {
+    	$('#razorpay_alert').html("<div class='alert alert-danger'><?php echo($wo['lang']['please_check_details']) ?></div>");
+		setTimeout(function () {
+			$('#razorpay_alert').html("");
+		},3000);
+		$('#razorpay_btn').html("<?php echo($wo['lang']['pay']) ?>");
+		$('#razorpay_btn').removeAttr('disabled');
+		return false;
+    }
+
+
+    var merchant_total = Number($('#razorpay_fund_amount').val()) * 100;
+    var fund_id = $('#razorpay_fund_id').val();
+    
+    var razorpay_options = {
+        key: "<?php echo $wo['config']['razorpay_key_id']; ?>",
+        amount: merchant_total,
+        name: "<?php echo $wo['config']['siteName']; ?>",
+        description: "Donate",
+        image: '<?php echo $wo['config']['theme_url'];?>/img/logo.<?php echo $wo['config']['logo_extension'];?>',
+        netbanking: true,
+        currency: currency_code_id,
+        prefill: {
+            name: card_holder_name_id,
+            email: email,
+            contact: phone
+        },
+        notes: {
+            soolegal_order_id: merchant_order_id,
+        },
+        handler: function (transaction) {
+            jQuery.ajax({
+                url:Wo_Ajax_Requests_File() + '?f=razorpay&s=fund',
+                type: 'post',
+                data: {payment_id: transaction.razorpay_payment_id, order_id: merchant_order_id, card_holder_name_id: card_holder_name_id,  merchant_amount: merchant_total, currency: currency_code_id, type: 'fund', fund_id: fund_id}, 
+                dataType: 'json',
+                success: function (data) {
+                	if (data.status == 200) {
+                		window.location = data.url;
+                	}
+                	else{
+                		if (data.url != '') {
+                			window.location = data.url;
+                		}
+                		else{
+                			$('#razorpay_alert').html("<div class='alert alert-danger'>"+data.message+"</div>");
+							setTimeout(function () {
+								$('#razorpay_alert').html("");
+							},3000);
+							$('#razorpay_btn').html("<?php echo($wo['lang']['pay']) ?>");
+							$('#razorpay_btn').removeAttr('disabled');
+
+                		}
+                	}
+                }
+            });
+        },
+        "modal": {
+            "ondismiss": function () {
+                // code here
+            }
+        }
+    };
+    // obj        
+    var objrzpv1 = new Razorpay(razorpay_options);
+    objrzpv1.open();
+    e.preventDefault();
+}
+<?php } ?>
+<?php if ($wo['config']['paysera_payment'] == 'yes' && !empty($wo['config']['paysera_project_id']) && !empty($wo['config']['paysera_sign_password'])) { ?>
+	function pay_using_paysera_funding(fund_id,amount) {
+		$('.btn-paysera').attr('disabled', true).text("<?php echo $wo["lang"]["please_wait"]?>");
+	    $.post(Wo_Ajax_Requests_File() + '?f=paysera&s=get_url', {type:'fund',amount:amount,fund_id:fund_id}, function(data) {
+	        if (data.status == 200) {
+	            window.location.href = data.url;
+	        } else {
+	         	$('.btn-paysera').attr('disabled', false).html("Paysera App not set yet.");
+	        }
+	    });
+	}
+<?php } ?>
+
+
+	function pay_using_cashfree_funding(fund_id,amount) {
+		$("#cashfree_fund_id").val(fund_id);
+		$("#cashfree_fund_amount").val(amount);
+		$("#cashfree_wallet_alert").html('');
+		$('#fund_payment_donate_modal').modal('hide');
+		$('#cashfree_wallet_modal').modal({
+	        show: true
+	    });
+	}
+	function SignatureWalletCashfree() {
+		$('#cashfree_btn').html("<?php echo($wo['lang']['please_wait']) ?>");
+		$('#cashfree_btn').attr('disabled','true');
+		type = $('#cashfree_type').val();
+		email = $('#cashfree_email').val();
+		name = $('#cashfree_name').val();
+		phone = $('#cashfree_phone').val();
+		amount = $('#cashfree_fund_amount').val();
+		fund_id = $('#cashfree_fund_id').val();
+		$.post(Wo_Ajax_Requests_File() + '?f=cashfree&s=initialize', {type:'fund',email:email,name:name,phone:phone,amount:amount,fund_id:fund_id}, function(data) {
+			if (data.status == 200) {
+				$('body').append(data.html);
+				document.getElementById("redirectForm").submit();
+			} else {
+				$('#cashfree_wallet_alert').html("<div class='alert alert-danger'>"+data.message+"</div>");
+				setTimeout(function () {
+					$('#cashfree_wallet_alert').html("");
+				},3000);
+			}
+			$('#cashfree_btn').html("<?php echo($wo['lang']['pay']) ?>");
+			$('#cashfree_btn').removeAttr('disabled');
+		});
+	}
+
+	function pay_using_funding_paystack(fund_id,amount) {
+		$("#paystack_fund_id").val(fund_id);
+		$("#paystack_fund_amount").val(amount);
+		$("#paystack_fund_alert").html('');
+		$('#fund_payment_donate_modal').modal('hide');
+		$('#paystack_fund_modal').modal({
+	        show: true
+	    });
+	}
+
+	function InitializeFundPaystack() {
+		$('#paystack_btn').html("<?php echo($wo['lang']['please_wait']) ?>");
+	    $('#paystack_btn').attr('disabled','true');
+		email = $('#paystack_fund_email').val();
+		amount = $('#paystack_fund_amount').val();
+		fund_id = $('#paystack_fund_id').val();
+		$.post(Wo_Ajax_Requests_File() + '?f=paystack&s=initialize', {type:'fund',email:email,amount:amount,fund_id:fund_id}, function(data) {
+			if (data.status == 200) {
+				window.location.href = data.url;
+			} else {
+				$('#paystack_fund_alert').html("<div class='alert alert-danger'>"+data.message+"</div>");
+				setTimeout(function () {
+					$('#paystack_fund_alert').html("");
+				},3000);
+			}
+			$('#paystack_btn').html("<?php echo($wo['lang']['pay']) ?>");
+		    $('#paystack_btn').removeAttr('disabled');
+		});
+	}
+
+	$(document).on('change', '#upload', function(event) {
+		let imgPath = $(this)[0].files[0].name;
+	    if (typeof(FileReader) != "undefined") {
+	        let reader = new FileReader();
+	        reader.onload = function(e) {
+				$('#receipt_img_preview').attr('src', e.target.result);
+	        }
+	        reader.readAsDataURL(this.files[0]);
+	    }
+		$('#bank_transfer_donate_modal').addClass('up_rec_img_ready');
+	});
+	jQuery(document).ready(function($) {
+	  $('#bank_transfer_donate_modal').ajaxForm({
+	    url: Wo_Ajax_Requests_File() + '?f=funding&s=bank',
+	    beforeSend: function() {
+	    $('#bank_transfer_donate_modal').find('.disable_btn').attr('disabled','disabled');
+	  },
+	  success: function(data) {
+	    if (data['status'] == 200) {
+	      $("#blog-alert").html('<div class="alert alert-success">'+ data['message'] +'</div>');
+	      setTimeout(function () {
+	        window.location = "<?php echo $wo['config']['site_url'];?>";
+	        $(".prv-img").html('<div class="thumbnail-rendderer"><div><h4 class="bold"><?php echo $wo['lang']['drop_img_here']; ?></h4><div class="error-text-renderer"></div><div><span><?php echo $wo['lang']['or']; ?></span><p><?php echo $wo['lang']['browse_to_upload']; ?></p></div></div> </div>');
+	        $("#blog-alert").html('');
+	        $('#configreset').click();
+
+	      },3000)
+	    } else if (data['message']) {
+	      $("#blog-alert").html('<div class="alert alert-danger">' + data['message'] + '</div>');
+	    } 
+	    $('#bank_transfer_donate_modal').find('.disable_btn').removeAttr("disabled");
+	  }});
+	});
+
+// Called when token created successfully.
+var successCallback = function(data) {
+	console.log(data);
+    var myForm = document.getElementById('2checkout_form_donate_wallet');
+    $.post(Wo_Ajax_Requests_File() + '?f=funding&s=2checkout', {card_number: $("#card_number").val(),card_cvc: $("#card_cvc").val(),card_month: $("#card_month").val(),card_year: $("#card_year").val(),card_name: $("#card_name").val(),card_address: $("#card_address").val(),card_city: $("#card_city").val(),card_state: $("#card_state").val(),card_zip: $("#card_zip").val(),card_country: $("#card_country").val(),card_email: $("#card_email").val(),card_phone: $("#card_phone").val(),amount: $('#donate_check_amount').val(),fund_id: $('#donate_check_fund_id').val(),token: data.response.token.token}, function(data, textStatus, xhr) {
+    	$('#2checkout_btn_wallet').html("<?php echo($wo['lang']['pay']) ?>");
+    	$('#2checkout_btn_wallet').attr('disabled');
+    	$('#2checkout_btn_wallet').removeAttr('disabled');
+    	$('#2checkout_form_donate_wallet').find('.disable_btn').removeAttr("disabled");
+    	if (data.status == 200) {
+      	 	window.location.href = data.location;
+      	} else {
+      	 	$('#2checkout_alert_donate_wallet').html("<div class='alert alert-danger'>"+data.error+"</div>");
+			setTimeout(function () {
+				$('#2checkout_alert_donate_wallet').html("");
+			},3000);
+      	}
+    	/*optional stuff to do after success */
+    });
+};
+
+// Called when token creation fails.
+var errorCallback = function(data) {
+	$('#2checkout_btn_wallet').html("<?php echo($wo['lang']['pay']) ?>");
+	$('#2checkout_btn_wallet').removeAttr('disabled');
+	$('#2checkout_form_donate_wallet').find('.disable_btn').removeAttr("disabled");
+    if (data.errorCode === 200) {
+        tokenRequest();
+    } else {
+    	$('#2checkout_alert_donate_wallet').html("<div class='alert alert-danger'>"+data.errorMsg+"</div>");
+		setTimeout(function () {
+			$('#2checkout_alert_donate_wallet').html("");
+		},3000);
+    }
+};
+
+var tokenRequest = function() {
+	$('#card_number').val($('#_number_').val());
+	$('#2checkout_btn_wallet').html("<?php echo($wo['lang']['please_wait']) ?>");
+	$('#2checkout_btn_wallet').attr('disabled','true');
+	if ($("#card_number").val() != '' && $("#card_cvc").val() != '' && $("#card_month").val() != '' && $("#card_year").val() != '' && $("#card_name").val() != '' && $("#card_address").val() != '' && $("#card_city").val() != '' && $("#card_state").val() != '' && $("#card_zip").val() != '' && $("#card_country").val() != 0 && $("#card_email").val() != '' && $("#card_phone").val() != '') {
+		$('#2checkout_form_donate_wallet').find('.disable_btn').attr('disabled','disabled');
+		// Setup token request arguments
+	    var args = {
+	        sellerId: "<?php echo($wo['config']['checkout_seller_id']) ?>",
+	        publishableKey: "<?php echo($wo['config']['checkout_publishable_key']) ?>",
+	        ccNo: $("#card_number").val(),
+	        cvv: $("#card_cvc").val(),
+	        expMonth: $("#card_month").val(),
+	        expYear: $("#card_year").val()
+	    };
+
+	    // Make the token request
+	    TCO.requestToken(successCallback, errorCallback, args);
+	}
+	else{
+		$('#2checkout_btn_wallet').html("<?php echo($wo['lang']['pay']) ?>");
+		$('#2checkout_btn_wallet').removeAttr('disabled');
+		$('#2checkout_alert_donate_wallet').html("<div class='alert alert-danger'><?php echo($wo['lang']['please_check_details']) ?></div>");
+		setTimeout(function () {
+			$('#2checkout_alert_donate_wallet').html("");
+		},3000);
+
+	}
+};
+
+<?php if ($wo['config']['checkout_payment'] == 'yes') { ?>
+$(function() {
+    // Pull in the public encryption key for our environment
+    TCO.loadPubKey("<?php echo($wo['config']['checkout_mode']) ?>");
+});
+<?php } ?>
+</script>

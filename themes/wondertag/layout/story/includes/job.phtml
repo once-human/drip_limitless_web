@@ -1,0 +1,104 @@
+<div class="post-container">
+	<div class="post" id="post-<?php echo $wo['story']['id']; ?>" data-job-id="<?php echo $wo['story']['job']['id'];?>" data-post-id="<?php echo $wo['story']['id'];?>" data-post-type="<?php echo !empty($wo['story']['job']['page_type']) ? 'page' : '' ?>">
+		<div class="panel panel-white panel-shadow wo_view_post_jobs">
+			<?php if (!empty($wo['story']['job']['image'])): ?>
+				<div class="wo_view_post_jcover">
+					<img src="<?php echo Wo_GetMedia($wo['story']['job']['image']); ?>">
+					<?php if ($wo['loggedin'] == true) { ?>
+					<?php if ($wo['story']['job']['user_id'] == $wo['user']['id'] || Wo_IsAdmin() || Wo_IsModerator()) { ?>
+						<div class="dropdown tag_post_hdr_menu">
+							<div class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M12 13.172l4.95-4.95 1.414 1.414L12 16 5.636 9.636 7.05 8.222z"></path></svg></div>
+							<ul class="dropdown-menu dropdown-menu-right tag_create_menu" role="menu">
+								<li><a class="pointer" onclick="Wo_OpenJobEditBox(<?php echo $wo['story']['job']['id']; ?>);"><?php echo $wo['lang']['edit_job'];?></a></li>
+								<li><a class="pointer" onclick="Wo_OpenPostDeleteBox(<?php echo $wo['story']['id']; ?>);"><?php echo $wo['lang']['delete_job'];?></a></li>
+							</ul>
+						</div>
+					<?php } ?>
+					<?php } ?>
+				</div>
+            <?php endif; ?>
+			<div class="wo_view_post_jhead">
+				<?php if (!empty($wo['story']['job']['title'])) { ?>
+					<h2><?php echo $wo['story']['job']['title']; ?></h2>
+				<?php } ?>
+				<div class="valign">
+					<div class="avatar">
+						<a href="<?php echo $wo['story']['job']['page']['url']; ?>" data-ajax="?link1=timeline&u=<?php echo $wo['story']['job']['page']['page_name']?>">
+							<img src="<?php echo $wo['story']['job']['page']['avatar'] ; ?>" alt="<?php echo $wo['story']['job']['title']; ?>">
+						</a>
+					</div>
+					<div class="full_width jinfo">
+						<h4><a href="<?php echo $wo['story']['job']['page']['url']; ?>" data-ajax="?link1=timeline&u=<?php echo $wo['story']['job']['page']['page_name']; ?>" class="main"><?php echo $wo['story']['job']['page']['page_title']?></a></h4>
+						<div class="jinfo_inner">
+							<?php if (!empty($wo['story']['job']['location'])) { ?>
+								<div><?php echo $wo['story']['job']['location']; ?></div>
+								<span class="middot">·</span>
+							<?php } ?>
+								<div><span class="ajax-time" title="<?php echo date('c',$wo['story']['job']['time']); ?>"><?php echo Wo_Time_Elapsed_String($wo['story']['job']['time']); ?></span></div>
+							<?php if (!empty($wo['story']['job']['category']) && in_array($wo['story']['job']['category'], array_keys($wo['job_categories']))) { ?>
+								<span class="middot">·</span> <div><?php echo $wo['job_categories'][$wo['story']['job']['category']]; ?></div>
+							<?php } ?>
+						</div>
+						<div class="wo_vew_apld_msg">
+							<?php if ($wo['loggedin'] == true) { ?>
+								<?php if ($wo['story']['job']['user_id'] == $wo['user']['id']) { ?>
+									<?php if ($wo['story']['job']['apply_count'] > 0) { ?>
+										<a type="button" class="btn btn-main btn-mat" href="<?php echo $wo['story']['job']['page']['url'];?>/job_apply?id=<?php echo $wo['story']['job']['id']; ?>"><?php echo $wo['lang']['view_interested_Candidates'] ?> (<?php echo $wo['story']['job']['apply_count']; ?>)</a>
+									<?php }else{ ?>
+										<button type="button" class="btn btn-main btn-mat" disabled><?php echo $wo['lang']['view_interested_Candidates'] ?> (<?php echo $wo['story']['job']['apply_count']; ?>)</button>
+									<?php } ?>
+								<?php }else{ ?>
+									<?php if ($wo['story']['job']['apply'] == false) { ?>
+										<button type="button" class="btn btn-main btn-mat" onclick="ApplyJobNow(<?php echo $wo['story']['job']['id']; ?>)"><?php echo $wo['lang']['apply_now'] ?></button>
+									<?php }else{ ?>
+										<button type="button" class="btn btn-main btn-mat" disabled><?php echo $wo['lang']['job_applied'] ?></button>
+									<?php } ?>
+								<?php } ?>
+							<?php } ?>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="valign wo_vew_apld_blocks text-center">
+				<?php if (!empty($wo['story']['job']['minimum'])) { ?>
+					<div>
+						<b><?php echo $wo['lang']['minimum']; ?></b>
+						<p><?php echo (!empty($wo['currencies'][$wo['story']['job']['currency']]['symbol'])) ? $wo['currencies'][$wo['story']['job']['currency']]['symbol'] : '$';?><?php echo $wo['story']['job']['minimum']; ?> <?php if (!empty($wo['story']['job']['salary_date']) && in_array($wo['story']['job']['salary_date'], array('per_hour','per_day','per_week','per_month','per_year'))) {echo $wo['lang'][$wo['story']['job']['salary_date']];} ?></p>
+					</div>
+				<?php } ?>
+				<?php if (!empty($wo['story']['job']['maximum'])) { ?>
+					<div>
+						<b><?php echo $wo['lang']['maximum']; ?></b>
+						<p><?php echo (!empty($wo['currencies'][$wo['story']['job']['currency']]['symbol'])) ? $wo['currencies'][$wo['story']['job']['currency']]['symbol'] : '$';?><?php echo $wo['story']['job']['maximum']; ?> <?php if (!empty($wo['story']['job']['salary_date']) && in_array($wo['story']['job']['salary_date'], array('per_hour','per_day','per_week','per_month','per_year'))) {echo $wo['lang'][$wo['story']['job']['salary_date']];} ?></p>
+					</div>
+				<?php } ?>
+				<?php if (!empty($wo['story']['job']['job_type'])) { ?>
+					<div>
+						<b><?php echo $wo['lang']['type']; ?></b>
+						<p><?php if (!empty($wo['story']['job']['job_type']) && in_array($wo['story']['job']['job_type'], array('full_time','part_time','internship','volunteer','contract'))) {echo $wo['lang'][$wo['story']['job']['job_type']];} ?></p>
+					</div>
+				<?php } ?>
+			</div>
+			<?php if (!empty($wo['story']['job']['description'])) { ?>
+				<div class="post-description tag_vew_job_desc" id="post-description-<?php echo $wo['story']['job']['id']; ?>">
+					<p class="edited_text"><?php echo stripslashes($wo['story']['job']['description']); ?></p>
+				</div>
+			<?php } ?>
+		</div>
+		<?php 
+			if ($wo['loggedin'] == true) {
+				echo Wo_LoadPage('modals/delete-post');
+				echo Wo_LoadPage('modals/edit_job');
+			}
+		?>
+	</div>
+	<script type="text/javascript">
+		$(function () {
+			$("#post-<?php echo $wo['story']['id']; ?> .post-description p, .product-description").readmore({
+				speed: 75,
+				moreLink: '<a href="#" class="hash"><?php echo $wo["lang"]["read_more"];?></a>',
+				lessLink: '<a href="#" class="hash"><?php echo $wo["lang"]["read_less"];?></a>'
+			});
+		});
+	</script>
+</div>

@@ -1,0 +1,72 @@
+<div class="container">
+	<h2 class="tag_page_title"><?php echo $wo['lang']['blog']; ?></h2>
+	<ul class="list-unstyled tag_page_nav">
+		<li class="active"><a href="<?php echo Wo_SeoLink('index.php?link1=my-blogs'); ?>" data-ajax="?link1=my-blogs" class="btn-mat"><?php echo $wo['lang']['my_articles'] ?></a></li>
+		<li><a href="<?php echo Wo_SeoLink('index.php?link1=blogs'); ?>" data-ajax="?link1=blogs" class="btn-mat"><?php echo $wo['lang']['browse_articles'] ?></a></li>
+	</ul>
+	<div class="page-margin">
+		<div class="row" id="blog-list">
+			<?php $pages = Wo_GetMyBlogs($wo["user"]['id']); ?>
+			<?php if ($pages && count($pages) > 0): ?>
+				<?php if (Wo_CanBlog() == true) { ?>
+					<div class="col-lg-6 col-md-6">
+						<div class="tag_create_album tag_create_blogbox">
+							<a href="<?php echo Wo_SeoLink('index.php?link1=create-blog');?>" class="valign tag_create_box">
+								<svg height="40" viewBox="0 0 512 512" width="40" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="m256 0c-141.164062 0-256 114.835938-256 256s114.835938 256 256 256 256-114.835938 256-256-114.835938-256-256-256zm112 277.332031h-90.667969v90.667969c0 11.777344-9.554687 21.332031-21.332031 21.332031s-21.332031-9.554687-21.332031-21.332031v-90.667969h-90.667969c-11.777344 0-21.332031-9.554687-21.332031-21.332031s9.554687-21.332031 21.332031-21.332031h90.667969v-90.667969c0-11.777344 9.554687-21.332031 21.332031-21.332031s21.332031 9.554687 21.332031 21.332031v90.667969h90.667969c11.777344 0 21.332031 9.554687 21.332031 21.332031s-9.554687 21.332031-21.332031 21.332031zm0 0"></path></svg> <?php echo $wo['lang']['create_new_article']; ?>
+							</a>
+						</div>
+					</div>
+				<?php } ?>
+				<?php foreach ($pages as $wo['blog']): ?>
+					<?php echo Wo_LoadPage('blog/includes/card-lg-list'); ?>
+				<?php endforeach ?>
+			<?php else: ?> 
+				<div class="empty_state">
+					<svg enable-background="new 0 0 32 32" height="512" viewBox="0 0 32 32" width="512" xmlns="http://www.w3.org/2000/svg"><path d="m26 32h-20c-3.314 0-6-2.686-6-6v-20c0-3.314 2.686-6 6-6h20c3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6z" fill="#e3f8fa"/><g fill="#26c6da"><path d="m13.5 14h-3c-.276 0-.5-.224-.5-.5v-3c0-.276.224-.5.5-.5h3c.276 0 .5.224.5.5v3c0 .276-.224.5-.5.5z"/><path d="m17.5 11.667h-1.667c-.276 0-.5-.224-.5-.5s.224-.5.5-.5h1.667c.276 0 .5.224.5.5s-.224.5-.5.5z"/><path d="m17.5 13.667h-1.667c-.276 0-.5-.224-.5-.5s.224-.5.5-.5h1.667c.276 0 .5.224.5.5s-.224.5-.5.5z"/><path d="m17.5 16.333h-7c-.276 0-.5-.224-.5-.5s.224-.5.5-.5h7c.276 0 .5.224.5.5s-.224.5-.5.5z"/><path d="m17.5 18.833h-7c-.276 0-.5-.224-.5-.5s.224-.5.5-.5h7c.276 0 .5.224.5.5s-.224.5-.5.5z"/><path d="m17.5 21.333h-7c-.276 0-.5-.224-.5-.5s.224-.5.5-.5h7c.276 0 .5.224.5.5s-.224.5-.5.5z"/></g><path d="m22 10h-1.333v11.333 1.147c-.396-.231-.667-.657-.667-1.147v-11.333c0-1.103-.897-2-2-2h-8c-1.103 0-2 .897-2 2v11.333c0 1.471 1.196 2.667 2.667 2.667h10.833c.057 0 .112-.007.165-.02 1.314-.164 2.335-1.289 2.335-2.647v-9.333c0-1.103-.897-2-2-2zm-11.333 12.667c-.735 0-1.333-.598-1.333-1.333v-11.334c0-.368.299-.667.667-.667h8c.368 0 .667.299.667.667v11.333c0 .485.13.941.358 1.333h-8.359z" fill="#26c6da"/></svg> <?php echo $wo['lang']['no_blogs_created']; ?>
+					<?php if (Wo_CanBlog() == true) { ?>
+						<div><a href="<?php echo Wo_SeoLink('index.php?link1=create-blog');?>" class="btn btn-mat btn-main"><?php echo $wo['lang']['create_new_article']; ?></a></div>
+					<?php } ?>
+				</div>
+			<?php endif; ?> 
+		</div>
+	</div>
+	<div class="loading-alert"></div>
+            
+	<div class="posts_load">
+		<?php if (count($pages) >= 10): ?>
+			<div class="load-more">
+				<button class="btn btn-default text-center pointer load-more-my-blogs">
+					<span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"></path></svg></span> <?php echo $wo['lang']['load_more'] ?>
+				</button>
+			</div>
+		<?php endif; ?>
+	</div>
+</div>
+<?php echo Wo_LoadPage('blog/delete-blog');?>
+
+<script>
+$(document).ready(function() {
+  $(".delete-blog").on("click", function() {
+    $("#delete-blog").attr('data-blog-id', $(this).attr("id")).modal();      
+  });
+
+  $(".load-more-my-blogs").click(function () {
+      let offset = (($(".view-blog").length > 0) ? $(".view-blog:last").attr('id') : 0);
+
+      $.ajax({
+         url: Wo_Ajax_Requests_File(),
+         type: 'GET',
+         dataType: 'json',
+         data: {f:"load-my-blogs",offset:offset},
+         success:function(data){
+            if (data['status'] == 200) {
+              $("#blog-list").append(data['html']);
+            }
+            else{
+              $(".posts_load").remove();
+            }
+         }
+      });
+   });
+});
+</script>

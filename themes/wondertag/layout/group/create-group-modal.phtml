@@ -1,0 +1,107 @@
+<div class="modal fade" id="create-group">
+	<div class="modal-dialog wow_mat_mdl">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title"><?php echo $wo['lang']['create_new_group'] ?></h4>
+			</div>
+			<form class="create-group-form form-horizontal" method="post">
+				<div class="modal-body">
+					<label class="tag_field">
+						<input id="group_title" name="group_title" type="text" placeholder=" ">
+						<span><?php echo $wo['lang']['group_name']; ?></span>
+					</label>
+					<label class="tag_field">
+						<input id="group_name" name="group_name" type="text" placeholder=" ">
+						<span><?php echo $wo['lang']['group'];?> URL</span>
+					</label>
+					<div class="help-block"><?php echo $wo['config']['site_url'];?>/<?php echo $wo['lang']['group'];?> URL</div>
+					<div class="row">
+						<div class="col-lg-6">
+							<label class="tag_field">
+								<select id="privacy" name="privacy">
+									<option value="1" ><?php echo $wo['lang']['public'];?> </option>
+									<option value="2" ><?php echo $wo['lang']['private'];?> </option>
+								</select>
+								<span><?php echo $wo['lang']['group_type'];?></span>
+							</label>
+						</div>
+						<div class="col-lg-6">
+							<label class="tag_field">
+								<select name="category" id="category" onchange="GetGroupSubCategory(this)">
+									<?php foreach ($wo['group_categories'] as $category_id => $category_name) {?>
+										<option value="<?php echo $category_id?>"><?php echo $category_name; ?></option>
+									<?php } ?>
+								</select>
+								<span><?php echo $wo['lang']['category'];?></span>
+							</label>
+						</div>
+					</div>
+					<?php if (!empty($wo['group_sub_categories'])) { ?>
+						<label class="tag_field">
+							<select name="group_sub_category" id="group_sub_category">
+								<?php
+									if (!empty($wo['group_sub_categories'][array_keys($wo['group_categories'])[0]])) {
+									foreach ($wo['group_sub_categories'][array_keys($wo['group_categories'])[0]] as $id => $sub_category) { ?>
+										<option value="<?php echo $sub_category['id']?>"><?php echo $sub_category['lang']; ?></option>
+								<?php } } ?>
+							</select>
+							<span><?php echo $wo['lang']['sub_category'];?></span>
+						</label>
+					<?php } ?>
+					<?php $fields = Wo_GetCustomFields('group'); 
+						if (!empty($fields)) {
+							foreach ($fields as $key => $wo['field']) {
+								echo Wo_LoadPage('group/fields');
+							}
+						}
+					?>
+					<div class="app-general-alert setting-update-alert"></div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default btn-mat disable_btn" data-dismiss="modal" aria-label="Close"><?php echo $wo['lang']['cancel']; ?></button>
+					<button type="submit" class="btn btn-main btn-mat disable_btn"><?php echo $wo['lang']['create']; ?></button>
+				</div>
+				<input type="hidden" name="hash_id" value="<?php echo Wo_CreateSession();?>">
+			</form>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	<?php 
+$js_array = json_encode($wo['group_sub_categories']);
+echo "var sub_categories_array = ". $js_array . ";\n";
+?>
+	function GetGroupSubCategory(self) {
+		id = $(self).val();
+		var text = "";
+		if (typeof(sub_categories_array[id]) == 'undefined') {
+		    $('#group_sub_category').html('');
+		}
+		else{
+		   	sub_categories_array[id].forEach(function(entry) {
+				text = text + "<option value='"+entry.id+"'>"+entry.lang+"</option>";
+			});
+		    $('#group_sub_category').html(text);
+		}
+	}
+   $(function() {
+     $('form.create-group-form').ajaxForm({
+       url: Wo_Ajax_Requests_File() + '?f=groups&s=create_group',
+       beforeSend: function() {
+         $('.create-group-form').find('.disable_btn').attr('disabled','disabled');
+       },
+       success: function(data) {
+         scrollToTop();
+         if (data.status == 200) {
+           window.location.href = data.location;
+         } else {
+             var errors = data.errors.join("<br>");
+             $('.app-general-alert').html('<div class="alert alert-danger">' + errors + '</div>');
+             $('.alert-danger').fadeIn(300);
+         }
+         $('.create-group-form').find('.disable_btn').removeAttr("disabled");
+       }
+     });
+   });
+</script>

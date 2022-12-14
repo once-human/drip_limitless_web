@@ -1,0 +1,9 @@
+<div class="valign wow_mem_usr">
+	<div class="avatar">
+		<a href="<?php echo $wo['friend']['url'];?>" data-ajax="?link1=timeline&amp;u=<?php echo $wo['friend']['username']?>"><img alt="<?php echo $wo['friend']['name'];?>" src="<?php echo $wo['friend']['avatar']?>"></a>
+	</div>
+	<div class="title">
+		<div><a href="<?php echo $wo['friend']['url'];?>" data-ajax="?link1=timeline&amp;u=<?php echo $wo['friend']['username']?>" class="bold"><?php echo $wo['friend']['name'];?></a></div>
+		<div><?php echo Wo_GetMessageButton($wo['friend']['user_id']);?></div>
+	</div>
+</div>

@@ -1,0 +1,33 @@
+<?php if (count($wo['section']['forums']) > 0): ?>
+	<div class="page-margin wow_content wow_sett_content">
+		<div class="valign wo_page_hdng">
+			<span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M21,6V8H3V6H21M3,18H12V16H3V18M3,13H21V11H3V13Z"></path></svg></span> <?php echo $wo['section']['section_name']; ?>
+		</div>
+		<div class="f_topics">
+			<?php foreach ($wo['section']['forums'] as $wo['forum']):?>
+				<div class="wow_forum_sections">
+					<div class="section-list">
+						<div class="titles">
+							<a href="<?php echo Wo_SeoLink('index.php?link1=forums&fid='.$wo['forum']['id']);?>" data-ajax="?link1=forums&fid=<?php echo $wo['forum']['id'];?>" class="ftitle"><?php echo $wo['forum']['name']; ?></a>
+							<div class="fdesc"><?php echo $wo['forum']['description']; ?></div>
+						</div>
+						<div class="forum-meta-foot">
+							<div class="forum-meta-d posts">
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M16.8 19L14 22.5 11.2 19H6a1 1 0 0 1-1-1V7.103a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1V18a1 1 0 0 1-1 1h-5.2zM2 2h17v2H3v11H1V3a1 1 0 0 1 1-1z"/></svg> <?php echo $wo['forum']['posts']; ?> <?php echo $wo['lang']['posts']; ?>
+							</div>
+							<div class="forum-meta-d">
+								<?php 
+								$last_replay = Wo_GetForumThreads(array('forum' => $wo['forum']['id'] , 'limit' => 1));
+								$last_replay = !empty($last_replay[0]) ? $last_replay[0] : array();
+								if (!empty($last_replay)) { ?>
+									<img src="<?php echo $last_replay['user_data']['avatar']?>" width="30" height="30" alt="">
+									<span><?php echo $wo['lang']['last_post']; ?> <?php echo $wo['lang']['by']; ?> <a href="<?php echo $last_replay['user_data']['url']?>" class="reply_user" data-ajax="?link1=timeline&u=<?php echo $last_replay['user_data']['username']; ?>"><?php echo $last_replay['user_data']['name']?></a><span class="middot">·</span><time><?php echo Wo_Time_Elapsed_String($last_replay['posted']); ?></time></span>
+								<?php } ?>
+							</div>
+						</div>
+					</div>
+				</div>
+			<?php endforeach;?>
+		</div>
+	</div>
+<?php endif; ?>

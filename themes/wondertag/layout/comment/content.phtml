@@ -1,0 +1,232 @@
+<?php $replies = Wo_CountCommentReplies($wo['comment']['id']);
+if ($wo['config']['shout_box_system'] == 1 && $wo['story']['postPrivacy'] == 4 && $wo['comment']['publisher']['id'] == $wo['story']['user_id']) {
+  $anonymous = true;
+   $wo['comment']['publisher']['username'] = 'anonymous';
+   $wo['comment']['publisher']['name'] = $wo['lang']['anonymous'];
+   $wo['comment']['publisher']['avatar'] = Wo_GetMedia('upload/photos/incognito.png');
+   $wo['comment']['publisher']['verified'] = 0;
+   $wo['comment']['publisher']['type'] = '';
+   $wo['comment']['publisher']['url'] = 'javascript:void(0)';
+}
+?>
+<div class="comment comment-container" id="comment_<?php echo $wo['comment']['id'];?>" data-comment-id ="<?php echo $wo['comment']['id'];?>">
+	<?php if (!isset($anonymous)) { ?>
+		<a onclick="InjectAPI('{&quot;profile_id&quot; : &quot;<?php echo $wo['comment']['publisher']['id']?>&quot;, &quot;type&quot;:&quot;<?php echo $wo['comment']['publisher']['type']?>&quot;}', event);" class="<?php echo Wo_RightToLeft('pull-left'); ?>" href="<?php echo $wo['comment']['publisher']['url']?>">
+			<img class="avatar" src="<?php echo $wo['comment']['publisher']['avatar']?>" alt="avatar">
+		</a>
+	<?php }else{ ?>
+		<img class="avatar <?php echo Wo_RightToLeft('pull-left'); ?>" src="<?php echo $wo['comment']['publisher']['avatar']?>" alt="avatar">
+	<?php } ?>
+	<div class="comment-body">
+		<div class="comment-heading">
+			<div class="tag_comm_body">
+				<div class="tag_comm_body_top">
+					<?php if (!isset($anonymous)) { ?>
+						<span class="user-popover" data-id="<?php echo $wo['comment']['publisher']['id'];?>" data-type="<?php echo $wo['comment']['publisher']['type'];?>">
+							<a href="<?php echo $wo['comment']['publisher']['url']?>" data-ajax="?link1=timeline&u=<?php echo $wo['comment']['publisher']['username'];?>" onclick="InjectAPI('{&quot;profile_id&quot; : &quot;<?php echo $wo['comment']['publisher']['id']?>&quot;, &quot;type&quot;:&quot;<?php echo $wo['comment']['publisher']['type']?>&quot;}', event);">
+								<h4 class="user"><?php echo $wo['comment']['publisher']['name']?></h4>
+							</a>
+						</span>
+					<?php }else{ ?>
+						<h4 class="user"><?php echo $wo['comment']['publisher']['name']?></h4>
+					<?php } ?>
+					<?php  if($wo['comment']['publisher']['verified'] == 1) {   ?>
+						<span class="verified-color fs-14" data-toggle="tooltip" title="<?php echo $wo['lang']['verified_user'];?>">&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 512 512"><path d="m256 0c-141.164062 0-256 114.835938-256 256s114.835938 256 256 256 256-114.835938 256-256-114.835938-256-256-256zm0 0" fill="#2196f3"></path><path d="m385.75 201.75-138.667969 138.664062c-4.160156 4.160157-9.621093 6.253907-15.082031 6.253907s-10.921875-2.09375-15.082031-6.253907l-69.332031-69.332031c-8.34375-8.339843-8.34375-21.824219 0-30.164062 8.339843-8.34375 21.820312-8.34375 30.164062 0l54.25 54.25 123.585938-123.582031c8.339843-8.34375 21.820312-8.34375 30.164062 0 8.339844 8.339843 8.339844 21.820312 0 30.164062zm0 0" fill="#fff"></path></svg></span>
+					<?php } ?>
+				</div>
+				<div class="valign">
+					<div class="comment-text <?php if (!empty($wo['comment']['c_file'])): ?>border_zero<?php endif ?>"><span class="tag_trim_comm_text"><?php echo $wo['comment']['text']?></span></div>
+					<div class="comment_edele_options">
+						<?php if ( $wo['config']['comment_reports'] == 1 && $wo['comment']['onwer'] !== true){ ?>
+							<span class="pointer comment-icons" id="reportComment<?php echo $wo['comment']['id']?>" onclick="Wo_ReportComment(<?php echo $wo['comment']['id']?>);" title="<?php echo $wo['lang']['report_comment']; ?>"><svg xmlns="http://www.w3.org/2000/svg" height="15" viewBox="0 0 24 24" width="15"><path fill="currentColor" opacity=".6" d="M20 2H4.01c-1.1 0-2 .9-2 2v18L6 18h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 12h-2v-2h2v2zm0-5c0 .55-.45 1-1 1s-1-.45-1-1V7c0-.55.45-1 1-1s1 .45 1 1v2z"/></svg></span>
+						<?php } ?>
+						<?php if ($wo['comment']['onwer'] === true) { ?>
+							<span class="pointer comment-icons" id="editComment" onclick="Wo_OpenCommentEditBox(<?php echo $wo['comment']['id']?>);" title="<?php echo $wo['lang']['edit_comment']; ?>"><svg xmlns="http://www.w3.org/2000/svg" height="15" viewBox="0 0 24 24" width="15"><path fill="currentColor" opacity=".6" d="M9.243 19H21v2H3v-4.243l9.9-9.9 4.242 4.244L9.242 19zm5.07-13.556l2.122-2.122a1 1 0 0 1 1.414 0l2.829 2.829a1 1 0 0 1 0 1.414l-2.122 2.121-4.242-4.242z"/></svg></span>
+						<?php } ?>
+						<?php if ($wo['comment']['post_onwer'] === true || $wo['comment']['onwer'] === true || Wo_IsAdmin()) {?>
+							&nbsp;&nbsp;<span class="pointer" id="deleteComment" onclick="Wo_DeleteComment(<?php echo $wo['comment']['id']?>);" title="<?php echo $wo['lang']['delete_comment']; ?>"><svg xmlns="http://www.w3.org/2000/svg" height="15" viewBox="0 0 24 24" width="15"><path fill="currentColor" opacity=".6" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4 11H8c-.55 0-1-.45-1-1s.45-1 1-1h8c.55 0 1 .45 1 1s-.45 1-1 1z"/></svg></span>
+						<?php } ?>
+					</div>
+				</div>
+				<?php if (!empty($wo['comment']['c_file'])): ?>
+					<div class="comment-image">
+						<span data-href="<?php echo Wo_GetMedia($wo['comment']['c_file']);?>" onclick="Wo_OpenLighteBox(this,event);" class="pointer"><img src="<?php echo Wo_GetMedia($wo['comment']['c_file']);?>" alt="Comment image"></span>
+					</div>
+				<?php endif ?>
+				<?php if (!empty($wo['comment']['record'])): ?>
+					<div class="comment-record">
+						<audio controls preload="auto">
+							<source src="<?php echo Wo_GetMedia($wo['comment']['record']);?>" type="audio/wav">
+						</audio>
+					</div>
+				<?php endif;?>
+			</div>
+			<div class="clear"></div>
+		</div>
+
+        <?php if ($wo['config']['second_post_button'] == 'reaction') { ?>
+            <!-- reaction -->
+            <div class="like-stat stat-item post-like-status <?php echo Wo_RightToLeft('pull-left'); ?> tag_post_comm_reacts">
+				<span class="like-emo comment-reactions-icons-<?php echo $wo['comment']['id']; ?>">
+					<?php echo Wo_GetPostReactions($wo['comment']['id'],"comment");?>
+				</span>
+            </div>
+        <?php } ?>
+		
+		<span class="comment-options" <?php if ($wo['loggedin'] != true) { ?>onclick="location.href= '<?php echo $wo['config']['site_url'];?>'"<?php } ?>>
+			<?php if ($wo['config']['second_post_button'] == 'reaction') { ?>
+				<div class="wo-reaction-comment stat-item" id="comment_reactions" data-id="<?php echo $wo['comment']['id']; ?>">
+					<span class="like-btn like-btn-comment" data-id="<?php echo $wo['comment']['id']; ?>">
+						<?php
+						if ($wo['loggedin'] && Wo_IsReacted($wo['comment']['id'], $wo['user']['user_id'], "comment") === true) {    
+							echo '<span class="comment-status-reaction-'.$wo['comment']['id'].' active-like unselectable bold">'.$wo['lang']['liked'].' <span class="c_likes-'.$wo['comment']['id'].'"></span></span>'; 
+						} else {   
+							echo '<span class="comment-status-reaction-'.$wo['comment']['id'].' unselectable bold">'.$wo['lang']['like'].' <span class="c_likes'.$wo['comment']['id'].'"></span></span>';
+						}    
+						?>
+					</span>
+					<ul class="reactions-box reactions-comment-container-<?php echo $wo['comment']['id']; ?>" data-id="<?php echo $wo['comment']['id']; ?>">
+						<?php if (!empty($wo['reactions_types'])) {
+							foreach ($wo['reactions_types'] as $key => $value) {
+							if ($value['status'] == 1) {
+						?>
+							<li class="valign reaction reaction-<?php echo $value['id'];?>" data-reaction="<?php echo $value['name'];?>" data-reaction-id="<?php echo $value['id'];?>" data-reaction-lang="<?php echo $value['name'];?>" data-post-id="<?php echo $wo['story']['id']; ?>" onclick="Wo_RegisterCommentReaction(<?php echo $wo['comment']['id']; ?>,<?php echo $value['id'];?>);">
+								<?php if (preg_match("/<[^<]+>/",$value['wowonder_icon'],$m)) {
+									echo($value['wowonder_icon']);
+									}
+								else{ ?>
+									<img src="<?php echo($value['wowonder_icon']) ?>">
+								<?php } ?>
+							</li>
+						<?php } } } ?>
+					</ul>
+				</div>
+			<?php }else{ ?>
+				<span class="comment-icons">
+					<span class="pointer" id="LikeComment" onclick="Wo_RegisterCommentLike(<?php echo $wo['comment']['id']; ?>);">
+						<?php if($wo['comment']['is_comment_liked'] !== true) { ?>
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-up"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
+						<?php } else { ?>
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-up active-like"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
+						<?php } ?>
+					</span>
+					<span id="comment-likes" class="pointer" onclick="Wo_OpenPostLikedUsers(<?php echo $wo['comment']['id']; ?>,'comment')"><?php echo $wo['comment']['comment_likes'];?></span>
+				</span>
+				<span class="middot">·</span>
+				<span class="pointer" id="WonderComment" onclick="Wo_RegisterCommentWonder(<?php echo $wo['comment']['id']; ?>);">
+					<?php if($wo['comment']['is_comment_wondered'] !== true) { ?>
+						<?php echo $wo['second_post_button_icon'];?>
+					<?php } else {  ?>
+						<span class="active-wonder"><?php echo $wo['second_post_button_icon'];?></span>
+					<?php } ?>
+				</span>
+				<span id="comment-wonders" class="pointer" onclick="Wo_OpenPostWonderedUsers(<?php echo $wo['comment']['id']; ?>,'comment')"><?php echo $wo['comment']['comment_wonders'];?></span>
+			<?php } ?>
+			<?php if ($replies == 0) { ?>
+				<span class="middot">·</span>
+				<span class="pointer bold" id="ReplyComment" onclick="Wo_OpenReplyBox(<?php echo $wo['comment']['id']; ?>);"><?php echo $wo['lang']['reply']?></span>
+			<?php } ?>
+			<span class="middot">·</span>
+			
+			<?php if (!empty($wo['story']['stream_name']) && $wo['comment']['time'] <= $wo['story']['live_time']) {
+				$video_time = GetVideoTime($wo['story']['time'],$wo['comment']['time']);
+				$time = $video_time['time'];
+				$current_time = $video_time['current_time'];
+			?>
+				<span class="time pointer" title="<?php echo date('c',$wo['comment']['time']);?>" onclick="go_to_duration(<?php echo($wo['story']['id']) ?>,<?php echo $current_time; ?>)"><?php echo $time ?></span>
+			<?php  }else{ ?>
+				<span class="time ajax-time" title="<?php echo date('c',$wo['comment']['time']);?>"><?php echo $wo['comment']['time']?></span>
+			<?php } ?>
+		</span>
+		<div class="comment-edit">
+			<textarea onkeydown="textAreaAdjust(this, 26)" class="edit-box form-control" onkeyup="Wo_EditComment(this.value,<?php echo $wo['comment']['id']?>, event)" placeholder="<?php echo $wo['lang']['edit_comment']; ?>" dir="auto" id="edit_comment_<?php echo $wo['comment']['id']?>"><?php echo $wo['comment']['Orginaltext']?></textarea>
+		</div>
+		<div class="comment-replies" <?php if ($wo['loggedin'] != true) { ?>onclick="location.href= '<?php echo $wo['config']['site_url'];?>'"<?php } ?>>
+			<div class="comment-replies-text">
+				<div class="reply-container"></div>
+			</div>
+			<?php if ($replies > 0) { ?>
+				<div class="view-more-replies" onclick="Wo_ViewMoreReplies(<?php echo $wo['comment']['id'];?>);" >
+					<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path fill="currentColor" d="M7 7.56c0-.94-1.14-1.42-1.81-.75L.71 11.29c-.39.39-.39 1.02 0 1.41l4.48 4.48c.67.68 1.81.2 1.81-.74 0-.28-.11-.55-.31-.75L3 12l3.69-3.69c.2-.2.31-.47.31-.75zM13 9V7.41c0-.89-1.08-1.34-1.71-.71L6.7 11.29c-.39.39-.39 1.02 0 1.41l4.59 4.59c.63.63 1.71.18 1.71-.71V14.9c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11z"/></svg> <?php echo $replies;?> <?php echo ($replies == 1)? $wo['lang']['reply'] : $wo['lang']['replies']?>
+				</div>
+			<?php } ?>
+			<?php if ($wo['loggedin'] == true) { ?>
+				<div class="comment-reply">
+					<div class="wo_commreply_combo valign" id="post-<?php echo $wo["comment"]["id"];?>">
+						<img class="avatar" src="<?php echo $wo['user']['avatar'];?>"/>
+						<div class="valign">
+							<textarea rows="1" class="auto-resize reply-box form-control textarea comment-reply-textarea" onkeydown="Wo_RegisterReply(this.value,<?php echo $wo['comment']['id']; ?>,<?php echo $wo['story']['publisher']['user_id']; ?>, event, <?php echo (!empty($wo['story']['publisher']['page_id'])) ? $wo['story']['publisher']['page_id'] : '0'; ?>)" placeholder="<?php echo $wo['lang']['reply_to_comment'];?>" dir="auto"></textarea>
+							<div class="valign image-comment">
+								<?php if ($wo['config']['stickers'] == 1){ ?>
+									<div class="dropdown">
+										<span class="chat-gif-toggle" data-toggle="dropdown" role="button" class="btn" onclick="$('.gif_post_comment_gif').html('');">
+											<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"><path fill="<?php echo $wo['config']['btn_background_color'];?>" d="M13.177 12.013l-.001-.125v-.541-.512c0-.464 0-.827-.002-1.178a.723.723 0 0 0-.557-.7.715.715 0 0 0-.826.4c-.05.115-.072.253-.073.403-.003 1.065-.003 1.917-.002 3.834v.653c0 .074.003.136.009.195a.72.72 0 0 0 .57.619c.477.091.878-.242.881-.734.002-.454.003-.817.002-1.633l-.001-.681zm-3.21-.536a35.751 35.751 0 0 0-1.651-.003c-.263.005-.498.215-.565.48a.622.622 0 0 0 .276.7.833.833 0 0 0 .372.104c.179.007.32.008.649.005l.137-.001v.102c-.001.28-.001.396.003.546.001.044-.006.055-.047.081-.242.15-.518.235-.857.275-.767.091-1.466-.311-1.745-1.006a2.083 2.083 0 0 1-.117-1.08 1.64 1.64 0 0 1 1.847-1.41c.319.044.616.169.917.376.196.135.401.184.615.131a.692.692 0 0 0 .541-.562c.063-.315-.057-.579-.331-.766-.789-.542-1.701-.694-2.684-.482-2.009.433-2.978 2.537-2.173 4.378.483 1.105 1.389 1.685 2.658 1.771.803.054 1.561-.143 2.279-.579.318-.193.498-.461.508-.803.014-.52.015-1.046.001-1.578-.009-.362-.29-.669-.633-.679zM18 4.25H6A4.75 4.75 0 0 0 1.25 9v6A4.75 4.75 0 0 0 6 19.75h12A4.75 4.75 0 0 0 22.75 15V9A4.75 4.75 0 0 0 18 4.25zM21.25 15A3.25 3.25 0 0 1 18 18.25H6A3.25 3.25 0 0 1 2.75 15V9A3.25 3.25 0 0 1 6 5.75h12A3.25 3.25 0 0 1 21.25 9v6zm-2.869-6.018H15.3c-.544 0-.837.294-.837.839V14.309c0 .293.124.525.368.669.496.292 1.076-.059 1.086-.651.005-.285.006-.532.004-1.013v-.045l-.001-.46v-.052h1.096l1.053-.001a.667.667 0 0 0 .655-.478c.09-.298-.012-.607-.271-.757a.985.985 0 0 0-.468-.122 82.064 82.064 0 0 0-1.436-.006h-.05l-.523.001h-.047v-1.051h1.267l1.22-.001c.458-.001.768-.353.702-.799-.053-.338-.35-.56-.737-.561z"></path></svg>
+										</span>
+										<ul class="dropdown-menu dropdown-menu-right tag_scroll tag_comm_gifs" role="menu" onclick="event.stopPropagation()">
+											<div class="tag_chat_GIF">
+												<input type="text" class="form-control" placeholder="<?php echo $wo['lang']['search'] ?> GIFs" onkeyup="SearchForGif(this.value,<?php echo $wo['comment']['id']; ?>,'reply')">
+												<div id="publisher-box-stickers-cont-<?php echo $wo['comment']['id']; ?>" class="gif_post_comment_gif tag_chat_GIF_cont tag_scroll"></div>
+											</div>
+										</ul>
+									</div>
+								<?php } ?>
+								<?php if ($wo['config']['stickers_system'] == 1) { ?>
+									<?php $stickers_system = Wo_GetAllStickers(50000);
+									if( count( $stickers_system ) > 0 ){ ?>
+									<div class="dropdown">
+										<span data-toggle="dropdown" role="button" class="btn sticker-form-<?php echo $wo['story']['id']; ?>" onclick="ShowCommentStickers(<?php echo $wo['comment']['id']; ?>,<?php echo $wo['story']['publisher']['user_id']; ?>, <?php echo (!empty($wo['story']['publisher']['page_id'])) ? $wo['story']['publisher']['page_id'] : '0'; ?>,'')">
+											<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"><path d="M3 12C3 16.9706 7.02944 21 12 21C16.8604 21 20.8209 17.1473 20.9941 12.3292L11.6708 3.00592C6.85275 3.17914 3 7.13965 3 12Z" fill="<?php echo $wo['config']['btn_background_color'];?>" fill-opacity="0.16"/><path fill-rule="evenodd" clip-rule="evenodd" d="M11.6439 2.25641C11.852 2.24892 12.0539 2.32832 12.2012 2.47559L21.5244 11.7989C21.6717 11.9461 21.7511 12.148 21.7436 12.3561C21.5559 17.5762 17.2656 21.75 12 21.75C6.61522 21.75 2.25 17.3848 2.25 12C2.25 6.73446 6.4238 2.44408 11.6439 2.25641ZM10.5443 3.87797C6.68242 4.56539 3.75 7.94038 3.75 12C3.75 16.5564 7.44365 20.25 12 20.25C16.0596 20.25 19.4346 17.3176 20.122 13.4557C19.4471 13.6475 18.7351 13.75 18 13.75C13.7198 13.75 10.25 10.2802 10.25 6.00001C10.25 5.26486 10.3526 4.55286 10.5443 3.87797ZM11.9666 4.36232C11.8254 4.88381 11.75 5.43274 11.75 6.00001C11.75 9.45179 14.5482 12.25 18 12.25C18.5673 12.25 19.1162 12.1746 19.6377 12.0334L11.9666 4.36232Z" fill="<?php echo $wo['config']['btn_background_color'];?>"/></svg>
+										</span>
+										<ul class="dropdown-menu dropdown-menu-right tag_scroll tag_comm_gifs" role="menu">
+											<div class="tag_chat_GIF tag_chat_stickers chat-box-stickers-cont tag_scroll" id="publisher-box-sticker-cont-<?php echo $wo['comment']['id']; ?>"></div>
+										</ul>
+									</div>
+								<?php }} ?>
+								<div class="dropdown">
+									<span data-toggle="dropdown" role="button" aria-expanded="false" onclick="load_ajax_reply_emojii('<?php echo $wo["comment"]["id"];?>','<?php echo $wo['config']['theme_url'];?>/emoji/');" class="btn emo-comment2" >
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"><rect x="3" y="3" width="18" height="18" rx="9" fill="<?php echo $wo['config']['btn_background_color'];?>" fill-opacity="0.16"/><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2.25C6.61522 2.25 2.25 6.61522 2.25 12C2.25 17.3848 6.61522 21.75 12 21.75C17.3848 21.75 21.75 17.3848 21.75 12C21.75 6.61522 17.3848 2.25 12 2.25ZM3.75 12C3.75 7.44365 7.44365 3.75 12 3.75C16.5563 3.75 20.25 7.44365 20.25 12C20.25 16.5563 16.5563 20.25 12 20.25C7.44365 20.25 3.75 16.5563 3.75 12ZM8.59918 14.5496C8.35041 14.2184 7.88026 14.1516 7.54907 14.4003C7.21788 14.6491 7.15106 15.1192 7.39983 15.4504C8.4476 16.8454 10.1182 17.75 11.9999 17.75C13.8815 17.75 15.5521 16.8454 16.5999 15.4504C16.8487 15.1192 16.7819 14.6491 16.4507 14.4003C16.1195 14.1516 15.6493 14.2184 15.4006 14.5496C14.6239 15.5835 13.3898 16.25 11.9999 16.25C10.6099 16.25 9.37582 15.5835 8.59918 14.5496ZM9.99999 10C9.99999 10.5523 9.55228 11 8.99999 11C8.44771 11 7.99999 10.5523 7.99999 10C7.99999 9.44771 8.44771 9 8.99999 9C9.55228 9 9.99999 9.44771 9.99999 10ZM15 11C15.5523 11 16 10.5523 16 10C16 9.44771 15.5523 9 15 9C14.4477 9 14 9.44771 14 10C14 10.5523 14.4477 11 15 11Z" fill="<?php echo $wo['config']['btn_background_color'];?>"/></svg>
+									</span>
+									<ul class="dropdown-menu dropdown-menu-right tag_scroll wo_comm_emojis emo-comment-container-<?php echo $wo["comment"]["id"];?>" id="wo_comm_emojis"></ul>
+								</div>
+								<div class="comment-btn-wrapper">
+									<svg class="btn" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" onclick="document.getElementById('comment_reply_image_<?php echo $wo['comment']['id'];?>').click(); return false"><path fill-rule="evenodd" clip-rule="evenodd" d="M14 11C15.1046 11 16 10.1046 16 9C16 7.89543 15.1046 7 14 7C12.8954 7 12 7.89543 12 9C12 10.1046 12.8954 11 14 11ZM4.5 16.5L6.67158 14.3284C8.00491 12.9951 8.67157 12.3284 9.5 12.3284C10.3284 12.3284 10.9951 12.9951 12.3284 14.3284L14 16L14.1716 15.8284C15.5049 14.4951 16.1716 13.8284 17 13.8284C17.8284 13.8284 18.4951 14.4951 19.8284 15.8284L20 16C20 16 18 21 12 21C6 21 4.5 16.5 4.5 16.5Z" fill="<?php echo $wo['config']['btn_background_color'];?>" fill-opacity="0.16"/><path fill-rule="evenodd" clip-rule="evenodd" d="M12 3.75C7.44365 3.75 3.75 7.44365 3.75 12C3.75 13.2278 4.01821 14.393 4.49925 15.4401L6.14124 13.7981L6.17801 13.7613C6.81331 13.126 7.34307 12.5962 7.82019 12.2322C8.32379 11.8479 8.85587 11.5784 9.5 11.5784C10.1441 11.5784 10.6762 11.8479 11.1798 12.2322C11.6569 12.5962 12.1867 13.126 12.822 13.7613L12.822 13.7613L12.8588 13.7981L14.0003 14.9396C14.496 14.4467 14.9261 14.0329 15.3202 13.7322C15.8238 13.3479 16.3559 13.0784 17 13.0784C17.6441 13.0784 18.1762 13.3479 18.6798 13.7322C19.0166 13.9892 19.3797 14.3288 19.7877 14.7298C20.0872 13.8754 20.25 12.9567 20.25 12C20.25 7.44365 16.5563 3.75 12 3.75ZM12 20.25C9.22676 20.25 6.77311 18.8816 5.27739 16.7833L5.53033 16.5303L7.2019 14.8588C7.88356 14.1771 8.34258 13.7203 8.73006 13.4247C9.10023 13.1423 9.3157 13.0784 9.5 13.0784C9.6843 13.0784 9.89977 13.1423 10.2699 13.4247C10.6574 13.7203 11.1164 14.1771 11.7981 14.8588L13.4697 16.5303L16.1 19.1607C14.8922 19.8537 13.4924 20.25 12 20.25ZM19.1161 16.1768C18.6465 16.9751 18.0464 17.6875 17.3451 18.2845L15.0611 16.0004C15.5523 15.5123 15.9149 15.1652 16.2301 14.9247C16.6002 14.6423 16.8157 14.5784 17 14.5784C17.1843 14.5784 17.3998 14.6423 17.7699 14.9247C18.1219 15.1932 18.5329 15.5947 19.1161 16.1768ZM2.25 12C2.25 6.61522 6.61522 2.25 12 2.25C17.3848 2.25 21.75 6.61522 21.75 12C21.75 17.3848 17.3848 21.75 12 21.75C6.61522 21.75 2.25 17.3848 2.25 12ZM12.75 9C12.75 8.30964 13.3096 7.75 14 7.75C14.6904 7.75 15.25 8.30964 15.25 9C15.25 9.69036 14.6904 10.25 14 10.25C13.3096 10.25 12.75 9.69036 12.75 9ZM14 6.25C12.4812 6.25 11.25 7.48122 11.25 9C11.25 10.5188 12.4812 11.75 14 11.75C15.5188 11.75 16.75 10.5188 16.75 9C16.75 7.48122 15.5188 6.25 14 6.25Z" fill="<?php echo $wo['config']['btn_background_color'];?>"/></svg>
+								</div>
+								<form action="#" method="post" class="hidden">
+									<input accept="image/x-png, image/jpeg" type="file" name="comment_image" id="comment_reply_image_<?php echo $wo['comment']['id']; ?>" onchange="Wo_UploadReplyCommentImage(<?php echo $wo['comment']['id']; ?>);">
+									<input type="hidden" value="" id="comment_src_image_<?php echo $wo['comment']['id']; ?>">
+								</form>
+							</div>
+						</div>
+					</div>
+					<div class="comment-reply-image-<?php echo $wo['comment']['id']; ?> comment-image-con"></div>
+					<div class="clear"></div>
+					<div id="hidden_inputbox_comment_reply"></div>
+				</div>
+			<?php } ?>
+		</div>
+	</div>
+	<?php echo Wo_LoadPage('modals/delete-comment');?>
+	<script>
+		function Wo_PostReplyCommentGif_<?php echo $wo['comment']['id']; ?>(self,id) {
+			Wo_RegisterReply2(<?php echo $wo['comment']['id']; ?>,<?php echo $wo['story']['publisher']['user_id']; ?>, <?php echo (!empty($wo['story']['publisher']['page_id'])) ? $wo['story']['publisher']['page_id'] : '0'; ?>,'',$(self).attr('src'));
+			$('.chat-gif-toggle').dropdown('hide');
+			$('#publisher-box-stickers-cont-'+id).empty();
+		}
+		function Wo_PostReplyCommentSticker_<?php echo $wo['comment']['id']; ?>(self,id) {
+			Wo_RegisterReply2(<?php echo $wo['comment']['id']; ?>,<?php echo $wo['story']['publisher']['user_id']; ?>, <?php echo (!empty($wo['story']['publisher']['page_id'])) ? $wo['story']['publisher']['page_id'] : '0'; ?>,'',$(self).attr('src'));
+		}
+   
+		$(function () {
+			$("#comment_<?php echo $wo['comment']['id'];?> .tag_trim_comm_text").readmore({
+				speed: 75,
+				moreLink: '<a href="#" class="hash font-13"><?php echo $wo["lang"]["read_more"];?></a>',
+				lessLink: '<a href="#" class="hash font-13"><?php echo $wo["lang"]["read_less"];?></a>',
+			});
+			$("#comment_<?php echo $wo['comment']['id']; ?> .comment-reply input").triggeredAutocomplete({
+				hidden: '#hidden_inputbox_comment_reply',
+				source: Wo_Ajax_Requests_File() + "?f=mention",
+				trigger: "@"
+			});
+		});
+	</script>
+</div>

@@ -1,0 +1,69 @@
+<div class="wow_sett_content">
+	<div class="form-group">
+		<input type="text" placeholder="<?php echo $wo['lang']['search']; ?>.." class='form-control' id='search-page-admins' onkeydown="Wo_SearchPageAdminUsers(this.value)">
+	</div>
+	<div class="row" id="page_admins">
+		<?php
+			$requests = Wo_GetPageAdmins($wo['setting']['page_id']);
+			if (count($requests) > 0) {
+				foreach ($requests as $wo['member']) {
+					$wo['member']['page_name'] = $wo['setting']['page_name'];
+					echo Wo_LoadPage('page-setting/admin-list');
+				}
+			} else {
+				echo '<div class="empty_state"><svg xmlns="http://www.w3.org/2000/svg" height="512" viewBox="0 0 32 32" width="512"><path d="m26 32h-20c-3.314 0-6-2.686-6-6v-20c0-3.314 2.686-6 6-6h20c3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6z" fill="#ffe6e2"/><g fill="#fd907e"><circle cx="10.667" cy="14.917" r="1.333"/><path d="m12.447 17.183c-.673.507-1.113 1.32-1.113 2.233v.167h-2.834c-.273 0-.5-.227-.5-.5v-.333c0-1.013.82-1.833 1.833-1.833h1.667c.347 0 .673.1.947.266z"/><circle cx="21.333" cy="14.917" r="1.333"/><path d="m24 18.75v.333c0 .273-.227.5-.5.5h-2.833v-.167c0-.913-.44-1.727-1.113-2.233.273-.167.6-.267.947-.267h1.667c1.012.001 1.832.821 1.832 1.834z"/></g><circle cx="16" cy="14.583" fill="#fc573b" r="2"/><path d="m17.833 17.583h-3.667c-1.011 0-1.833.822-1.833 1.833v1c0 .276.224.5.5.5h6.333c.276 0 .5-.224.5-.5v-1c.001-1.01-.822-1.833-1.833-1.833z" fill="#fc573b"/></svg>' . $wo['lang']['no_members_found'] . '</div>';
+			}
+		?>
+	</div>
+	<div class="clear"></div>
+</div>
+
+<script>
+   function Wo_SearchPageAdminUsers(name = '') {
+      if (!name) {
+         return false;
+      }
+      $.ajax({
+         url: Wo_Ajax_Requests_File(),
+         type: 'GET',
+         dataType: 'json',
+         data: {f: 'pages',s:'get_mbr',name:name,page:'<?php echo $wo['setting']['page_id']; ?>'},
+      })
+      .done(function(data) {
+         if (data.status == 200) {
+            $("#page_admins").html(data.html)
+         }
+         else{
+            $("#page_admins").html('<div class="empty_state"><svg xmlns="http://www.w3.org/2000/svg" height="512" viewBox="0 0 32 32" width="512"><path d="m26 32h-20c-3.314 0-6-2.686-6-6v-20c0-3.314 2.686-6 6-6h20c3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6z" fill="#ffe6e2"/><g fill="#fd907e"><circle cx="10.667" cy="14.917" r="1.333"/><path d="m12.447 17.183c-.673.507-1.113 1.32-1.113 2.233v.167h-2.834c-.273 0-.5-.227-.5-.5v-.333c0-1.013.82-1.833 1.833-1.833h1.667c.347 0 .673.1.947.266z"/><circle cx="21.333" cy="14.917" r="1.333"/><path d="m24 18.75v.333c0 .273-.227.5-.5.5h-2.833v-.167c0-.913-.44-1.727-1.113-2.233.273-.167.6-.267.947-.267h1.667c1.012.001 1.832.821 1.832 1.834z"/></g><circle cx="16" cy="14.583" fill="#fc573b" r="2"/><path d="m17.833 17.583h-3.667c-1.011 0-1.833.822-1.833 1.833v1c0 .276.224.5.5.5h6.333c.276 0 .5-.224.5-.5v-1c.001-1.01-.822-1.833-1.833-1.833z" fill="#fc573b"/></svg><?php echo $wo['lang']['no_result']; ?></div>');
+         }
+      })
+      .fail(function() {
+         console.log("error");
+      })
+   }
+
+   function Wo_AddPageAdmin(member_id = false,page_id = false,self = false){
+     if (!member_id || !page_id || !self) {
+       return false;
+     }
+     $.ajax({
+       url: Wo_Ajax_Requests_File(),
+       type: 'GET',
+       dataType: 'json',
+       data: {f: 'pages',s:'add_admin',user_id:member_id,page_id:page_id},
+     })
+     .done(function(data) {
+       if (data.status == 200 && data.code == 1) {
+         $(self).find('svg').replaceWith('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" /></svg>');
+         $('#privileges_admin_page_'+member_id).slideDown();
+       }
+       else if(data.status == 200 && data.code == 0){
+         $(self).find('svg').replaceWith('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M17,13H13V17H11V13H7V11H11V7H13V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" /></svg>');
+         $('#privileges_admin_page_'+member_id).slideUp();
+       }
+     })
+     .fail(function() {
+       console.log("error");
+     })
+   }
+</script>

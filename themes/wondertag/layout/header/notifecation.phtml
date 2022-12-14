@@ -1,0 +1,397 @@
+<?php
+$unread_class = '';
+if ($wo['notification']['seen'] == 0) {
+    $unread_class = ' unread';
+}
+$wo['notification']['type_text'] = '';
+$wo['notification']['icon']      = '';
+$notificationText                = $wo['notification']['text'];
+if (isset($notificationText) && !empty($notificationText)) {
+    $notificationText = '"' . $wo['notification']['text'] . '"';
+}
+$notificationType2 = $wo['notification']['type2'];
+if (isset($notificationType2) && !empty($notificationType2)) {
+    if ($notificationType2 == 'post_image') {
+        $type2 = $wo['lang']['photo_n_label'];
+    } elseif ($notificationType2 == 'post_youtube' || $notificationType2 == 'post_video') {
+        $type2 = $wo['lang']['video_n_label'];
+    } elseif ($notificationType2 == 'post_file') {
+        $type2 = $wo['lang']['file_n_label'];
+    } elseif ($notificationType2 == 'post_vine') {
+        $type2 = $wo['lang']['vine_n_label'];
+    } elseif ($notificationType2 == 'post_soundFile') {
+        $type2 = $wo['lang']['sound_n_label'];
+    } elseif ($notificationType2 == 'post_avatar') {
+        $type2 = $wo['lang']['avatar_n_label'];
+    } elseif ($notificationType2 == 'post_cover') {
+        $type2 = $wo['lang']['cover_n_label'];
+    } else {
+        $type2 = '';
+    }
+} else {
+    $type2 = $wo['lang']['post_n_label'];
+    
+}
+$orginal_txt  = array(
+    "{postType}",
+    "{post}"
+);
+$replaced_txt = array(
+    $type2,
+    $notificationText
+);
+if (!empty($wo['notification']['type'])) {
+    if ($wo['notification']['type'] == "reaction") {
+        
+        if( $wo['notification']['text'] == "post" ){
+            $wo['notification']['type_text'] .= $wo['lang']['reacted_to_your_post'];
+        }else if( $wo['notification']['text'] == "comment" ){
+            $wo['notification']['type_text'] .= $wo['lang']['reacted_to_your_comment'];
+        }else if( $wo['notification']['text'] == "replay" ){
+            $wo['notification']['type_text'] .= $wo['lang']['reacted_to_your_replay'];
+        }else if ($wo['notification']['text'] == "story") {
+            $wo['notification']['type_text'] .= $wo['lang']['reacted_to_your_story'];
+            $wo['notification']['type'] = "story_reaction";
+            $wo['notification']['url'] = $wo['notification']['url']; 
+        }else if ($wo['notification']['text'] == "message") {
+            $wo['notification']['type_text'] .= $wo['lang']['reacted_to_your_message'];
+            $wo['notification']['type'] = "message_reaction";
+            $wo['notification']['url'] = $wo['notification']['url']; 
+        }
+        if (!empty($wo['reactions_types'][$notificationType2])) {
+            
+            if ($wo['reactions_types'][$notificationType2]['is_html'] == 1) {
+
+                switch (strtolower($notificationType2)) {
+                   case 1:
+                       $wo['notification']['icon'] .= "<div class='inline_post_emoji inline_act_emoji no_anim'><div class='emoji emoji--like'><div class='emoji__hand'><div class='emoji__thumb'></div></div></div></div></span>";
+                       break;
+                   case 2:
+                       $wo['notification']['icon'] .= "<div class='inline_post_emoji inline_act_emoji no_anim'><div class='emoji emoji--love'><div class='emoji__heart'></div></div></div></span>";
+                       break;
+                   case 3:
+                      $wo['notification']['icon'] .= "<div class='inline_post_emoji inline_act_emoji no_anim'><div class='emoji emoji--haha'><div class='emoji__face'><div class='emoji__eyes'></div><div class='emoji__mouth'><div class='emoji__tongue'></div></div></div></div></div></span>";
+                       break;
+                   case 4:
+                       $wo['notification']['icon'] .= "<div class='inline_post_emoji inline_act_emoji no_anim'><div class='emoji emoji--wow'><div class='emoji__face'><div class='emoji__eyebrows'></div><div class='emoji__eyes'></div><div class='emoji__mouth'></div></div></div></div></span>";
+                       break;
+                   case 5:
+                       $wo['notification']['icon'] .= "<div class='inline_post_emoji inline_act_emoji no_anim'><div class='emoji emoji--sad'><div class='emoji__face'><div class='emoji__eyebrows'></div><div class='emoji__eyes'></div><div class='emoji__mouth'></div></div></div></div></span>";
+                       break;
+                   case 6:
+                       $wo['notification']['icon'] .= "<div class='inline_post_emoji inline_act_emoji no_anim'><div class='emoji emoji--angry'><div class='emoji__face'><div class='emoji__eyebrows'></div><div class='emoji__eyes'></div><div class='emoji__mouth'></div></div></div></div></span>";
+                       break;
+               }
+            }
+            else{
+                if (!empty($wo['reactions_types'][$notificationType2]['wowonder_small_icon'])) {
+                    $wo['notification']['icon'] .= "<div class='inline_post_emoji inline_act_emoji no_anim'><img style='width: 100%;' src='{$wo['reactions_types'][$notificationType2]['wowonder_small_icon']}' alt=\"" . $wo['reactions_types'][$notificationType2]['name'] . "\"></div></span>";
+                }
+            }
+        }
+    }
+    if ($wo['notification']['type'] == "gift") {
+        $wo['notification']['type_text'] .= $wo['lang']['send_gift_to_you'];
+        $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M9.06,1.93C7.17,1.92 5.33,3.74 6.17,6H3A2,2 0 0,0 1,8V10A1,1 0 0,0 2,11H11V8H13V11H22A1,1 0 0,0 23,10V8A2,2 0 0,0 21,6H17.83C19,2.73 14.6,0.42 12.57,3.24L12,4L11.43,3.22C10.8,2.33 9.93,1.94 9.06,1.93M9,4C9.89,4 10.34,5.08 9.71,5.71C9.08,6.34 8,5.89 8,5A1,1 0 0,1 9,4M15,4C15.89,4 16.34,5.08 15.71,5.71C15.08,6.34 14,5.89 14,5A1,1 0 0,1 15,4M2,12V20A2,2 0 0,0 4,22H20A2,2 0 0,0 22,20V12H13V20H11V12H2Z" /></svg>';
+    }
+    if ($wo['notification']['type'] == "poke") {
+        $wo['notification']['type_text'] .= $wo['lang']['poked_you'];
+        $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M10,9A1,1 0 0,1 11,8A1,1 0 0,1 12,9V13.47L13.21,13.6L18.15,15.79C18.68,16.03 19,16.56 19,17.14V21.5C18.97,22.32 18.32,22.97 17.5,23H11C10.62,23 10.26,22.85 10,22.57L5.1,18.37L5.84,17.6C6.03,17.39 6.3,17.28 6.58,17.28H6.8L10,19V9M11,5A4,4 0 0,1 15,9C15,10.5 14.2,11.77 13,12.46V11.24C13.61,10.69 14,9.89 14,9A3,3 0 0,0 11,6A3,3 0 0,0 8,9C8,9.89 8.39,10.69 9,11.24V12.46C7.8,11.77 7,10.5 7,9A4,4 0 0,1 11,5Z" /></svg>';
+    }
+    if ($wo['notification']['type'] == "following") {
+        $wo['notification']['type_text'] .= $wo['lang']['followed_you'];
+        $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M15,14C12.33,14 7,15.33 7,18V20H23V18C23,15.33 17.67,14 15,14M6,10V7H4V10H1V12H4V15H6V12H9V10M15,12A4,4 0 0,0 19,8A4,4 0 0,0 15,4A4,4 0 0,0 11,8A4,4 0 0,0 15,12Z" /></svg>';
+    }
+    if ($wo['notification']['type'] == "live_video") {
+        $wo['notification']['type_text'] .= $wo['lang']['started_live_video'];
+        $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M17,10.5V7A1,1 0 0,0 16,6H4A1,1 0 0,0 3,7V17A1,1 0 0,0 4,18H16A1,1 0 0,0 17,17V13.5L21,17.5V6.5L17,10.5Z" /></svg>';
+    }
+    if ($wo['notification']['type'] == 'comment_mention') {
+        $wo['notification']['type_text'] .= $wo['lang']['comment_mention'];
+        $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,2C6.486,2,2,6.486,2,12s4.486,10,10,10c1.466,0,2.961-0.371,4.442-1.104l-0.885-1.793C14.353,19.698,13.156,20,12,20 c-4.411,0-8-3.589-8-8s3.589-8,8-8s8,3.589,8,8v1c0,0.692-0.313,2-1.5,2c-1.396,0-1.494-1.819-1.5-2V8h-2v0.025 C14.162,7.391,13.13,7,12,7c-2.757,0-5,2.243-5,5s2.243,5,5,5c1.45,0,2.748-0.631,3.662-1.621C16.186,16.269,17.07,17,18.5,17 c2.273,0,3.5-2.061,3.5-4v-1C22,6.486,17.514,2,12,2z M12,15c-1.654,0-3-1.346-3-3s1.346-3,3-3s3,1.346,3,3S13.654,15,12,15z" /></svg>';
+    }
+    if ($wo['notification']['type'] == 'post_mention') {
+        $wo['notification']['type_text'] .= $wo['lang']['post_mention'];
+        $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,2C6.486,2,2,6.486,2,12s4.486,10,10,10c1.466,0,2.961-0.371,4.442-1.104l-0.885-1.793C14.353,19.698,13.156,20,12,20 c-4.411,0-8-3.589-8-8s3.589-8,8-8s8,3.589,8,8v1c0,0.692-0.313,2-1.5,2c-1.396,0-1.494-1.819-1.5-2V8h-2v0.025 C14.162,7.391,13.13,7,12,7c-2.757,0-5,2.243-5,5s2.243,5,5,5c1.45,0,2.748-0.631,3.662-1.621C16.186,16.269,17.07,17,18.5,17 c2.273,0,3.5-2.061,3.5-4v-1C22,6.486,17.514,2,12,2z M12,15c-1.654,0-3-1.346-3-3s1.346-3,3-3s3,1.346,3,3S13.654,15,12,15z" /></svg>';
+    }
+    if ($wo['notification']['type'] == 'liked_post') {
+        $wo['notification']['type_text'] = str_replace($orginal_txt, $replaced_txt, $wo['lang']['liked_post']);
+        $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M13.12 2.06L7.58 7.6c-.37.37-.58.88-.58 1.41V19c0 1.1.9 2 2 2h9c.8 0 1.52-.48 1.84-1.21l3.26-7.61C23.94 10.2 22.49 8 20.34 8h-5.65l.95-4.58c.1-.5-.05-1.01-.41-1.37-.59-.58-1.53-.58-2.11.01zM3 21c1.1 0 2-.9 2-2v-8c0-1.1-.9-2-2-2s-2 .9-2 2v8c0 1.1.9 2 2 2z" /></svg>';
+    }
+    if ($wo['notification']['type'] == 'wondered_post') {
+        $lang_type = ($wo['config']['second_post_button'] == 'wonder') ? $wo['lang']['wondered_post'] : $wo['lang']['disliked_post'];
+        $wo['notification']['type_text'] = str_replace($orginal_txt, $replaced_txt, $lang_type);
+        $wo['notification']['icon'] .= $wo['second_post_button_icon'];
+    }
+    if ($wo['notification']['type'] == 'share_post') {
+        $wo['notification']['type_text'] = str_replace($orginal_txt, $replaced_txt, $wo['lang']['share_post']);
+        $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z" /></svg>';
+    }
+    if ($wo['notification']['type'] == 'comment') {
+        $wo['notification']['type_text'] = str_replace($orginal_txt, $replaced_txt, $wo['lang']['commented_on_post']);
+        $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" /></svg>';
+    }
+    if ($wo['notification']['type'] == 'comment_reply') {
+        $wo['notification']['type_text'] = str_replace('{comment}', $wo['notification']['text'], $wo['lang']['replied_to_comment']);
+        $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" /></svg>';
+    }
+    if ($wo['notification']['type'] == 'comment_reply_mention') {
+        $wo['notification']['type_text'] = str_replace('{comment}', $wo['notification']['text'], $wo['lang']['comment_reply_mention']);
+        $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,2C6.486,2,2,6.486,2,12s4.486,10,10,10c1.466,0,2.961-0.371,4.442-1.104l-0.885-1.793C14.353,19.698,13.156,20,12,20 c-4.411,0-8-3.589-8-8s3.589-8,8-8s8,3.589,8,8v1c0,0.692-0.313,2-1.5,2c-1.396,0-1.494-1.819-1.5-2V8h-2v0.025 C14.162,7.391,13.13,7,12,7c-2.757,0-5,2.243-5,5s2.243,5,5,5c1.45,0,2.748-0.631,3.662-1.621C16.186,16.269,17.07,17,18.5,17 c2.273,0,3.5-2.061,3.5-4v-1C22,6.486,17.514,2,12,2z M12,15c-1.654,0-3-1.346-3-3s1.346-3,3-3s3,1.346,3,3S13.654,15,12,15z" /></svg>';
+    }
+    if ($wo['notification']['type'] == 'also_replied') {
+        $wo['notification']['type_text'] = str_replace('{comment}', $wo['notification']['text'], $wo['lang']['also_replied']);
+        $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" /></svg>';
+    }
+    if ($wo['notification']['type'] == 'liked_comment') {
+        $wo['notification']['type_text'] = str_replace('{comment}', $wo['notification']['text'], $wo['lang']['liked_comment']);
+        $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M13.12 2.06L7.58 7.6c-.37.37-.58.88-.58 1.41V19c0 1.1.9 2 2 2h9c.8 0 1.52-.48 1.84-1.21l3.26-7.61C23.94 10.2 22.49 8 20.34 8h-5.65l.95-4.58c.1-.5-.05-1.01-.41-1.37-.59-.58-1.53-.58-2.11.01zM3 21c1.1 0 2-.9 2-2v-8c0-1.1-.9-2-2-2s-2 .9-2 2v8c0 1.1.9 2 2 2z" /></svg>';
+    }
+    if ($wo['notification']['type'] == 'wondered_comment') {
+        $lang_type = ($wo['config']['second_post_button'] == 'wonder') ? $wo['lang']['wondered_comment'] : $wo['lang']['disliked_comment'];
+        $wo['notification']['type_text'] = str_replace('{comment}', $wo['notification']['text'], $lang_type);
+        $wo['notification']['icon'] .= $wo['second_post_button_icon'];
+    }
+    if ($wo['notification']['type'] == 'liked_reply_comment') {
+        $wo['notification']['type_text'] = str_replace('{comment}', $wo['notification']['text'], $wo['lang']['liked_reply_comment']);
+        $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M13.12 2.06L7.58 7.6c-.37.37-.58.88-.58 1.41V19c0 1.1.9 2 2 2h9c.8 0 1.52-.48 1.84-1.21l3.26-7.61C23.94 10.2 22.49 8 20.34 8h-5.65l.95-4.58c.1-.5-.05-1.01-.41-1.37-.59-.58-1.53-.58-2.11.01zM3 21c1.1 0 2-.9 2-2v-8c0-1.1-.9-2-2-2s-2 .9-2 2v8c0 1.1.9 2 2 2z" /></svg>';
+    }
+    if ($wo['notification']['type'] == 'wondered_reply_comment') {
+        $lang_type = ($wo['config']['second_post_button'] == 'wonder') ? $wo['lang']['wondered_reply_comment'] : $wo['lang']['disliked_reply_comment'];
+        $wo['notification']['type_text'] = str_replace('{comment}', $wo['notification']['text'], $lang_type);
+        $wo['notification']['icon'] .= $wo['second_post_button_icon'];
+    }
+    if ($wo['notification']['type'] == 'profile_wall_post') {
+        $wo['notification']['type_text'] = $wo['lang']['posted_on_timeline'];
+        $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M21.7,13.35L20.7,14.35L18.65,12.3L19.65,11.3C19.86,11.09 20.21,11.09 20.42,11.3L21.7,12.58C21.91,12.79 21.91,13.14 21.7,13.35M12,18.94L18.06,12.88L20.11,14.93L14.06,21H12V18.94M12,14C7.58,14 4,15.79 4,18V20H10V18.11L14,14.11C13.34,14.03 12.67,14 12,14M12,4A4,4 0 0,0 8,8A4,4 0 0,0 12,12A4,4 0 0,0 16,8A4,4 0 0,0 12,4Z" /></svg>';
+    }
+    if ($wo['notification']['type'] == 'visited_profile') {
+        $wo['notification']['type_text'] = $wo['lang']['profile_visted'];
+        $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z" /></svg>';
+    }
+    if ($wo['notification']['type'] == 'liked_page') {
+        $page = Wo_PageData($wo['notification']['page_id']);
+        $wo['notification']['type_text'] = str_replace('{page_name}', $page['name'], $wo['lang']['liked_page']);
+        $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M13.12 2.06L7.58 7.6c-.37.37-.58.88-.58 1.41V19c0 1.1.9 2 2 2h9c.8 0 1.52-.48 1.84-1.21l3.26-7.61C23.94 10.2 22.49 8 20.34 8h-5.65l.95-4.58c.1-.5-.05-1.01-.41-1.37-.59-.58-1.53-.58-2.11.01zM3 21c1.1 0 2-.9 2-2v-8c0-1.1-.9-2-2-2s-2 .9-2 2v8c0 1.1.9 2 2 2z" /></svg>';
+    }
+    if ($wo['notification']['type'] == 'joined_group') {
+        $group = Wo_GroupData($wo['notification']['group_id']);
+        $wo['notification']['type_text'] = str_replace('{group_name}', $group['name'], $wo['lang']['joined_group']);
+        $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M15,14C12.33,14 7,15.33 7,18V20H23V18C23,15.33 17.67,14 15,14M6,10V7H4V10H1V12H4V15H6V12H9V10M15,12A4,4 0 0,0 19,8A4,4 0 0,0 15,4A4,4 0 0,0 11,8A4,4 0 0,0 15,12Z" /></svg>';
+    }
+    if ($wo['notification']['type'] == 'declined_group_chat_request') {
+        $wo['notification']['type_text'] = $wo['lang']['declined_group_chat_request'];
+        $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M10 4A4 4 0 0 0 6 8A4 4 0 0 0 10 12A4 4 0 0 0 14 8A4 4 0 0 0 10 4M17.5 13C15 13 13 15 13 17.5C13 20 15 22 17.5 22C20 22 22 20 22 17.5C22 15 20 13 17.5 13M10 14C5.58 14 2 15.79 2 18V20H11.5A6.5 6.5 0 0 1 11 17.5A6.5 6.5 0 0 1 11.95 14.14C11.32 14.06 10.68 14 10 14M17.5 14.5C19.16 14.5 20.5 15.84 20.5 17.5C20.5 18.06 20.35 18.58 20.08 19L16 14.92C16.42 14.65 16.94 14.5 17.5 14.5M14.92 16L19 20.08C18.58 20.35 18.06 20.5 17.5 20.5C15.84 20.5 14.5 19.16 14.5 17.5C14.5 16.94 14.65 16.42 14.92 16Z" /></svg>';
+    }
+    if ($wo['notification']['type'] == 'accept_group_chat_request') {
+        $wo['notification']['type_text'] = $wo['lang']['accept_group_chat_request'];
+        $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M21.1,12.5L22.5,13.91L15.97,20.5L12.5,17L13.9,15.59L15.97,17.67L21.1,12.5M10,17L13,20H3V18C3,15.79 6.58,14 11,14L12.89,14.11L10,17M11,4A4,4 0 0,1 15,8A4,4 0 0,1 11,12A4,4 0 0,1 7,8A4,4 0 0,1 11,4Z" /></svg>';
+    }
+    if ($wo['notification']['type'] == 'accepted_invite') {
+        $page_id = @end(explode('/', $wo['notification']['url']));
+        $page = Wo_PageData(Wo_PageIdFromPagename($page_id));
+        $wo['notification']['type_text'] = str_replace('{page_name}', $page['name'], $wo['lang']['accepted_invited_page']);
+        $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M14.4,6L14,4H5V21H7V14H12.6L13,16H20V6H14.4Z" /></svg>';
+    }
+    
+    if ($wo['notification']['type'] == 'invited_page') {
+        $page_id = @end(explode('/', $wo['notification']['url']));
+        $page = Wo_PageData(Wo_PageIdFromPagename($page_id));
+        $wo['notification']['type_text'] = str_replace('{page_name}', $page['name'], $wo['lang']['invited_page']);
+        $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M14.4,6L14,4H5V21H7V14H12.6L13,16H20V6H14.4Z" /></svg>';
+    }
+    if ($wo['notification']['type'] == 'accepted_join_request') {
+        $group_id = @end(explode('/', $wo['notification']['url']));
+        $group = Wo_GroupData(Wo_GroupIdFromGroupname($group_id));
+        $wo['notification']['type_text'] = str_replace('{group_name}', $group['name'], $wo['lang']['accepted_join_request']);
+        $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M15,14C12.33,14 7,15.33 7,18V20H23V18C23,15.33 17.67,14 15,14M6,10V7H4V10H1V12H4V15H6V12H9V10M15,12A4,4 0 0,0 19,8A4,4 0 0,0 15,4A4,4 0 0,0 11,8A4,4 0 0,0 15,12Z" /></svg>';
+    }
+    if ($wo['notification']['type'] == 'added_you_to_group') {
+        $group_id = @end(explode('/', $wo['notification']['url']));
+        $group = Wo_GroupData(Wo_GroupIdFromGroupname($group_id));
+        $wo['notification']['type_text'] = str_replace('{group_name}', $group['name'], $wo['lang']['added_you_to_group']);
+        $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M15,14C12.33,14 7,15.33 7,18V20H23V18C23,15.33 17.67,14 15,14M6,10V7H4V10H1V12H4V15H6V12H9V10M15,12A4,4 0 0,0 19,8A4,4 0 0,0 15,4A4,4 0 0,0 11,8A4,4 0 0,0 15,12Z" /></svg>';
+    }
+     if ($wo['notification']['type'] == 'requested_to_join_group') {
+        $wo['notification']['type_text'] = $wo['lang']['requested_to_join_group'];
+        $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M15,14C12.33,14 7,15.33 7,18V20H23V18C23,15.33 17.67,14 15,14M6,10V7H4V10H1V12H4V15H6V12H9V10M15,12A4,4 0 0,0 19,8A4,4 0 0,0 15,4A4,4 0 0,0 11,8A4,4 0 0,0 15,12Z" /></svg>';
+    }
+
+    if ($wo['notification']['type'] == 'interested_event') {
+        $event_data = Wo_EventData($wo['notification']['event_id']);
+        $wo['notification']['type_text'] = str_replace('{event_name}', $event_data['name'], $wo['lang']['is_interested']);
+        $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z" /></svg>';
+    }
+    if ($wo['notification']['type'] == 'going_event') {
+        $event_data = Wo_EventData($wo['notification']['event_id']);
+        $wo['notification']['type_text'] = str_replace('{event_name}', $event_data['name'], $wo['lang']['is_going']);
+        $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M19,19H5V8H19M16,1V3H8V1H6V3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3H18V1M17,12H12V17H17V12Z" /></svg>';
+    }
+    if ($wo['notification']['type'] == 'invited_event') {
+        $event_data = Wo_EventData($wo['notification']['event_id']);
+        $wo['notification']['type_text'] = str_replace('{event_name}', $event_data['name'], $wo['lang']['invited_you_event']);
+        $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M19,19H5V8H19M16,1V3H8V1H6V3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3H18V1M17,12H12V17H17V12Z" /></svg>';
+    }
+    if ($wo['notification']['type'] == 'forum_reply') {
+        $wo['notification']['type_text'] = $wo['lang']['replied_to_topic'];
+        $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M22,4C22,2.89 21.1,2 20,2H4A2,2 0 0,0 2,4V16A2,2 0 0,0 4,18H18L22,22V4Z" /></svg>';
+    }
+    if ($wo['notification']['type'] == 'apply_job') {
+        $wo['notification']['type_text'] = $wo['lang']['apply_your_job'];
+        $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M10,2H14A2,2 0 0,1 16,4V6H20A2,2 0 0,1 22,8V19A2,2 0 0,1 20,21H4C2.89,21 2,20.1 2,19V8C2,6.89 2.89,6 4,6H8V4C8,2.89 8.89,2 10,2M14,6V4H10V6H14Z" /></svg>';
+    }
+    if ($wo['notification']['type'] == 'fund_donate') {
+        $wo['notification']['type_text'] = $wo['lang']['donated_to'];
+        $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M20 17Q20.86 17 21.45 17.6T22.03 19L14 22L7 20V11H8.95L16.22 13.69Q17 14 17 14.81 17 15.28 16.66 15.63T15.8 16H13L11.25 15.33L10.92 16.27L13 17H20M16 3.23Q17.06 2 18.7 2 20.06 2 21 3T22 5.3Q22 6.33 21 7.76T19.03 10.15 16 13Q13.92 11.11 12.94 10.15T10.97 7.76 10 5.3Q10 3.94 10.97 3T13.31 2Q14.91 2 16 3.23M.984 11H5V22H.984V11Z" /></svg>';
+    }
+    if ($wo['notification']['type'] == 'accepted_request') {
+        if ($wo['config']['connectivitySystem'] == 1) {
+            $wo['notification']['type_text'] = $wo['lang']['accepted_friend_request'];
+        } else {
+            $wo['notification']['type_text'] = $wo['lang']['accepted_follow_request'];
+        }
+        $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M15,14C12.33,14 7,15.33 7,18V20H23V18C23,15.33 17.67,14 15,14M6,10V7H4V10H1V12H4V15H6V12H9V10M15,12A4,4 0 0,0 19,8A4,4 0 0,0 15,4A4,4 0 0,0 11,8A4,4 0 0,0 15,12Z" /></svg>';
+    }
+
+    if ($wo['notification']['type'] == 'admin_notification') {
+        $theme                                    = $wo['config']['theme'];
+        $wo['notification']['type_text']          = $wo['notification']['text'];
+        if ($wo['notification']['type2'] != 'no_name'  && $wo['notification']['type2'] != 'approve_post'   && $wo['notification']['type2'] != 'approve_blog'  && $wo['notification']['type2'] != 'ffmpeg') {
+            $wo['notification']['url']                = $wo['notification']['full_link']; 
+            $wo['notification']['ajax_url']           = $wo['notification']['full_link']; 
+            $wo['notification']['wo_url']             = false; 
+        }
+        
+        $wo['notification']['notifier']['name']   = $wo['config']['siteName']; 
+        $wo['notification']['notifier']['avatar'] = $wo['config']['theme_url'] . "/img/icon.png"; 
+        $wo['notification']['icon']              .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M13,13H11V7H13M13,17H11V15H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" /></svg>';
+
+        if ($wo['notification']['type2'] == 'approve_post') {
+            $wo['notification']['type_text'] = $wo['lang']['approve_post'];
+            $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M17,21L14.25,18L15.41,16.84L17,18.43L20.59,14.84L21.75,16.25M12.8,21H5C3.89,21 3,20.1 3,19V5C3,3.89 3.89,3 5,3H19A2,2 0 0,1 21,5V12.8C20.12,12.29 19.09,12 18,12L17,12.08V11H7V13H14.69C13.07,14.07 12,15.91 12,18C12,19.09 12.29,20.12 12.8,21M12,15H7V17H12M17,7H7V9H17" /></svg>';
+        }
+        if ($wo['notification']['type2'] == 'approve_blog') {
+            $wo['notification']['type_text'] = $wo['lang']['approve_blog'];
+            $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M13,9H18.5L13,3.5V9M6,2H14L20,8V20A2,2 0 0,1 18,22H6C4.89,22 4,21.1 4,20V4C4,2.89 4.89,2 6,2M11.2,18.46L15.95,13.71L14.78,12.3L11.2,15.88L9.61,14.3L8.45,15.46L11.2,18.46Z" /></svg>';
+        }
+        if ($wo['notification']['type2'] == 'refund_decline') {
+            $wo['notification']['type_text'] = $wo['lang']['refund_decline'];
+        }
+        if ($wo['notification']['type2'] == 'withdraw_approve') {
+            $wo['notification']['type_text'] = $wo['lang']['withdraw_approve'];
+            $wo['notification']['url']       = Wo_SeoLink('index.php?link1=setting&page=payments');
+        }
+        if ($wo['notification']['type2'] == 'withdraw_declined') {
+            $wo['notification']['type_text'] = $wo['lang']['withdraw_declined'];
+            $wo['notification']['url']       = Wo_SeoLink('index.php?link1=setting&page=payments');
+        }
+
+    }
+    if ($wo['notification']['type'] == 'page_admin') {
+        $wo['notification']['type_text'] = $wo['lang']['added_page_admin'];
+        $wo['notification']['url']       = $wo['notification']['url']; 
+        $wo['notification']['icon']     .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M15,14C12.33,14 7,15.33 7,18V20H23V18C23,15.33 17.67,14 15,14M6,10V7H4V10H1V12H4V15H6V12H9V10M15,12A4,4 0 0,0 19,8A4,4 0 0,0 15,4A4,4 0 0,0 11,8A4,4 0 0,0 15,12Z" /></svg>';
+    }
+    if ($wo['notification']['type'] == 'group_admin') {
+        $wo['notification']['type_text'] = $wo['lang']['added_group_admin'];
+        $wo['notification']['url']       = $wo['notification']['url']; 
+        $wo['notification']['icon']     .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M15,14C12.33,14 7,15.33 7,18V20H23V18C23,15.33 17.67,14 15,14M6,10V7H4V10H1V12H4V15H6V12H9V10M15,12A4,4 0 0,0 19,8A4,4 0 0,0 15,4A4,4 0 0,0 11,8A4,4 0 0,0 15,12Z" /></svg>';
+    }
+    if ($wo['notification']['type'] == 'added_u_as') {
+        $wo['notification']['type_text'] = $wo['notification']['text'];
+        $wo['notification']['url']       = $wo['notification']['url']; 
+        $wo['notification']['icon']     .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M15,14C12.33,14 7,15.33 7,18V20H23V18C23,15.33 17.67,14 15,14M6,10V7H4V10H1V12H4V15H6V12H9V10M15,12A4,4 0 0,0 19,8A4,4 0 0,0 15,4A4,4 0 0,0 11,8A4,4 0 0,0 15,12Z" /></svg>';
+    }
+    if ($wo['notification']['type'] == 'accept_u_as') {
+        $wo['notification']['type_text'] = $wo['notification']['text'];
+        $wo['notification']['url']       = $wo['notification']['url']; 
+        $wo['notification']['icon']     .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M15,14C12.33,14 7,15.33 7,18V20H23V18C23,15.33 17.67,14 15,14M6,10V7H4V10H1V12H4V15H6V12H9V10M15,12A4,4 0 0,0 19,8A4,4 0 0,0 15,4A4,4 0 0,0 11,8A4,4 0 0,0 15,12Z" /></svg>';
+    }
+    if ($wo['notification']['type'] == 'rejected_u_as') {
+        $wo['notification']['type_text'] = $wo['notification']['text'];
+        $wo['notification']['url']       = $wo['notification']['url']; 
+        $wo['notification']['icon']     .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M10 4A4 4 0 0 0 6 8A4 4 0 0 0 10 12A4 4 0 0 0 14 8A4 4 0 0 0 10 4M17.5 13C15 13 13 15 13 17.5C13 20 15 22 17.5 22C20 22 22 20 22 17.5C22 15 20 13 17.5 13M10 14C5.58 14 2 15.79 2 18V20H11.5A6.5 6.5 0 0 1 11 17.5A6.5 6.5 0 0 1 11.95 14.14C11.32 14.06 10.68 14 10 14M17.5 14.5C19.16 14.5 20.5 15.84 20.5 17.5C20.5 18.06 20.35 18.58 20.08 19L16 14.92C16.42 14.65 16.94 14.5 17.5 14.5M14.92 16L19 20.08C18.58 20.35 18.06 20.5 17.5 20.5C15.84 20.5 14.5 19.16 14.5 17.5C14.5 16.94 14.65 16.42 14.92 16Z" /></svg>';
+    }
+    if ($wo['notification']['type'] == 'sent_u_money') {
+        $wo['notification']['type_text'] = $wo['notification']['text'];
+        $wo['notification']['url']       = $wo['notification']['url']; 
+        $wo['notification']['icon']     .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M21,18V19A2,2 0 0,1 19,21H5C3.89,21 3,20.1 3,19V5A2,2 0 0,1 5,3H19A2,2 0 0,1 21,5V6H12C10.89,6 10,6.9 10,8V16A2,2 0 0,0 12,18M12,16H22V8H12M16,13.5A1.5,1.5 0 0,1 14.5,12A1.5,1.5 0 0,1 16,10.5A1.5,1.5 0 0,1 17.5,12A1.5,1.5 0 0,1 16,13.5Z" /></svg>';
+    }
+    if ($wo['notification']['type'] == 'viewed_story') {
+        $wo['notification']['type_text'] = $wo['lang']['viewed_your_story'];
+        $wo['notification']['url']       = $wo['notification']['url']; 
+        $wo['notification']['icon']     .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z" /></svg>';
+    }
+    if ($wo['notification']['type'] == 'blog_commented') {
+        $wo['notification']['type_text'] = $wo['lang']['commented_on_blog'];
+        $wo['notification']['url']       = $wo['notification']['url']; 
+        $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M20,2H4A2,2 0 0,0 2,4V22L6,18H20A2,2 0 0,0 22,16V4C22,2.89 21.1,2 20,2Z" /></svg>';
+    }
+    if ($wo['notification']['type'] == 'new_post') {
+        $wo['notification']['type_text'] = $wo['lang']['created_new_post'];
+        $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M14,17H7V15H14M17,13H7V11H17M17,9H7V7H17M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3Z" /></svg>';
+    }
+    // Share post
+    if ($wo['notification']['type'] == 'shared_your_post') {
+        $wo['notification']['type_text'] = $wo['lang']['shared_your_post'];
+        $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z" /></svg>';
+    }
+    if ($wo['notification']['type'] == 'shared_a_post_in_timeline') {
+        $wo['notification']['type_text'] = $wo['lang']['shared_a_post_in_timeline'];
+        $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z" /></svg>';
+    }
+    // Share post
+    if ($wo['notification']['type'] == 'bank_pro' || $wo['notification']['type'] == 'bank_wallet') {
+        $wo['notification']['type_text'] = $wo['lang']['bank_pro'];
+        $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M11.5,1L2,6V8H21V6M16,10V17H19V10M2,22H21V19H2M10,10V17H13V10M4,10V17H7V10H4Z" /></svg>';
+    } 
+    if ($wo['notification']['type'] == 'bank_decline') {
+        $wo['notification']['type_text'] = $wo['lang']['bank_decline'];
+        $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M14.46,15.88L15.88,14.46L18,16.59L20.12,14.46L21.54,15.88L19.41,18L21.54,20.12L20.12,21.54L18,19.41L15.88,21.54L14.46,20.12L16.59,18L14.46,15.88M11.5,1L21,6V8H2V6L11.5,1M16,10H19V12.08L18,12C17.3,12 16.63,12.12 16,12.34V10M2,22V19H12.08C12.27,20.14 12.79,21.17 13.53,22H2M10,10H13V14.68C12.54,15.37 12.22,16.15 12.08,17H10V10M4,10H7V17H4V10Z" /></svg>';
+    }
+    if ($wo['notification']['type'] == 'memory') {
+        $wo['notification']['type_text'] = $wo['lang']['memory_this_day'];
+        $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M13.5,8H12V13L16.28,15.54L17,14.33L13.5,12.25V8M13,3A9,9 0 0,0 4,12H1L4.96,16.03L9,12H6A7,7 0 0,1 13,5A7,7 0 0,1 20,12A7,7 0 0,1 13,19C11.07,19 9.32,18.21 8.06,16.94L6.64,18.36C8.27,20 10.5,21 13,21A9,9 0 0,0 22,12A9,9 0 0,0 13,3" /></svg>';
+        $wo['notification']['notifier']['name']   = $wo['config']['siteName']; 
+        $wo['notification']['notifier']['avatar'] = $wo['config']['theme_url'] . "/img/icon.png"; 
+    }
+    if ($wo['notification']['type'] == 'thread_reply') {
+        $wo['notification']['type_text'] = $wo['lang']['thread_reply'];
+        $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M20,2H4A2,2 0 0,0 2,4V22L6,18H20A2,2 0 0,0 22,16V4C22,2.89 21.1,2 20,2Z" /></svg>';
+    }
+    if ($wo['notification']['type'] == 'remaining') {
+        $wo['notification']['type_text'] = $wo['notification']['text'];
+        $wo['notification']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M13,13H11V7H13M13,17H11V15H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" /></svg>';
+        $wo['notification']['notifier']['name']   = $wo['config']['siteName']; 
+        $wo['notification']['notifier']['avatar'] = $wo['config']['theme_url'] . "/img/icon.png"; 
+    }
+}
+if ($wo['notification']['type2'] == 'anonymous') {
+    $wo['notification']['notifier']['name']   = $wo['lang']['anonymous']; 
+    $wo['notification']['notifier']['avatar'] = Wo_GetMedia('upload/photos/incognito.png');
+}
+if ($wo['notification']['type2'] == 'ffmpeg') {
+    $post_id = @end(explode('/', $wo['notification']['url']));
+    if (!empty($post_id)) {
+        $post = Wo_PostData($post_id);
+        if (!empty($post) && !empty($post['postFileThumb'])) {
+            $wo['notification']['notifier']['avatar'] = Wo_GetMedia($post['postFileThumb']);
+        }
+    }
+}
+?>
+
+<div class="notification-list <?php echo $unread_class;?> <?php if ($wo['notification']['type'] == 'viewed_story' || $wo['notification']['type'] == 'story_reaction') { $wo['notification']['url'] = 'javascript:void(0)' ?> see_all_stories<?php } ?>" <?php if ($wo['notification']['type'] == 'viewed_story' || $wo['notification']['type'] == 'story_reaction') { ?> data_story_user_id="<?php echo $wo['notification']['recipient_id']?>" data_story_type="user" <?php } ?>>
+	<a href="<?php echo $wo['notification']['url']; ?>" title="<?php echo $wo['notification']['notifier']['name']; ?>" <?php if (!isset($wo['notification']['wo_url']) && $wo['notification']['type'] != 'viewed_story' && $wo['notification']['type'] != 'story_reaction' && $wo['notification']['type'] != 'message_reaction'): ?> data-ajax="<?php echo $wo['notification']['ajax_url'];?>" <?php endif; ?>>
+		<div class="valign">
+			<div class="notification-user-avatar">
+				<img src="<?php echo $wo['notification']['notifier']['avatar']; ?>" alt="<?php echo $wo['notification']['notifier']['name']; ?>">
+			</div>
+			<div class="notification-text">
+				<span><?php if ($wo['notification']['type2'] != 'no_name') { echo $wo['notification']['notifier']['name']; } ?></span> <span class="sec_text"><?php echo $wo['notification']['type_text']; ?></span>
+				<div class="ajax-time" title="<?php echo date('c',$wo['notification']['time']); ?>"><?php echo Wo_Time_Elapsed_String($wo['notification']['time'])?></div>
+				<?php echo $wo['notification']['icon'];?>
+			</div>
+		</div>
+	</a>
+</div>

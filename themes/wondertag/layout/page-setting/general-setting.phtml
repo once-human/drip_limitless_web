@@ -1,0 +1,155 @@
+<div class="wow_sett_content">
+	<form class="setting-general-form form-horizontal" method="post">
+		<div class="setting-general-alert setting-update-alert"></div>
+		<label class="tag_field">
+			<input id="page_title" name="page_title" type="text" placeholder=" " value="<?php echo $wo['setting']['page_title']?>" autocomplete="off">
+			<span><?php echo $wo['lang']['page_name']; ?></span>
+		</label>
+		<label class="tag_field">
+			<select id="page_category" name="page_category" onchange="GetPageSubCategory(this)">
+				<?php 
+					foreach ($wo['page_categories'] as $categories => $category) { 
+					$category_id = $wo['setting']['page_category'];
+					$selected_contry = ($categories == $category_id) ? ' selected' : '' ;
+				?>
+					<option value="<?php echo $categories;?>" <?php echo $selected_contry;?> ><?php echo $category;?></option>
+				<?php } ?>
+			</select>
+			<span><?php echo $wo['lang']['category']; ?></span>
+		</label>
+		<label class="tag_field">
+			<select name="page_sub_category" id="page_sub_category">
+				<?php
+					if (!empty($wo['page_sub_categories'][$wo['setting']['page_category']])) {
+						foreach ($wo['page_sub_categories'][$wo['setting']['page_category']] as $id => $sub_category) {
+							$sub_selected = ($sub_category['id'] == $wo['setting']['sub_category']) ? ' selected' : '' ;
+				?>
+					<option value="<?php echo $sub_category['id']?>" <?php echo $sub_selected; ?>><?php echo $sub_category['lang']; ?></option>
+				<?php } } ?>
+			</select>
+			<span><?php echo $wo['lang']['sub_category']; ?></span>
+		</label>
+		<label class="tag_field">
+			<input id="page_name" name="page_name" type="text" placeholder=" " value="<?php echo $wo['setting']['page_name']?>" onkeyup="Wo_CheckPagename(this.value, <?php echo $wo['setting']['page_id'];?>);" autocomplete="off">
+			<span><?php echo $wo['lang']['page'];?> URL</span>
+		</label>
+		<div class="help-block checking"><?php echo $wo['config']['site_url'];?>/<?php echo $wo['lang']['page'];?> URL</div>
+		<div class="row">
+			<div class="col-xl-5">
+				<label class="tag_field">
+					<select id="call_action_type" name="call_action_type">
+						<?php 
+							foreach ($wo['call_action'] as $categories => $category) { 
+							$category_id = $wo['setting']['call_action_type'];
+							$selected_action = ($categories == $category_id) ? ' selected' : '' ;
+						?>
+							<option value="<?php echo $categories;?>" <?php echo $selected_action;?> ><?php echo $category;?></option>
+						<?php } ?>
+					</select>
+					<span><?php echo $wo['lang']['call_to_action'] ?></span>
+				</label>
+			</div>
+			<div class="col-xl-7">
+				<label class="tag_field">
+					<input id="call_action_type_url" name="call_action_type_url" type="text" placeholder=" " value="<?php echo $wo['setting']['call_action_type_url']?>" autocomplete="off">
+					<span><?php echo $wo['lang']['call_to_action_target'] ?></span>
+				</label>
+			</div>
+		</div>
+		<?php $fields = Wo_GetCustomFields('page'); 
+		if (!empty($fields)) {
+			foreach ($fields as $key => $wo['field']) {
+				echo Wo_LoadPage('page-setting/fields');
+			}
+		}
+		?>
+		<?php
+			$selected_post_yes = ($wo['setting']['users_post'] == 1)   ? ' checked' : '';
+			$selected_post_no  = ($wo['setting']['users_post'] == 0)   ? ' checked' : '';
+		?>
+			<p class="bold"><?php echo $wo['lang']['users_can_post'] ?></p>
+			<div class="row mb-15">
+				<div class="col-md-12 round-check">
+					<input type="radio" name="users_post" id="users_post-0" value="1" <?php echo $selected_post_yes; ?> >
+					<label for="users_post-0"><?php echo $wo['lang']['enable']; ?></label>
+				</div>
+				<div class="col-md-12 round-check">
+					<input type="radio" name="users_post" id="users_post-1" value="0" <?php echo $selected_post_no; ?>>
+					<label for="users_post-1"><?php echo $wo['lang']['disable']; ?></label>
+				</div>
+			</div>
+
+		<?php if (Wo_IsAdmin() || Wo_IsModerator()) { ?>
+			<?php
+				$selected_verified_yes = ($wo['setting']['verified'] == 1)   ? ' checked' : '';
+				$selected_verified_no  = ($wo['setting']['verified'] == 0)   ? ' checked' : '';
+			?>
+			<p class="bold"><?php echo $wo['lang']['verification'] ?></p>
+			<div class="row mb-15">
+				<div class="col-md-12 round-check">
+					<input type="radio" name="verified" id="verified-0" value="verified" <?php echo $selected_verified_yes; ?> >
+					<label for="verified-0"><?php echo $wo['lang']['verified']; ?></label>
+				</div>
+				<div class="col-md-12 round-check">
+					<input type="radio" name="verified" id="verified-1" value="notVerified" <?php echo $selected_verified_no; ?>>
+					<label for="verified-1"><?php echo $wo['lang']['not_verified']; ?></label>
+				</div>
+			</div>
+		<?php } else { ?>
+			<p class="bold"><?php echo $wo['lang']['verification'] ?></p>
+			<div class="mb-15" id="verification-request">
+				<?php echo Wo_GetVerificationButton($wo['setting']['page_id'],'Page'); ?>               
+			</div>
+		<?php } ?>
+		
+        <div class="text-center">
+			<button type="submit" class="btn btn-main btn-mat btn-mat-raised disable_btn"><?php echo $wo['lang']['save']; ?></button>
+		</div>
+		<input type="hidden" name="page_id" value="<?php echo $wo['setting']['page_id'];?>">
+		<input type="hidden" name="hash_id" value="<?php echo Wo_CreateSession();?>">
+	</form>
+</div>
+
+<script type="text/javascript">
+		<?php 
+$js_array = json_encode($wo['page_sub_categories']);
+echo "var sub_categories_array = ". $js_array . ";\n";
+?>
+	function GetPageSubCategory(self) {
+		id = $(self).val();
+		var text = "";
+		if (typeof(sub_categories_array[id]) == 'undefined') {
+		    $('#page_sub_category').html('');
+		}
+		else{
+		   	sub_categories_array[id].forEach(function(entry) {
+				text = text + "<option value='"+entry.id+"'>"+entry.lang+"</option>";
+			});
+		    $('#page_sub_category').html(text);
+		}
+	}
+$(function() {
+  $('form.setting-general-form').ajaxForm({
+    url: Wo_Ajax_Requests_File() + '?f=pages&s=update_general_settings',
+    beforeSend: function() {
+      $('.setting-general-form').find('.disable_btn').attr('disabled','disabled');
+    },
+    success: function(data) {
+      scrollToTop();
+      if (data.status == 200) {
+        $('.setting-general-alert').html('<div class="alert alert-success">' + data.message + '</div>');
+        $('.alert-success').fadeIn('fast', function() {
+           $(this).delay(2500).slideUp(500, function() {
+              $(this).remove();
+            });
+        });
+      } else {
+          var errors = data.errors.join("<br>");
+          $('.setting-general-alert').html('<div class="alert alert-danger">' + errors + '</div>');
+          $('.alert-danger').fadeIn(300);
+      }
+      $('.setting-general-form').find('.disable_btn').removeAttr("disabled");
+    }
+  });
+});
+</script>

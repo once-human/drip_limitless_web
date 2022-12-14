@@ -1,0 +1,57 @@
+<div class="container">
+	<div class="valign tag_startup">
+		<div class="wow_content p20">
+			<div class="row tag_startup_row">
+				<div class="col-xl-4 col-lg-3">
+					<?php if (Wo_IsMobile() == false) { ?>
+					<div class="tag_startup_img">
+						<h2 class="text-center tag_page_title"><?php echo $wo['lang']['follow_head']; ?></h2>
+						<img src="<?php echo $wo['config']['theme_url'];?>/img/start_up/follow.png" alt="<?php echo $wo['lang']['follow']; ?>">
+					</div>
+					<?php } ?>
+				</div>
+				<div class="col-xl-8 col-lg-9">
+					<ul class="list-unstyled tag_steps tag_startup_steps">
+						<li class="active"><div><svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24" viewBox="0 0 24 24" width="24"><g><rect fill="none" height="24" width="24"/></g><g><path fill="currentColor" d="M19,3H5C3.9,3,3,3.9,3,5v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V5C21,3.9,20.1,3,19,3z M6.6,16.2l2-2.67 c0.2-0.27,0.6-0.27,0.8,0L11.25,16l2.6-3.47c0.2-0.27,0.6-0.27,0.8,0l2.75,3.67c0.25,0.33,0.01,0.8-0.4,0.8H7 C6.59,17,6.35,16.53,6.6,16.2z"/></g></svg> <span><?php echo $wo['lang']['ad_media']; ?></span></div></li>
+						<li class="active"><div><svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24" viewBox="0 0 24 24" width="24"><g><path d="M0,0h24v24H0V0z" fill="none"/></g><g><path fill="currentColor" d="M12,2C6.48,2,2,6.48,2,12s4.48,10,10,10s10-4.48,10-10S17.52,2,12,2z M12,17c-0.55,0-1-0.45-1-1v-4c0-0.55,0.45-1,1-1 s1,0.45,1,1v4C13,16.55,12.55,17,12,17z M12,9L12,9c-0.55,0-1-0.45-1-1v0c0-0.55,0.45-1,1-1h0c0.55,0,1,0.45,1,1v0 C13,8.55,12.55,9,12,9z"/></g></svg> <span><?php echo $wo['lang']['info']; ?></span></div></li>
+						<li class="active"><div><svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24" viewBox="0 0 24 24" width="24"><g><rect fill="none" height="24" width="24"/><rect fill="none" height="24" width="24"/></g><g><path fill="currentColor" d="M22,9V8c0-0.55-0.45-1-1-1h0c-0.55,0-1,0.45-1,1v1h-1c-0.55,0-1,0.45-1,1v0c0,0.55,0.45,1,1,1h1v1c0,0.55,0.45,1,1,1h0 c0.55,0,1-0.45,1-1v-1h1c0.55,0,1-0.45,1-1v0c0-0.55-0.45-1-1-1H22z"/><g><path fill="currentColor" d="M8,12c2.21,0,4-1.79,4-4s-1.79-4-4-4S4,5.79,4,8S5.79,12,8,12z"/><path fill="currentColor" d="M8,13c-2.67,0-8,1.34-8,4v3h16v-3C16,14.34,10.67,13,8,13z"/><path fill="currentColor" d="M12.51,4.05C13.43,5.11,14,6.49,14,8s-0.57,2.89-1.49,3.95C14.47,11.7,16,10.04,16,8S14.47,4.3,12.51,4.05z"/><path fill="currentColor" d="M16.53,13.83C17.42,14.66,18,15.7,18,17v3h2v-3C20,15.55,18.41,14.49,16.53,13.83z"/></g></g></svg> <span><?php echo $wo['lang']['follow']; ?></span></div></li>
+					</ul>
+					<hr>
+					<div class="wow_usr_steps text-center">
+						<h4><?php echo $wo['lang']['get_latest_activity'];?></h4>
+						<br><br>
+						<div class="row">
+							<?php
+								$user_id = array();
+								foreach ($wo['users'] as $wo['result']) {
+									$user_id[] = $wo['result']['user_id'];
+									$wo['result']['no_btn'] = true;
+									echo Wo_LoadPage('start_up/user-result');
+								}
+								echo '<input type="hidden" name="users" id="users-id" value="' . implode(',' , $user_id) . '">';
+							?>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="valign wow_usr_steps_cont">
+						<small class="skip-step pointer" onclick="Wo_SkipStep('startup_follow');"><?php echo $wo['lang']['start_up_skip'];?></small>
+						<button class="btn con-button btn-main btn-mat disable_btn" onclick="Wo_SubmitFollow();"><?php $string = str_replace('{number}', count($wo['users']), $wo['lang']['follow_num']); echo $string;?></button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+function Wo_SubmitFollow() {
+	$('.con-button').attr('disabled', true);
+	$('.con-button').text("<?php echo $wo['lang']['please_wait'];?>");
+	var users = $('#users-id').val();
+	$.post(Wo_Ajax_Requests_File() + '?f=follow_users', {user:users}, function (data) {
+		if (data.status == 200) {
+			window.location.href = '<?php echo Wo_SeoLink('index.php?link1=start-up');?>';
+		}
+	});
+}
+</script>

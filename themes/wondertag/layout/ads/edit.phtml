@@ -1,0 +1,150 @@
+<div class="container">
+	<h2 class="tag_page_title"><?php echo $wo['lang']['advertisement']; ?></h2>
+	<?php echo Wo_LoadPage('ads/includes/header'); ?>
+	<div class="page-margin">
+		<div class="page-margin wow_content wow_sett_content">
+			<div class="valign wo_page_hdng">
+				<span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M2,6V8H14V6H2M2,10V12H14V10H2M20.04,10.13C19.9,10.13 19.76,10.19 19.65,10.3L18.65,11.3L20.7,13.35L21.7,12.35C21.92,12.14 21.92,11.79 21.7,11.58L20.42,10.3C20.31,10.19 20.18,10.13 20.04,10.13M18.07,11.88L12,17.94V20H14.06L20.12,13.93L18.07,11.88M2,14V16H10V14H2Z"></path></svg></span> <?php echo $wo['lang']['edit_ads']; ?>
+			</div>
+			<form class="form form-horizontal" method="get" id="update-ads">
+				<div id="update-ads-alert" class="w100"></div>
+				<div class="row">
+					<div class="col-xl-4">
+						<div class="tag_alone_label">
+							<label><?php echo $wo['lang']['ad_img_help']; ?></label>
+						</div>
+						<div class="wow_fcov_image edit_ads_image">
+							<div id="wow_fcov_img_holder">
+								<img src="<?php echo $wo['ad-data']['ad_media'];?>">
+							</div>
+							<div class="valign upload_ad_image" onclick="document.getElementById('ad-media-file').click(); return false">
+								<div class="btn btn-mat btn-default upload_ad_image_content">
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M8.5,13.5L11,16.5L14.5,12L19,18H5M21,19V5C21,3.89 20.1,3 19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19Z"></path></svg> <?php echo $wo['lang']['choose_image'] ?>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-8">
+						<label class="tag_field">
+							<input name="name" type="text" max="50" placeholder=" " value="<?php echo $wo['ad-data']['name']; ?>">
+							<span><?php echo $wo['lang']['comp_name']; ?></span>
+						</label>
+						<label class="tag_field">
+							<input name="headline" type="text" placeholder=" " value="<?php echo $wo['ad-data']['headline']; ?>">
+							<span><?php echo $wo['lang']['camp_title']; ?></span>
+						</label>
+						<label class="tag_field">
+							<textarea id="description" name="description" rows="3" placeholder=" "><?php echo strip_tags($wo['ad-data']['description']); ?></textarea>
+							<span><?php echo $wo['lang']['camp_desc']; ?></span>
+						</label>
+						<span class="help-block"><?php echo $wo['lang']['ad_desc_help'] ?></span>
+						<label class="tag_field">
+							<input id="url" name="website" type="url" value="<?php echo $wo['ad-data']['url']; ?>" placeholder=" ">
+							<span><?php echo $wo['lang']['website_url']; ?></span>
+						</label>
+						<?php if ($wo['config']['pages'] == 1) { ?>
+							<span class="help-block"><?php echo $wo['lang']['select_a_page_or_link'] ?></span>
+							<label class="tag_field">
+								<select name="page" id="select-page">			
+									<?php if ($wo['my-pages'] && count($wo['my-pages']) > 0): ?>
+										<option value=""><?php echo $wo['lang']['select']; ?></option>
+									<?php foreach ($wo['my-pages'] as $wo['pageItem']): ?>
+										<option value="<?php echo $wo['pageItem']['page_id']; ?>"><?php echo $wo['pageItem']['page_name']; ?></option>
+									<?php endforeach; ?>
+									<?php else:?>
+										<option disabled="disabled" selected="selected"><?php echo $wo['lang']['no_pages_found']; ?></option>
+									<?php endif;?>
+								</select>
+								<span><?php echo $wo['lang']['my_pages']; ?></span>
+							</label>
+						<?php } ?>
+						<label class="tag_field">
+							<input id="ads-location" name="location" type="text" placeholder=" " value="<?php echo $wo['ad-data']['location']; ?>">
+							<span><?php echo $wo['lang']['location']; ?></span>
+						</label>
+						<?php if ($wo['config']['google_map']) { ?>
+							<div id="review-ads-location">
+								<div id="place">
+									<iframe width="100%" frameborder="0" src="https://www.google.com/maps/embed/v1/place?key=<?php echo $wo['config']['google_map_api']; ?>&q=<?php echo $wo['ad-data']['location']; ?>&language=en"></iframe>
+								</div>
+							</div><br>
+						<?php }?>
+						<label class="tag_field">
+							<select name="audience-list[]" class="selectpicker" data-size="7" multiple data-live-search="true" data-actions-box="true" data-selected-text-format="count > 3">
+								<?php foreach ($wo['audience'] as $key => $value): ?>
+									<option value="<?php echo $key; ?>" <?php if (in_array($key, $wo['ad-data']['country_ids']) && $key != 0){ echo 'selected';}?>><?php echo $value; ?></option>
+								<?php endforeach;?>
+							</select>
+							<span><?php echo $wo['lang']['audience']; ?></span>
+						</label>
+						<div class="row">
+							<div class="col-lg-6">
+								<label class="tag_field">
+									<select name="gender">
+										<option value="all" <?php if ($wo['ad-data']['gender'] == 'all') {echo "checked";}?> ><?php echo $wo['lang']['all']; ?></option>
+										<?php foreach ($wo['genders'] as $key => $gender) { ?>
+											<option value="<?php echo($key) ?>" <?php echo ($wo['ad-data']['gender'] == $key)   ? 'selected' : '';?> ><?php echo $gender; ?></option>
+										<?php } ?>
+									</select>
+									<span><?php echo $wo['lang']['gender']; ?></span>
+								</label>
+							</div>
+							<div class="col-lg-6">
+								<label class="tag_field">
+									<select name="bidding" id="bidding">
+										<option value="clicks" <?php echo ($wo['ad-data']['bidding'] == 'clicks') ? 'selected' : ''; ?>><?php echo str_replace('${{PRICE}}',  Wo_GetCurrency($wo['config']['currency']) . $wo['config']['ad_c_price'], $wo['lang']['pay_per_click']); ?></option>
+										<option value="views" <?php echo ($wo['ad-data']['bidding'] == 'views') ? 'selected' : ''; ?>><?php echo str_replace('${{PRICE}}', Wo_GetCurrency($wo['config']['currency']) . $wo['config']['ad_v_price'], $wo['lang']['pay_per_imprssion']); ?></option>
+									</select>
+									<span><?php echo $wo['lang']['bidding']; ?></span>
+								</label>
+							</div>
+						</div>
+						<div class="text-center">
+							<button class="btn btn-main btn-mat btn-mat-raised disable_btn" type="submit"><?php echo $wo['lang']['save']; ?></button>
+						</div>
+					</div>
+				</div>
+				<input type="file" name="media" class="hidden" id="ad-media-file" accept="image/* video/*">
+			</form>
+			<div class="clear"></div>
+		</div>
+	</div>
+</div>
+
+<script>	
+	jQuery(document).ready(function($) {
+		$('#ad-media-file').on('change', function(event) {
+			$("#wow_fcov_img_holder").html("<img src='" + window.URL.createObjectURL(this.files[0]) + "' alt='Picture'>");
+        });
+
+	    $('.selectpicker').selectpicker();
+
+	    $("#ads-location").change(function(event) {
+	        if ($(this).val().length >= 3) {
+	          Wo_Delay(function(){$("#review-ads-location #place").html('<iframe width="100%" frameborder="0" src="https://www.google.com/maps/embed/v1/place?key=<?php echo $wo['config']['google_map_api']; ?>&q=' + $("#ads-location").val() + '&language=en"></iframe>')},1000)
+	        }
+	        else{
+	          Wo_Delay(function(){$("#review-ads-location #place").html('<iframe width="100%" frameborder="0" src="https://www.google.com/maps/embed/v1/place?key=<?php echo $wo['config']['google_map_api']; ?>&q=us&language=en"></iframe>')},1000)
+	        }
+      	});
+
+      	$('#update-ads').ajaxForm({
+	       	url: Wo_Ajax_Requests_File() + '?f=ads&s=update&ad-id=<?php echo $_GET['id']; ?>&a=0',
+	       	type:"POST",
+	       	beforeSend: function() {
+	        	$('#update-ads').find('.disable_btn').attr('disabled','disabled');
+	       	},
+	       	success: function(data) {
+	        	scrollToTop();
+	        	if (data['status'] == 200) {
+	          		$("#update-ads-alert").html('<div class="alert alert-success">'+ data['message'] +'</div>');
+	          		window.location = data.url;
+	        	} 
+	        	else if (data['message']) {
+	          		$("#update-ads-alert").html('<div class="alert alert-danger">' + data['message'] + '</div>');
+	        	} 
+	       		$('#update-ads').find('.disable_btn').removeAttr("disabled");
+      		}
+  		});
+	});
+</script>

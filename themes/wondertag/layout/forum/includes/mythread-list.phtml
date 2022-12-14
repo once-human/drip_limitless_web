@@ -1,0 +1,19 @@
+<div class="wow_forum_sections mythread-list" data-thread-ident="<?php echo $wo['thread']['id']; ?>">
+	<div class="section-list">
+		<div class="titles">
+			<a href="<?php echo $wo['thread']['url'];?>" data-ajax="?link1=showthread&tid=<?php echo $wo['thread']['id'];?>" class="ftitle"><?php echo $wo['thread']['headline']; ?></a>
+			<div class="fdesc"><?php echo $wo['forum']['description']; ?></div>
+		</div>
+		<div class="forum-meta-foot">
+			<div class="forum-meta-d posts">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22C17.5 22 22 17.5 22 12S17.5 2 12 2M16.3 15.2L11 12.3V7H12.5V11.4L17 13.9L16.3 15.2Z"/></svg> <?php echo Wo_Time_Elapsed_String($wo['thread']['posted']); ?>
+			</div>
+			<div class="forum-meta-d posts">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z"/></svg> <?php echo $wo['thread']['views']; ?> <?php echo $wo['lang']['views']; ?>
+			</div>
+			<span class="middot">·</span>
+			<a class="btn btn-link btn-sm" href="<?php echo $wo['thread']['edit_url']; ?>" data-ajax="?link1=edithread&tid=<?php echo $wo['thread']['id'];?>"><?php echo $wo['lang']['edit'] ?></a>
+			<a class="btn btn-link btn-sm delete-thread" id="<?php echo $wo['thread']['id']; ?>"><?php echo $wo['lang']['delete'] ?></a>
+		</div>
+	</div>
+</div>

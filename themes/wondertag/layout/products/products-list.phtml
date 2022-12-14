@@ -1,0 +1,16 @@
+<div class="col-6 col-md-4 col-lg-4 col-xl-3 product tag_prods_list" id="product-<?php echo $wo['product']['id']?>" data-id="<?php echo $wo['product']['id']?>">
+	<div class="wow_content product_main">
+		<a href="<?php echo $wo['product']['url']?>" class="product_image"><img src="<?php echo $wo['product']['images'][0]['image_org'];?>"></a>
+		<div class="product_info">
+			<h2 class="truncate"><a href="<?php echo $wo['product']['url']?>" title="<?php echo $wo['product']['name']?>"><?php echo $wo['product']['name']?></a></h2>
+			<b class="truncate"><?php echo (!empty($wo['currencies'][$wo['product']['currency']]['symbol'])) ? $wo['currencies'][$wo['product']['currency']]['symbol'] : $wo['config']['classified_currency_s'];?><?php echo $wo['product']['price']?></b>
+		</div>
+		<?php if ($wo['loggedin']) { if ($wo['product']['seller']['id'] != $wo['user']['user_id']) { ?>
+			<button class="contact btn btn-success btn-mat" onclick="Wo_OpenChatTab(<?php echo $wo['product']['seller']['id']?>,0,<?php echo $wo['product']['id']?>)" title="<?php echo $wo['lang']['contact_seller'] ?>"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M8.5,18l3.5,4l3.5-4H19c1.103,0,2-0.897,2-2V4c0-1.103-0.897-2-2-2H5C3.897,2,3,2.897,3,4v12c0,1.103,0.897,2,2,2H8.5z M7,7h10v2H7V7z M7,11h7v2H7V11z"></path></svg></button> 
+		<?php } else { ?>
+			<a href="<?php echo Wo_SeoLink('index.php?link1=edit-product&id=' . $wo['product']['id']);?>" class="edit btn btn-success btn-mat" title="<?php echo $wo['lang']['edit_product'] ?>"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"></path></svg></a>
+		<?php } ?>
+		<?php } ?>
+	</div>
+	<div class="clear"></div>
+</div>

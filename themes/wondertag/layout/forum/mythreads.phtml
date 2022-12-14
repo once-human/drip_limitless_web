@@ -1,0 +1,49 @@
+<?php echo Wo_LoadPage('forum/headers/header'); ?>
+<div role="tabpanel" class="tab-pane active" id="showthread">
+	<div class="page-margin wow_content wow_sett_content">
+		<div class="valign wo_page_hdng">
+			<span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M2 14H8V20H2M16 8H10V10H16M2 10H8V4H2M10 4V6H22V4M10 20H16V18H10M10 16H22V14H10"></path></svg></span> <?php echo $wo['lang']['my_threads'] ?>
+		</div>
+		<?php if (count($wo['threads']) > 0): ?>
+			<div class="f_topics" id="mythread-list">
+				<?php foreach ($wo['threads'] as $wo['thread']): ?>
+			    	<?php echo Wo_LoadPage("forum/includes/mythread-list"); ?>
+			    <?php endforeach; ?>
+			</div>
+		<?php else: ?>
+			<?php echo '<div class="empty_state"><svg height="512" viewBox="0 0 32 32" width="512" xmlns="http://www.w3.org/2000/svg"><path d="m26 32h-20c-3.314 0-6-2.686-6-6v-20c0-3.314 2.686-6 6-6h20c3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6z" fill="#fff9dd"/><path d="m17.5 8h-7.667c-1.013 0-1.833.82-1.833 1.833v10.333c0 1.014.82 1.834 1.833 1.834h3.267c.067-.267.187-.52.34-.753l3.48-5.653c.447-.767 1.313-1.26 2.247-1.26.053 0 .113 0 .167.007v-4.508c-.001-1.013-.821-1.833-1.834-1.833zm-6.833 2.667h2.667c.367 0 .667.3.667.667s-.301.666-.668.666h-2.667c-.366 0-.666-.3-.666-.667s.3-.666.667-.666zm3.333 6.666h-3.333c-.367 0-.667-.3-.667-.667s.3-.666.667-.666h3.333c.367 0 .667.3.667.667s-.3.666-.667.666zm2.667-2.666h-6c-.367 0-.667-.3-.667-.667s.3-.667.667-.667h6c.367 0 .667.3.667.667-.001.367-.301.667-.667.667z" fill="#ffd200"/><path d="m23.805 22.016-3.519-5.716c-.23-.391-.659-.634-1.119-.634s-.889.243-1.113.622l-3.51 5.704c-.137.204-.21.447-.21.703 0 .718.587 1.303 1.308 1.303h7.051c.72.002 1.307-.583 1.307-1.301 0-.256-.073-.499-.195-.681zm-4.638.651c-.368 0-.667-.298-.667-.667 0-.368.298-.667.667-.667.368 0 .667.298.667.667-.001.368-.299.667-.667.667zm.666-2.334c0 .368-.298.667-.667.667-.368 0-.667-.299-.667-.667v-1.333c0-.368.298-.667.667-.667.368 0 .667.299.667.667z" fill="#ffe777"/></svg>' . $wo['lang']['no_threads_found'] .  '</div>'; ?>
+		<?php endif; ?>	
+	</div>
+    <div class="posts_load">
+        <?php if (count($wo['threads']) > 5): ?>
+			<div class="load-more">
+				<button class="btn btn-default text-center pointer forum-posts-load"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"></path></svg></span> <?php echo $wo['lang']['load_more_posts'] ?></button>
+			</div>
+        <?php endif ?>
+    </div>
+</div>
+<?php echo Wo_LoadPage('forum/headers/footer'); ?>
+<?php echo Wo_LoadPage('forum/includes/delete-thread'); ?>
+
+<?php if (count($wo['threads']) >= 0): ?>
+	<script>
+		$(".forum-posts-load").click(function () {
+		      $.ajax({
+		         url: Wo_Ajax_Requests_File(),
+		         type: 'GET',
+		         dataType: 'json',
+		         data: {
+		         	f:"load-my-forum-posts",
+		         	offset:($(".mythread-list").length > 0) ? $(".mythread-list:last").attr('data-thread-ident') : 0,
+		         },
+		         success:function(data){
+		            if (data['status'] == 200) {
+		                $("#mythread-list").append(data['html'])
+		             }else{
+		               $(".posts_load").remove()
+		             }
+		         }
+		      });
+		   	});
+	</script>
+<?php endif ?>

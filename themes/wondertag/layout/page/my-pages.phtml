@@ -1,0 +1,23 @@
+<div class="page-margin">
+	<div class="container">
+		<h2 class="tag_page_title m5"><?php echo $wo['lang']['pages']; ?></h2>
+		<ul class="list-unstyled tag_page_nav">
+			<li class="active separate"><a class="btn-mat" href="<?php echo Wo_SeoLink('index.php?link1=pages'); ?>" data-ajax="?link1=pages"><?php echo $wo['lang']['my_pages'] ?></a></li>
+			<li><a class="btn-mat" href="<?php echo Wo_SeoLink('index.php?link1=suggested-pages'); ?>" data-ajax="?link1=suggested-pages"><?php echo $wo['lang']['suggested_pages'] ?></a></li>
+			<li><a class="btn-mat" href="<?php echo Wo_SeoLink('index.php?link1=liked-pages'); ?>" data-ajax="?link1=liked-pages"><?php echo $wo['lang']['liked_pages'] ?></a></li>
+		</ul>
+		<div class="page-margin wow_content">
+			<?php
+				$pages = Wo_GetMyPages();
+				if (count($pages) > 0) {
+					echo '<div><a href="' . Wo_SeoLink('index.php?link1=create-page') . '" data-ajax="?link1=create-page" class="valign tag_create_box tag_create_page"><svg height="40" viewBox="0 0 512 512" width="40" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="m256 0c-141.164062 0-256 114.835938-256 256s114.835938 256 256 256 256-114.835938 256-256-114.835938-256-256-256zm112 277.332031h-90.667969v90.667969c0 11.777344-9.554687 21.332031-21.332031 21.332031s-21.332031-9.554687-21.332031-21.332031v-90.667969h-90.667969c-11.777344 0-21.332031-9.554687-21.332031-21.332031s9.554687-21.332031 21.332031-21.332031h90.667969v-90.667969c0-11.777344 9.554687-21.332031 21.332031-21.332031s21.332031 9.554687 21.332031 21.332031v90.667969h90.667969c11.777344 0 21.332031 9.554687 21.332031 21.332031s-9.554687 21.332031-21.332031 21.332031zm0 0"></path></svg>' . $wo['lang']['create_new_page'] .'</a></div>';
+					foreach ($pages as $wo['page']) {
+						echo Wo_LoadPage('page/pages-list');
+					}
+				} else {
+					echo '<div class="empty_state"><svg height="512" viewBox="0 0 32 32" width="512" xmlns="http://www.w3.org/2000/svg"><path d="m26 32h-20c-3.314 0-6-2.686-6-6v-20c0-3.314 2.686-6 6-6h20c3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6z" fill="#ffe6e2"/><path d="m22.167 11.333h-2.833v-1.5c0-.643-.523-1.167-1.167-1.167h-8.167c0-.368-.299-.666-.667-.666s-.666.298-.666.667v.5 7.333 6.833c0 .369.298.667.666.667s.667-.298.667-.667v-6.333h2.333v1.5c0 .643.523 1.167 1.167 1.167h8.667c.643 0 1.167-.523 1.167-1.167v-6c-.001-.643-.524-1.167-1.167-1.167z" fill="#fc573b"/></svg>' . $wo['lang']['no_pages_found'] . '<div><a href="' . Wo_SeoLink('index.php?link1=create-page') . '" data-ajax="?link1=create-page" class="btn btn-mat btn-main">' . $wo['lang']['create_new_page'] .'</a></div></div>';
+				}
+			?>
+		</div>
+	</div>
+</div>

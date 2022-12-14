@@ -1,0 +1,21 @@
+<div class="col-lg-6 col-md-6 events-list-wrapper" data-event="<?php echo($wo['event']['id']);?>">
+	<div class="wow_content events-list-cover">
+		<?php echo Wo_GetInterestedButton($wo['event']['id']);?>
+		<a href="<?php echo $wo['event']['url']; ?>" class="event_cover" data-ajax="?link1=show-event&eid=<?php echo($wo['event']['id']);?>">
+			<img src="<?php echo $wo['event']['cover']; ?>" class="events-list-cover-img">
+		</a>
+		<div class="event-l-info">
+			<span><?php echo $wo['event']['start_date'];?></span>
+			<h3 class="truncate events-list-name">
+				<a href="<?php echo $wo['event']['url']; ?>" data-ajax="?link1=show-event&eid=<?php echo($wo['event']['id']);?>" title="<?php echo $wo['event']['name']; ?>"><?php echo $wo['event']['name']; ?></a>
+			</h3>
+			<div class="valign event-l-btns">
+				<div class="truncate" title="<?php echo $wo['event']['location'];?>">
+					<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path fill="currentColor" d="M12 2C8.13 2 5 5.13 5 9c0 4.17 4.42 9.92 6.24 12.11.4.48 1.13.48 1.53 0C14.58 18.92 19 13.17 19 9c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg> <?php echo $wo['event']['location'];?>
+				</div>
+				<?php echo Wo_GetGoingButton($wo['event']['id']);?>
+			</div>
+		</div>
+	</div>
+	<div class="clear"></div>
+</div>

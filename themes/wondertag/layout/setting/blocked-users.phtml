@@ -1,0 +1,16 @@
+<h2 class="tag_page_title"><button type="button" class="btn setting_navigation" onclick="$('.tag_sett_sidebar').fadeIn(50);$('#tag_sett_right_prt').fadeOut(50);"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" fill="currentColor"></path></svg></button> <?php echo $wo['lang']['blocked_users']; ?></h2>
+<div class="wow_sett_content wow_content p20">
+	<div class="row">
+		<?php
+			$blocked_users = Wo_GetBlockedMembers($wo['setting']['user_id']);
+			if (count($blocked_users) > 0) {
+				foreach ($blocked_users as $wo['member']) {
+					echo Wo_LoadPage('setting/blocked-users-list');
+				}
+			} else {
+				echo '<div class="empty_state"><svg enable-background="new 0 0 32 32" height="512" viewBox="0 0 32 32" width="512" xmlns="http://www.w3.org/2000/svg"><path d="m26 32h-20c-3.314 0-6-2.686-6-6v-20c0-3.314 2.686-6 6-6h20c3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6z" fill="#fff9dd"/><g fill="#ffe777"><circle cx="10.667" cy="14.917" r="1.333"/><path d="m12.447 17.183c-.673.507-1.113 1.32-1.113 2.233v.167h-2.834c-.273 0-.5-.227-.5-.5v-.333c0-1.013.82-1.833 1.833-1.833h1.667c.347 0 .673.1.947.266z"/><circle cx="21.333" cy="14.917" r="1.333"/><path d="m24 18.75v.333c0 .273-.227.5-.5.5h-2.833v-.167c0-.913-.44-1.727-1.113-2.233.273-.167.6-.267.947-.267h1.667c1.012.001 1.832.821 1.832 1.834z"/></g><circle cx="16" cy="14.583" fill="#ffd200" r="2"/><path d="m17.833 17.583h-3.667c-1.011 0-1.833.822-1.833 1.833v1c0 .276.224.5.5.5h6.333c.276 0 .5-.224.5-.5v-1c.001-1.01-.822-1.833-1.833-1.833z" fill="#ffd200"/></svg>' . $wo['lang']['no_members_found'] . '</div>';
+			}
+		?>
+		<div class="clear"></div>
+	</div>
+</div>

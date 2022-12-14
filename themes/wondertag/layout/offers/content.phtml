@@ -1,0 +1,95 @@
+<div class="page-margin">
+	<div class="container">
+		<h2 class="tag_page_title m5"><?php echo $wo['lang']['offers'] ?></h2>
+		<div class="page-margin">
+			<?php
+				$data = array();
+				$data['limit'] = 10;
+				$offers = Wo_GetAllOffers($data);
+				if (count($offers) > 0) {
+			?>
+			<div class="row" id="products">
+				<?php
+					foreach ($offers as $key => $wo['offer']) {
+						echo Wo_LoadPage('offers/offers'); 
+					}
+				} else {
+					echo '<div class="empty_state"><svg xmlns="http://www.w3.org/2000/svg" height="512" viewBox="0 0 32 32" width="512"><path d="m26 32h-20c-3.314 0-6-2.686-6-6v-20c0-3.314 2.686-6 6-6h20c3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6z" fill="#ffe6e2"/><path d="m19.889 17.216-3.576-3.576c-.094-.094-.221-.146-.354-.146-.001 0-.001 0-.001 0l-3.293.006c-.275.001-.498.223-.499.499l-.007 3.293c0 .133.053.261.146.355l3.576 3.576s0 .001.001.001c.227.227.525.34.824.34s.597-.113.825-.34l2.358-2.358c.454-.456.454-1.195 0-1.65zm-5.222-.549c-.369 0-.667-.299-.667-.667s.298-.667.667-.667c.368 0 .667.298.667.667-.001.368-.299.667-.667.667z" fill="#fc573b"/><path d="m22 8.667h-12c-1.103 0-2 .897-2 2v10.667c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-10.667c0-1.103-.897-2-2-2zm0 13.333h-12c-.368 0-.667-.299-.667-.667v-9.333h13.333v9.333c.001.368-.298.667-.666.667z" fill="#fc573b"/></svg> ' . $wo['lang']['no_available_offers'] . '</div>';
+					}
+				?>
+			</div>
+			<div class="posts_load load-produts">
+				<?php if (count($offers) > 0): ?>
+				<div class="load-more">
+					<button class="btn btn-default text-center wo_load_more" onclick="Wo_LoadOffers();">
+						<span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"></path></svg></span> <?php echo $wo['lang']['load_more_offers'] ?>
+					</button>
+				</div>
+				<?php endif ?>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="delete-offer-modal" role="dialog">
+	<div class="modal-dialog wow_mat_mdl modal-md">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title"><?php echo $wo['lang']['delete_offer']; ?></h4>
+			</div>
+			<div class="modal-body">
+				<p><?php echo $wo['lang']['confirm_delete_offer']; ?></p>
+				<input type="hidden" id="delet_offer_id">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default btn-mat disable_btn" data-dismiss="modal" aria-label="Close"><?php echo $wo['lang']['cancel'] ?></button>
+				<button id="delete-all-post" type="button" onclick="Wo_DeleteOffer();" class="btn btn-main btn-mat disable_btn"><?php echo $wo['lang']['delete']; ?></button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	function Wo_OpenOfferDeleteBox(offer_id) {
+	  $('#delet_offer_id').val(offer_id);
+	  var delete_box = $('#delete-offer-modal');
+	  delete_box.modal({
+	    show: true
+	  });
+	}
+	function Wo_DeleteOffer() {
+	  Wo_CloseLightbox();
+	  var offer_id = $('#delet_offer_id').val();
+	  var delete_box = $('#delete-offer-modal');
+	  $('#delete-offer-modal').find('.disable_btn').attr('disabled','disabled');
+	  $.get(Wo_Ajax_Requests_File(), {
+	    f: 'offer',
+	    s: 'delete_offer',
+	    offer_id: offer_id
+	  }, function (data) {
+	    if(data.status == 200) {
+	      delete_box.modal('hide');
+	      setTimeout(function () {
+	        $('#product-' + offer_id).slideUp(200, function () {
+	          $(this).remove();
+	        });
+	      }, 300);
+	    }
+	    $('#delete-offer-modal').find('.disable_btn').removeAttr("disabled");
+	  });
+	}
+
+function Wo_LoadOffers() {
+	var $last_id = $('.product:last').attr('data-id');
+	$.post(Wo_Ajax_Requests_File() + '?f=offer&s=load_more', {last_id: $last_id}, function (data) {
+		if (data.status == 200) {
+			if (data.html.length > 0) {
+				$('.load-produts').html('<div class="load-more"><button class="btn btn-default text-center pointer" onclick="Wo_LoadOffers();"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"></path></svg></span> <?php echo $wo['lang']['load_more_offers'] ?></button></div>');
+				$('#products').append(data.html);
+			} else {
+				$('.load-produts').html('<div class="load-more"><button class="btn btn-default text-center pointer" onclick="Wo_LoadOffers();"><?php echo $wo['lang']['no_available_offers'] ?></button></div>');
+			}
+		}
+	});
+}
+</script>

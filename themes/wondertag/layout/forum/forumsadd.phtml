@@ -1,0 +1,52 @@
+<?php echo Wo_LoadPage('forum/headers/header'); ?>
+<div id="forumsadd">
+	<div class="page-margin wow_forum_dis_head">
+		<h4><a href="<?php echo Wo_SeoLink('index.php?link1=forums&fid='.$wo['forum_data']['id']);?>"><?php echo $wo['forum_data']['name']; ?></a></h4>
+		<p><?php echo($wo['forum_data']['description']) ?></p>
+	</div>
+	<div class="page-margin wow_content wow_sett_content">
+		<div class="valign wo_page_hdng">
+			<span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M20.7,7C21.1,6.6 21.1,6 20.7,5.6L18.4,3.3C18,2.9 17.4,2.9 17,3.3L15.2,5.1L19,8.9M3,17.2V21H6.8L17.8,9.9L14.1,6.1L3,17.2M7,2V5H10V7H7V10H5V7H2V5H5V2H7Z"></path></svg></span> <?php echo $wo['lang']['create_new_topic'];?>
+		</div>
+		<form action="#" class="form" id="newtopic" method="post">
+			<div id="newpost-alert"></div>
+			<label class="tag_field">
+				<input type="text" name="headline" id="headline" placeholder=" ">
+				<span><?php echo $wo['lang']['headline']; ?></span>
+			</label>
+			<div class="form-group">
+				<textarea rows="10" class="form-control" id="topicpost" name="topicpost"></textarea>
+			</div>
+			<div class="text-center">
+				<button class="btn btn-main btn-mat btn-mat-raised disable_btn" id="forum-search-btn" type="submit"><?php echo $wo['lang']['publish']; ?></button>
+			</div>
+		</form>
+	</div>
+	<div class="clear"></div>
+</div>
+<div class="clear"></div>
+<?php echo Wo_LoadPage('forum/headers/footer'); ?>
+
+<script>
+jQuery(document).ready(function($) {
+	$('#newtopic').ajaxForm({
+	      url: Wo_Ajax_Requests_File()  +  '?f=addtopic&fid=<?php echo $wo['forum_data']['id']; ?>&hash=' + $('.main_session').val(),
+	      beforeSend: function() {
+	        $('#newtopic').find('.disable_btn').attr('disabled','disabled');
+	      },
+	      success: function(data) {
+	        scrollToTop();
+	        if (data['status'] == 200) {
+	         	$("#newpost-alert").html('<div class="alert alert-success">'+ data['message'] +'</div>');
+	          	window.location = data['url'];
+	        } else {
+	         	$("#newpost-alert").html('<div class="alert alert-danger">' + data['message'] + '</div>');
+	        } 
+	        $('#newtopic').find('.disable_btn').removeAttr("disabled");
+	      }
+	});
+
+	$("#topicpost").bbcode()
+	$("#topicpost").autogrow({vertical: true, horizontal: false});
+});
+</script>

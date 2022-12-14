@@ -1,0 +1,334 @@
+<h2 class="tag_page_title"><button type="button" class="btn setting_navigation" onclick="$('.tag_sett_sidebar').fadeIn(50);$('#tag_sett_right_prt').fadeOut(50);"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" fill="currentColor"></path></svg></button> <?php echo $wo['lang']['general_setting']; ?></h2>
+<div class="wow_sett_content wow_content p20">
+	<form class="setting-general-form form-horizontal tag_field_full_margin wo_settings_page" method="post">
+		<div class="setting-general-alert setting-update-alert"></div>
+		<label class="tag_field">
+			<input id="username" name="username" type="text" max="50" placeholder=" " value="<?php echo $wo['setting']['username']?>" onkeyup="Wo_CheckUsername(this.value);" autocomplete="off">
+			<span><?php echo $wo['lang']['username']; ?></span>
+		</label>
+		<div class="help-block checking"></div>
+		<label class="tag_field">
+			<input id="email" name="email" type="email" placeholder=" " value="<?php echo $wo['setting']['email']?>">
+			<span><?php echo $wo['lang']['email']; ?></span>
+		</label>
+		<?php if (($wo['config']['sms_or_email'] == 'mail') && !empty($wo['setting']['new_email']) && $wo['config']['emailValidation'] == 1) { ?>
+			<div class="help-block unverify_color"><?php echo ($wo['setting']['new_email']); ?>(<?php echo ($wo['lang']['unverified']); ?>)</div>
+		<?php } ?>
+		<div class="row">
+			<div class="col-lg-6">
+				<?php
+					$cutoff   = 1930;
+					$now      = date('Y');
+					$birthday = explode('-', $wo['setting']['birthday']);
+				?>
+				<label class="tag_field">
+					<input id="usr_birthday" name="birthday" type="text" autocomplete="off" placeholder=" " value="<?php echo $wo['setting']['birthday']?>"> 
+					<span><?php echo $wo['lang']['birthday']; ?></span>
+				</label>
+			</div>
+			<div class="col-lg-6">
+				<label class="tag_field">
+					<input name="phone_number" id="phone_number" type="tel" placeholder=" " value="<?php echo $wo['setting']['phone_number']?>" autocomplete="off">
+					<span><?php echo $wo['lang']['phone_number']; ?></span>
+				</label>
+				<?php if (($wo['config']['sms_or_email'] == 'sms') && !empty($wo['setting']['new_phone']) && $wo['config']['emailValidation'] == 1) { ?>
+					<div class="help-block unverify_color"><?php echo ($wo['setting']['new_phone']); ?>(<?php echo ($wo['lang']['unverified']); ?>)</div>
+				<?php } ?>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-6">
+				<label class="tag_field">
+					<select id="country" name="gender">
+						<?php foreach ($wo['genders'] as $key => $gender) { ?>
+							<option value="<?php echo($key) ?>" <?php echo ($wo['setting']['gender'] == $key)   ? 'selected' : '';?> ><?php echo $gender; ?></option>
+						<?php } ?>
+					</select>
+					<span><?php echo $wo['lang']['gender']; ?></span>
+				</label>
+			</div>
+			<div class="col-lg-6">
+				<label class="tag_field">
+					<select id="country" name="country">
+						<?php 
+						foreach ($wo['countries_name'] as $country_ids => $country) { 
+							$country_id = $wo['setting']['country_id'];
+							$selected_contry = ($country_ids == $country_id) ? ' selected' : '' ;
+						?>
+							<option value="<?php echo $country_ids;?>" <?php echo $selected_contry;?> ><?php echo $country;?></option>
+						<?php } ?>
+					</select>
+					<span><?php echo $wo['lang']['country']; ?></span>
+				</label>
+			</div>
+		</div>
+		<?php if ($wo['config']['weather_widget'] == 1 && !empty($wo['config']['weather_key'])) { ?>
+			<div class="row">
+				<div class="col-lg-6">
+					<label class="tag_field">
+						<select id="weather_unit" name="weather_unit">
+							<option value="us" <?php echo ($wo['setting']['weather_unit'] == 'us')   ? 'selected' : '';?> >°F</option>
+							<option value="uk" <?php echo ($wo['setting']['weather_unit'] == 'uk')   ? 'selected' : '';?> >°C</option>
+						</select>
+						<span><?php echo $wo['lang']['weather_unit']; ?></span>
+					</label>
+				</div>
+			</div>
+		 <?php } ?>
+		
+		<div class="row">
+			<?php if($wo['user']['user_id'] != $wo['setting']['user_id'] && ($wo['is_admin'] || $wo['is_moderoter'])) { ?>
+				<hr class="style-two">
+				<?php if(!$wo['is_moderoter']) { ?>
+					<div class="col-lg-6">
+						<label class="bold"><?php echo $wo['lang']['type'];?></label>
+						<div class="row mb-15">
+							<?php 
+								$selected_type_user  = ($wo['setting']['admin'] == 0)   ? ' checked' : '';
+								$selected_type_admin = ($wo['setting']['admin'] == 1)   ? ' checked' : '';
+								$selected_type_mod   = ($wo['setting']['admin'] == 2)   ? ' checked' : '';
+							?>
+							<div class="col-md-12">
+								<div class="round-check">
+									<input type="radio" name="type" id="type-0" value="admin" <?php echo $selected_type_admin; ?>>
+									<label for="type-0"><?php echo $wo['lang']['admin']; ?></label> 
+								</div>
+							</div>
+							<div class="col-md-12">
+								<div class="round-check">
+									<input type="radio" name="type" id="type-1" value="user" <?php echo $selected_type_user; ?>>
+									<label for="type-1"><?php echo $wo['lang']['user']; ?></label> 
+								</div>
+							</div>
+							<div class="col-md-12">
+								<div class="round-check">
+									<input type="radio" name="type" id="type-2" value="mod" <?php echo $selected_type_mod; ?>>
+									<label for="type-2"><?php echo $wo['lang']['moderator']; ?></label> 
+								</div>
+							</div>
+						</div>
+					</div>
+				<?php } ?>
+				<div class="col-lg-6">
+					<label class="bold"><?php echo $wo['lang']['status'];?></label>
+					<div class="row mb-15">
+						<?php 
+							$selected_active_yes = ($wo['setting']['active'] == 1)   ? ' checked' : '';
+							$selected_active_no  = ($wo['setting']['active'] == 0 || $wo['setting']['active'] == 2)   ? ' checked' : '';
+						?>
+						<div class="col-md-12">
+							<div class="round-check">
+								<input type="radio" name="active" id="active-0" value="active" <?php echo $selected_active_yes; ?>>
+								<label for="active-0"><?php echo $wo['lang']['active']; ?></label> 
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div class="round-check">
+								<input type="radio" name="active" id="active-1" value="inactive" <?php echo $selected_active_no; ?>>
+								<label for="active-1"><?php echo $wo['lang']['inactive']; ?></label> 
+							</div>
+						</div>
+					</div>
+				</div>
+			<?php } ?>
+		</div>
+		 
+		<?php if($wo['is_admin'] === true || $wo['is_moderoter'] === true) { ?>
+			<label class="bold"><?php echo $wo['lang']['verification'];?></label>
+			<div class="row mb-15">
+				<?php
+					$selected_verified_yes = ($wo['setting']['verified'] == 1)   ? ' checked' : '';
+					$selected_verified_no  = ($wo['setting']['verified'] == 0)   ? ' checked' : '';
+				?>
+				<div class="col-md-12">
+					<div class="round-check">
+						<input type="radio" name="verified" id="verified-0" value="verified" <?php echo $selected_verified_yes; ?> >
+						<label for="verified-0"><?php echo $wo['lang']['verified']; ?></label> 
+					</div>
+				</div>
+				<div class="col-md-12">
+					<div class="round-check">
+						<input type="radio" name="verified" id="verified-1" value="notVerified" <?php echo $selected_verified_no; ?>>
+						<label for="verified-1"><?php echo $wo['lang']['not_verified']; ?></label> 
+					</div>
+				</div>
+			</div>
+			<?php if ($wo['config']['pro'] == 1) { ?>
+				<label class="tag_field">
+					<select id="pro_type" name="pro_type">
+						<?php $pros = Wo_GetProPackages();?>
+						<?php foreach ($pros as $key => $pro) {?>
+							<option value="<?php echo $key;?>" <?php echo ($pro['id'] == $wo['setting']['pro_type']) ? 'selected' : ''; ?>><?php echo $pro['name'];?></option>
+						<?php } ?>
+					</select>
+					<span><?php echo $wo['lang']['member_type']; ?></span>
+				</label>
+			<?php } ?>
+			<label class="tag_field">
+				<input name="wallet" id="wallet" type="text" placeholder=" " value="<?php echo $wo['setting']['wallet']?>" autocomplete="off">
+				<span><?php echo $wo['lang']['wallet']; ?></span>
+			</label>
+		<?php } ?>
+
+		<?php if ($wo['config']['pro'] == 1 && $wo['setting']['pro_type'] != 0 && $wo['setting']['is_pro'] == 1 && empty($_GET['user'])) { ?>
+			<?php $pro_type = Wo_GetUserProType($wo['setting']['pro_type']);?>
+			<div class="text-center estimated_ad_limit tag_refund_req">
+				<img src="<?php echo $wo['setting']['avatar'];?>" alt="<?php echo $wo['setting']['name'];?>">
+				<h4><?php echo $pro_type['type_name'];?></h4>
+				<p><?php echo $wo['lang']['membership']; ?></p>
+				<?php if ($wo['setting']['pro_type'] != 4) {?>
+					<a href="javascript:void();" onclick="Wo_ShowUpgrades();" class="btn btn-mat wo_sett_upgrade"><?php echo $wo['lang']['upgrade'];?></a>
+				<?php }?>
+			</div>
+			<?php if ($wo['setting']['pro_type'] != 4) {?>
+				<div class="valign show-upgrades hidden">
+					<label class="tag_field full_width">
+						<select id="upgrade" name="upgrade">
+							<?php foreach (Wo_GetAvUpgrades($wo['setting']['user_id']) as $key => $value) {?>
+								<option value="<?php echo $key;?>"><?php echo $value;?></option>
+							<?php } ?>
+						</select>
+						<span><?php echo $wo['lang']['membership']; ?></span>
+					</label>
+					<a href="javascript:void();" class="btn btn-mat btn-main-rev" id="upgrade-button" onclick="Wo_GetPayPal();"><?php echo $wo['lang']['upgrade'];?></a>
+				</div>
+			<?php }?>
+		<?php } ?>
+         
+		<?php
+			$fields = Wo_GetProfileFields('general');
+			if (count($fields) > 0) {
+				foreach ($fields as $key => $wo['field']) {
+					echo Wo_LoadPage('setting/profile-fields');
+				}
+				echo '<input name="custom_fields" type="hidden" value="1">';
+			}
+		?>
+		<div class="text-center">
+			<button type="submit" class="btn btn-main btn-mat btn-mat-raised disable_btn" id="update_user_data"><?php echo $wo['lang']['save']; ?></button>
+		</div>
+		<input type="hidden" name="user_id" value="<?php echo $wo['setting']['user_id'];?>">
+		<input type="hidden" name="hash_id" value="<?php echo Wo_CreateSession();?>">
+	</form>
+</div>
+
+<div class="modal fade" id="confirm_updatin_user_date" role="dialog">
+	<div class="modal-dialog wow_mat_mdl modal-md">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title"><?php echo $wo['lang']['important'] ?></h4>
+			</div>
+			<div class="modal-body">
+				<p><?php echo $wo['lang']['unverify']; ?></p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default btn-mat disable_btn" data-dismiss="modal" aria-label="Close"><?php echo $wo['lang']['cancel'] ?></button>
+				<button id="delete-all-post" type="button" onclick="Wo_ConfirmUpdatingUserData();" class="btn btn-main btn-mat disable_btn"><?php echo $wo['lang']['continue']; ?></button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	$(function() {
+	$("#usr_birthday").datepicker({
+		changeMonth: true,
+		changeYear: true,
+		maxDate: new Date('<?php echo date('Y')-14; ?>-12-31'),
+		dateFormat: 'dd-mm-yy',
+		yearRange: "<?php echo date('Y')-129; ?>:<?php echo date('Y')-14; ?>",
+		prevText: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" /></svg>',
+		nextText: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" /></svg>'
+    });
+});
+function Wo_ShowUpgrades() {
+	$('.wo_sett_upgrade').addClass('hidden');
+	$('.show-upgrades').removeClass('hidden');
+}
+function Wo_ConfirmUpdatingUserData(){
+	$('form.setting-general-form').submit();
+	$("#confirm_updatin_user_date").modal('hide');
+}
+
+$(function() {
+
+  $("#update_user_data").click(function(event) {
+	if ('<?php echo $wo['setting']['username']?>' != $('#username').val() && '<?php echo $wo['setting']['verified']?>' == 1) {
+        event.preventDefault();
+        $("#confirm_updatin_user_date").modal('show');
+    }
+  });
+
+  $('form.setting-general-form').ajaxForm({
+    url: Wo_Ajax_Requests_File() + '?f=update_general_settings',
+    beforeSend: function() {
+	  $('.wo_settings_page').find('.disable_btn').attr('disabled','disabled');
+    },
+    success: function(data) {
+      scrollToTop();
+      if (data.status == 200) {
+      	if (data.type == 'phone' || data.type == 'email') {
+      		$('#verify_email_phone').modal('show');
+      	}
+      	else{
+	        <?php if($wo['user']['user_id'] == $wo['setting']['user_id']) { ?>
+				<?php if ($wo['config']['node_socket_flow'] == "1") { ?>
+	        		socket.emit("on_name_changed", {from_id: _getCookie("user_id"), name: data.username_or});
+				<?php } ?>
+	        $('[id^=update-username]').attr('href', data.username);
+	        <?php } ?>
+	        $('.setting-general-alert').html('<div class="alert alert-success">' + data.message + '</div>');
+	        $('.alert-success').fadeIn('fast', function() {
+	           $(this).delay(2500).slideUp(500, function() {
+	              $(this).remove();
+	            });
+	        });
+	    }
+      } else if (data.errors) {
+          var errors = data.errors.join("<br>");
+          $('.setting-general-alert').html('<div class="alert alert-danger">' + errors + '</div>');
+          $('.alert-danger').fadeIn(300);
+      }
+      $('.wo_settings_page').find('.disable_btn').removeAttr("disabled");
+    }
+  });
+
+    $('form.verify_email_phone_form').ajaxForm({
+    url: Wo_Ajax_Requests_File() + '?f=verify_email_phone',
+    beforeSend: function() {
+      $('#verify_email_phone_form_btn').text('<?php echo($wo['lang']['please_wait']) ?>');
+    },
+    success: function(data) {
+      if (data.status == 200) {
+        $('#verify_email_phone_form_alert').html('<div class="alert alert-success">' + data.message + '</div>');
+        $('#verify_email_phone_form_alert').fadeIn('fast', function() {
+          $(this).delay(2500).slideUp(500, function() {
+              $(this).remove();
+              $('#verify_email_phone').modal('hide');
+              location.reload();
+          });
+        });
+      } else if (data.status == 400) {
+        $('#verify_email_phone_form_alert').html('<div class="alert alert-danger">' + data.message + '</div>');
+        $('.alert-danger').fadeIn(300);
+      }
+      $('#verify_email_phone_form_btn').text('<?php echo($wo['lang']['send']) ?>');
+    }
+  });
+});
+
+function Wo_GetPayPal() {
+   type = $('#upgrade').val();
+   $('#upgrade-button').html("<?php echo $wo['lang']['please_wait']?>");
+   $.post(Wo_Ajax_Requests_File() + '?f=get_paypal_url', {type:type, type2:'upgrade'}, function (data) {
+    if (data.status == 200) {
+       window.location.href = data.url;
+    } else {
+      $('#upgrade-button').html('<?php echo $wo["lang"]["upgrade"]?>');
+	  $("body").snackbar({
+		message: "<?php echo $wo['lang']['error_please_try_again']; ?>"
+      });
+    }
+   });
+}
+</script>

@@ -1,0 +1,221 @@
+<div class="page-margin">
+	<div class="container">
+		<?php if ($wo['loggedin'] == true) { ?>
+		<?php if ($wo['config']['nearby_business_system'] == 1) { ?>
+			<div class="wow_content p15 tag_nearby_places">
+				<img src="<?php echo $wo['config']['theme_url'];?>/img/nearby-business.png"/>
+				<h2><?php echo $wo['lang']['nearby_business'] ?></h2>
+				<p><?php echo $wo['lang']['find_nearby_business'] ?></p>
+				<a href="<?php echo($wo['config']['site_url'].'/nearby_business') ?>" data-ajax="?link1=nearby_business" class="btn btn-success btn-mat"><?php echo $wo['lang']['explore'] ?></a>
+			</div>
+		<?php } ?>
+		<?php } ?>
+		<div class="page-margin wow_content p20">
+			<h2 class="tag_page_title text-center"><?php echo $wo['lang']['jobs']; ?></h2>
+			<div class="valign tag_job_jumbo">
+				<div class="dropdown">
+					<a href="#" class="btn btn-mat" data-toggle="dropdown" role="button" aria-expanded="false">
+						<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path fill="currentColor" d="M18.364 17.364L12 23.728l-6.364-6.364a9 9 0 1 1 12.728 0zM12 13a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"></path></svg> <?php echo $wo['lang']['location'];?>
+					</a>
+					<ul class="dropdown-menu dropdown-static-menu tag_create_menu" role="menu">
+						<p class="bold"><?php echo $wo['lang']['location_dist'];?> (km)</p>
+						<div class="select-nearby-users-distance">
+							<form class="valign">
+								<input type="range" class="cusrange" id="nearby-users-distance" name="amountRange" onchange="Wo_SearchJobsNearBy();" value="0" min="1" max="300" oninput="this.form.amountInput.value=this.value">
+								<input type="number" name="amountInput" min="1" max="300" value="1" oninput="this.form.amountRange.value=this.value" readonly="" id="cusrange-reader">
+							</form>
+						</div>
+					</ul>
+				</div>
+				<div class="dropdown">
+					<a href="#" class="btn btn-mat" data-toggle="dropdown" role="button" aria-expanded="false">
+						<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path fill="currentColor" d="M7 11.5a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9zm0 10a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9zm10-10a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9zm0 10a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9z"></path></svg> <?php echo $wo['lang']['categories'];?>
+					</a>
+					<ul class="dropdown-menu tag_create_menu tag_scroll" role="menu">
+						<?php 
+							$category_id = (!empty($_GET['c_id'])) ? (int) $_GET['c_id'] : 0;
+							$type = (!empty($_GET['type'])) ? $_GET['type'] : '';
+							foreach ($wo['job_categories'] as $key => $category) {
+								$active = ($category_id == $key) ? 'active' : '';
+						?>
+							<li class="<?php echo $active?>"><a href="<?php echo Wo_SeoLink('index.php?link1=jobs');?>?c_id=<?php echo($key) ?>&type=<?php echo($type) ?>"><?php echo $category;?></a></li>
+						<?php } ?>
+					</ul>
+				</div>
+				<div class="search-bar">
+					<form action="">
+						<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path fill="currentColor" d="M11 2c4.968 0 9 4.032 9 9s-4.032 9-9 9-9-4.032-9-9 4.032-9 9-9zm0 16c3.867 0 7-3.133 7-7 0-3.868-3.133-7-7-7-3.868 0-7 3.132-7 7 0 3.867 3.132 7 7 7zm8.485.071l2.829 2.828-1.415 1.415-2.828-2.829 1.414-1.414z"></path></svg>
+						<input type="text" onkeyup="Wo_SearchJobs(this.value)" placeholder="<?php echo $wo['lang']['search_for_jobs']; ?>" id="product-text">
+					</form>
+				</div>
+			</div>
+			<ul class="list-unstyled tag_page_nav text-center tag_job_jumbo_nav">
+				<?php 
+					$job_type = array('full_time','part_time','internship','volunteer','contract');
+					$category_id = (!empty($_GET['c_id'])) ? (int) $_GET['c_id'] : 0;
+					$type = (!empty($_GET['type'])) ? $_GET['type'] : '';
+					foreach ($job_type as $key => $category) {
+						$active = ($type == $category) ? 'active' : '';
+				?>
+					<li class="<?php echo $active?>" data_prodect_type_id="<?php echo($category) ?>"><a href="<?php echo Wo_SeoLink('index.php?link1=jobs');?>?c_id=<?php echo($category_id) ?>&type=<?php echo($category) ?>" class="btn-mat"><?php echo $wo['lang'][$category];?></a></li>
+				<?php } ?>
+			</ul>
+		</div>
+		<div class="page-margin mb-0">
+			<?php
+				$category_name = '';
+				$data = array();
+				if (!empty($_GET['c_id'])) {
+					if (is_numeric($_GET['c_id'])) {
+						if (array_key_exists($_GET['c_id'], $wo['job_categories'])) {
+			?>
+				<input type="hidden" value="<?php echo Wo_Secure($_GET['c_id']); ?>" id="c_id" />
+			<?php
+				$category_name = $wo['job_categories'][$_GET['c_id']];
+				$data['c_id'] = Wo_Secure($_GET['c_id']);
+				} } } else {
+					echo '<input type="hidden" value="0" id="c_id" />';
+				}
+				if (!empty($_GET['type'])) {
+					if (in_array($_GET['type'], $job_type)) {
+			?>
+				<input type="hidden" value="<?php echo Wo_Secure($_GET['type']); ?>" id="job_type" />
+			<?php $data['type'] = Wo_Secure($_GET['type']); } } else { echo '<input type="hidden" value="" id="job_type" />'; } ?>
+			<?php
+				$data['limit'] = 10;
+				$jobs = Wo_GetAllJobs($data);
+				if (count($jobs) > 0) {
+			?>
+			<div class="row" id="jobs_list">
+				<?php
+					foreach ($jobs as $key => $wo['job']) {
+						echo Wo_LoadPage('jobs/jobs_list'); 
+					}
+					} else {
+						echo '<div class="empty_state"><svg height="512" viewBox="0 0 32 32" width="512" xmlns="http://www.w3.org/2000/svg"><path d="m26 32h-20c-3.314 0-6-2.686-6-6v-20c0-3.314 2.686-6 6-6h20c3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6z" fill="#ffe6e2"/><g fill="#fc573b"><path d="m22.167 11.333h-3.5v-.833c0-.643-.523-1.167-1.167-1.167h-3c-.643 0-1.167.523-1.167 1.167v.833h-3.5c-1.013 0-1.833.82-1.833 1.834v2.167h6c0-.876.539-1.334 1.167-1.334h1.667c.627 0 1.166.458 1.166 1.333h6v-2.167c0-1.013-.82-1.833-1.833-1.833zm-7.834 0v-.833c0-.092.075-.167.167-.167h3c.092 0 .167.075.167.167v.833z"/><path d="m18 16.667c0 .875-.539 1.333-1.167 1.333h-1.667c-.627 0-1.166-.458-1.166-1.333h-6v4.167c0 1.013.82 1.833 1.833 1.833h12.333c1.013 0 1.833-.82 1.833-1.833v-4.167z"/></g></svg>' . $wo['lang']['no_available_jobs'] . '</div>';
+					}
+				?>
+			</div>
+		</div> 	
+		<div class="posts_load load-produts">
+			<?php if (count($jobs) > 0): ?>
+				<div class="load-more">
+                    <button class="btn btn-default text-center pointer" onclick="Wo_LoadJobs();"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"></path></svg></span> <?php echo $wo['lang']['load_more_jobs'] ?></button>
+                </div>
+			<?php endif ?>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="delete-job-modal" role="dialog">
+	<div class="modal-dialog modal-md wow_mat_mdl">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title"><?php echo $wo['lang']['delete_job']; ?></h4>
+			</div>
+			<div class="modal-body">
+				<p><?php echo $wo['lang']['confirm_delete_job']; ?></p>
+				<input type="hidden" id="delet_job_id">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default btn-mat disable_btn" data-dismiss="modal" aria-label="Close"><?php echo $wo['lang']['cancel']; ?></button>
+				<button id="delete-all-post" type="button" onclick="Wo_DeleteJob();" class="btn btn-main btn-mat disable_btn"><?php echo $wo['lang']['delete']; ?></button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+function Wo_OpenJobDeleteBox(job_id) {
+  $('#delet_job_id').val(job_id);
+  var delete_box = $('#delete-job-modal');
+  delete_box.modal({
+    show: true
+  });
+}
+function Wo_DeleteJob() {
+  Wo_CloseLightbox();
+  var job_id = $('#delet_job_id').val();
+  var delete_box = $('#delete-job-modal');
+  $('#delete-job-modal').find('.disable_btn').attr('disabled','disabled');
+  $.get(Wo_Ajax_Requests_File(), {
+    f: 'job',
+    s: 'delete_job',
+    job_id: job_id
+  }, function (data) {
+    if(data.status == 200) {
+      delete_box.modal('hide');
+      setTimeout(function () {
+        $('#product-' + job_id).slideUp(200, function () {
+          $(this).remove();
+        });
+      }, 300);
+    }
+    $('#delete-job-modal').find('.disable_btn').removeAttr("disabled");
+  });
+}
+function Wo_SearchJobsNearBy() {
+	length = $('#cusrange-reader').val();
+	text_value = $('#job-text').val();
+	var c_id = 0;
+	if ($('#c_id').length > 0) {
+		c_id = $('#c_id').val();
+	}
+	var type = '';
+	if ($('#job_type').length > 0) {
+		type = $('#job_type').val();
+	}
+	$.post(Wo_Ajax_Requests_File() + '?f=job&s=search_jobs', {value: text_value, c_id:c_id,type:type, length: length}, function (data) {
+		if (data.status == 200) {
+			if (data.html.length > 0) {
+				$('#jobs_list').html(data.html);
+			} else {
+				$('#jobs_list').html('<div class="empty_state"><svg height="512" viewBox="0 0 32 32" width="512" xmlns="http://www.w3.org/2000/svg"><path d="m26 32h-20c-3.314 0-6-2.686-6-6v-20c0-3.314 2.686-6 6-6h20c3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6z" fill="#ffe6e2"/><g fill="#fc573b"><path d="m22.167 11.333h-3.5v-.833c0-.643-.523-1.167-1.167-1.167h-3c-.643 0-1.167.523-1.167 1.167v.833h-3.5c-1.013 0-1.833.82-1.833 1.834v2.167h6c0-.876.539-1.334 1.167-1.334h1.667c.627 0 1.166.458 1.166 1.333h6v-2.167c0-1.013-.82-1.833-1.833-1.833zm-7.834 0v-.833c0-.092.075-.167.167-.167h3c.092 0 .167.075.167.167v.833z"/><path d="m18 16.667c0 .875-.539 1.333-1.167 1.333h-1.667c-.627 0-1.166-.458-1.166-1.333h-6v4.167c0 1.013.82 1.833 1.833 1.833h12.333c1.013 0 1.833-.82 1.833-1.833v-4.167z"/></g></svg> <?php echo $wo['lang']['no_available_jobs'] ?></div>');
+			}
+		}
+	});
+}
+function Wo_LoadJobs() {
+	var $c_id = $('#c_id').val();
+	var text = $('#job-text').val();
+	var $last_id = $('.product:last').attr('data-id');
+	var price = $('.product:last').attr('data_price');
+	var length = $('#distance_val').text();
+	var price_sort = $('#PriceSortValue').attr('data_PriceSortType');
+	var type = '';
+	if ($('#job_type').length > 0) {
+		type = $('#job_type').val();
+	}
+	$.post(Wo_Ajax_Requests_File() + '?f=job&s=search_jobs', {last_id: $last_id, c_id:$c_id,type:type, length: length,price_sort:price_sort,price:price,text:text}, function (data) {
+		if (data.status == 200) {
+			if (data.html.length > 0) {
+				$('.load-produts').html('<div class="load-more"><button class="btn btn-default text-center pointer" onclick="Wo_LoadJobs();"><i class="fa fa-arrow-down progress-icon" data-icon="arrow-down"></i> <?php echo $wo['lang']['load_more_jobs'] ?></button></div>');
+				$('#jobs_list').append(data.html);
+			} else {
+				$('.load-produts').html('<div class="load-more"><button class="btn btn-default text-center pointer" onclick="Wo_LoadJobs();"><?php echo $wo['lang']['no_available_jobs'] ?></button></div>');
+			}
+		}
+	});
+}
+function Wo_SearchJobs(value) {
+	length = $('#distance_val').text();
+	var price_sort = $('#PriceSortValue').attr('data_PriceSortType');
+	var c_id = 0;
+	if ($('#c_id').length > 0) {
+		c_id = $('#c_id').val();
+	}
+	var type = '';
+	if ($('#job_type').length > 0) {
+		type = $('#job_type').val();
+	}
+	$.post(Wo_Ajax_Requests_File() + '?f=job&s=search_jobs', {value: value, c_id:c_id,type:type, length: length,price_sort:price_sort}, function (data) {
+		if (data.status == 200) {
+			if (data.html.length > 0) {
+				$('#jobs_list').html(data.html);
+			} else {
+				$('#jobs_list').html('<div class="empty_state"><svg height="512" viewBox="0 0 32 32" width="512" xmlns="http://www.w3.org/2000/svg"><path d="m26 32h-20c-3.314 0-6-2.686-6-6v-20c0-3.314 2.686-6 6-6h20c3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6z" fill="#ffe6e2"/><g fill="#fc573b"><path d="m22.167 11.333h-3.5v-.833c0-.643-.523-1.167-1.167-1.167h-3c-.643 0-1.167.523-1.167 1.167v.833h-3.5c-1.013 0-1.833.82-1.833 1.834v2.167h6c0-.876.539-1.334 1.167-1.334h1.667c.627 0 1.166.458 1.166 1.333h6v-2.167c0-1.013-.82-1.833-1.833-1.833zm-7.834 0v-.833c0-.092.075-.167.167-.167h3c.092 0 .167.075.167.167v.833z"/><path d="m18 16.667c0 .875-.539 1.333-1.167 1.333h-1.667c-.627 0-1.166-.458-1.166-1.333h-6v4.167c0 1.013.82 1.833 1.833 1.833h12.333c1.013 0 1.833-.82 1.833-1.833v-4.167z"/></g></svg> <?php echo $wo['lang']['no_available_jobs'] ?></div>');
+			}
+		}
+	});
+}
+</script>

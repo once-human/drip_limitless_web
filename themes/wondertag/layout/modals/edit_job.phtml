@@ -1,0 +1,90 @@
+<div class="modal fade sun_modal" id="edit-job-modal-<?php echo $wo['story']['job']['id']; ?>" role="dialog">
+	<div class="modal-dialog wow_mat_mdl">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title"><?php echo $wo['lang']['edit_job'] ?></h4>
+			</div>
+			<form class="edit-job-form form-horizontal" method="post">
+				<div class="modal-body tag_field_full_margin">
+					<div class="app-general-alert setting-update-alert"></div>
+					<div class="row">
+						<div class="col-xl-6">
+							<label class="tag_field">
+								<input id="job_title" name="job_title" type="text" placeholder=" " value="<?php echo $wo['story']['job']['title']; ?>">
+								<span><?php echo $wo['lang']['job_title'] ?></span>
+							</label>
+						</div>
+						<div class="col-xl-6">
+							<label class="tag_field">
+								<input id="location" name="location" type="text" placeholder=" " value="<?php echo $wo['story']['job']['location']; ?>">
+								<span><?php echo $wo['lang']['location'] ?></span>
+							</label>
+						</div>
+					</div>
+					<p class="bold"><?php echo $wo['lang']['salary_range'] ?></p>
+					<div class="row">
+						<div class="col-xl-4">
+							<label class="tag_field">
+								<input id="minimum" name="minimum" type="text" placeholder=" " oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" value="<?php echo $wo['story']['job']['minimum']; ?>">
+								<span><?php echo $wo['config']['currency_symbol_array'][$wo['config']['currency']] .' '. $wo['lang']['minimum'] ?></span>
+							</label>
+						</div>
+						<div class="col-xl-4">
+							<label class="tag_field">
+								<input id="maximum" name="maximum" type="text" placeholder=" " oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" value="<?php echo $wo['story']['job']['maximum']; ?>">
+								<span><?php echo $wo['config']['currency_symbol_array'][$wo['config']['currency']] .' '. $wo['lang']['maximum'] ?></span>
+							</label>
+						</div>
+						<div class="col-xl-4">
+							<label class="tag_field">
+								<select id="salary_date" name="salary_date">
+									<option value="per_hour" <?php echo $wo['story']['job']['salary_date'] == 'per_hour' ? 'selected' : ''; ?>><?php echo $wo['lang']['per_hour'] ?></option>
+									<option value="per_day" <?php echo $wo['story']['job']['salary_date'] == 'per_day' ? 'selected' : ''; ?>><?php echo $wo['lang']['per_day'] ?></option>
+									<option value="per_week" <?php echo $wo['story']['job']['salary_date'] == 'per_week' ? 'selected' : ''; ?>><?php echo $wo['lang']['per_week'] ?></option>
+									<option value="per_month" <?php echo $wo['story']['job']['salary_date'] == 'per_month' ? 'selected' : ''; ?>><?php echo $wo['lang']['per_month'] ?></option>
+									<option value="per_year" <?php echo $wo['story']['job']['salary_date'] == 'per_year' ? 'selected' : ''; ?>><?php echo $wo['lang']['per_year'] ?></option>
+								</select>
+								<span><?php echo $wo['lang']['type'] ?></span>
+							</label>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xl-6">
+							<label class="tag_field">
+								<select id="job_type" name="job_type">
+									<option value="full_time" <?php echo $wo['story']['job']['job_type'] == 'full_time' ? 'selected' : ''; ?>><?php echo $wo['lang']['full_time'] ?></option>
+									<option value="part_time" <?php echo $wo['story']['job']['job_type'] == 'part_time' ? 'selected' : ''; ?>><?php echo $wo['lang']['part_time'] ?></option>
+									<option value="internship" <?php echo $wo['story']['job']['job_type'] == 'internship' ? 'selected' : ''; ?>><?php echo $wo['lang']['internship'] ?></option>
+									<option value="volunteer" <?php echo $wo['story']['job']['job_type'] == 'volunteer' ? 'selected' : ''; ?>><?php echo $wo['lang']['volunteer'] ?></option>
+									<option value="contract" <?php echo $wo['story']['job']['job_type'] == 'contract' ? 'selected' : ''; ?>><?php echo $wo['lang']['contract'] ?></option>
+								</select>
+								<span><?php echo $wo['lang']['job_type'] ?></span>
+							</label>
+						</div>
+						<div class="col-xl-6">
+							<label class="tag_field">
+								<select name="category" id="category">
+									<?php foreach ($wo['job_categories'] as $category_id => $category_name) {?>
+										<option value="<?php echo $category_id?>" <?php echo $wo['story']['job']['category'] == $category_id ? 'selected' : ''; ?>><?php echo $category_name; ?></option>
+									<?php } ?>
+								</select>
+								<span><?php echo $wo['lang']['category'] ?></span>
+							</label>
+						</div>
+					</div>
+					<label class="tag_field">
+						<textarea name="description" rows="5" id="description" placeholder=" "><?php echo br2nl($wo['story']['job']['description']); ?></textarea>
+						<span><?php echo $wo['lang']['description'] ?></span>
+					</label>
+					<div class="help-block"><?php echo $wo['lang']['job_des_text'] ?></div>
+					<input type="hidden" name="job_id" id="job_id" class="form-control input-md" value="<?php echo $wo['story']['job']['id'];?>">
+					<input type="hidden" name="hash_id" value="<?php echo Wo_CreateSession();?>">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default btn-mat disable_btn" data-dismiss="modal" aria-label="Close"><?php echo $wo['lang']['cancel'] ?></button>
+					<button type="submit" class="btn btn-main btn-mat disable_btn"><?php echo $wo['lang']['update'] ?></button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,108 @@
+<h2 class="tag_page_title"><button type="button" class="btn setting_navigation" onclick="$('.tag_sett_sidebar').fadeIn(50);$('#tag_sett_right_prt').fadeOut(50);"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" fill="currentColor"></path></svg></button> <?php echo $wo['lang']['design']; ?> <?php echo $wo['lang']['setting']; ?></h2>
+<div class="wow_sett_content wow_content p20">
+	<form method="post" class="form-horizontal setting-profile-form wo_settings_page" enctype="multipart/form-data">
+		<div class="setting-profile-alert setting-update-alert"></div>
+		<?php if ($wo['config']['profile_back'] == 1) { ?>
+			<p class="bold"><?php echo $wo['lang']['theme']; ?></p>
+			<?php if (!empty($wo['setting']['background_image'])) { ?>
+				<div class="row mb-15">
+					<?php 
+						$selected_my_background   = ($wo['setting']['background_image_status'] == '1')   ? ' checked' : '';
+						$selected_defualt_background = ($wo['setting']['background_image_status'] == '0')   ? ' checked' : '';
+					?>
+					<div class="col-md-12 round-check">
+						<input type="radio" name="background_image_status" id="background_image_status-0" value="defualt" <?php echo $selected_defualt_background; ?>>
+						<label for="background_image_status-0"><?php echo $wo['lang']['deafult']; ?></label>
+					</div>
+					<div class="col-md-12 round-check">
+						<input type="radio" name="background_image_status" id="background_image_status-1" value="my_background" <?php echo $selected_my_background; ?>>
+						<label for="background_image_status-1"><?php echo $wo['lang']['my_background']; ?></label>
+					</div>
+				</div>
+			<?php }?>
+			<div class="wow_cset_cover" title="<?php echo $wo['lang']['background']; ?>">
+				<div class="wow_cset_cover_hdr">
+					<span class="btn btn-file valign" id="coverimage-holder" onclick="$('#background_image').trigger('click'); return false;">
+						<?php if ($wo['setting']['background_image_status'] == '1') { ?>
+							<img src="<?php echo Wo_GetMedia($wo['setting']['background_image']); ?>" alt="Picture">
+						<?php } else { ?>
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M14,6L10.25,11L13.1,14.8L11.5,16C9.81,13.75 7,10 7,10L1,18H23L14,6Z"></path></svg> <?php echo $wo['lang']['background']; ?>
+						<?php } ?>
+					</span>
+					<input type="file" class="hidden" id="background_image" accept="image/x-png, image/jpeg" name="background_image">
+				</div>
+			</div>
+			<br>
+			<hr class="style-two">
+			<br>
+		<?php } ?>
+		
+		<?php if ($wo['config']['css_upload'] == 1) { ?>
+			<p class="bold"><?php echo $wo['lang']['css_file']; ?></p>
+			<?php if (!empty($wo['setting']['css_file']) && file_exists($wo['setting']['css_file'])) { ?>
+				<div class="row mb-15">
+					<?php 
+						$selected_my_css   = (!empty($wo['setting']['css_file']) && file_exists($wo['setting']['css_file'])) ? ' checked' : '';
+						$selected_defualt_css = (!empty($wo['setting']['css_file']) && file_exists($wo['setting']['css_file']))   ? ' checked' : '';
+					?>
+					<div class="col-md-12 round-check">
+						<input type="radio" name="css_status" id="css_status-0" value="1" <?php echo $selected_defualt_css; ?>>
+						<label for="css_status-0"><?php echo $wo['lang']['css_status_default'];?></label>
+					</div>
+					<div class="col-md-12 round-check">
+						<input type="radio" name="css_status" id="css_status-1" value="2" <?php echo $selected_my_css; ?>>
+						<label for="css_status-1"><?php echo $wo['lang']['css_status_my'];?></label>
+					</div>
+				</div>
+			<?php } ?>
+			<div class="tag_media_file">
+				<span class="valign pointer btn-file" onclick="$('#css_file').trigger('click'); return false;">
+					<span class="valign"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"><path fill="currentColor" d="M16.5,6V17.5A4,4 0 0,1 12.5,21.5A4,4 0 0,1 8.5,17.5V5A2.5,2.5 0 0,1 11,2.5A2.5,2.5 0 0,1 13.5,5V15.5A1,1 0 0,1 12.5,16.5A1,1 0 0,1 11.5,15.5V6H10V15.5A2.5,2.5 0 0,0 12.5,18A2.5,2.5 0 0,0 15,15.5V5A4,4 0 0,0 11,1A4,4 0 0,0 7,5V17.5A5.5,5.5 0 0,0 12.5,23A5.5,5.5 0 0,0 18,17.5V6H16.5Z"></path></svg></span> <b class="truncate"><?php echo $wo['lang']['choose_file'];?></b>
+				</span>
+				<input type="file" id="css_file" accept="text/css" name="css_file">
+			</div>
+			<div class="help-block"><?php echo $wo['lang']['css_file_info'];?></div>
+		<?php } ?>
+		 
+		<div class="text-center">
+			<button type="submit" class="btn btn-main btn-mat btn-mat-raised disable_btn"><?php echo $wo['lang']['save']; ?></button>
+		</div>
+		
+		<input type="hidden" name="user_id" id="user-id" value="<?php echo $wo['setting']['user_id'];?>">
+		<input type="hidden" name="hash_id" value="<?php echo Wo_CreateSession();?>">
+	</form>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+	$("#background_image").on('change', function() {
+		$("#background_image_status-1").attr("checked", true);
+		$("#coverimage-holder").html("<img src='" + window.URL.createObjectURL(this.files[0]) + "' alt='Picture'>");
+	});
+});
+
+$(function() {
+	$("#css_file").change(function () {
+		var filename = $(this).val().replace(/C:\\fakepath\\/i, '');
+		$(".tag_media_file .btn-file b").text(filename);
+    });
+  $('form.setting-profile-form').ajaxForm({
+    url: Wo_Ajax_Requests_File() + '?f=update_design_setting',
+    beforeSend: function() {
+      $('.wo_settings_page').find('.disable_btn').attr('disabled','disabled');
+    },
+    success: function(data) {
+      if (data.status == 200) {
+        scrollToTop();
+        $('.setting-profile-alert').html('<div class="alert alert-success">' + data.message + '</div>');
+        $('.alert-success').fadeIn('fast', function() {
+          $(this).delay(2500).slideUp(500, function() {
+            $(this).remove();
+          });
+        });
+      } 
+      $('.wo_settings_page').find('.disable_btn').removeAttr("disabled");
+    }
+  });
+});
+</script>

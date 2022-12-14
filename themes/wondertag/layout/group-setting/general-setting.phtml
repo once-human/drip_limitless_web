@@ -1,0 +1,100 @@
+<div class="wow_sett_content">
+	<form class="setting-general-form form-horizontal" method="post">
+		<div class="setting-general-alert"></div>
+		<label class="tag_field">
+			<input id="group_title" name="group_title" type="text" placeholder=" " value="<?php echo $wo['setting']['group_title']?>" autocomplete="off">
+			<span><?php echo $wo['lang']['group_name']; ?></span>
+		</label>
+		<label class="tag_field">
+			<input id="group_name" name="group_name" type="text" placeholder=" " value="<?php echo $wo['setting']['group_name']?>" onkeyup="Wo_CheckGroupname(this.value, <?php echo $wo['setting']['id'];?>);" autocomplete="off">
+			<span><?php echo $wo['lang']['group'];?> URL</span>
+		</label>
+		<div class="help-block checking"><?php echo $wo['config']['site_url'];?>/<?php echo $wo['lang']['group'];?> URL</div>
+		<label class="tag_field">
+			<?php $text = br2nl($wo['setting']['about']); ?>  
+			<textarea id="about" name="about" rows="4" placeholder=" "><?php echo $text;?></textarea>
+			<span><?php echo $wo['lang']['description'];?></span>
+		</label>
+		<label class="tag_field">
+			<select id="group_category" name="group_category" onchange="GetGroupSubCategory(this)">
+				<?php 
+					foreach ($wo['group_categories'] as $categorie_id => $category) {
+					$selected_contry = ($categorie_id == $wo['setting']['category_id']) ? ' selected' : '' ;
+				?>
+					<option value="<?php echo $categorie_id;?>" <?php echo $selected_contry;?> ><?php echo $category;?></option>
+				<?php } ?>
+			</select>
+			<span><?php echo $wo['lang']['category'];?></span>
+		</label>
+		<?php if (!empty($wo['group_sub_categories'])) { ?>
+			<label class="tag_field">
+				<select id="group_sub_category" name="group_sub_category">
+					<?php
+						if (!empty($wo['group_sub_categories'][array_keys($wo['group_categories'])[0]])) {
+						foreach ($wo['group_sub_categories'][array_keys($wo['group_categories'])[0]] as $id => $sub_category) { 
+							$sub_selected = ($sub_category['id'] == $wo['setting']['sub_category']) ? ' selected' : '' ;
+					?>
+						<option value="<?php echo $sub_category['id']?>" <?php echo $sub_selected; ?>><?php echo $sub_category['lang']; ?></option>
+					<?php } } ?>
+				</select>
+				<span><?php echo $wo['lang']['sub_category'];?></span>
+			</label>
+		<?php } ?>
+		<?php $fields = Wo_GetCustomFields('group'); 
+		if (!empty($fields)) {
+			foreach ($fields as $key => $wo['field']) {
+				echo Wo_LoadPage('group-setting/fields');
+			}
+		}
+		?>
+		<div class="text-center">
+			<button class="btn btn-main btn-mat btn-mat-raised disable_btn" type="submit"><?php echo $wo['lang']['save']; ?></button>
+		</div>
+		<input type="hidden" name="group_id" value="<?php echo $wo['setting']['id'];?>">
+		<input type="hidden" name="hash_id" value="<?php echo Wo_CreateSession();?>">
+	</form>
+</div>
+
+<script type="text/javascript">
+	<?php 
+$js_array = json_encode($wo['group_sub_categories']);
+echo "var sub_categories_array = ". $js_array . ";\n";
+?>
+	function GetGroupSubCategory(self) {
+		id = $(self).val();
+		var text = "";
+		if (typeof(sub_categories_array[id]) == 'undefined') {
+		    $('#group_sub_category').html('');
+		}
+		else{
+		   	sub_categories_array[id].forEach(function(entry) {
+				text = text + "<option value='"+entry.id+"'>"+entry.lang+"</option>";
+			});
+		    $('#group_sub_category').html(text);
+		}
+	}
+$(function() {
+  $('form.setting-general-form').ajaxForm({
+    url: Wo_Ajax_Requests_File() + '?f=groups&s=update_general_settings',
+    beforeSend: function() {
+      $('.setting-general-form').find('.disable_btn').attr('disabled','disabled');
+    },
+    success: function(data) {
+      scrollToTop();
+      if (data.status == 200) {
+        $('.setting-general-alert').html('<div class="alert alert-success">' + data.message + '</div>');
+        $('.alert-success').fadeIn('fast', function() {
+           $(this).delay(2500).slideUp(500, function() {
+              $(this).remove();
+            });
+        });
+      } else {
+          var errors = data.errors.join("<br>");
+          $('.setting-general-alert').html('<div class="alert alert-danger">' + errors + '</div>');
+          $('.alert-danger').fadeIn(300);
+      }
+      $('.setting-general-form').find('.disable_btn').removeAttr("disabled");
+    }
+  });
+});
+</script>

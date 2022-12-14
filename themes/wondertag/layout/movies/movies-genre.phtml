@@ -1,0 +1,52 @@
+<div class="container-fluid tag_cont_fluid">
+	<div class="tag_cover_bg tag_movies_cover_bg">
+		<button class="btn btn-mat btn_goback" onclick="window.history.back();"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path fill="currentColor" d="M19 11H7.83l4.88-4.88c.39-.39.39-1.03 0-1.42-.39-.39-1.02-.39-1.41 0l-6.59 6.59c-.39.39-.39 1.02 0 1.41l6.59 6.59c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L7.83 13H19c.55 0 1-.45 1-1s-.45-1-1-1z"></path></svg></button>
+		<div class="tag_cover_sec_bg">
+			<img src="<?php echo $wo['config']['theme_url'];?>/img/movies.jpg">
+			<div class="tag_cover_bg_grad"></div>
+		</div>
+		<div class="container">
+			<div class="tag_movies_headr text-center">
+				<h1><?php echo strtolower($wo['genre']); ?> <?php echo $wo['lang']['movies']; ?></h1>
+				<div class="movies-search">
+					<input type="text" placeholder="<?php echo $wo['lang']['search']; ?>" id="search-movies">
+					<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27c1.2-1.4 1.82-3.31 1.48-5.34-.47-2.78-2.79-5-5.59-5.34-4.23-.52-7.79 3.04-7.27 7.27.34 2.8 2.56 5.12 5.34 5.59 2.03.34 3.94-.28 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+					<ul class="search-result" id="search-movies-result"></ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="page-margin">
+	<div class="container">
+		<div class="valign">
+			<ul class="valign nav tag_switch_noti movies-top-breadcrumb" role="tablist">
+				<li class="pointer movies-subheadnav" data-movies="rec"><a><?php echo $wo['lang']['recommended']; ?></a></li>
+				<li class="pointer movies-subheadnav" data-movies="new"><a><?php echo $wo['lang']['new']; ?></a></li>
+				<li class="pointer movies-subheadnav" data-movies="mtw"><a><?php echo $wo['lang']['most_watched']; ?></a></li>
+			</ul>
+		</div>
+		<div class="wow_movie_filters">
+			<?php echo Wo_LoadPage("movies/includes/header"); ?>
+		</div>
+		<div class="movies">
+			<div class="row movies-inner">
+				<?php if (count($wo['movies']) > 0): ?>
+					<?php foreach ($wo['movies'] as $wo['film']): ?>
+						<?php echo Wo_LoadPage("movies/includes/films-list"); ?>
+					<?php endforeach ?>
+				<?php else: ?>
+					<?php echo '<div class="empty_state"><svg height="512" viewBox="0 0 32 32" width="512" xmlns="http://www.w3.org/2000/svg"><path d="m26 32h-20c-3.314 0-6-2.686-6-6v-20c0-3.314 2.686-6 6-6h20c3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6z" fill="#f5e6fe"/><path d="m9.833 21.042c-.368 0-.667-.299-.667-.667v-1.167c0-.368.299-.667.667-.667s.667.299.667.667v1.167c0 .368-.299.667-.667.667z" fill="#d9a4fc"/><path d="m22.167 21.042c-.368 0-.667-.299-.667-.667v-1.167c0-.368.299-.667.667-.667s.667.299.667.667v1.167c-.001.368-.299.667-.667.667z" fill="#d9a4fc"/><path d="m12.74 12.875h-3.573c-.644 0-1.167.523-1.167 1.167v4.333c0 .643.523 1.167 1.167 1.167h3.574c-.867-.848-1.407-2.028-1.407-3.333-.001-1.306.539-2.486 1.406-3.334zm-2.407 3h-1c-.276 0-.5-.224-.5-.5s.224-.5.5-.5h1c.276 0 .5.224.5.5s-.224.5-.5.5z" fill="#be63f9"/><path d="m22.833 12.875h-3.573c.867.848 1.407 2.028 1.407 3.333s-.54 2.486-1.407 3.333h3.574c.643 0 1.167-.523 1.167-1.167v-4.333c-.001-.643-.524-1.166-1.168-1.166zm-.166 3h-1c-.276 0-.5-.224-.5-.5s.224-.5.5-.5h1c.276 0 .5.224.5.5s-.224.5-.5.5z" fill="#be63f9"/><path d="m16 12.208c-2.206 0-4 1.794-4 4s1.794 4 4 4 4-1.794 4-4-1.794-4-4-4zm2.167 4c-.276 0-.5-.224-.5-.5 0-.643-.523-1.167-1.167-1.167-.276 0-.5-.224-.5-.5s.224-.5.5-.5c1.195 0 2.167.972 2.167 2.167 0 .276-.224.5-.5.5z" fill="#d9a4fc"/></svg>'. $wo['lang']['no_movies_found'] .' </div>';?>
+				<?php endif; ?>
+			</div>
+			<div class="posts_load">
+				<?php if (count($wo['movies']) >= 26): ?>
+					<div class="load-more">
+						<button class="btn btn-default text-center pointer load-more-movies" data-genre="<?php echo strtolower($wo['genre']); ?>" data-movies-type="genre"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"></path></svg></span> <?php echo $wo['lang']['load_more'] ?></button>
+					</div>
+				<?php endif ?>
+			</div>
+		</div>
+		<?php echo Wo_LoadPage("movies/includes/footer"); ?>
+	</div>
+</div>

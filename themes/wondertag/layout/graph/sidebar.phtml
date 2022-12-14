@@ -1,0 +1,5 @@
+<ul class="list-unstyled tag_page_nav">
+	<li class="separate"><a class="btn-mat" data-ajax="?link1=apps" href="<?php echo Wo_SeoLink('index.php?link1=apps');?>">My Apps</a></li>
+	<li class="<?php echo ($wo['active'] == 1) ? 'active': ''; ?>"><a class="btn-mat" data-ajax="?link1=developers" href="<?php echo Wo_SeoLink('index.php?link1=developers') ?>"><?php echo $wo['lang']['developers'] ?></a></li>
+	<li class="<?php echo ($wo['active'] == 2) ? 'active': ''; ?>"><a class="btn-mat" href="<?php echo Wo_SeoLink('index.php?link1=developers?page=share') ?>">Share Plugin</a></li>
+</ul>

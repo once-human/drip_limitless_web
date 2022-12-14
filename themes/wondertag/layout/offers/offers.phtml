@@ -1,0 +1,28 @@
+<div class="product col-lg-3 col-md-4 col-6" id="product-<?php echo $wo['offer']['id']?>" data-id="<?php echo $wo['offer']['id']?>">
+	<div class="wow_content tag_offers" id="tag_hdr_rgb<?php echo $wo['offer']['id']?>">
+		<div class="tag_offer_headimg">
+			<a href="<?php echo $wo['offer']['url']?>"><img src="<?php echo $wo['offer']['image'];?>" class="img-responsive" data-adaptive-background="<?php echo $wo['offer']['id']?>"></a>
+			<?php if (Wo_IsModerator() || Wo_IsAdmin() || $wo['offer']['user_id'] == $wo['user']['id']) { ?>
+				<a class="btn btn-default btn-mat" href="javascript:void(0)" onclick="Wo_OpenOfferDeleteBox(<?php echo  $wo['offer']['id']; ?>);" title="<?php echo $wo['lang']['delete'] ?>"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"></path></svg></a>
+			<?php } ?>
+		</div>
+		<div class="text-center tag_offer_info">
+			<div class="valign tag_offer_type">
+				<div class="head"><?php echo $wo['lang']['type']?></div>
+				<div class="rip"></div>
+				<div class="body"><?php echo $wo['offer']['offer_text']?></div>
+			</div>
+			<h2 class="truncate"><a href="<?php echo $wo['offer']['url']?>" title="<?php echo $wo['offer']['discounted_items']?>"><?php echo $wo['offer']['discounted_items']; ?></a></h2>
+		</div>
+		<div class="clear"></div>
+	</div>
+</div>
+<script>
+$(document).ready(function(){
+	var defaults = {
+		selector: '[data-adaptive-background="<?php echo $wo['offer']['id']?>"]',
+		parent: '#tag_hdr_rgb<?php echo $wo['offer']['id']?>',
+	};
+	$.adaptiveBackground.run(defaults)
+});
+</script>

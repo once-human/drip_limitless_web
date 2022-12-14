@@ -1,0 +1,35 @@
+<div class="lightbox-content post wo_imagecombo_lbox story_lightbox">
+	<div class="story-img user_story_">
+		<div class="valign tag_lbox_toolbar">
+			<div class="btn btn-mat close-lightbox" onclick="window.history.back();">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M7.828 11H20v2H7.828l5.364 5.364-1.414 1.414L4 12l7.778-7.778 1.414 1.414z"></path></svg>
+			</div>
+		</div>
+	</div>
+	<div class="tag_story_side">
+		<h2 class="tag_page_title m5"><?php echo $wo['lang']['friends_stories'] ?></h2>
+		<div class="tag_lbox_stories">
+			<ul class="list-unstyled valign status-list">
+				<li class="create_new">
+					<a href="<?php echo Wo_SeoLink('index.php?link1=create-status'); ?>" data-ajax="?link1=create-status">
+						<img src="<?php echo $wo['user']['avatar'];?>" alt="<?php echo $wo['user']['name'];?>">
+						<span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" /></svg></span>
+					</a>
+					<p class="truncate"><?php echo $wo['lang']['create_story'] ?></p>
+				</li>
+				<?php
+					if ($wo['config']['user_status'] == 1) {
+						$get_user_status = Wo_GetFriendsStatus(array('limit' => 100000));
+						if (!empty($get_user_status)) {
+				?>
+				<?php
+					foreach ($get_user_status as $key => $wo['user_status']) {
+						echo Wo_LoadPage('home/lightbox-user-status');
+					}
+					}
+				?>
+				<?php } ?>
+			</ul>
+		</div>
+	</div>
+</div>

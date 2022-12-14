@@ -1,0 +1,51 @@
+<div class="valign">
+	<ul class="valign nav tag_switch_noti">
+		<?php if ($wo['setting']['user_id'] == $wo['user']['id'] || Wo_IsCanPageUpdate($wo['setting']['page_id'],'general')) { ?>
+			<li>
+				<a class="<?php echo ($wo['setting_page'] == 'general-setting') ? 'active': '';?>" href="<?php echo Wo_SeoLink('index.php?link1=page-setting&page=' . $wo['setting']['page_name'] . '&link3=general-setting');?>" data-ajax="?link1=page-setting&page=<?php echo $wo['setting']['page_name'];?>&link3=general-setting"><?php echo $wo['lang']['general'];?>
+				</a>
+			</li>
+		<?php } ?>
+		<?php if ($wo['setting']['user_id'] == $wo['user']['id'] || Wo_IsCanPageUpdate($wo['setting']['page_id'],'info')) { ?>
+			<li>
+				<a class="<?php echo ($wo['setting_page'] == 'profile-setting') ? 'active': '';?>" href="<?php echo Wo_SeoLink('index.php?link1=page-setting&page=' . $wo['setting']['page_name'] . '&link3=profile-setting');?>" data-ajax="?link1=page-setting&page=<?php echo $wo['setting']['page_name'];?>&link3=profile-setting"><?php echo $wo['lang']['profile'];?>
+				</a>
+			</li>
+		<?php } ?>
+		<?php if ($wo['setting']['user_id'] == $wo['user']['id'] || Wo_IsCanPageUpdate($wo['setting']['page_id'],'design')) { ?>
+			<li>
+				<a class="<?php echo ($wo['setting_page'] == 'design-setting') ? 'active': '';?>" href="<?php echo Wo_SeoLink('index.php?link1=page-setting&page=' . $wo['setting']['page_name'] . '&link3=design-setting');?>" data-ajax="?link1=page-setting&page=<?php echo $wo['setting']['page_name'];?>&link3=design-setting"><?php echo $wo['lang']['design'];?>
+				</a>
+			</li>
+		<?php } ?>
+		<?php if ($wo['setting']['user_id'] == $wo['user']['id'] || Wo_IsCanPageUpdate($wo['setting']['page_id'],'social')) { ?>
+			<li>
+				<a class="<?php echo ($wo['setting_page'] == 'social-links') ? 'active': '';?>" href="<?php echo Wo_SeoLink('index.php?link1=page-setting&page=' . $wo['setting']['page_name'] . '&link3=social-links');?>" data-ajax="?link1=page-setting&page=<?php echo $wo['setting']['page_name'];?>&link3=social-links"><?php echo $wo['lang']['social_links'];?>
+				</a>
+			</li>
+		<?php } ?>
+		<?php if ($wo['setting']['user_id'] == $wo['user']['id'] || Wo_IsCanPageUpdate($wo['setting']['page_id'],'avatar')) { ?>
+            <li>
+				<a class="<?php echo ($wo['setting_page'] == 'avatar-setting') ? 'active': '';?>" href="<?php echo Wo_SeoLink('index.php?link1=page-setting&page=' . $wo['setting']['page_name'] . '&link3=avatar-setting');?>" data-ajax="?link1=page-setting&page=<?php echo $wo['setting']['page_name'];?>&link3=avatar-setting"><?php echo $wo['lang']['avatar'];?></a>
+			</li>
+		<?php } ?>
+		<?php if ($wo['setting']['user_id'] == $wo['user']['id'] || Wo_IsCanPageUpdate($wo['setting']['page_id'],'admins')) { ?>
+			<li>
+				<a class="<?php echo ($wo['setting_page'] == 'admins' || $wo['setting_page'] == 'privileges') ? 'active': '';?>" href="<?php echo Wo_SeoLink('index.php?link1=page-setting&page=' . $wo['setting']['page_name'] . '&link3=admins');?>" data-ajax="?link1=page-setting&page=<?php echo $wo['setting']['page_name'];?>&link3=admins"><?php echo $wo['lang']['admin'];?>
+				</a>
+			</li>
+		<?php } ?>
+		<?php if ($wo['setting']['user_id'] == $wo['user']['id'] || Wo_IsCanPageUpdate($wo['setting']['page_id'],'analytics')) { ?>
+			<li>
+				<a class="<?php echo ($wo['setting_page'] == 'analytics') ? 'active': '';?>" href="<?php echo Wo_SeoLink('index.php?link1=page-setting&page=' . $wo['setting']['page_name'] . '&link3=analytics');?>"><?php echo $wo['lang']['stats'];?>
+				</a>
+			</li>
+		<?php } ?>
+		<?php if ($wo['setting']['user_id'] == $wo['user']['id'] || Wo_IsCanPageUpdate($wo['setting']['page_id'],'delete_page')) { ?>
+			<li>
+				<a class="<?php echo ($wo['setting_page'] == 'delete-page') ? 'active': '';?>" href="<?php echo Wo_SeoLink('index.php?link1=page-setting&page=' . $wo['setting']['page_name'] . '&link3=delete-page');?>" data-ajax="?link1=page-setting&page=<?php echo $wo['setting']['page_name'];?>&link3=delete-page"><?php echo $wo['lang']['delete'];?>
+				</a>
+			</li>
+		<?php } ?>
+	</ul>
+</div>

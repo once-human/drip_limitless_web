@@ -1,0 +1,115 @@
+<div class="container">
+	<h2 class="tag_page_title"><?php echo $wo['lang']['blog']; ?></h2>
+	<div class="page-margin wow_content wow_sett_content tag_blog_cats_coll">
+		<div class="valign wo_page_hdng" data-toggle="collapse" data-target="#collapseCAT" aria-expanded="true" aria-controls="collapseCAT">
+			<span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M11,13.5V21.5H3V13.5H11M12,2L17.5,11H6.5L12,2M17.5,13C20,13 22,15 22,17.5C22,20 20,22 17.5,22C15,22 13,20 13,17.5C13,15 15,13 17.5,13Z"></path></svg></span> <?php echo $wo['lang']['categories']; ?> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"></path></svg>
+		</div>
+		<div class="collapse" id="collapseCAT">
+			<div class="wow_blog_cats">
+				<?php 
+					$category_id = (!empty($_GET['id'])) ? (int) $_GET['id'] : 0;
+					foreach ($wo['blog_categories'] as $key => $category) {
+						$active = ($category_id == $key) ? 'active' : '';
+				?>
+					<a href="<?php echo Wo_SeoLink('index.php?link1=blog-category&id=' . $key) ?>" data-ajax="?link1=blog-category&id=<?php echo $key?>" class="<?php echo $active?>"><?php echo $category;?></a>
+				<?php } ?>
+			</div>
+		</div>
+	</div>
+	<div class="page-margin wow_content wow_sett_content">
+		<div class="valign wo_page_hdng">
+			<span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M20,11H4V8H20M20,15H13V13H20M20,19H13V17H20M11,19H4V13H11M20.33,4.67L18.67,3L17,4.67L15.33,3L13.67,4.67L12,3L10.33,4.67L8.67,3L7,4.67L5.33,3L3.67,4.67L2,3V19A2,2 0 0,0 4,21H20A2,2 0 0,0 22,19V3L20.33,4.67Z"></path></svg></span> <?php echo $wo['lang']['most_recent_art']; ?>
+		</div>
+		<div class="search-blog">
+			<input type="text" placeholder="<?php echo $wo['lang']['search_for_article']?>" id="search-blog-input">
+			<ul class="popular-articles search_suggs" id="recent-blogs-search"></ul>
+		</div>
+		<div id="recent-blogs" class="row">
+			<?php
+			$pages = Wo_GetBlogs(array("limit" => 9));
+			if (count($pages) > 0) {
+				foreach ($pages as $key => $wo['article']){
+					$wo['article']['first'] = ($key == 0) ? true : false;
+					echo Wo_LoadPage('blog/includes/card-list');
+				}
+			} 
+			else { ?>
+				<div class="empty_state">
+					<svg enable-background="new 0 0 32 32" height="512" viewBox="0 0 32 32" width="512" xmlns="http://www.w3.org/2000/svg"><path d="m26 32h-20c-3.314 0-6-2.686-6-6v-20c0-3.314 2.686-6 6-6h20c3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6z" fill="#e3f8fa"/><g fill="#26c6da"><path d="m13.5 14h-3c-.276 0-.5-.224-.5-.5v-3c0-.276.224-.5.5-.5h3c.276 0 .5.224.5.5v3c0 .276-.224.5-.5.5z"/><path d="m17.5 11.667h-1.667c-.276 0-.5-.224-.5-.5s.224-.5.5-.5h1.667c.276 0 .5.224.5.5s-.224.5-.5.5z"/><path d="m17.5 13.667h-1.667c-.276 0-.5-.224-.5-.5s.224-.5.5-.5h1.667c.276 0 .5.224.5.5s-.224.5-.5.5z"/><path d="m17.5 16.333h-7c-.276 0-.5-.224-.5-.5s.224-.5.5-.5h7c.276 0 .5.224.5.5s-.224.5-.5.5z"/><path d="m17.5 18.833h-7c-.276 0-.5-.224-.5-.5s.224-.5.5-.5h7c.276 0 .5.224.5.5s-.224.5-.5.5z"/><path d="m17.5 21.333h-7c-.276 0-.5-.224-.5-.5s.224-.5.5-.5h7c.276 0 .5.224.5.5s-.224.5-.5.5z"/></g><path d="m22 10h-1.333v11.333 1.147c-.396-.231-.667-.657-.667-1.147v-11.333c0-1.103-.897-2-2-2h-8c-1.103 0-2 .897-2 2v11.333c0 1.471 1.196 2.667 2.667 2.667h10.833c.057 0 .112-.007.165-.02 1.314-.164 2.335-1.289 2.335-2.647v-9.333c0-1.103-.897-2-2-2zm-11.333 12.667c-.735 0-1.333-.598-1.333-1.333v-11.334c0-.368.299-.667.667-.667h8c.368 0 .667.299.667.667v11.333c0 .485.13.941.358 1.333h-8.359z" fill="#26c6da"/></svg> <?php echo $wo['lang']['no_blogs_found']; ?>
+					<?php if (Wo_CanBlog() == true) { ?>
+						<div><a href="<?php echo Wo_SeoLink('index.php?link1=create-blog');?>" class="btn btn-mat btn-main"><?php echo $wo['lang']['create_new_article']; ?></a></div>
+					<?php } ?>
+				</div>
+			<?php } ?>
+		</div>
+		<div class="posts_load">
+			<?php if (count($pages) >= 9): ?>
+				<div class="load-more">
+					<button class="btn btn-default text-center pointer load-more-blogs" id="hren">
+						<span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"></path></svg></span> <?php echo $wo['lang']['load_more_blogs'] ?>
+					</button>
+				</div>
+			<?php endif ?>
+		</div>
+	</div>
+	<div class="page-margin wow_content wow_sett_content">
+		<div class="valign wo_page_hdng">
+			<span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path></svg></span> <?php echo $wo['lang']['popular_posts']; ?>
+		</div>
+		<ul class="list-unstyled tag_pop_artis">
+			<?php 
+			function Wo_GetPopularBlogs($limit) {
+				global $sqlConnect, $wo;
+				$data = array();
+				$query  = mysqli_query($sqlConnect, "SELECT * FROM  " . T_BLOG . "  
+													 ORDER BY `view` DESC LIMIT $limit");
+				while ($fetched_data = mysqli_fetch_assoc($query)) {
+					$data[] = Wo_GetArticle($fetched_data['id']);
+				}
+				return $data;
+			}
+			?>
+			<?php 
+				$blogs = Wo_GetPopularBlogs(5);
+				foreach ($blogs as $key => $wo['blog-style']) {
+					echo Wo_LoadPage('blog/blog-popular');
+				}
+			?>
+		</ul>
+	</div>
+</div>
+
+<script>
+$('#search-blog-input').keyup(function(event) {
+	$keyword = $(this).val();
+	//$('#load-search-icon').removeClass('hidden');
+	$.post(Wo_Ajax_Requests_File() + '?f=search-blog-read', {keyword: $keyword}, function(data, textStatus, xhr) {
+		if (data.status == 200) {
+			$('#recent-blogs-search').html(data.html);
+		} else {
+			$('#recent-blogs-search').html('<div class="text-center">' + data.message + '</div>');
+		}
+		//$('#load-search-icon').addClass('hidden');
+	});
+});
+
+jQuery(document).ready(function($) {
+    $(".load-more-blogs").click(function () {
+  		var last_id = (($("div[data-blog-id]").length > 0) ? $("div[data-blog-id]:last").attr('data-blog-id') : 0);
+		$.ajax({	  
+		     url: Wo_Ajax_Requests_File(),
+		     type: 'GET',
+		     dataType: 'json',
+		     data: {f:"load-recent-blogs",offset:last_id,total:9},
+		     success:function(data){
+		        if (data['status'] == 200) {
+		            $("#recent-blogs").append(data['html']);
+		        }
+		        else{
+		           $(".posts_load").remove()
+		        }
+		     }
+		});
+	});
+});
+</script>

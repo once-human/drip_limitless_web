@@ -1,0 +1,424 @@
+<div class="page-margin" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="container-fluid tag_cont_fluid">
+		<div class="wow_content tag_read_blog">
+			<div class="dropdown btn-go-back">
+				<button class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><svg xmlns="http://www.w3.org/2000/svg" height="18" viewBox="0 0 24 24" width="18"><path fill="currentColor" d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z"></path></svg> <?php echo $wo['lang']['share'];?></button>
+				<ul class="dropdown-menu tag_create_menu" role="menu">
+					<li>
+						<a href="javascript:void(0)" onclick="Wo_OpenWindow('<?php echo($wo['article']['url']); ?>');">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" class="hover_path" d="M13 14h-2a8.999 8.999 0 0 0-7.968 4.81A10.136 10.136 0 0 1 3 18C3 12.477 7.477 8 13 8V3l10 8-10 8v-5z"></path><path fill="currentColor" d="M13 14h-2a8.999 8.999 0 0 0-7.968 4.81A10.136 10.136 0 0 1 3 18C3 12.477 7.477 8 13 8V2.5L23.5 11 13 19.5V14zm-2-2h4v3.308L20.321 11 15 6.692V10h-2a7.982 7.982 0 0 0-6.057 2.773A10.988 10.988 0 0 1 11 12z"></path></svg> <?php echo $wo['lang']['share_to'];?> <?php echo $wo['lang']['timeline'];?>
+						</a>
+					</li>
+					<hr>
+					<li>
+						<a href="https://www.facebook.com/sharer.php?u=<?php echo ($wo['article']['url']) ?>" target="_blank">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" class="hover_path" d="M12 2C6.477 2 2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.879V14.89h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.989C18.343 21.129 22 16.99 22 12c0-5.523-4.477-10-10-10z"></path><path fill="currentColor" d="M13 19.938A8.001 8.001 0 0 0 12 4a8 8 0 0 0-1 15.938V14H9v-2h2v-1.654c0-1.337.14-1.822.4-2.311A2.726 2.726 0 0 1 12.536 6.9c.382-.205.857-.328 1.687-.381.329-.021.755.005 1.278.08v1.9H15c-.917 0-1.296.043-1.522.164a.727.727 0 0 0-.314.314c-.12.226-.164.45-.164 1.368V12h2.5l-.5 2h-2v5.938zM12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"></path></svg> <?php echo $wo['lang']['share_to'];?> <?php echo $wo['lang']['facebook'];?>
+						</a>
+					</li>
+					<li>
+						<a href="http://twitter.com/intent/tweet?text=<?php echo $wo['article']['title'] ?>&amp;url=<?php echo ($wo['article']['url']) ?>" target="_blank">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" class="hover_path" d="M22.162 5.656a8.384 8.384 0 0 1-2.402.658A4.196 4.196 0 0 0 21.6 4c-.82.488-1.719.83-2.656 1.015a4.182 4.182 0 0 0-7.126 3.814 11.874 11.874 0 0 1-8.62-4.37 4.168 4.168 0 0 0-.566 2.103c0 1.45.738 2.731 1.86 3.481a4.168 4.168 0 0 1-1.894-.523v.052a4.185 4.185 0 0 0 3.355 4.101 4.21 4.21 0 0 1-1.89.072A4.185 4.185 0 0 0 7.97 16.65a8.394 8.394 0 0 1-6.191 1.732 11.83 11.83 0 0 0 6.41 1.88c7.693 0 11.9-6.373 11.9-11.9 0-.18-.005-.362-.013-.54a8.496 8.496 0 0 0 2.087-2.165z"></path><path fill="currentColor" d="M15.3 5.55a2.9 2.9 0 0 0-2.9 2.847l-.028 1.575a.6.6 0 0 1-.68.583l-1.561-.212c-2.054-.28-4.022-1.226-5.91-2.799-.598 3.31.57 5.603 3.383 7.372l1.747 1.098a.6.6 0 0 1 .034.993L7.793 18.17c.947.059 1.846.017 2.592-.131 4.718-.942 7.855-4.492 7.855-10.348 0-.478-1.012-2.141-2.94-2.141zm-4.9 2.81a4.9 4.9 0 0 1 8.385-3.355c.711-.005 1.316.175 2.669-.645-.335 1.64-.5 2.352-1.214 3.331 0 7.642-4.697 11.358-9.463 12.309-3.268.652-8.02-.419-9.382-1.841.694-.054 3.514-.357 5.144-1.55C5.16 15.7-.329 12.47 3.278 3.786c1.693 1.977 3.41 3.323 5.15 4.037 1.158.475 1.442.465 1.973.538z"></path></svg> <?php echo $wo['lang']['share_to'];?> <?php echo $wo['lang']['twitter'];?>
+						</a>
+					</li>
+					<li>
+						<a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=<?php echo ($wo['article']['url']) ?>" target="_blank">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" class="hover_path" d="M6.94 5a2 2 0 1 1-4-.002 2 2 0 0 1 4 .002zM7 8.48H3V21h4V8.48zm6.32 0H9.34V21h3.94v-6.57c0-3.66 4.77-4 4.77 0V21H22v-7.93c0-6.17-7.06-5.94-8.72-2.91l.04-1.68z"></path><path fill="currentColor" d="M12 9.55C12.917 8.613 14.111 8 15.5 8a5.5 5.5 0 0 1 5.5 5.5V21h-2v-7.5a3.5 3.5 0 0 0-7 0V21h-2V8.5h2v1.05zM5 6.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm-1 2h2V21H4V8.5z"></path></svg> <?php echo $wo['lang']['share_to'];?> <?php echo $wo['lang']['linkedin'];?>
+						</a>
+					</li>
+					<li>
+						<a href="https://api.whatsapp.com/send?text=<?php echo ($wo['article']['url']) ?>" target="_blank">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" class="hover_path" d="M2.004 22l1.352-4.968A9.954 9.954 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10a9.954 9.954 0 0 1-5.03-1.355L2.004 22zM8.391 7.308a.961.961 0 0 0-.371.1 1.293 1.293 0 0 0-.294.228c-.12.113-.188.211-.261.306A2.729 2.729 0 0 0 6.9 9.62c.002.49.13.967.33 1.413.409.902 1.082 1.857 1.971 2.742.214.213.423.427.648.626a9.448 9.448 0 0 0 3.84 2.046l.569.087c.185.01.37-.004.556-.013a1.99 1.99 0 0 0 .833-.231c.166-.088.244-.132.383-.22 0 0 .043-.028.125-.09.135-.1.218-.171.33-.288.083-.086.155-.187.21-.302.078-.163.156-.474.188-.733.024-.198.017-.306.014-.373-.004-.107-.093-.218-.19-.265l-.582-.261s-.87-.379-1.401-.621a.498.498 0 0 0-.177-.041.482.482 0 0 0-.378.127v-.002c-.005 0-.072.057-.795.933a.35.35 0 0 1-.368.13 1.416 1.416 0 0 1-.191-.066c-.124-.052-.167-.072-.252-.109l-.005-.002a6.01 6.01 0 0 1-1.57-1c-.126-.11-.243-.23-.363-.346a6.296 6.296 0 0 1-1.02-1.268l-.059-.095a.923.923 0 0 1-.102-.205c-.038-.147.061-.265.061-.265s.243-.266.356-.41a4.38 4.38 0 0 0 .263-.373c.118-.19.155-.385.093-.536-.28-.684-.57-1.365-.868-2.041-.059-.134-.234-.23-.393-.249-.054-.006-.108-.012-.162-.016a3.385 3.385 0 0 0-.403.004z"></path><path fill="currentColor" d="M7.253 18.494l.724.423A7.953 7.953 0 0 0 12 20a8 8 0 1 0-8-8c0 1.436.377 2.813 1.084 4.024l.422.724-.653 2.401 2.4-.655zM2.004 22l1.352-4.968A9.954 9.954 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10a9.954 9.954 0 0 1-5.03-1.355L2.004 22zM8.391 7.308c.134-.01.269-.01.403-.004.054.004.108.01.162.016.159.018.334.115.393.249.298.676.588 1.357.868 2.04.062.152.025.347-.093.537a4.38 4.38 0 0 1-.263.372c-.113.145-.356.411-.356.411s-.099.118-.061.265c.014.056.06.137.102.205l.059.095c.256.427.6.86 1.02 1.268.12.116.237.235.363.346.468.413.998.75 1.57 1l.005.002c.085.037.128.057.252.11.062.026.126.049.191.066a.35.35 0 0 0 .367-.13c.724-.877.79-.934.796-.934v.002a.482.482 0 0 1 .378-.127c.06.004.121.015.177.04.531.243 1.4.622 1.4.622l.582.261c.098.047.187.158.19.265.004.067.01.175-.013.373-.032.259-.11.57-.188.733a1.155 1.155 0 0 1-.21.302 2.378 2.378 0 0 1-.33.288 3.71 3.71 0 0 1-.125.09 5.024 5.024 0 0 1-.383.22 1.99 1.99 0 0 1-.833.23c-.185.01-.37.024-.556.014-.008 0-.568-.087-.568-.087a9.448 9.448 0 0 1-3.84-2.046c-.226-.199-.435-.413-.649-.626-.89-.885-1.562-1.84-1.97-2.742A3.47 3.47 0 0 1 6.9 9.62a2.729 2.729 0 0 1 .564-1.68c.073-.094.142-.192.261-.305.127-.12.207-.184.294-.228a.961.961 0 0 1 .371-.1z"></path></svg> <?php echo $wo['lang']['share_to'];?> <?php echo $wo['lang']['whatsapp'];?>
+						</a>
+					</li>
+					<li>
+						<a href="http://pinterest.com/pin/create/button/?url=<?php echo ($wo['article']['url']) ?>" target="_blank">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" class="hover_path" d="M13.37 2.094A10.003 10.003 0 0 0 8.002 21.17a7.757 7.757 0 0 1 .163-2.293c.185-.839 1.296-5.463 1.296-5.463a3.739 3.739 0 0 1-.324-1.577c0-1.485.857-2.593 1.923-2.593a1.334 1.334 0 0 1 1.342 1.508c0 .9-.578 2.262-.88 3.54a1.544 1.544 0 0 0 1.575 1.923c1.898 0 3.17-2.431 3.17-5.301 0-2.2-1.457-3.848-4.143-3.848a4.746 4.746 0 0 0-4.93 4.794 2.96 2.96 0 0 0 .648 1.97.48.48 0 0 1 .162.554c-.046.184-.162.623-.208.784a.354.354 0 0 1-.51.254c-1.384-.554-2.036-2.077-2.036-3.816 0-2.847 2.384-6.255 7.154-6.255 3.796 0 6.32 2.777 6.32 5.747 0 3.909-2.177 6.848-5.394 6.848a2.861 2.861 0 0 1-2.454-1.246s-.578 2.316-.692 2.754a8.026 8.026 0 0 1-1.019 2.131c.923.28 1.882.42 2.846.416a9.988 9.988 0 0 0 9.996-10.003 10.002 10.002 0 0 0-8.635-9.903z"></path><path fill="currentColor" d="M8.49 19.191c.024-.336.072-.671.144-1.001.063-.295.254-1.13.534-2.34l.007-.03.387-1.668c.079-.34.14-.604.181-.692a3.46 3.46 0 0 1-.284-1.423c0-1.337.756-2.373 1.736-2.373.36-.006.704.15.942.426.238.275.348.644.302.996 0 .453-.085.798-.453 2.035-.071.238-.12.404-.166.571-.051.188-.095.358-.132.522-.096.386-.008.797.237 1.106a1.2 1.2 0 0 0 1.006.456c1.492 0 2.6-1.985 2.6-4.548 0-1.97-1.29-3.274-3.432-3.274A3.878 3.878 0 0 0 9.2 9.1a4.13 4.13 0 0 0-1.195 2.961 2.553 2.553 0 0 0 .512 1.644c.181.14.25.383.175.59-.041.168-.14.552-.176.68a.41.41 0 0 1-.216.297.388.388 0 0 1-.355.002c-1.16-.479-1.796-1.778-1.796-3.44 0-2.985 2.491-5.584 6.192-5.584 3.135 0 5.481 2.329 5.481 5.14 0 3.532-1.932 6.104-4.69 6.104a2.508 2.508 0 0 1-2.046-.959l-.043.177-.207.852-.002.007c-.146.6-.248 1.017-.288 1.174-.106.355-.24.703-.4 1.04a8 8 0 1 0-1.656-.593zM12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"></path></svg> <?php echo $wo['lang']['share_to'];?> <?php echo $wo['lang']['pinterest'];?>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<a class="metaLink" title="<?php echo $wo['lang']['comments'];?>"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M2 8.994A5.99 5.99 0 0 1 8 3h8c3.313 0 6 2.695 6 5.994V21H8c-3.313 0-6-2.695-6-5.994V8.994zM14 11v2h2v-2h-2zm-6 0v2h2v-2H8z"/></svg> <?php echo Wo_GetBlogCommentsCount($wo['article']['id']); ?></a>
+			<div class="container">
+				<div class="wow_read_blog_hdr_img">
+					<div class="wow_read_blog_hdr_img_innr">
+						<a class="postCategory" href="<?php echo $wo['article']['category_link']; ?>" data-ajax="?link1=blog-category&id=<?php echo $wo['article']['category']; ?>"><?php echo $wo['blog_categories'][$wo['article']['category']]; ?></a>
+						<h2 itemprop="headline"><?php echo $wo['article']['title']?></h2>
+						<div class="read-blog-info-user">
+							<div class="postMeta--author-avatar">
+								<a href="<?php echo $wo['article']['author']['url']?>"><img src="<?php echo $wo['article']['author']['avatar']?>" alt="User Image"></a>
+							</div>
+							<div class="postMeta--author-text">
+								<a rel="author" href="<?php echo $wo['article']['author']['url']; ?>" data-ajax="?link1=timeline&u=<?php echo $wo['article']['author']['username']; ?>"><?php echo $wo['article']['author']['name']; ?></a>
+								<div>
+									<time itemprop="datePublished" content="<?php echo date("d M Y",$wo['article']['posted']); ?>"><?php echo date("d M Y",$wo['article']['posted']); ?></time> • 
+									<span class="views"><?php echo $wo['article']['view']?> <?php echo $wo['lang']['views']?></span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="wow_main_float_head_img">
+						<img src="<?php echo($wo['article']['thumbnail']); ?>">
+					</div>
+				</div>
+				<div class="read-blog-container">
+					<div class="read-blog-desc">
+						<p class="mb-0" itemprop="description"><?php echo $wo['article']['description']; ?></p>
+					</div>
+					<!-- Additional schema meta -->
+					<div itemscope="" itemprop="publisher" itemtype="http://schema.org/Organization" class="hidden">
+						<meta itemprop="name" content="<?php echo $wo['config']['siteName'];?>">
+						<div itemprop="logo" itemscope="" itemtype="https://schema.org/ImageObject" class="hidden">
+							<meta itemprop="url" content="<?php echo $wo['config']['theme_url'];?>/img/logo.<?php echo $wo['config']['logo_extension'];?>">
+							<meta itemprop="width" content="470">
+							<meta itemprop="height" content="75">
+						</div>
+					</div>
+					<a itemprop="mainEntityOfPage" href="<?php echo $wo['article']['url']; ?>" class="hidden"></a>
+					<div itemprop="image" itemscope itemtype="https://schema.org/ImageObject" class="hidden">
+						<img src="<?php echo $wo['article']['thumbnail']; ?>" alt="<?php echo $wo['article']['title']?>">
+						<meta itemprop="url" content="<?php echo $wo['article']['thumbnail']; ?>">
+						<meta itemprop="width" content="700">
+						<meta itemprop="height" content="250">
+					</div>
+					<div itemprop="articleBody" class="read-content">
+						<?php echo nofollow(htmlspecialchars_decode($wo['article']['content'])); ?>
+						<div class="clear"></div>
+					</div>
+					<div class="read-tags">
+						<?php if (is_array($wo['article']['tags_array'])) {
+							foreach ($wo['article']['tags_array'] as $key => $tag) {
+						?>
+							<a class="postTag" href="<?php echo Wo_SeoLink('index.php?link1=hashtag&hash=' . $tag) ?>" rel="tag">#<?php echo $tag ?></a>
+						<?php } } ?>
+					</div>
+					<hr class="style-two">
+					<div class="valign author-block tag_read_blg_auth_blk">
+						<div class="valign author">
+							<div class="img-wrap">
+								<img alt="" src="<?php echo $wo['article']['author']['avatar']?>">
+							</div>
+							<div class="text">
+								<h3><a href="<?php echo $wo['article']['author']['url']?>"><?php echo $wo['article']['author']['name']?></a></h3>
+								<?php
+									function Wo_CountUserBlogs($user_id) {
+										global $wo, $sqlConnect;
+										$data = array();
+										if (empty($user_id) or !is_numeric($user_id) or $user_id < 1) {
+											return false;
+										}
+										$user_id      = Wo_Secure($user_id);
+										$query        = mysqli_query($sqlConnect, "SELECT COUNT(`id`) AS count FROM " . T_BLOG . " WHERE `user` = {$user_id}");
+										$fetched_data = mysqli_fetch_assoc($query);
+										return $fetched_data['count'];
+									}
+								?>
+								<p><?php echo Wo_CountUserBlogs($wo['article']['author']['user_id']);?> <?php echo $wo['lang']['blog']; ?> <?php echo $wo['lang']['posts']; ?></p>
+							</div>            
+						</div>
+						<?php if (Wo_IsMobile() == false) { ?>
+						<div>
+							<?php if ($wo['article']['is_post_admin']):?>
+								<a class="btn btn-mat btn-success" href="<?php echo Wo_SeoLink('index.php?link1=edit-blog&id=' . $wo['article']['id']) ?>"><?php echo $wo['lang']['edit']; ?></a>
+							<?php endif;?>
+							<?php echo Wo_GetFollowButton($wo['article']['author']['user_id']);?>
+						</div>
+						<?php } ?>
+					</div>
+					<div class="related-post">
+						<?php echo Wo_LoadPage('blog/sidebar') ?>
+					</div>
+					<?php //if ($wo['loggedin'] == true): ?>           
+					<div class="blog-com-wrapper" id="respond">
+						<div class="valign wo_page_hdng">
+							<span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M9,22A1,1 0 0,1 8,21V18H4A2,2 0 0,1 2,16V4C2,2.89 2.9,2 4,2H20A2,2 0 0,1 22,4V16A2,2 0 0,1 20,18H13.9L10.2,21.71C10,21.9 9.75,22 9.5,22V22H9Z"></path></svg></span> <?php echo Wo_GetBlogCommentsCount($wo['article']['id']); ?>  <?php echo $wo['lang']['comments'];?>
+						</div>
+						<div class="blog-com-box">
+							<form class="form">
+								<div class="valign wo_blogcomm_combo">
+									<?php if ($wo['loggedin'] == true): ?><img class="avatar" src="<?php echo $wo['user']['avatar'];?>"/><?php endif; ?>      
+									<textarea id="blog-comment" name="text" class="form-control" placeholder="<?php echo $wo['lang']['write_comment'];?>"></textarea>
+									<button id="add-art-comment" class="btn btn-main btn-mat" type="button"><?php echo $wo['lang']['post']; ?></button>
+								</div>
+								<div class="clear"></div>
+							</form>
+							<div class="clear"></div>
+						</div>
+						<div class="blog-comlist-container"><?php 
+								foreach (Wo_GetBlogComments(array('blog_id'=> $wo['article']['id'])) as $wo['comment']) {
+									echo Wo_LoadPage('blog/comment-list');
+								}
+							?></div>
+						<div class="posts_load">
+							<?php if (Wo_GetBlogCommentsCount($wo['article']['id']) > 5): ?>
+								<div class="load-more">
+									<button class="btn btn-default text-center pointer load-more-blog-comments"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"></path></svg></span> <?php echo $wo['lang']['load_more'] ?></button>
+								</div>
+							<?php endif ?>
+						</div>
+					</div>
+					<?php //endif;?>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- .row -->
+</div>
+
+<script>
+jQuery(document).ready(function($) {
+  $(".load-more-blog-comments").click(function(event) {
+    var self    = $(this);
+    var last_id = 0;
+    if ($("div[data-blog-comment]").length > 0) {
+      last_id = $("div[data-blog-comment]").last().attr('data-blog-comment');
+    }
+    $.ajax({
+      url: Wo_Ajax_Requests_File(),
+      type: 'GET',
+      dataType: 'json',
+      data: {
+        f:'load-blog-comments',
+        offset:last_id,
+        b_id:<?php echo $wo['article']['id']; ?>
+      },
+    }).done(function(data) {
+      if (data.status == 200) {
+        $(".blog-comlist-container").append(data.html);
+      }
+      else if(data.status == 404){
+        self.text(data.html);
+      }
+    }).fail(function() {
+      console.log("Something went wrong. Try again later");
+    })
+  });
+
+  $(document).on('click', ".delete-my-blog",function() {
+    $.ajax({
+      type: "GET",
+      url: Wo_Ajax_Requests_File(),
+      data: {id: $(this).attr("id"),f:'delete-my-blog'},
+      dataType:'json',
+      success: function(data) {
+         if(data['status'] == 200){
+            $("div[data-rm-blog='"+ data['id'] +"']").remove()
+         } else {
+            alert(data['status'])
+         }
+      }
+    });   
+  });
+
+  $(document).on('click', ".del-blog-comment",function() {
+    var  self = $(this);
+    $.ajax({
+      type: "GET",
+      url: Wo_Ajax_Requests_File(),
+      data: {id: self.attr("id"),f:'del-blog-comment',b_id:<?php echo $wo['article']['id']; ?>},
+      dataType:'json',
+      success: function(data) {
+         if(data['status'] == 200){
+            $("div[data-blog-comment='"+ self.attr('id') +"']").slideUp('fast',function(){
+              $(".blog-com-top h4 span").text(data.comments);
+              $(this).remove();
+            })
+         }
+      }
+    });   
+  });
+
+  $(document).on('click', ".del-blog-commreplies",function() {
+    var  self = $(this);
+    $.ajax({
+      type: "GET",
+      url: Wo_Ajax_Requests_File(),
+      data: {id: self.attr("id"),f:'del-blog-commreplies',b_id:<?php echo $wo['article']['id']; ?>},
+      dataType:'json',
+      success: function(data) {
+         if(data['status'] == 200){
+            $("div[data-blog-comment-reply='"+ self.attr('id') +"']").slideUp('fast',function(){
+              var comments = Number($(".blog-com-top h4 span").text());
+              $(".blog-com-top h4 span").text(comments -= 1);
+              $(this).remove();
+            })
+         }
+      }
+    });   
+  });
+
+  $(document).on('click', ".reply-toblogcomm-reply",function() {
+    $('.blog-comment-reply-box').each(function(index, el) {
+      $(el).addClass('hidden');
+    });
+    var  self = $(this);
+    var name  = $("div[data-blog-comment-reply='"+self.attr('id')+"']").find('a b').text();
+    $("div[data-blog-comment='"+self.attr('data-blog-commId')+"']").find('.blog-comment-reply-box').removeClass('hidden').find('textarea').val(name +": ");
+  });
+
+  $(document).on('click', ".reply-toblog-comm",function() {
+    $('.blog-comment-reply-box').each(function(index, el) {
+      $(el).addClass('hidden');
+    });
+    var  self = $(this);
+    $("div[data-blog-comment='"+self.attr('id')+"']").find('.blog-comment-reply-box').toggleClass('hidden').find('textarea').val('');
+    
+  });
+
+  $("#add-art-comment").click(function(event) {
+    <?php if ($wo['loggedin'] != true) { ?>
+      document.location = "<?php echo($wo['config']['site_url']) ?>";
+    <?php } ?>
+    $.ajax({
+      url: Wo_Ajax_Requests_File() + '?f=add-blog-comm',
+      type: 'POST',
+      dataType: 'json',
+      data: {text:$("#blog-comment").val(),blog:<?php echo $wo['article']['id']; ?>},
+    })
+    .done(function(data) {
+      if (data.status == 200) {
+		if (node_socket_flow == "1") {
+            socket.emit("user_notification", { to_id: data.user_id, user_id: _getCookie("user_id"), type: "added" });
+        }
+        $("#blog-comment").val('');
+        $(".blog-comlist-container").prepend(data.html);
+        $(".blog-com-top h4 span").text(data.comments);
+      }
+    })
+    .fail(function() {
+      console.log("Something went wrong. Try again later");
+    })    
+  });
+
+});
+
+function Wo_OpenWindow(url) {
+  newwindow = window.open('<?php echo($wo['config']['site_url']); ?>/sharer?url=' + url, '', 'height=600,width=800');
+   if (window.focus) {
+      newwindow.focus();
+   }
+   return false;
+}
+
+function Wo_AddBlogCommentLike(id){
+  if (!id) {
+    return false;
+  }
+  var comment_id = id;
+  Wo_Delay(function(){
+    $.ajax({
+      url: Wo_Ajax_Requests_File() + '?f=add-blog-commlikes',
+      type: 'POST',
+      dataType: 'json',
+      data: {id:comment_id,blog_id:<?php echo $wo['article']['id']; ?>},
+    }).done(function(data) {
+      if (data.status == 200) {
+		if (node_socket_flow == "1") {
+            socket.emit("user_notification", { to_id: data.user_id, user_id: _getCookie("user_id"), type: "added" });
+        }
+        $("span[data-blog-comdislikes='"+comment_id+"']").text(data.dislikes);
+        $("span[data-blog-comlikes='"+comment_id+"']").text(data.likes);
+      }
+    }).fail(function() {
+      console.log("Something went wrong. Try again later");
+    })
+  },0);
+  
+}
+
+function Wo_AddBlogCommentDisLike(id){
+  if (!id) {
+    return false;
+  }
+  var comment_id = id;
+  Wo_Delay(function(){
+    $.ajax({
+      url: Wo_Ajax_Requests_File() + '?f=add-blog-commdislikes',
+      type: 'POST',
+      dataType: 'json',
+      data: {id:comment_id,blog_id:<?php echo $wo['article']['id']; ?>},
+    }).done(function(data) {
+      if (data.status == 200) {
+        $("span[data-blog-comdislikes='"+comment_id+"']").text(data.dislikes);
+        $("span[data-blog-comlikes='"+comment_id+"']").text(data.likes);
+      }
+    }).fail(function() {
+      console.log("Something went wrong. Try again later");
+    })
+  },0);
+  
+}
+function Wo_AddBlogCommReplyLike(id){
+  if (!id) {
+    return false;
+  }
+  var reply_id = id;
+  Wo_Delay(function(){
+    $.ajax({
+      url: Wo_Ajax_Requests_File() + '?f=add-blog-crlikes',
+      type: 'POST',
+      dataType: 'json',
+      data: {id:reply_id,blog_id:<?php echo $wo['article']['id']; ?>},
+    }).done(function(data) {
+      if (data.status == 200) {
+        $("span[data-blog-comrlikes='"+reply_id+"']").text(data.likes);
+        $("span[data-blog-comrdislikes='"+reply_id+"']").text(data.dislikes);
+      }
+    }).fail(function() {
+      console.log("Something went wrong. Try again later");
+    })
+  },0);
+  
+}
+
+function Wo_AddBlogCommReplyDisLike(id){
+  if (!id) {
+    return false;
+  }
+  var reply_id = id;
+  Wo_Delay(function(){
+    $.ajax({
+      url: Wo_Ajax_Requests_File() + '?f=add-blog-crdislikes',
+      type: 'POST',
+      dataType: 'json',
+      data: {id:reply_id,blog_id:<?php echo $wo['article']['id']; ?>},
+    }).done(function(data) {
+      if (data.status == 200) {
+        $("span[data-blog-comrlikes='"+reply_id+"']").text(data.likes);
+        $("span[data-blog-comrdislikes='"+reply_id+"']").text(data.dislikes);
+      }
+    }).fail(function() {
+      console.log("Something went wrong. Try again later");
+    })
+  },0);
+  
+}
+
+function Wo_RegisterBlogCommReply(id,event,self){
+  <?php if ($wo['loggedin'] != true) { ?>
+      document.location = "<?php echo($wo['config']['site_url']) ?>";
+    <?php } ?>
+  if (event.keyCode==13&&event.shiftKey==0&&event&&id&&self) {
+    var text = self.value;
+    if (text.length >= 2) {
+      $.ajax({
+        url: Wo_Ajax_Requests_File() + '?f=add-blog-commreply',
+        type: 'POST',
+        dataType: 'json',
+        data: {c_id:id,text:text,b_id:<?php echo $wo['article']['id']; ?>},
+      }).done(function(data) {
+        if (data.status == 200) {
+		  if (node_socket_flow == "1") {
+              socket.emit("user_notification", { to_id: data.user_id, user_id: _getCookie("user_id"), type: "added" });
+          }
+          $("div[data-blog-comment='"+id+"']").find('.blog-comment-reply-cont').append(data.html);
+          $(".blog-com-top h4 span").text(data.comments);
+          self.value = '';
+        }
+      }).fail(function() {
+        console.log("Something went wrong. Try again later");
+      })     
+    }
+  }
+
+}
+</script>

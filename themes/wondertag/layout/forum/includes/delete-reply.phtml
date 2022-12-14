@@ -1,0 +1,16 @@
+<div class="modal fade" id="delete-reply">
+	<div class="modal-dialog modal-sm wow_mat_mdl">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title"><?php echo $wo['lang']['delete'] ?> <?php echo $wo['lang']['reply'] ?></h4>
+			</div>
+			<div class="modal-body">
+				<p><?php echo $wo['lang']['confirm_delete_post']; ?></p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default btn-mat disable_btn" data-dismiss="modal" aria-label="Close"><?php echo $wo['lang']['cancel']; ?></button>
+				<button type="button" onclick="Wo_DelReply($('#delete-reply').attr('data-reply-ident'))" class="btn btn-main btn-mat"><?php echo $wo['lang']['delete']; ?></button>
+			</div>
+		</div>
+	</div>
+</div>

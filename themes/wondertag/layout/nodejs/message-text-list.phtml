@@ -1,0 +1,72 @@
+<div class="message-contnaier valign" id="messageId_{{chatMsgId}}">
+    {{#if onwer}}
+    {{else}}
+		<a href="{{username}}" data-ajax="?link1=timeline&u={{username}}">
+			<img class="message-user-image" src={{avatar}} alt="Profile Picture">
+		</a>
+    {{/if}}
+    <div class="messages-wrapper messages-text tag_msg_wrapper message-model {{#if onwer}} outgoing {{else}} incoming {{/if}}" data-message-id="{{chatMsgId}}" data-toggle="tooltip" title="{{ElapsedTime}}" data-placement="{{#if onwer}}bottom{{else}}bottom{{/if}}">
+		{{#if have_reply}}
+			<div class="valign tag_reply_msg_bg">
+				<p class="message-text tag_reply_msg_text" dir="auto" style="color: {{backgroundColor}};">{{{reply_text}}}</p>
+				{{#if mediaReplyHTML}}
+					<div class="message-media">
+						<div class="clear"></div>
+						{{{mediaReplyHTML}}}
+					</div>
+				{{/if}}
+			</div>
+		{{/if}}
+		
+		{{#if have_story}}
+			<div class="tag_chat_story">
+				<div class="tag_chat_story_innr" onclick="Get_CurrentStory('{{story_id}}','user')">
+					<img src="{{story_thumbnail}}">
+					<p class="valign bold"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M14.6 21.3c-.3.226-.619.464-.89.7H16a1 1 0 010 2h-4a1 1 0 01-1-1c0-1.5 1.275-2.456 2.4-3.3.75-.562 1.6-1.2 1.6-1.7a1 1 0 00-2 0 1 1 0 01-2 0 3 3 0 016 0c0 1.5-1.275 2.456-2.4 3.3zM23 15a1 1 0 00-1 1v3h-1a1 1 0 01-1-1v-2a1 1 0 00-2 0v2a3 3 0 003 3h1v2a1 1 0 002 0v-7a1 1 0 00-1-1zm-10-3V7a1 1 0 00-2 0v4H8a1 1 0 000 2h4a1 1 0 001-1zM23 2a1 1 0 00-1 1v2.374A12 12 0 107.636 23.182 1.015 1.015 0 008 23.25a1 1 0 00.364-1.932A10 10 0 1120.636 7H18a1 1 0 000 2h3a3 3 0 003-3V3a1 1 0 00-1-1z"/></svg> <?php echo $wo['lang']['view_story'];?></p>
+				</div>
+			</div>
+		{{/if}}
+		
+		{{#if chatTxt}}
+            <p class="message-text" id="message_text_reply_{{chatMsgId}}" dir="auto" {{#if onwer}} style="background-color: {{backgroundColor}} {{/if}}">
+                {{#if hasHTML}}
+                    {{{chatTxt}}}
+                {{else}}
+                    {{{chatTxt}}}
+                {{/if}}
+            </p>
+		{{/if}}
+        <div class="clear"></div>
+		<div class="message-media" id="message_media_reply_{{chatMsgId}}">
+			<div class="clear"></div>
+			{{{mediaHTML}}}
+			{{!--  <a href={{media_link}}>{{{media_data}}}</a>--}}
+		</div>
+		<div class="valign like-stat stat-item post-like-status">
+			<span class="like-emo post-reactions-icons-m-{{chatMsgId}}">{{{reactions_info_html}}}</span>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="dropup valign tag_chat_opts">
+		<div class="pointer deleteMessage" onclick="Wo_ReplyMessage('{{chatMsgId}}');">
+			<svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" opacity="0.5"><path fill="currentColor" d="M11 20L1 12l10-8v5c5.523 0 10 4.477 10 10 0 .273-.01.543-.032.81-1.463-2.774-4.33-4.691-7.655-4.805L13 15h-2v5zm-2-7h4.034l.347.007c1.285.043 2.524.31 3.676.766C15.59 12.075 13.42 11 11 11H9V8.161L4.202 12 9 15.839V13z" /></svg>
+		</div>
+		<div class="pointer deleteMessage dropdown-toggle" data-toggle="dropdown" role="button">
+			<svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" opacity="0.5"><path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm-5-7h2a3 3 0 0 0 6 0h2a5 5 0 0 1-10 0zm1-2a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm8 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" /></svg>
+		</div>
+		<div class="dropdown-menu tag_chat_reacts">
+			<ul class="reactions-box reactions-box-container-{{chatMsgId}}" data-id="{{chatMsgId}}">
+				{{{reactions_html}}}
+			</ul>
+		</div>
+		<div class="pointer deleteMessage" onclick="Wo_DeleteMessage({{chatMsgId}})">
+			<svg xmlns="http://www.w3.org/2000/svg" height="19" viewBox="0 0 24 24" width="19" opacity="0.5"><path fill="currentColor" d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm-5-9h10v2H7v-2z"></path></svg>
+		</div>
+	</div>
+
+	<div class="clear"></div>
+    <div class="message-typing"></div>
+    {{#if onwer}}
+    <div class="message-seen"></div>
+    {{/if}}
+</div>

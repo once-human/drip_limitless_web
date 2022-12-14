@@ -1,0 +1,114 @@
+<div class="modal fade wow_mat_pops" id="send_money_modal" role="dialog">
+	<div class="modal-dialog modal-md wow_mat_mdl">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title"><?php echo $wo['lang']['send_money_friends'] ?></h4>
+			</div>
+			<form class="form" id="send-money-form" autocomplete="off">
+				<div class="modal-body">
+					<div id="send-money-form-alert">
+						<?php if ($wo['user']['wallet'] == '0.00' || $wo['user']['wallet'] == '0'): ?>
+							<div class="alert alert-warning"><?php echo $wo['lang']['balance_is_0'] ?> <a href="<?php echo Wo_SeoLink('index.php?link1=wallet'); ?>"><?php echo $wo['lang']['top_up'] ?></a></div>
+						<?php else: ?>  
+							<p><?php echo $wo['lang']['u_send_money']; ?>.</p><br>
+						<?php endif; ?>
+					</div>
+					<div class="wow_snd_money_form text-center">
+						<p class="bold"><?php echo $wo['lang']['amount'];?></p>
+						<div class="add-amount">
+							<h5><sup><?php echo Wo_GetCurrency($wo['config']['ads_currency']); ?></sup><input type="number" placeholder="0" min="1" max="1000" name="amount" id="amount" class="width-dynamic" /></h5>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-2"></div>
+						<div class="col-md-8">
+							<label class="tag_field" id="company">
+								<input id="search" type="text" placeholder=" ">
+								<span><?php echo $wo['lang']['send_to']; ?></span>
+								<div class="dropdown">
+									<ul class="dropdown-menu money-recipients-list"></ul>
+								</div>
+							</label>
+							<span class="help-block"><?php echo $wo['lang']['search_name_or_email']; ?></span>
+						</div>
+						<div class="col-md-2"></div>
+					</div>
+					<input type="hidden" id="recipient_user_id" name="user_id">
+					<div class="clear"></div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-main btn-mat disable_btn" <?php echo ($wo['user']['wallet'] == '0.00' || $wo['user']['wallet'] == '0') ? 'disabled' : ''; ?>><?php echo $wo['lang']['continue'];?></button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<script>
+  jQuery(document).ready(function($) {
+    $("#send-money-form").find('#search').keydown(function(event) {
+      let name = $(this).val();
+      $.ajax({
+        url: Wo_Ajax_Requests_File(),
+        type: 'GET',
+        dataType: 'json',
+        data: {f: 'family',s:'search',name:name},
+      })
+      .done(function(data) {
+        if (data.status == 200) {
+          $("#send-money-form").find(".dropdown").find('ul').addClass('show').empty();
+          for (var i = 0; i < data.users.length; i++) {
+            $("<li>",{
+              class:"pointer",
+              id: data.users[i].user_id,
+              text: data.users[i].name
+            }).appendTo('ul.money-recipients-list');     
+          }
+        }
+        else{
+          $("#send-money-form").find(".dropdown").find('ul').removeClass('show').empty();
+        }
+      });
+    });
+
+
+    $(document).on('click', 'ul.money-recipients-list li', function(event) {
+      event.preventDefault();
+      $("#recipient_user_id").val($(this).attr('id'));
+      $("#send-money-form").find('#search').val($(this).text());
+      $("#send-money-form").find(".dropdown").find('ul').removeClass('show').empty();
+    });
+
+    $("#send-money-form").ajaxForm({
+      url: Wo_Ajax_Requests_File() + '?f=wallet&s=send',
+      type:"POST",
+      beforeSend: function() {
+		$('#send-money-form').find('.disable_btn').attr('disabled','disabled');
+      },
+      success: function(data) {
+        scrollToTop();
+        if (data['status'] == 200) {
+			if (node_socket_flow == "1") {
+                socket.emit("user_notification", { to_id: $("#recipient_user_id").val(), user_id: _getCookie("user_id"), type: "added" });
+            }
+          var alert_msg = $("<div>",{
+            class: "alert alert-success",
+            text: data['message']
+          }).prepend('<i class="fa fa-info-check-o"></i> ');;
+
+          $("#send-money-form-alert").html(alert_msg);
+          $("#send-money-form").resetForm();
+        } 
+
+        else if (data['message']) {
+          var alert_msg = $("<div>",{
+            class: "alert alert-danger",
+            text: (data['message'])
+          }).prepend('<i class="fa fa-info-circle"></i> ');
+
+          $("#send-money-form-alert").html(alert_msg);
+        } 
+		$('#send-money-form').find('.disable_btn').removeAttr("disabled");
+      }
+    });
+  });
+</script>

@@ -1,0 +1,150 @@
+<?php if ($wo['config']['shout_box_system'] == 1 && $wo['story']['postPrivacy'] == 4) {
+	$anonymous = true;
+   $wo['story']['publisher']['username'] = 'anonymous';
+   $wo['story']['publisher']['name'] = $wo['lang']['anonymous'];
+   $wo['story']['publisher']['avatar'] = Wo_GetMedia('upload/photos/incognito.png');
+   $wo['story']['publisher']['verified'] = 0;
+   $wo['story']['publisher']['type'] = '';
+   $wo['story']['publisher']['url'] = 'javascript:void(0)';
+} ?>
+<div class="modal fade share_post_modal_" id="share_post_modal" role="dialog">
+	<div class="modal-dialog modal-md wow_mat_mdl">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title"><?php echo $wo['lang']['share_new_post'] ?></h4>
+			</div>
+			<?php if($wo['config']['social_share_twitter'] == 1 || $wo['config']['social_share_facebook'] == 1 || $wo['config']['social_share_whatsup'] == 1 || $wo['config']['social_share_pinterest'] == 1 || $wo['config']['social_share_linkedin'] == 1 || $wo['config']['social_share_telegram'] == 1) { ?>
+				<div class="valign">
+					<ul class="valign nav nav-tabs tag_switch_noti tag_share_post_switch" role="tablist">
+						<li role="presentation"><a href="#share_timeline" class="active" aria-controls="share_timeline" role="tab" data-toggle="tab"><?php echo $wo['lang']['share'] ?></a></li>
+						<li role="presentation"><a href="#share_external" aria-controls="share_external" role="tab" data-toggle="tab"><?php echo $wo['lang']['export'] ?></a></li>
+					</ul>
+				</div>
+			<?php } ?>
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane active" id="share_timeline">
+					<div class="modal-body">
+						<div class="share_post_modal_alert"></div>
+						
+						<?php if (empty($wo['story']['parent_id']) && empty($wo['story']['shared_from']) && $wo['story']['postPrivacy'] == 0): ?>
+							<div class="select_radio_btn small_rbtn share_modal_opts_icos">
+								<div class="row">
+									<?php //if ($wo['story']['admin'] != true) { ?>
+									<?php if ((!empty($wo['story']['page_id']) || !empty($wo['story']['group_id'])) || (empty($wo['story']['page_id']) && empty($wo['story']['group_id']) && !$wo['story']['admin']) ) { ?>
+										<div class="col-md-12 round-check">
+											<input type="radio" name="share_type_select" class="share_type_select" id="share_type_timeline" value="timeline" checked>
+											<label for="share_type_timeline"><?php echo $wo['lang']['share_on_timeline'];?></label>
+										</div>
+									<?php } ?>
+									<?php //} ?>
+
+									<?php if (empty($wo['story']['page_id']) && empty($wo['story']['group_id']) ) { ?>
+									<?php if ($wo['config']['pages'] != 0) { ?>
+										<div class="col-md-12 round-check">
+											<input type="radio" name="share_type_select" class="share_type_select" id="share_type_page" value="page">
+											<label for="share_type_page"><?php echo $wo['lang']['share_post_on_page'];?></label>
+										</div>
+									<?php } ?>
+									<?php if ($wo['config']['groups'] != 0) { ?>
+										<div class="col-md-12 round-check">
+											<input type="radio" name="share_type_select" class="share_type_select" id="share_type_group" value="group">
+											<label for="share_type_group"><?php echo $wo['lang']['share_post_on_group'];?></label>
+										</div>
+									<?php } ?>
+									<?php } ?>
+								</div>
+							</div>
+						<?php endif;?>
+						<div class="clear"></div>
+						<div class="shar_modl_chose_pgrp">
+							<?php if (!empty($wo['story']['page_id']) || !empty($wo['story']['group_id']) ) { ?>
+								<div class="search_for_form hidden" id="type_user_name">
+									<input onkeydown="SearchFor(this,'user')" type="text" name="name" placeholder="<?php echo $wo['lang']['username']; ?>" autocomplete="off">
+								</div>
+							<?php } ?>
+							<?php if (empty($wo['story']['page_id']) && empty($wo['story']['group_id']) ) { ?>
+								<div class="search_for_form hidden" id="type_group_name">
+									<input onkeydown="SearchFor(this,'group')" type="text" name="name" placeholder="<?php echo $wo['lang']['please_group_name']; ?>" autocomplete="off">
+								</div>
+								<div class="search_for_form hidden" id="type_page_name">
+									<input onkeydown="SearchFor(this,'page')" type="text" name="name" placeholder="<?php echo $wo['lang']['please_page_name']; ?>" autocomplete="off">
+								</div>
+							<?php } ?>
+						</div>
+						<label class="tag_field tag_share_post_tarea">
+							<textarea rows="4" onkeyup="Wo_Get_Mention(this)" id="share_post_text" placeholder=" "></textarea>
+							<span><?php echo $wo['lang']['write_something_here']?></span>
+						</label>
+						<input type="hidden" id="SearchForInputType" name="type" value="timeline">
+						<input type="hidden" id="SearchForInputPostId" name="post_id">
+						<input type="hidden" id="SearchForInputTypeId" name="type_id">
+						<div class="clear"></div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default btn-mat disable_btn" data-dismiss="modal" aria-label="Close"><?php echo $wo['lang']['cancel']; ?></button>
+						<button type="button" class="btn btn-main btn-mat disable_btn" id="share_post_on_btn"><?php echo $wo['lang']['share']; ?></button>
+					</div>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="share_external">
+					<div class="modal-body">
+						<input class="tag_share_post_input" value="<?php echo (!empty($wo['story']['blog']['url'])) ? $wo['story']['blog']['url']  : $wo['story']['url'];?>" onclick="select();document.execCommand('copy');" readonly>
+						<hr>
+						<div class="valign share_modal_social_icos">
+							<?php if($wo['config']['social_share_twitter'] == 1): ?>
+								<div>
+									<a href="https://twitter.com/intent/tweet?text=<?php echo (!empty($wo['story']['blog']['url'])) ? $wo['story']['blog']['url']  : $wo['story']['url'];?>" target="_blank">
+										<div class="social-btn" style="color: #55acee;"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><path fill="currentColor" d="M22.162 5.656a8.384 8.384 0 0 1-2.402.658A4.196 4.196 0 0 0 21.6 4c-.82.488-1.719.83-2.656 1.015a4.182 4.182 0 0 0-7.126 3.814 11.874 11.874 0 0 1-8.62-4.37 4.168 4.168 0 0 0-.566 2.103c0 1.45.738 2.731 1.86 3.481a4.168 4.168 0 0 1-1.894-.523v.052a4.185 4.185 0 0 0 3.355 4.101 4.21 4.21 0 0 1-1.89.072A4.185 4.185 0 0 0 7.97 16.65a8.394 8.394 0 0 1-6.191 1.732 11.83 11.83 0 0 0 6.41 1.88c7.693 0 11.9-6.373 11.9-11.9 0-.18-.005-.362-.013-.54a8.496 8.496 0 0 0 2.087-2.165z" /></svg></div> <?php echo $wo['lang']['twitter'];?>
+									</a>
+								</div>
+							<?php endif;?>
+							<?php if($wo['config']['social_share_facebook'] == 1): ?>
+								<div>
+									<a rel="publisher" href="https://www.facebook.com/sharer/sharer.php?u=<?php echo (!empty($wo['story']['blog']['url'])) ? $wo['story']['blog']['url']  : $wo['story']['url'];?>" target="_blank">
+										<div class="social-btn" style="color: #337ab7;"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.477 2 2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.879V14.89h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.989C18.343 21.129 22 16.99 22 12c0-5.523-4.477-10-10-10z" /></svg></div> <?php echo $wo['lang']['facebook'];?>
+									</a>
+								</div>
+							<?php endif;?>
+							<?php if($wo['config']['social_share_whatsup'] == 1): ?>
+								<div>
+									<a href="https://api.whatsapp.com/send?text=<?php echo (!empty($wo['story']['blog']['url'])) ? $wo['story']['blog']['url']  : $wo['story']['url'];?>" data-action="share/whatsapp/share" target="_blank">
+										<div class="social-btn" style="color: #04aa24;"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><path fill="currentColor" d="M7.253 18.494l.724.423A7.953 7.953 0 0 0 12 20a8 8 0 1 0-8-8c0 1.436.377 2.813 1.084 4.024l.422.724-.653 2.401 2.4-.655zM2.004 22l1.352-4.968A9.954 9.954 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10a9.954 9.954 0 0 1-5.03-1.355L2.004 22zM8.391 7.308c.134-.01.269-.01.403-.004.054.004.108.01.162.016.159.018.334.115.393.249.298.676.588 1.357.868 2.04.062.152.025.347-.093.537a4.38 4.38 0 0 1-.263.372c-.113.145-.356.411-.356.411s-.099.118-.061.265c.014.056.06.137.102.205l.059.095c.256.427.6.86 1.02 1.268.12.116.237.235.363.346.468.413.998.75 1.57 1l.005.002c.085.037.128.057.252.11.062.026.126.049.191.066a.35.35 0 0 0 .367-.13c.724-.877.79-.934.796-.934v.002a.482.482 0 0 1 .378-.127c.06.004.121.015.177.04.531.243 1.4.622 1.4.622l.582.261c.098.047.187.158.19.265.004.067.01.175-.013.373-.032.259-.11.57-.188.733a1.155 1.155 0 0 1-.21.302 2.378 2.378 0 0 1-.33.288 3.71 3.71 0 0 1-.125.09 5.024 5.024 0 0 1-.383.22 1.99 1.99 0 0 1-.833.23c-.185.01-.37.024-.556.014-.008 0-.568-.087-.568-.087a9.448 9.448 0 0 1-3.84-2.046c-.226-.199-.435-.413-.649-.626-.89-.885-1.562-1.84-1.97-2.742A3.47 3.47 0 0 1 6.9 9.62a2.729 2.729 0 0 1 .564-1.68c.073-.094.142-.192.261-.305.127-.12.207-.184.294-.228a.961.961 0 0 1 .371-.1z" /></svg></div> <?php echo $wo['lang']['whatsapp'];?>
+									</a>
+								</div>
+							<?php endif;?>
+							<?php if($wo['config']['social_share_pinterest'] == 1): ?>
+								<div>
+									<a href="https://pinterest.com/pin/create/button/?url=<?php echo (!empty($wo['story']['blog']['url'])) ? $wo['story']['blog']['url']  : $wo['story']['url'];?>" target="_blank">
+										<div class="social-btn" style="color: #cb2027;"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><path fill="currentColor" d="M13.37 2.094A10.003 10.003 0 0 0 8.002 21.17a7.757 7.757 0 0 1 .163-2.293c.185-.839 1.296-5.463 1.296-5.463a3.739 3.739 0 0 1-.324-1.577c0-1.485.857-2.593 1.923-2.593a1.334 1.334 0 0 1 1.342 1.508c0 .9-.578 2.262-.88 3.54a1.544 1.544 0 0 0 1.575 1.923c1.898 0 3.17-2.431 3.17-5.301 0-2.2-1.457-3.848-4.143-3.848a4.746 4.746 0 0 0-4.93 4.794 2.96 2.96 0 0 0 .648 1.97.48.48 0 0 1 .162.554c-.046.184-.162.623-.208.784a.354.354 0 0 1-.51.254c-1.384-.554-2.036-2.077-2.036-3.816 0-2.847 2.384-6.255 7.154-6.255 3.796 0 6.32 2.777 6.32 5.747 0 3.909-2.177 6.848-5.394 6.848a2.861 2.861 0 0 1-2.454-1.246s-.578 2.316-.692 2.754a8.026 8.026 0 0 1-1.019 2.131c.923.28 1.882.42 2.846.416a9.988 9.988 0 0 0 9.996-10.003 10.002 10.002 0 0 0-8.635-9.903z" /></svg></div> <?php echo $wo['lang']['pinterest'];?>
+									</a>
+								</div>
+							<?php endif;?>
+							<?php if($wo['config']['social_share_linkedin'] == 1): ?>
+								<div>
+									<a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=<?php echo (!empty($wo['story']['blog']['url'])) ? $wo['story']['blog']['url']  : $wo['story']['url'];?>" target="_blank">
+										<div class="social-btn" style="color: #007bb6;"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><path fill="currentColor" d="M6.94 5a2 2 0 1 1-4-.002 2 2 0 0 1 4 .002zM7 8.48H3V21h4V8.48zm6.32 0H9.34V21h3.94v-6.57c0-3.66 4.77-4 4.77 0V21H22v-7.93c0-6.17-7.06-5.94-8.72-2.91l.04-1.68z" /></svg></div> <?php echo $wo['lang']['linkedin'];?>
+									</a>
+								</div>
+							<?php endif;?>
+							<?php if($wo['config']['social_share_telegram'] == 1): ?>
+								<div>
+									<a href="https://telegram.me/share/url?url=<?php echo (!empty($wo['story']['blog']['url'])) ? $wo['story']['blog']['url']  : $wo['story']['url'];?>" target="_blank">
+										<div class="social-btn" style="color: #239bcd;"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><path fill="currentColor" d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-3.11-8.83l.013-.007.87 2.87c.112.311.266.367.453.341.188-.025.287-.126.41-.244l1.188-1.148 2.55 1.888c.466.257.801.124.917-.432l1.657-7.822c.183-.728-.137-1.02-.702-.788l-9.733 3.76c-.664.266-.66.638-.12.803l2.497.78z" /></svg></div> <?php echo $wo['lang']['telegram'];?>
+									</a>
+								</div>
+							<?php endif;?>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default btn-mat" data-dismiss="modal" aria-label="Close"><?php echo $wo['lang']['close']; ?></button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip();
+});
+</script>

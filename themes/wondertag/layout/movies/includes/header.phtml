@@ -1,0 +1,20 @@
+<div class="tag_sidebar_section_prnt">
+	<div class="valign tag_sidebar_head" data-toggle="collapse" data-target="#collapseGenre" aria-expanded="true" aria-controls="collapseGenre"><?php echo $wo['lang']['genre']; ?> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z"></path></svg></div>
+	<div class="collapse <?php if (Wo_IsMobile() == false) { ?>show<?php } ?>" id="collapseGenre">
+		<div class="tag_sidebar_section">
+			<?php foreach ($wo['film-genres'] as $g_key => $genre): ?>
+				<a href="<?php echo Wo_SeoLink('index.php?link1=movies-genre&genre='.$g_key); ?>"><?php echo $genre; ?></a>
+			<?php endforeach;?>
+		</div>
+	</div>
+</div>
+<div class="tag_sidebar_section_prnt">
+	<div class="valign tag_sidebar_head" data-toggle="collapse" data-target="#collapseCountry" aria-expanded="true" aria-controls="collapseCountry"><?php echo $wo['lang']['country']; ?> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z"></path></svg></div>
+	<div class="collapse <?php if (Wo_IsMobile() == false) { ?>show<?php } ?>" id="collapseCountry">
+		<div class="tag_sidebar_section">
+			<?php foreach ($wo['countries'] as $c_key => $country): ?>
+				<a href="<?php echo Wo_SeoLink('index.php?link1=movies-country&country='.$c_key); ?>"><?php echo $country;?></a>
+			<?php endforeach; ?>
+		</div>
+	</div>
+</div>

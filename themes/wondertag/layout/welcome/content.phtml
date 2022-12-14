@@ -1,0 +1,15 @@
+<?php 
+$wondertage_settings = array();
+if (mysqli_query($wo['sqlConnect'], "DESCRIBE `wondertage_settings`" )) {
+	$settings = $db->get('wondertage_settings');
+	foreach ($settings as $key => $value) {
+		$wondertage_settings[$value->name] = $value->value;
+	}
+}
+?>
+
+<?php if (!empty($wondertage_settings) && $wondertage_settings['tag_welcome_layout'] == 1) { ?>
+	<?php echo Wo_LoadPage('welcome/content-startup'); ?>
+<?php } else { ?>
+	<?php echo Wo_LoadPage('welcome/content-simple'); ?>
+<?php } ?>

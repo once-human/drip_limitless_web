@@ -1,0 +1,23 @@
+<?php 
+$messages = Wo_GetGroupMessagesAPP(array('group_id' => $wo['group']['group_id'],'limit' => 1));
+$message = array();
+if (!empty($messages) && !empty($messages[0])) {
+	$message = $messages[0];
+	if (strlen($message['text']) > 100) {
+		$message['text'] = mb_substr( $message['text'], 0, 97, "utf-8") . '...';
+	}
+}
+?>
+
+<div class="notification-list pointer messages-list messages-recipients-list mobileopenlist" id="messages-group-<?php echo $wo['group']['group_id']; ?>" onclick="Wo_GetGroupMessages(<?php echo $wo['group']['group_id']; ?>,'<?php echo str_replace(array("&#039;"), "`", $wo['group']['group_name']); ?>');">
+	<div class="valign">
+		<div class="notification-user-avatar avatar">
+			<img alt="<?php echo $wo['group']['group_name']; ?>" src="<?php echo $wo['group']['avatar'];?>">
+		</div>
+		<div class="notification-text">
+			<div class="ajax-time"><?php echo !empty($message['time']) ? Wo_Time_Elapsed_String($message['time']) : ''; ?></div>
+            <span class="truncate"><?php echo $wo['group']['group_name']; ?></span>
+			<div class="header-message truncate"><?php echo !empty($message['text']) ? $message['text'] : ''; ?></div>
+		</div>
+	</div>
+</div>

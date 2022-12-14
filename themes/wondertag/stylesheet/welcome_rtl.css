@@ -1,0 +1,25 @@
+/*Basic*/
+html, body {direction: rtl;text-align: right;}
+.dropdown-menu-right, .dropdown-menu.pull-right {right: auto;left: 0;}
+.list-inline, .list-unstyled, .nav {padding-right: 0;}
+.tag_stup_login .social_btns .btn {padding: 6px 6px 6px 16px;}
+.tag_stup_login .social_btns .btn svg {margin-right: 0;margin-left: 12px;}
+.tag_boost_help > ul li {padding: 0 30px 0 0;}
+.tag_boost_help > ul li:before {left: auto;right: 4px;}
+.tag_stup_trend:after {right: auto;left: -20px;transform: rotate(310deg);}
+.tag_stup_explore_circle-1 {right: auto;left: 0;}
+.tag_stup_explore_circle-2 {right: auto;left: -90px;}
+
+/*Login Page*/
+.tag_auth_effect {right: auto;left: -111px;}
+.tag_auth_effect_bottom {left: auto;right: -320px;}
+.tag_auth_box {margin-left: 0;margin-right: auto;}
+.tag_wel_register {margin: 35px auto 0 0;}
+.u_divider:before {margin-right: 0;margin-left: 15px;}
+.u_divider:after {margin-left: 0;margin-right: 15px;}
+.tag_wel_forgot > a {right: auto;left: 7px;}
+.tag_auth_box_auto, .tag_auth_box_auto+.tag_wel_register {margin-left: auto;margin-right: auto;}
+
+@media (min-width: 1200px) {
+.col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9 {float: right;}
+}

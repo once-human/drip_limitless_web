@@ -1,0 +1,19 @@
+<div class="valign author-block tag_boost_page">
+	<div class="valign author">
+		<div class="img-wrap">
+			<a href="<?php echo $wo['PageList']['url'];?>" data-ajax="?link1=timeline&u=<?php echo $wo['PageList']['page_name'];?>"><img src="<?php echo $wo['PageList']['avatar'];?>" alt="<?php echo $wo['PageList']['page_name']; ?>" /></a>
+		</div>
+		<div class="text">
+			<h3><a href="<?php echo $wo['PageList']['url'];?>" data-ajax="?link1=timeline&u=<?php echo $wo['PageList']['page_name'];?>"><?php echo $wo['PageList']['page_title']; ?></a></h3>
+			<p>
+				<?php echo Wo_CountPageLikes($wo['PageList']['page_id']);?> <?php echo $wo['lang']['people_likes_this']; ?>
+				<?php if ($wo['PageList']['is_page_onwer'] == true) { ?>
+					<span class="green">+<?php echo Wo_CountLikesThisWeek($wo['PageList']['page_id']); ?> <?php echo $wo['lang']['this_week']; ?></span>
+				<?php } ?>
+			</p>
+		</div>            
+	</div>
+	<div>
+		<a href="<?php echo $wo['PageList']['url'];?><?php echo $wo['marker'];?>un-boost" class="btn btn-mat btn-main-rev"><?php echo $wo['lang']['un_boost_page'];?></a>
+	</div>              
+</div>

@@ -1,0 +1,118 @@
+<h2 class="tag_page_title"><button type="button" class="btn setting_navigation" onclick="$('.tag_sett_sidebar').fadeIn(50);$('#tag_sett_right_prt').fadeOut(50);"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" fill="currentColor"></path></svg></button> <?php echo $wo['lang']['download'].' '.$wo['lang']['my_info']; ?></h2>
+<h5 class="tag_download_info_title"><?php echo $wo['lang']['to_download']?></h5>
+<?php
+	if (!empty($wo['setting']['notification_settings'])) {
+		//$wo['setting']['notification_settings'] = unserialize(html_entity_decode($wo['setting']['notification_settings']));
+	}
+?>
+<form class="setting-general-form form-horizontal wo_settings_page" method="post">
+	<div class="setting-general-alert setting-update-alert"></div>
+	<div class="row tag_sett_myinfo_row_main">
+		<div class="col-xl-1"></div>
+		<div class="col-xl-10">
+			<div class="row tag_download_info" id="download_steps_comp">
+				<div class="col-lg-4 col-md-6 col-sm-6 col-6">
+					<label class="full_width tag_select_info_dload">
+						<input type="checkbox" name="my_information" id="my_information" value="1" checked>
+						<div class="wow_content empty_state pointer">
+							<svg height="512pt" viewBox="0 0 512 512" width="512pt" xmlns="http://www.w3.org/2000/svg"><path d="m416 512h-320c-53.023438 0-96-42.976562-96-96v-320c0-53.023438 42.976562-96 96-96h320c53.023438 0 96 42.976562 96 96v320c0 53.023438-42.976562 96-96 96zm0 0" fill="#e3f8fa"/><path d="m256 128c-70.574219 0-128 57.425781-128 128s57.425781 128 128 128 128-57.425781 128-128-57.425781-128-128-128zm0 53.328125c5.886719 0 10.671875 4.769531 10.671875 10.671875s-4.785156 10.671875-10.671875 10.671875-10.671875-4.769531-10.671875-10.671875 4.785156-10.671875 10.671875-10.671875zm24 149.34375h-48c-5.886719 0-10.671875-4.785156-10.671875-10.671875s4.769531-10.671875 10.671875-10.671875h13.328125v-64h-8c-5.886719 0-10.671875-4.785156-10.671875-10.671875s4.785156-10.65625 10.671875-10.65625h18.671875c5.886719 0 10.671875 4.785156 10.671875 10.671875v74.671875h13.328125c5.886719 0 10.671875 4.785156 10.671875 10.671875 0 5.871094-4.785156 10.65625-10.671875 10.65625zm0 0" fill="#26c6da"/></svg> <?php echo $wo['lang']['my_information'];?>
+						</div>
+					</label>
+				</div>
+				<div class="col-lg-4 col-md-6 col-sm-6 col-6">
+					<label class="full_width tag_select_info_dload">
+						<input type="checkbox" name="posts" id="posts" value="1">
+						<div class="wow_content empty_state pointer">
+							<svg height="512" viewBox="0 0 32 32" width="512" xmlns="http://www.w3.org/2000/svg"><path d="m26 32h-20c-3.314 0-6-2.686-6-6v-20c0-3.314 2.686-6 6-6h20c3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6z" fill="#ffe6e2"/><path d="m17.5 8h-7.667c-1.013 0-1.833.82-1.833 1.833v10.333c0 1.014.82 1.834 1.833 1.834h4.92l.147-.82c.067-.373.24-.707.507-.98l3.927-3.92v-6.447c-.001-1.013-.821-1.833-1.834-1.833zm-6.833 2.667h2.667c.367 0 .667.3.667.667s-.301.666-.668.666h-2.667c-.366 0-.666-.3-.666-.667s.3-.666.667-.666zm3.333 6.666h-3.333c-.367 0-.667-.3-.667-.667s.3-.666.667-.666h3.333c.367 0 .667.3.667.667s-.3.666-.667.666zm2.667-2.666h-6c-.367 0-.667-.3-.667-.667s.3-.667.667-.667h6c.367 0 .667.3.667.667-.001.367-.301.667-.667.667z" fill="#fc573b"/><path d="m16.352 24c-.132 0-.259-.052-.354-.146-.115-.115-.167-.28-.139-.44l.354-2.004c.018-.101.066-.194.139-.267l4.95-4.95c.608-.609 1.205-.445 1.532-.118l.825.825c.455.455.455 1.195 0 1.65l-4.95 4.95c-.072.073-.165.121-.267.139l-2.003.354c-.029.004-.058.007-.087.007zm2.003-.853h.007z" fill="#fd907e"/></svg> <?php echo $wo['lang']['my'];?> <?php echo $wo['lang']['posts'];?>
+						</div>
+					</label>
+				</div>
+				<?php if ($wo['config']['groups'] == 1) { ?>
+					<div class="col-lg-4 col-md-6 col-sm-6 col-6">
+						<label class="full_width tag_select_info_dload">
+							<input type="checkbox" name="groups" id="groups" value="1">
+							<div class="wow_content empty_state pointer">
+								<svg height="512" viewBox="0 0 32 32" width="512" xmlns="http://www.w3.org/2000/svg"><path d="m26 32h-20c-3.314 0-6-2.686-6-6v-20c0-3.314 2.686-6 6-6h20c3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6z" fill="#f5e6fe"/><g fill="#be63f9"><circle cx="16" cy="9.667" r="1.667"/><circle cx="20.667" cy="19" r="1.667"/><circle cx="11.333" cy="19" r="1.667"/><path d="m18.833 14.667h-5.667c-.276 0-.5-.224-.5-.5v-.333c0-1.011.822-1.833 1.833-1.833h3c1.011 0 1.833.822 1.833 1.833v.333c.001.276-.223.5-.499.5z"/><path d="m23.5 24h-5.667c-.276 0-.5-.224-.5-.5v-.333c0-1.011.822-1.833 1.833-1.833h3c1.011 0 1.833.822 1.833 1.833v.333c.001.276-.223.5-.499.5z"/><path d="m14.167 24h-5.667c-.276 0-.5-.224-.5-.5v-.333c0-1.011.822-1.833 1.833-1.833h3c1.011 0 1.833.822 1.833 1.833v.333c.001.276-.223.5-.499.5z"/></g><path d="m9.833 16.508c-.276 0-.5-.224-.5-.5 0-2.584 1.515-4.958 3.858-6.048.251-.116.548-.008.664.243.116.25.008.548-.243.664-1.993.927-3.28 2.945-3.28 5.141.001.276-.223.5-.499.5z" fill="#d9a4fc"/><path d="m22.167 16.508c-.276 0-.5-.224-.5-.5 0-2.197-1.287-4.215-3.28-5.141-.25-.117-.359-.414-.243-.664.117-.25.413-.359.664-.243 2.344 1.09 3.858 3.464 3.858 6.048.001.276-.223.5-.499.5z" fill="#d9a4fc"/><path d="m16 22.675c-.236 0-.468-.012-.697-.036-.274-.029-.474-.275-.445-.549s.271-.47.549-.445c.401.042.822.04 1.225-.004.272-.031.521.168.552.442.03.275-.168.521-.442.552-.244.026-.491.04-.742.04z" fill="#d9a4fc"/></svg> <?php echo $wo['lang']['my_groups'];?>
+							</div>
+						</label>
+					</div>
+				<?php } ?>
+				<?php if ($wo['config']['pages'] == 1) { ?>
+					<div class="col-lg-4 col-md-6 col-sm-6 col-6">
+						<label class="full_width tag_select_info_dload">
+							<input type="checkbox" name="pages" id="pages" value="1">
+							<div class="wow_content empty_state pointer">
+								<svg height="512" viewBox="0 0 32 32" width="512" xmlns="http://www.w3.org/2000/svg"><path d="m26 32h-20c-3.314 0-6-2.686-6-6v-20c0-3.314 2.686-6 6-6h20c3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6z" fill="#ffe6e2"/><path d="m22.167 11.333h-2.833v-1.5c0-.643-.523-1.167-1.167-1.167h-8.167c0-.368-.299-.666-.667-.666s-.666.298-.666.667v.5 7.333 6.833c0 .369.298.667.666.667s.667-.298.667-.667v-6.333h2.333v1.5c0 .643.523 1.167 1.167 1.167h8.667c.643 0 1.167-.523 1.167-1.167v-6c-.001-.643-.524-1.167-1.167-1.167z" fill="#fc573b"/></svg> <?php echo $wo['lang']['my_pages'];?>
+							</div>
+						</label>
+					</div>
+				<?php } ?>
+				<?php if ($wo['config']['connectivitySystem'] == 0) { ?>
+					<div class="col-lg-4 col-md-6 col-sm-6 col-6">
+						<label class="full_width tag_select_info_dload">
+							<input type="checkbox" name="followers" id="followers" value="1">
+							<div class="wow_content empty_state pointer">
+								<svg enable-background="new 0 0 32 32" height="512" viewBox="0 0 32 32" width="512" xmlns="http://www.w3.org/2000/svg"><path d="m26 32h-20c-3.314 0-6-2.686-6-6v-20c0-3.314 2.686-6 6-6h20c3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6z" fill="#fff9dd"/><g fill="#ffe777"><circle cx="10.667" cy="14.917" r="1.333"/><path d="m12.447 17.183c-.673.507-1.113 1.32-1.113 2.233v.167h-2.834c-.273 0-.5-.227-.5-.5v-.333c0-1.013.82-1.833 1.833-1.833h1.667c.347 0 .673.1.947.266z"/><circle cx="21.333" cy="14.917" r="1.333"/><path d="m24 18.75v.333c0 .273-.227.5-.5.5h-2.833v-.167c0-.913-.44-1.727-1.113-2.233.273-.167.6-.267.947-.267h1.667c1.012.001 1.832.821 1.832 1.834z"/></g><circle cx="16" cy="14.583" fill="#ffd200" r="2"/><path d="m17.833 17.583h-3.667c-1.011 0-1.833.822-1.833 1.833v1c0 .276.224.5.5.5h6.333c.276 0 .5-.224.5-.5v-1c.001-1.01-.822-1.833-1.833-1.833z" fill="#ffd200"/></svg> <?php echo $wo['lang']['followers'];?>
+							</div>
+						</label>
+					</div>
+					<div class="col-lg-4 col-md-6 col-sm-6 col-6">
+						<label class="full_width tag_select_info_dload">
+							<input type="checkbox" name="following" id="following" value="1">
+							<div class="wow_content empty_state pointer">
+								<svg height="512pt" viewBox="0 0 512 512" width="512pt" xmlns="http://www.w3.org/2000/svg"><path d="m416 512h-320c-53.023438 0-96-42.976562-96-96v-320c0-53.023438 42.976562-96 96-96h320c53.023438 0 96 42.976562 96 96v320c0 53.023438-42.976562 96-96 96zm0 0" fill="#e3f8fa"/><path d="m277.328125 189.328125c0 29.453125-23.875 53.328125-53.328125 53.328125s-53.328125-23.875-53.328125-53.328125 23.875-53.328125 53.328125-53.328125 53.328125 23.875 53.328125 53.328125zm0 0" fill="#26c6da"/><path d="m269.328125 264h-90.671875c-27.921875 0-50.65625 22.734375-50.65625 50.671875v37.328125c0 4.414062 3.585938 8 8 8h176c4.414062 0 8-3.585938 8-8v-37.328125c0-27.9375-22.734375-50.671875-50.671875-50.671875zm0 0" fill="#26c6da"/><path d="m381.457031 226.128906-37.328125-34.671875c-1.503906-1.410156-3.457031-2.128906-5.441406-2.128906-5.28125 0-8 4.496094-8 7.984375v24h-42.6875c-5.886719 0-10.671875 4.785156-10.671875 10.671875s4.769531 10.671875 10.671875 10.671875h42.671875v24c0 4.433594 3.601563 8 8 8 1.984375 0 3.9375-.734375 5.441406-2.128906l37.328125-34.671875c1.628906-1.503907 2.558594-3.632813 2.558594-5.855469s-.929688-4.351562-2.542969-5.871094zm0 0" fill="#8ce1eb"/></svg> <?php echo $wo['lang']['following'];?>
+							</div>
+						</label>
+					</div>
+				<?php }else{ ?>
+					<div class="col-lg-4 col-md-6 col-sm-6 col-6">
+						<label class="full_width tag_select_info_dload">
+							<input type="checkbox" name="friends" id="friends" value="1">
+							<div class="wow_content empty_state pointer">
+								<svg enable-background="new 0 0 32 32" height="512" viewBox="0 0 32 32" width="512" xmlns="http://www.w3.org/2000/svg"><path d="m26 32h-20c-3.314 0-6-2.686-6-6v-20c0-3.314 2.686-6 6-6h20c3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6z" fill="#fff9dd"/><g fill="#ffe777"><circle cx="10.667" cy="14.917" r="1.333"/><path d="m12.447 17.183c-.673.507-1.113 1.32-1.113 2.233v.167h-2.834c-.273 0-.5-.227-.5-.5v-.333c0-1.013.82-1.833 1.833-1.833h1.667c.347 0 .673.1.947.266z"/><circle cx="21.333" cy="14.917" r="1.333"/><path d="m24 18.75v.333c0 .273-.227.5-.5.5h-2.833v-.167c0-.913-.44-1.727-1.113-2.233.273-.167.6-.267.947-.267h1.667c1.012.001 1.832.821 1.832 1.834z"/></g><circle cx="16" cy="14.583" fill="#ffd200" r="2"/><path d="m17.833 17.583h-3.667c-1.011 0-1.833.822-1.833 1.833v1c0 .276.224.5.5.5h6.333c.276 0 .5-.224.5-.5v-1c.001-1.01-.822-1.833-1.833-1.833z" fill="#ffd200"/></svg> <?php echo $wo['lang']['my_friends'];?>
+							</div>
+						</label>
+					</div>
+				<?php } ?>
+			</div>
+			<div class="ready_to_down_info">
+				<svg height="130px" viewBox="-8 0 480 480.00012" width="130px" xmlns="http://www.w3.org/2000/svg"><g fill="#9bc9ff"><path d="m56.011719 176v232l176 64v-232zm0 0"/><path d="m408.011719 176v232l-176 64v-232zm0 0"/><path d="m8.011719 216 176 64 48-40-176-64zm0 0"/><path d="m280.011719 280 176-64-48-40-176 64zm0 0"/><path d="m280.011719 72-48 40 176 64 48-40zm0 0"/><path d="m184.011719 72-176 64 48 40 176-64zm0 0"/></g><path d="m420.507812 176 40.621094-33.847656c2.199219-1.835938 3.25-4.707032 2.753906-7.527344-.492187-2.820312-2.460937-5.160156-5.152343-6.136719l-176-64c-2.675781-.976562-5.664063-.460937-7.855469 1.359375l-34.863281 29.074219v-22.921875h-16v22.921875l-34.882813-29.074219c-2.1875-1.820312-5.179687-2.335937-7.855468-1.359375l-176 64c-2.691407.976563-4.65625 3.316407-5.152344 6.136719s.554687 5.691406 2.753906 7.527344l40.640625 33.847656-40.625 33.847656c-2.199219 1.835938-3.25 4.707032-2.753906 7.527344.496093 2.820312 2.460937 5.160156 5.152343 6.136719l42.722657 15.542969v168.945312c0 3.359375 2.105469 6.363281 5.261719 7.511719l176 64c1.765624.652343 3.707031.652343 5.472656 0l176-64c3.160156-1.148438 5.261718-4.152344 5.265625-7.511719v-168.945312l42.734375-15.542969c2.695312-.976563 4.660156-3.316407 5.15625-6.136719.492187-2.820312-.554688-5.691406-2.753906-7.527344zm-138.898437-94.902344 158.59375 57.671875-33.792969 28.132813-158.582031-57.671875zm-57.597656 99.589844-20.289063-20.28125-11.3125 11.3125 39.601563 39.59375 39.597656-39.59375-11.3125-11.3125-20.285156 20.28125v-57.273438l144.597656 52.585938-152.597656 55.488281-152.601563-55.488281 144.601563-52.585938zm-41.601563-99.589844 33.777344 28.132813-158.578125 57.671875-33.78125-28.132813zm-124.800781 104 158.59375 57.671875-33.792969 28.132813-158.582031-57.671875zm6.402344 59.773438 117.261719 42.640625c.878906.324219 1.804687.488281 2.738281.488281 1.871093 0 3.679687-.652344 5.117187-1.847656l34.882813-29.074219v203.496094l-160-58.175781zm336 157.527344-160 58.175781v-203.496094l34.878906 29.074219c1.4375 1.195312 3.25 1.847656 5.121094 1.847656.933593 0 1.859375-.164062 2.734375-.488281l117.265625-42.640625zm-118.402344-131.496094-33.773437-28.132813 158.574218-57.671875 33.777344 28.132813zm0 0" fill="#1e81ce"/><path d="m248.011719 432c0 4.417969 3.582031 8 8 8 7.886719 0 75.574219-26.398438 130.976562-48.566406 4.101563-1.644532 6.097657-6.304688 4.453125-10.410156-1.640625-4.105469-6.300781-6.097657-10.40625-4.457032-55.136718 22.066406-117.601562 46.089844-125.488281 47.449219-4.230469.246094-7.535156 3.746094-7.535156 7.984375zm0 0" fill="#1e81ce"/><path d="m224.011719 0h16v16h-16zm0 0" fill="#1e81ce"/><path d="m224.011719 24h16v16h-16zm0 0" fill="#1e81ce"/><path d="m224.011719 48h16v16h-16zm0 0" fill="#1e81ce"/></svg>
+				<p></p>
+				<a href="<?php echo($wo['config']['site_url'].'/requests.php?f=download_user_info'); ?>" class="btn btn-mat btn-main" id="download_file" target="_blank" onclick="DeleteUserFile()"><?php echo  $wo['lang']['download_file']; ?></a>
+			 </div>
+			 <div class="text-center hiddddddddd">
+				<button type="submit" class="btn btn-main btn-mat btn-mat-raised disable_btn"><?php echo $wo['lang']['generate_file']; ?></button>
+			</div>
+		</div>
+		<div class="col-xl-1"></div>
+	</div>
+	<input type="hidden" name="user_id" value="<?php echo $wo['setting']['user_id'];?>">
+	<input type="hidden" name="hash_id" value="<?php echo Wo_CreateSession();?>">
+</form>
+
+<script type="text/javascript">
+	function DeleteUserFile(self) {
+		file = $(self).attr('data_link');
+		$('#download_steps_comp').fadeIn(500);
+		$('.ready_to_down_info').fadeOut(200);
+		$('.wo_settings_page .hiddddddddd').fadeIn(200);
+	}
+$(function() {
+  $('form.setting-general-form').ajaxForm({
+    url: Wo_Ajax_Requests_File() + '?f=download_info',
+    beforeSend: function() {
+      $('.wo_settings_page').find('.disable_btn').text("<?php echo $wo['lang']['please_wait']; ?>").attr('disabled','disabled');
+    },
+    success: function(data) {
+      scrollToTop();
+      if (data.status == 200) {
+      	$('#download_steps_comp').slideUp(500);
+		$('.ready_to_down_info').fadeIn(200);
+		$('.ready_to_down_info p').html(data.message);
+		$('.wo_settings_page .hiddddddddd').fadeOut(200);
+      } 
+      $('.wo_settings_page').find('.disable_btn').text("<?php echo $wo['lang']['generate_file']; ?>").removeAttr("disabled");
+    }
+  });
+});
+</script>

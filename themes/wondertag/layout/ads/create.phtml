@@ -1,0 +1,386 @@
+<?php if (Wo_IsMobile() == false) { ?>
+<div class="valign tag_fake_ad">
+	<div class="valign"><?php echo $wo['lang']['ad_preview']; ?> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="pointer" onclick="$('.tag_fake_ad').addClass('hidden');"><path fill="currentColor" opacity=".7" d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm4.3 14.3c-.39.39-1.02.39-1.41 0L12 13.41 9.11 16.3c-.39.39-1.02.39-1.41 0-.39-.39-.39-1.02 0-1.41L10.59 12 7.7 9.11c-.39-.39-.39-1.02 0-1.41.39-.39 1.02-.39 1.41 0L12 10.59l2.89-2.89c.39-.39 1.02-.39 1.41 0 .39.39.39 1.02 0 1.41L13.41 12l2.89 2.89c.38.38.38 1.02 0 1.41z" /></svg></div>
+	<div class="fake_ad_post">
+		<div class="fads_heading">
+			<div class="fads_meta">
+				<div class="fads_avatar" style="background-image:url('<?php echo $wo['user']['avatar'];?>')"></div>
+				<div class="fads_m_info">
+					<div class="company" id="copy_camp_comp"><span><?php echo $wo['lang']['company']?></span></div>
+					<div class="location" id="copy_camp_location"><span><?php echo $wo['lang']['location']?></span></div>
+				</div>
+			</div>
+			<div class="fads_headline">
+				<div id="copy_camp_desc"><span><?php echo $wo['lang']['description']?></span></div>
+			</div>
+			<div class="fads_cover">
+				<div class="fcov_title">
+					<div id="copy_camp_title"><span><?php echo $wo['lang']['title']?></span></div>
+				</div>
+				<div class="fcov_image">
+					<div id="fake_post_img_holder"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<?php } ?>
+
+<div class="container">
+	<h2 class="tag_page_title"><?php echo $wo['lang']['advertisement']; ?></h2>
+	<?php echo Wo_LoadPage('ads/includes/header'); ?>
+	<div class="page-margin">
+		<form class="form form-horizontal" method="get" id="create-ads">
+			<div class="page-margin wow_content wow_create_ads_stp">
+				<!-- Media Step  -->
+				<div class="wow_creads_media_step">
+					<ul class="list-unstyled tag_steps">
+						<li class="active"><div><?php echo $wo['lang']['ad_media']; ?></div></li>
+						<li><div><?php echo $wo['lang']['details']; ?></div></li>
+						<li><div><?php echo $wo['lang']['targeting']; ?></div></li>
+					</ul>
+					<hr>
+					<?php if ($wo['user']['wallet'] == '0.00' || $wo['user']['wallet'] == '0') { ?>
+						<div class="alert alert-warning"><?php echo $wo['lang']['balance_is_0'] ?> <a href="<?php echo Wo_SeoLink('index.php?link1=wallet'); ?>"><?php echo $wo['lang']['top_up'] ?></a></div>
+					<?php } ?>
+					<label class="tag_field" id="company">
+						<input name="name" type="text" max="50" placeholder=" " onkeyup="document.getElementById('copy_camp_comp').innerHTML = escapeHtml(this.value)">
+						<span><?php echo $wo['lang']['comp_name']; ?></span>
+					</label>
+					<div class="tag_alone_label">
+						<label><?php echo $wo['lang']['ad_img_help']; ?></label>
+					</div>
+					<div class="wow_fcov_image">
+						<div id="wow_fcov_img_holder"></div>
+						<div class="valign upload_ad_image" onclick="document.getElementById('ad-media-file').click(); return false">
+							<div class="btn btn-mat btn-default upload_ad_image_content">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M8.5,13.5L11,16.5L14.5,12L19,18H5M21,19V5C21,3.89 20.1,3 19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19Z"></path></svg> <?php echo $wo['lang']['choose_image'] ?>
+							</div>
+						</div>
+					</div>
+					<div class="text-center">
+						<a class="btn btn-main btn-mat btn-mat-raised cont_to_detail" <?php echo ($wo['user']['wallet'] == '0.00' || $wo['user']['wallet'] == '0') ? 'disabled' : ''; ?>><?php echo $wo['lang']['next'] ?></a>
+					</div>
+				</div>
+							
+				<!-- Details Step  -->
+				<div class="wow_creads_details_step" style="display: none;">
+					<ul class="list-unstyled tag_steps">
+						<li class="active"><div><?php echo $wo['lang']['ad_media']; ?></div></li>
+						<li class="active"><div><?php echo $wo['lang']['details']; ?></div></li>
+						<li><div><?php echo $wo['lang']['targeting']; ?></div></li>
+					</ul>
+					<hr>
+					<label class="tag_field" id="title">
+						<input name="headline" type="text" placeholder=" " onkeyup="document.getElementById('copy_camp_title').innerHTML = escapeHtml(this.value)">
+						<span><?php echo $wo['lang']['camp_title']; ?></span>
+					</label>
+					<label class="tag_field" id="description">
+						<textarea name="description" rows="3" onkeyup="document.getElementById('copy_camp_desc').innerHTML = escapeHtml(this.value)" placeholder=" "></textarea>
+						<span><?php echo $wo['lang']['camp_desc']; ?></span>
+					</label>
+					<div class="help-block"><?php echo $wo['lang']['ad_desc_help'] ?></div>
+					<div class="row">
+						<div class="col-lg-6">
+							<label class="tag_field" id="start_date">
+								<input name="start" type="text" placeholder=" ">
+								<span><?php echo $wo['lang']['start_date']; ?></span>
+							</label>
+							<span class="help-block"><?php echo $wo['lang']['ad_start_date_help'] ?></span>
+						</div>
+						<div class="col-lg-6">
+							<label class="tag_field" id="end_date">
+								<input name="end" type="text" placeholder=" ">
+								<span><?php echo $wo['lang']['end_date']; ?></span>
+							</label>
+							<span class="help-block"><?php echo $wo['lang']['ad_end_date_help'] ?></span>
+						</div>
+					</div>
+					<label class="tag_field" id="url">
+						<input name="website" type="text" placeholder=" ">
+						<span><?php echo $wo['lang']['website_url']; ?></span>
+					</label>
+					<?php if ($wo['config']['pages'] == 1) { ?>
+						<span class="help-block"><?php echo $wo['lang']['select_a_page_or_link'] ?></span>
+						<label class="tag_field mb-0">
+							<select name="page" id="select-page">			
+								<?php if ($wo['my-pages'] && count($wo['my-pages']) > 0): ?>
+									<option value="" selected><?php echo $wo['lang']['select']; ?></option>
+								<?php foreach ($wo['my-pages'] as $wo['pageItem']): ?>
+									<option value="<?php echo $wo['pageItem']['page_name']; ?>"><?php echo $wo['pageItem']['page_name']; ?></option>
+								<?php endforeach; ?>
+								<?php else:?>
+									<option disabled="disabled" selected="selected"><?php echo $wo['lang']['no_pages_found']; ?></option>
+								<?php endif;?>
+							</select>
+							<span><?php echo $wo['lang']['my_pages']; ?></span>
+						</label>
+					<?php } ?>
+					<div class="text-center">
+						<a class="btn btn-mat back_to_media"><?php echo $wo['lang']['go_back'];?></a>
+						<a class="btn btn-main btn-mat btn-mat-raised cont_to_submit" <?php echo ($wo['user']['wallet'] == '0.00' || $wo['user']['wallet'] == '0') ? 'disabled' : ''; ?>><?php echo $wo['lang']['next'] ?></a>
+					</div>
+				</div>
+							
+				<!-- Final Step  -->
+				<div class="wow_creads_submit_step" style="display: none;">
+					<ul class="list-unstyled tag_steps">
+						<li class="active"><div><?php echo $wo['lang']['ad_media']; ?></div></li>
+						<li class="active"><div><?php echo $wo['lang']['details']; ?></div></li>
+						<li class="active"><div><?php echo $wo['lang']['targeting']; ?></div></li>
+					</ul>
+					<hr>
+					<div id="create-ads-alert" class="w100"></div>
+					<div class="row">
+						<div class="col-xl-10 tag_ads_left_col">
+							<div class="row">
+								<div class="col-lg-6">
+									<div class="tag_alone_label">
+										<label><?php echo $wo['lang']['appears']; ?></label>
+									</div>
+									<div class="select_radio_btn_innr">
+										<label>
+											<input type="radio" name="appears" id="post" value="post">
+											<div class="sr_btn_lab_innr">
+												<svg enable-background="new 0 0 24 24" height="30" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="m23.25 1.5h-9.5c-.414 0-.75-.336-.75-.75s.336-.75.75-.75h9.5c.414 0 .75.336.75.75s-.336.75-.75.75z"/><path d="m23.25 4.5h-9.5c-.414 0-.75-.336-.75-.75s.336-.75.75-.75h9.5c.414 0 .75.336.75.75s-.336.75-.75.75z"/><path d="m10.25 1.5h-9.5c-.414 0-.75-.336-.75-.75s.336-.75.75-.75h9.5c.414 0 .75.336.75.75s-.336.75-.75.75z"/><path d="m10.25 4.5h-9.5c-.414 0-.75-.336-.75-.75s.336-.75.75-.75h9.5c.414 0 .75.336.75.75s-.336.75-.75.75z"/><path d="m23.25 21h-9.5c-.414 0-.75-.336-.75-.75s.336-.75.75-.75h9.5c.414 0 .75.336.75.75s-.336.75-.75.75z"/><path d="m23.25 24h-9.5c-.414 0-.75-.336-.75-.75s.336-.75.75-.75h9.5c.414 0 .75.336.75.75s-.336.75-.75.75z"/><path d="m10.25 21h-9.5c-.414 0-.75-.336-.75-.75s.336-.75.75-.75h9.5c.414 0 .75.336.75.75s-.336.75-.75.75z"/><path d="m10.25 24h-9.5c-.414 0-.75-.336-.75-.75s.336-.75.75-.75h9.5c.414 0 .75.336.75.75s-.336.75-.75.75z"/><path d="m11.5 10.5v3c.827 0 1.5-.673 1.5-1.5s-.673-1.5-1.5-1.5z"/><path d="m6 10.5c-.276 0-.5.224-.5.5v1h1v-1c0-.276-.224-.5-.5-.5z"/><path d="m22.25 6h-20.5c-.965 0-1.75.785-1.75 1.75v8.5c0 .965.785 1.75 1.75 1.75h20.5c.965 0 1.75-.785 1.75-1.75v-8.5c0-.965-.785-1.75-1.75-1.75zm-14.25 8.25c0 .414-.336.75-.75.75s-.75-.336-.75-.75v-.75h-1v.75c0 .414-.336.75-.75.75s-.75-.336-.75-.75v-3.25c0-1.103.897-2 2-2s2 .897 2 2zm3.5.75h-.75c-.414 0-.75-.336-.75-.75v-4.5c0-.414.336-.75.75-.75h.75c1.654 0 3 1.346 3 3s-1.346 3-3 3zm6.292-3.75h.417c.988 0 1.792.841 1.792 1.875s-.805 1.875-1.793 1.875h-1.458c-.414 0-.75-.336-.75-.75s.336-.75.75-.75h1.458c.158 0 .292-.172.292-.375s-.133-.375-.292-.375h-.417c-.988 0-1.792-.841-1.792-1.875s.805-1.875 1.793-1.875h1.458c.414 0 .75.336.75.75s-.336.75-.75.75h-1.458c-.158 0-.292.172-.292.375s.133.375.292.375z"/></svg>
+												<span><?php echo $wo['lang']['post'];?></span>
+											</div>
+										</label>
+										<label>
+											<input type="radio" name="appears" id="sidebar" value="sidebar" >
+											<div class="sr_btn_lab_innr">
+												<svg enable-background="new 0 0 24 24" height="30" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="m9.25 1.5h-8.5c-.414 0-.75-.336-.75-.75s.336-.75.75-.75h8.5c.414 0 .75.336.75.75s-.336.75-.75.75z"/><path d="m9.25 4.5h-8.5c-.414 0-.75-.336-.75-.75s.336-.75.75-.75h8.5c.414 0 .75.336.75.75s-.336.75-.75.75z"/><path d="m9.25 7.5h-8.5c-.414 0-.75-.336-.75-.75s.336-.75.75-.75h8.5c.414 0 .75.336.75.75s-.336.75-.75.75z"/><path d="m9.25 10.5h-8.5c-.414 0-.75-.336-.75-.75s.336-.75.75-.75h8.5c.414 0 .75.336.75.75s-.336.75-.75.75z"/><path d="m9.25 15h-8.5c-.414 0-.75-.336-.75-.75s.336-.75.75-.75h8.5c.414 0 .75.336.75.75s-.336.75-.75.75z"/><path d="m9.25 18h-8.5c-.414 0-.75-.336-.75-.75s.336-.75.75-.75h8.5c.414 0 .75.336.75.75s-.336.75-.75.75z"/><path d="m9.25 21h-8.5c-.414 0-.75-.336-.75-.75s.336-.75.75-.75h8.5c.414 0 .75.336.75.75s-.336.75-.75.75z"/><path d="m9.25 24h-8.5c-.414 0-.75-.336-.75-.75s.336-.75.75-.75h8.5c.414 0 .75.336.75.75s-.336.75-.75.75z"/><path d="m16.5 18c0 .276.224.5.5.5h1v-1h-1c-.276 0-.5.224-.5.5z"/><path d="m18 11c-.827 0-1.5.673-1.5 1.5h3c0-.827-.673-1.5-1.5-1.5z"/><path d="m22.25 0h-8.5c-.965 0-1.75.785-1.75 1.75v20.5c0 .965.785 1.75 1.75 1.75h8.5c.965 0 1.75-.785 1.75-1.75v-20.5c0-.965-.785-1.75-1.75-1.75zm-2 18.5c.414 0 .75.336.75.75s-.336.75-.75.75h-3.25c-1.103 0-2-.897-2-2s.897-2 2-2h3.25c.414 0 .75.336.75.75s-.336.75-.75.75h-.75v1zm.75-5.25c0 .414-.336.75-.75.75h-4.5c-.414 0-.75-.336-.75-.75v-.75c0-1.654 1.346-3 3-3s3 1.346 3 3zm0-6c0 .414-.336.75-.75.75s-.75-.336-.75-.75v-1.458c0-.158-.172-.292-.375-.292s-.375.133-.375.292v.417c0 .987-.841 1.791-1.875 1.791s-1.875-.804-1.875-1.792v-1.458c0-.414.336-.75.75-.75s.75.336.75.75v1.458c0 .158.172.292.375.292s.375-.133.375-.292v-.416c0-.988.841-1.792 1.875-1.792s1.875.804 1.875 1.792z"/></svg>
+												<span><?php echo $wo['lang']['sidebar'];?></span>
+											</div>
+										</label>
+									</div>
+								</div>
+								<div class="col-lg-6">
+									<div class="tag_alone_label">
+										<label><?php echo $wo['lang']['bidding']; ?></label>
+									</div>
+									<div class="select_radio_btn_innr">
+										<label>
+											<input type="radio" name="bidding" id="clicks" value="clicks">
+											<div class="sr_btn_lab_innr">
+												<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.043 512.043" fill="currentColor"> <g> <g> <path d="M444.909,365.824L231.576,152.491c-3.072-3.051-7.637-3.968-11.627-2.304c-3.989,1.643-6.592,5.547-6.592,9.856v295.381 c0,4.075,2.325,7.808,5.995,9.579c3.669,1.792,8.043,1.344,11.221-1.173l54.165-42.347l47.275,85.077 c1.963,3.499,5.589,5.483,9.344,5.483c1.6,0,3.243-0.363,4.779-1.131l64-32c2.603-1.301,4.565-3.605,5.419-6.379 s0.533-5.781-0.853-8.341l-44.544-80.149h67.2c4.309,0,8.213-2.603,9.856-6.592C448.856,373.461,447.938,368.896,444.909,365.824z "/> </g> </g> <g> <g> <path d="M224.024,0c-5.888,0-10.667,4.779-10.667,10.667v64c0,5.888,4.779,10.667,10.667,10.667s10.667-4.779,10.667-10.667v-64 C234.69,4.779,229.912,0,224.024,0z"/> </g> </g> <g> <g> <path d="M138.69,149.333h-64c-5.888,0-10.667,4.779-10.667,10.667s4.779,10.667,10.667,10.667h64 c5.888,0,10.667-4.779,10.667-10.667S144.578,149.333,138.69,149.333z"/> </g> </g> <g> <g> <path d="M373.357,149.333h-64c-5.888,0-10.667,4.779-10.667,10.667s4.779,10.667,10.667,10.667h64 c5.888,0,10.667-4.779,10.667-10.667S379.245,149.333,373.357,149.333z"/> </g> </g> <g> <g> <path d="M171.224,92.117l-45.269-45.248c-4.16-4.16-10.923-4.16-15.083,0c-4.16,4.16-4.16,10.923,0,15.083l45.269,45.248 c2.091,2.069,4.821,3.115,7.552,3.115c2.731,0,5.461-1.024,7.531-3.115C175.384,103.04,175.384,96.277,171.224,92.117z"/> </g> </g> <g> <g> <path d="M171.224,212.821c-4.16-4.16-10.923-4.16-15.083,0l-45.269,45.248c-4.16,4.16-4.16,10.923,0,15.083 c2.091,2.069,4.821,3.115,7.552,3.115s5.461-1.045,7.531-3.115l45.269-45.248C175.384,223.744,175.384,216.981,171.224,212.821z" /> </g> </g> <g> <g> <path d="M337.176,46.869c-4.16-4.181-10.923-4.181-15.104,0l-45.269,45.248c-4.16,4.16-4.16,10.923,0,15.083 c2.091,2.069,4.821,3.115,7.552,3.115c2.731,0,5.461-1.024,7.552-3.115l45.269-45.248 C341.336,57.792,341.336,51.051,337.176,46.869z"/> </g> </g></svg>
+												<span><?php echo $wo['lang']['pay_per_clicks']; ?></span>
+												<span class="price"><?php echo Wo_GetCurrency($wo['config']['currency']) . $wo['config']['ad_c_price']; ?></span>
+											</div>
+										</label>
+										<label>
+											<input type="radio" name="bidding" id="views" value="views">
+											<div class="sr_btn_lab_innr">
+												<svg height="511pt" viewBox="0 -63 511.97867 511" width="511pt" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="m506.699219 165.757812c-41.621094-100.394531-140.03125-165.269531-250.710938-165.269531-110.675781 0-209.085937 64.875-250.707031 165.269531-7.042969 16.980469-7.042969 36.460938 0 53.460938 41.621094 100.394531 140.03125 165.269531 250.707031 165.269531 110.679688 0 209.089844-64.875 250.710938-165.269531 7.039062-16.980469 7.039062-36.480469 0-53.460938zm-250.710938 112.066407c-47.058593 0-85.332031-38.273438-85.332031-85.335938 0-47.058593 38.273438-85.332031 85.332031-85.332031 47.0625 0 85.335938 38.273438 85.335938 85.332031 0 47.0625-38.273438 85.335938-85.335938 85.335938zm0 0"/></svg>
+												<span><?php echo $wo['lang']['pay_per_imprssions']; ?></span>
+												<span class="price"><?php echo Wo_GetCurrency($wo['config']['currency']) . $wo['config']['ad_v_price']; ?></span>
+											</div>
+										</label>
+									</div>
+								</div>
+							</div>
+							<label class="tag_field">
+								<input id="ads-location" name="location" type="text" placeholder=" " onkeyup="document.getElementById('copy_camp_location').innerHTML = escapeHtml(this.value)">
+								<span><?php echo $wo['lang']['location']; ?></span>
+							</label>
+							<?php if ($wo['config']['google_map']) { ?>
+								<div id="review-ads-location">
+									<div id="place"></div>
+								</div>
+							<?php }?>
+							<label class="tag_field">
+								<select data-live-search="true" data-actions-box="true" name="audience-list[]" id="ads-audience" class="selectpicker" data-size="7" multiple data-selected-text-format="count > 3">
+									<?php foreach ($wo['audience'] as $country_ids => $country): ?>
+										<?php if ($country_ids == 0): ?>
+											<option value="<?php echo $country_ids; ?>" disabled><?php echo $country; ?></option>
+										<?php else: ?>
+											<option value="<?php echo $country_ids; ?>"><?php echo $country; ?></option>
+										<?php endif; ?>
+									<?php endforeach;?>
+								</select>
+								<span><?php echo $wo['lang']['audience']; ?></span>
+							</label>
+							<label class="tag_field">
+								<input id="camp_budget" name="budget" type="text" placeholder=" ">
+								<span><?php echo $wo['lang']['camp_budget']; ?></span>
+							</label>
+							<span class="help-block"><?php echo $wo['lang']['camp_budget_help'] ?></span>
+							<label class="tag_field mb-0">
+								<select name="gender" id="gender">
+									<option value="all" selected><?php echo $wo['lang']['all']; ?></option>
+									<?php foreach ($wo['genders'] as $key => $gender) { ?>
+										<option value="<?php echo($key) ?>"><?php echo $gender; ?></option>
+									<?php } ?>
+								</select>
+								<span><?php echo $wo['lang']['gender']; ?></span>
+							</label>
+						</div>
+						<div class="col-xl-2 tag_ads_right_col">
+							<div class="text-center estimated_ad_limit">
+								<svg enable-background="new 0 0 32 32" height="50" viewBox="0 0 32 32" width="50" xmlns="http://www.w3.org/2000/svg"><path d="m26 32h-20c-3.314 0-6-2.686-6-6v-20c0-3.314 2.686-6 6-6h20c3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6z" fill="#f5e6fe"/><g fill="#d9a4fc"><path d="m20.32 13.8-.973.973c.413.76.653 1.634.653 2.56 0 2.94-2.393 5.333-5.333 5.333s-5.333-2.393-5.333-5.333 2.393-5.333 5.333-5.333c.927 0 1.8.24 2.56.653l.973-.973c-1.02-.64-2.233-1.013-3.533-1.013-3.674 0-6.667 2.993-6.667 6.666s2.993 6.667 6.667 6.667 6.667-2.993 6.667-6.667c-.001-1.3-.374-2.513-1.014-3.533z"/><path d="m18.6 15.52-1.04 1.04c.073.247.107.507.107.773 0 1.653-1.347 3-3 3s-3-1.347-3-3 1.347-3 3-3c.267 0 .527.033.773.107l1.04-1.04c-.553-.26-1.167-.4-1.813-.4-2.387 0-4.333 1.947-4.333 4.333s1.947 4.333 4.333 4.333 4.333-1.946 4.333-4.333c0-.646-.14-1.26-.4-1.813z"/><path d="m14.667 19.333c-1.103 0-2-.897-2-2s.897-2 2-2 2 .897 2 2-.897 2-2 2zm0-2.666c-.368 0-.667.299-.667.667 0 .367.299.666.667.666s.667-.299.667-.667c-.001-.367-.3-.666-.667-.666z"/></g><path d="m14.667 17.833c-.128 0-.256-.049-.354-.146-.195-.195-.195-.512 0-.707l5-5c.195-.195.512-.195.707 0s.195.512 0 .707l-5 5c-.097.098-.225.146-.353.146z" fill="#be63f9"/><path d="m21.5 12.667h-1.667c-.276 0-.5-.224-.5-.5v-1.667c0-.132.053-.26.146-.354l2-2c.143-.143.358-.186.545-.108.187.077.309.26.309.462v1.167h1.167c.202 0 .384.122.462.309.077.187.035.402-.108.545l-2 2c-.094.093-.221.146-.354.146z" fill="#be63f9"/></svg>
+								<h4><?php echo $wo['lang']['estimated_reach']; ?></h4>
+								<span class="estimated_text">0</span>
+								<p><?php echo $wo['lang']['users']; ?></p>
+							</div>
+						</div>
+					</div>
+					<div class="text-center">
+						<a class="btn btn-mat back_to_details"><?php echo $wo['lang']['go_back'];?></a>
+						<button class="btn btn-main btn-mat btn-mat-raised disable_btn" type="submit" <?php echo ($wo['user']['wallet'] == '0.00' || $wo['user']['wallet'] == '0') ? 'disabled' : ''; ?>><?php echo $wo['lang']['publish']; ?></button>
+					</div>
+				</div>
+			</div>
+			<input type="file" name="media" class="hidden" id="ad-media-file" accept="image/* video/*">
+		</form>
+	</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-ui-timepicker-addon@1.6.3/dist/jquery-ui-timepicker-addon.min.js"></script>
+
+<script>
+// Steps
+var $firstButton = $(".cont_to_detail"), $secondButton = $(".cont_to_submit");
+var $firstbackButton = $(".back_to_media"), $secondbackButton = $(".back_to_details");
+var $ad_media_step = $(".wow_creads_media_step"), $ad_detail_step = $(".wow_creads_details_step"), $ad_submit_step = $(".wow_creads_submit_step");
+
+$firstbackButton.on("click", function(e){
+	$ad_media_step.slideDown();
+	$ad_detail_step.slideUp();
+	e.preventDefault();
+});
+$secondbackButton.on("click", function(e){
+	$ad_media_step.slideUp();
+	$ad_submit_step.slideUp();
+	$ad_detail_step.slideDown();
+	e.preventDefault();
+});
+
+$firstButton.on("click", function(e){
+	if (!$('#company input').val()) {
+		$('#company').addClass('border_class');
+	}
+	else{
+		$('#company').removeClass('border_class');
+		$ad_media_step.slideUp();
+		$ad_detail_step.slideDown();
+		e.preventDefault();
+	}
+});
+$secondButton.on("click", function(e){
+	if (!$('#title input').val() || !$('#description textarea').val() || !$('#start_date input').val() || !$('#end_date input').val() || !$('#url input').val()) {
+		if (!$('#title input').val()) {
+			$('#title').addClass('border_class');
+		}
+		if (!$('#description textarea').val()) {
+			$('#description').addClass('border_class');
+		}
+		if (!$('#start_date input').val()) {
+			$('#start_date').addClass('border_class');
+		}
+		if (!$('#end_date input').val()) {
+			$('#end_date').addClass('border_class');
+		}
+		if (!$('#url input').val()) {
+			$('#url').addClass('border_class');
+		}
+	}
+	else{
+		$('#title').removeClass('border_class');
+		$('#description').removeClass('border_class');
+		$('#start_date').removeClass('border_class');
+		$('#end_date').removeClass('border_class');
+		$('#url').removeClass('border_class');
+		$ad_media_step.slideUp();
+		$ad_detail_step.slideUp();
+		$ad_submit_step.slideDown();
+		e.preventDefault();
+	}
+});
+$(document).ready(function() {
+	$('#create-ads').ajaxForm({
+		url: Wo_Ajax_Requests_File() + '?f=ads&s=new',
+		type:"POST",
+		beforeSend: function() {
+			$('#create-ads').find('.disable_btn').attr('disabled','disabled');
+		},
+		success: function(data) {
+			scrollToTop();
+			if (data['status'] == 200) {
+				$("#create-ads-alert").html('<div class="alert alert-success">'+ data['message'] +'</div>');
+				window.location = data.url;
+			} 
+			else if (data['message']) {
+				$("#create-ads-alert").html('<div class="alert alert-danger">' + data['message'] + '</div>');
+			} 
+			$('#create-ads').find('.disable_btn').removeAttr("disabled");
+		}
+	});
+	$('.selectpicker').selectpicker();
+});
+
+	jQuery(document).ready(function($) {		
+		$("#start_date input").datepicker({ dateFormat: 'yy-mm-dd', minDate: 'today'});
+		$("#end_date input").datepicker({ dateFormat: 'yy-mm-dd', minDate: '+1day'});
+		
+		$('#ad-media-file').on('change', function(event) {
+			  $("#wow_fcov_img_holder").html("<img src='" + window.URL.createObjectURL(this.files[0]) + "' alt='Picture'>");
+			  $("#fake_post_img_holder").html("<img src='" + window.URL.createObjectURL(this.files[0]) + "' alt='Picture'>");
+           });
+
+		$("#ads-audience").change(function(event) {
+			var self = $(this);
+				get_estimated_users();
+		});
+
+		$("#gender").change(function(event) {
+			var self = $(this);
+			if (self.val() != '') {
+				get_estimated_users();
+			}
+		});
+
+		function get_estimated_users(){
+			var audience = null;
+			var gender = "ALL";
+			if ( $("#ads-audience").val() != '') {
+				audience = $("#ads-audience").val().join(',');
+			}
+			if ( $("#gender").val() != '') {
+				gender = $("#gender").val();
+			}
+
+			$.ajax({
+				url: Wo_Ajax_Requests_File(),
+				type: 'GET',
+				dataType: 'json',
+				data: {f: 'ads',s:'get_estimated_users', estimated_audience:audience, estimated_gender:gender},
+			}).done(function(data) {
+				if (data.status == 200) {
+					$('.estimated_text').text(data.count);
+				}
+			});
+		}
+
+	  	<?php if ($wo['config']['google_map']) { ?>
+	    $("#ads-location").keyup(function(event) {
+	        if ($(this).val().length >= 3) {
+	          Wo_Delay(function(){$("#review-ads-location #place").html('<iframe width="100%" frameborder="0" src="https://www.google.com/maps/embed/v1/place?key=<?php echo $wo['config']['google_map_api']; ?>&q=' + $("#ads-location").val() + '&language=en"></iframe>')},1000)
+	        }
+	        else{
+	          Wo_Delay(function(){$("#review-ads-location #place").html('<iframe width="100%" frameborder="0" src="https://www.google.com/maps/embed/v1/place?key=<?php echo $wo['config']['google_map_api']; ?>&q=us&language=en"></iframe>')},1000)
+	        }
+      	});
+	   <?php } ?>
+
+	    $("#select-page").change(function(event) {
+		  	var self     = $(this);
+		  	if (self.val() != '') {
+		  		var page_url = websiteUrl +'/'+ self.val();
+		  		$('#create-ads').find("input[name=website]").val(page_url);
+		  	}
+		  	else{
+		  		$('#create-ads').find("input[name=website]").val('');
+		  	}
+	  	});
+	});
+</script>

@@ -1,0 +1,10 @@
+<?php if(!empty($wo['story']['thread_id']) && !empty($wo['story']['thread'])) { ?>
+	<div class="post-fetched-url">
+		<a href="<?php echo $wo['config']['site_url'].'/forums/thread/'.$wo['story']['thread_id'];?>">
+			<div class="fetched-url-text">
+				<h4><?php echo $wo['story']['thread']['headline'];?></h4>
+			</div>
+			<div class="clear"></div>
+		</a>
+	</div>
+<?php } ?>

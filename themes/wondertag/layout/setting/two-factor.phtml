@@ -1,0 +1,211 @@
+<h2 class="tag_page_title"><button type="button" class="btn setting_navigation" onclick="$('.tag_sett_sidebar').fadeIn(50);$('#tag_sett_right_prt').fadeOut(50);"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" fill="currentColor"></path></svg></button> <?php echo $wo['lang']['two_factor']; ?></h2>
+<div class="wow_sett_content wow_content p20">
+	<form class="form-horizontal setting-change-password-form wo_settings_page" method="post">
+		<div class="empty_state">
+			<svg enable-background="new 0 0 32 32" height="512" viewBox="0 0 32 32" width="512" xmlns="http://www.w3.org/2000/svg"><path d="m26 32h-20c-3.314 0-6-2.686-6-6v-20c0-3.314 2.686-6 6-6h20c3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6z" fill="#f5e6fe"/><path d="m17.167 12.667h-.5v-1.333c0-1.839-1.496-3.334-3.334-3.334s-3.333 1.495-3.333 3.333v1.333h-.5c-.827 0-1.5.673-1.5 1.5v5.667c0 .827.673 1.5 1.5 1.5h7.667c.827 0 1.5-.673 1.5-1.5v-5.667c0-.826-.673-1.499-1.5-1.499zm-5.834-1.334c0-1.103.897-2 2-2s2 .897 2 2v1.333h-4z" fill="#be63f9"/><g fill="#d9a4fc"><path d="m21.334 20.667c-.735 0-1.333-.598-1.333-1.333s.597-1.334 1.333-1.334c.735 0 1.333.598 1.333 1.333s-.598 1.334-1.333 1.334z"/><path d="m23.5 24h-4.334c-.276 0-.5-.224-.5-.5v-.333c0-1.011.822-1.833 1.833-1.833h1.667c1.011 0 1.833.822 1.833 1.833v.333c.001.276-.223.5-.499.5z"/></g></svg> <?php echo $wo['lang']['two_factor_description'] ?>
+		</div>
+		<hr class="style-two">
+		<br>
+		<div class="setting-password-alert setting-update-alert"></div>
+        
+		<?php if ($wo['config']['two_factor_type'] == 'both' || $wo['config']['two_factor_type'] == 'phone') { ?>
+			<label class="tag_field">
+				<input name="phone_number" id="phone_number" type="text" autocomplete="off" placeholder=" " value="<?php echo $wo['setting']['phone_number']?>">
+				<span><?php echo $wo['lang']['phone_number']; ?></span>
+			</label>
+		<?php } ?>
+		<label class="tag_field">
+			<select id="two_factor_select" name="two_factor">
+				<option value="enable" <?php echo ($wo['setting']['two_factor'] == '1')   ? 'selected' : '';?> ><?php echo $wo['lang']['enable']; ?></option>
+				<option value="disable" <?php echo ($wo['setting']['two_factor'] == '0')   ? 'selected' : '';?> ><?php echo $wo['lang']['disable']; ?></option>
+			</select>
+			<span><?php echo $wo['lang']['two_factor']; ?></span>
+		</label>
+		<input type="hidden" name="" id="two_factor_value">
+		
+		<div class="text-center">
+			<button type="button" class="btn btn-main btn-mat btn-mat-raised disable_btn" id="submit_two_factor_btn"><?php echo $wo['lang']['save']; ?></button>
+		</div>
+		
+		<input type="hidden" name="user_id" value="<?php echo $wo['setting']['user_id'];?>">
+		<input type="hidden" name="hash_id" value="<?php echo Wo_CreateSession();?>">
+	</form>
+</div>
+
+<div class="modal fade" id="verify_code" role="dialog">
+	<div class="modal-dialog wow_mat_mdl modal-md">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="two_factor_title">
+					<?php 
+						if ($wo['config']['two_factor_type'] == 'both') {
+							echo $wo['lang']['confirmation_message_email_sent'];
+						}
+						elseif ($wo['config']['two_factor_type'] == 'email') {
+							echo $wo['lang']['confirmation_email_sent'];
+						}
+						elseif ($wo['config']['two_factor_type'] == 'phone') {
+							echo $wo['lang']['confirmation_message_sent'];
+						}
+					?>
+				</h4>
+			</div>
+			<form id="confirmation_code_form" class="confirmation_code_form" method="POST">
+				<div class="modal-body">
+					<div id="confirmation_code_form_alert"></div>
+					<p id="two_factor_desc">
+						<?php 
+							if ($wo['config']['two_factor_type'] == 'both') {
+								echo $wo['lang']['confirmation_email_message_text'];
+							}
+							elseif ($wo['config']['two_factor_type'] == 'email') {
+								echo $wo['lang']['confirmation_email_text'];
+							}
+							elseif ($wo['config']['two_factor_type'] == 'phone') {
+								echo $wo['lang']['confirmation_message_text'];
+							}
+						?>
+					</p>
+					<div class="form-group">
+						<input type="text" class="tag_confrm_code_input" name="code" placeholder="<?php echo $wo['lang']['confirmation_code']; ?>">
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default btn-mat disable_btn" data-dismiss="modal" aria-label="Close"><?php echo $wo['lang']['cancel'] ?></button>
+					<button id="confirmation_code_form_btn" type="submit" class="btn btn-main btn-mat disable_btn"><?php echo $wo['lang']['verify']; ?></button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+  $(document).on('click', '#submit_two_factor_btn', function(event) {
+    $.ajax({
+    url: Wo_Ajax_Requests_File() + '?f=update_two_factor&s='+$('#two_factor_select').val(),
+    type: 'POST',
+    data:$('form.setting-change-password-form').serialize(),
+    beforeSend: function() {
+      $('.wo_settings_page').find('.disable_btn').attr('disabled','disabled');
+    },
+    success: function(data) {
+      if (data.status == 200) {
+        $('.setting-password-alert').html('<div class="alert alert-success">' + data.message + '</div>');
+        $('.alert-success').fadeIn('fast', function() {
+          $(this).delay(2000).slideUp(500, function() {
+              $(this).remove();
+              if ($('#two_factor_select').val() == 'enable') {
+                $('#verify_code').modal('show');
+              }
+          });
+        });
+      } else if (data.status == 400) {
+        $('.setting-password-alert').html('<div class="alert alert-danger">' + data.message + '</div>');
+        $('.alert-danger').fadeIn(300);
+      }
+      $('.wo_settings_page').find('.disable_btn').removeAttr("disabled");
+    }
+  });
+    
+  });
+$(function() {
+
+  $('form.confirmation_code_form').ajaxForm({
+    url: Wo_Ajax_Requests_File() + '?f=update_two_factor&s=verify',
+    beforeSend: function() {
+      $('#confirmation_code_form_btn').text('<?php echo($wo['lang']['please_wait']) ?>');
+    },
+    success: function(data) {
+      if (data.status == 200) {
+        $('#confirmation_code_form_alert').html('<div class="alert alert-success">' + data.message + '</div>');
+        $('#confirmation_code_form_alert').fadeIn('fast', function() {
+          $(this).delay(2500).slideUp(500, function() {
+              $(this).remove();
+              $('#verify_code').modal('hide');
+              location.reload();
+          });
+        });
+      } else if (data.status == 400) {
+        $('#confirmation_code_form_alert').html('<div class="alert alert-danger">' + data.message + '</div>');
+        $('.alert-danger').fadeIn(300);
+      }
+      $('#confirmation_code_form_btn').text('<?php echo($wo['lang']['send']) ?>');
+    }
+  });
+});
+
+$(document).ready(function() {
+    $('.tag_confrm_code_input').codeInput({
+        number: 6
+    });
+});
+
+jQuery.fn.codeInput = function(options) {
+    var defaults = {
+        number: 4,
+        length: 1
+    };
+
+    var settings = $.extend({}, defaults, options);
+
+    return this.each(function() {
+        var self = $(this);
+        var placeholder = self.attr('placeholder');
+        var div = $('<div />').addClass('tag_confrm_code');
+        div.append($('<span />').text(placeholder));
+        self.replaceWith(div);
+        div.append(self);
+        var inputDiv = $('<div />').addClass('inputs');
+        for(var i = 1; i <= settings.number; i++) {
+            inputDiv.append($('<input />').attr({
+                maxlength: settings.length
+            }));
+        }
+
+        div.prepend(inputDiv);
+
+        div.on('click touchstart', function(e) {
+            if(!div.hasClass('active')) {
+                div.addClass('active');
+                setTimeout(function() {
+                    div.find('.inputs input:first-child').focus();
+                }, 100);
+            }
+        });
+
+        div.find('.inputs').on('keyup input', 'input', function(e) {
+            if($(this).val().toString().length >= settings.length || e.keyCode == 39) {
+                $(this).next().focus();
+            }
+            if(e.keyCode == 8 || e.keyCode == 37) {
+                $(this).prev().focus();
+            }
+            var value = '';
+            div.find('.inputs input').each(function() {
+                value = value + $(this).val().toString();
+            });
+            self.attr({
+                value: value
+            });
+        });
+
+        $(document).on('click touchstart', function(e) {
+            if(!$(e.target).parent().is(div) && !$(e.target).parent().parent().is(div)) {
+                var hide = true;
+                div.find('.inputs input').each(function() {
+                    if($(this).val().toString().length) {
+                        hide = false;
+                    }
+                });
+                if(hide) {
+                    div.removeClass('active');
+                    div.find('.inputs input').blur();
+                } else {
+                    div.addClass('active');
+                }
+            }
+        });
+
+    });
+}
+</script>

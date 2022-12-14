@@ -1,0 +1,11 @@
+<li class="valign my-thread-reply-list" data-thread-reply="<?php echo ($wo['message']['id']); ?>">
+	<div class="myfrmsbj">
+		<a href="<?php echo $wo['message']['url']?>" data-ajax="?link1=showthread&tid=<?php echo $wo['message']['thread_id'];?>"><?php echo $wo['message']['post_subject']?></a>
+		<div><?php echo Wo_Time_Elapsed_String($wo['message']['posted_time']); ?></div>
+	</div>
+	<div class="myfrmnme"><?php echo $wo['message']['forum']['name']?></div>
+	<div class="myfrmopt">
+		<a class="btn btn-link btn-sm" href="<?php echo $wo['message']['edit_url']?>" data-ajax="?link1=editreply&tid=<?php echo $wo['message']['id'];?>"><?php echo $wo['lang']['edit'] ?></a>
+		<a class="btn btn-link delete-reply btn-sm" id="<?php echo $wo['message']['id']?>"><?php echo $wo['lang']['delete'] ?></a>
+	</div>
+</li>

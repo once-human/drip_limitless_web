@@ -1,0 +1,1360 @@
+<?php 
+$post_shared_from = array();
+$current_post = $wo['current_post'] = $wo['story'];
+ ?>
+<?php if ($wo['story']['postType'] == 'ad'): ?>
+	<div class="post-container user-ad-container" id="<?php echo $wo['story']['id']; ?>">
+		<div class="post-advertisement">
+			<div class="panel panel-white panel-shadow">
+				<div class="valign ads-heading">
+					<div class="image">
+						<a onclick="InjectAPI('<?php echo htmlentities(json_encode(array('type' => 'user', 'profile_id' => $wo['story']['user_data']['id']))); ?>', event);">
+							<img src="<?php echo $wo['story']['user_data']['avatar']; ?>" class="avatar">
+						</a>
+					</div>
+					<div class="meta">
+						<div class="title">
+							<a onclick="InjectAPI('<?php echo htmlentities(json_encode(array('type' => 'user', 'profile_id' => $wo['story']['user_data']['id']))); ?>', event);" class="name"><?php echo $wo['story']['name']; ?></a>
+						</div>
+						<div class="valign tag_post_hdr_sub">
+							<span class="time ajax-time" title="<?php echo date('c', $wo['story']['posted']); ?>"><?php echo Wo_Time_Elapsed_String($wo['story']['posted']); ?></span>
+							<?php if (strlen($wo['story']['location']) > 3): ?>
+								<span class="middot">·</span><span class="time"><?php echo $wo['story']['location']; ?></span>
+							<?php endif;?>
+						</div>
+					</div>
+				</div>
+				<div class="clear"></div>
+				<div class="ads-headline">
+					<p><?php echo htmlspecialchars_decode($wo['story']['description']); ?></p>
+				</div>
+				<div class="ads-cover rads-<?php echo $wo['story']['bidding']; ?>" id="<?php echo $wo['story']['id']; ?>">
+					<div class="post-fetched-url wo_post_fetch_blog">
+						<div class="post-fetched-url-con">
+							<a href="<?php echo $wo['story']['url']; ?>"><img src="<?php echo $wo['story']['ad_media']; ?>" alt="picture"/></a>
+						</div>
+						<div class="fetched-url-text">
+							<h4><a href="<?php echo $wo['story']['url']; ?>"><?php echo $wo['story']['headline']; ?></a></h4>
+							<div class="url"><a href="<?php echo $wo['story']['url']; ?>"><?php echo Wo_UrlDomain($wo['story']['url']); ?></a></div>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<?php else: ?>
+	<div class="post-container" id="post-container-">
+		<div class="post<?php echo (!empty($wo['story']['post_is_promoted'])) ? ' boosted': '';?>" id="post-<?php echo $wo['story']['id']; ?>" data-post-id="<?php echo $wo['story']['id'];?>">
+			<div class="panel panel-white panel-shadow">
+				<?php
+				if (empty($wo['page'])) {
+					$wo['page'] = 'home';
+				}
+				if ($wo['story']['is_post_pinned'] === true && ($wo['page'] == 'timeline' || $wo['page'] == 'page' || $wo['page'] == 'group' )) { ?>
+					<div class="pin-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M22.314 10.172l-1.415 1.414-.707-.707-4.242 4.242-.707 3.536-1.415 1.414-4.242-4.243-4.95 4.95-1.414-1.414 4.95-4.95-4.243-4.242 1.414-1.415L8.88 8.05l4.242-4.242-.707-.707 1.414-1.415z"/></svg> <?php echo $wo['lang']['pinned_post'];?></div>
+				<?php } ?>
+				<?php if (!empty($wo['story']['parent_id'])) {
+					$post_shared_from = $wo['post_shared_from'] = Wo_PostData($wo['story']['parent_id']);
+				?>
+					<div class="valign post-heading">
+						<div class="valign">
+							<div class="image" onclick="InjectAPI('<?php echo htmlentities(json_encode(array('type' => $wo['story']['publisher']['type'], 'profile_id' => $wo['story']['publisher']['id']))); ?>', event);">
+								<img src="<?php echo $wo['story']['publisher']['avatar']; ?>" alt="<?php echo $wo['story']['publisher']['name']; ?>" class="avatar">
+							</div>
+							<div class="meta">
+								<div class="title">
+									<a onclick="InjectAPI('<?php echo htmlentities(json_encode(array('type' => $wo['story']['publisher']['type'], 'profile_id' => $wo['story']['publisher']['id']))); ?>', event);" class="name"><?php echo $wo['story']['publisher']['name']; ?></a>
+									<?php if($wo['story']['publisher']['verified'] == 1) { ?>
+										<span class="verified-color fs-14" title="<?php echo ($wo['story']['page_id'] > 0 ? $wo['lang']['verified_page'] : $wo['lang']['verified_user']);?>" data-toggle="tooltip">&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 512 512"><path d="m256 0c-141.164062 0-256 114.835938-256 256s114.835938 256 256 256 256-114.835938 256-256-114.835938-256-256-256zm0 0" fill="#2196f3"></path><path d="m385.75 201.75-138.667969 138.664062c-4.160156 4.160157-9.621093 6.253907-15.082031 6.253907s-10.921875-2.09375-15.082031-6.253907l-69.332031-69.332031c-8.34375-8.339843-8.34375-21.824219 0-30.164062 8.339843-8.34375 21.820312-8.34375 30.164062 0l54.25 54.25 123.585938-123.582031c8.339843-8.34375 21.820312-8.34375 30.164062 0 8.339844 8.339843 8.339844 21.820312 0 30.164062zm0 0" fill="#fff"></path></svg></span>
+									<?php } ?>
+									<span class="fs-14">&nbsp;<?php echo $wo['lang']['shared_a_post']; ?></span>
+									<span class="user-popover" data-type="<?php echo $wo['story']['shared_from']['type']; ?>" data-id="<?php echo $wo['story']['shared_from']['id']; ?>">
+										<a href="<?php echo $wo['story']['shared_from']['url']; ?>" class="name" data-ajax="?link1=timeline&u=<?php echo $wo['story']['shared_from']['username']; ?>"><?php echo $wo['story']['shared_from']['name']; ?></a>
+										<?php if($wo['story']['shared_from']['verified'] == 1) { ?>
+											<span class="verified-color fs-14" title="<?php echo ($wo['story']['page_id'] > 0 ? $wo['lang']['verified_page'] : $wo['lang']['verified_user']);?>" data-toggle="tooltip">&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 512 512"><path d="m256 0c-141.164062 0-256 114.835938-256 256s114.835938 256 256 256 256-114.835938 256-256-114.835938-256-256-256zm0 0" fill="#2196f3"></path><path d="m385.75 201.75-138.667969 138.664062c-4.160156 4.160157-9.621093 6.253907-15.082031 6.253907s-10.921875-2.09375-15.082031-6.253907l-69.332031-69.332031c-8.34375-8.339843-8.34375-21.824219 0-30.164062 8.339843-8.34375 21.820312-8.34375 30.164062 0l54.25 54.25 123.585938-123.582031c8.339843-8.34375 21.820312-8.34375 30.164062 0 8.339844 8.339843 8.339844 21.820312 0 30.164062zm0 0" fill="#fff"></path></svg></span>
+										<?php } ?>
+									</span>
+									<span class="fs-14">&nbsp;<a href="<?php echo $wo['story']['post_url']; ?>" class="name"><?php echo strtolower($wo['lang']['post']); ?></a></span>
+									<?php if (empty($wo['story']['parent_id'])) { ?>
+										<?php if ($wo['story']['recipient_exists'] == true) {  ?>
+											<span class="fs-14">&nbsp;<?php echo $wo['lang']['to']; ?></span>
+											<a href="<?php echo $wo['story']['recipient']['url']; ?>" data-ajax="?link1=timeline&u=<?php echo $wo['story']['recipient']['username']; ?>" class="name" onclick="InjectAPI('{&quot;profile_id&quot; : &quot;<?php echo $wo['story']['recipient']['id']?>&quot;, &quot;type&quot;:&quot;user&quot;}', event);"><?php echo $wo['story']['recipient']['name']; ?></a>
+											<?php if($wo['story']['recipient']['verified'] == 1) { ?> 
+												<span class="verified-color fs-14" title="<?php echo ($wo['story']['page_id'] > 0 ? $wo['lang']['verified_page'] : $wo['lang']['verified_user']);?>" data-toggle="tooltip">&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 512 512"><path d="m256 0c-141.164062 0-256 114.835938-256 256s114.835938 256 256 256 256-114.835938 256-256-114.835938-256-256-256zm0 0" fill="#2196f3"></path><path d="m385.75 201.75-138.667969 138.664062c-4.160156 4.160157-9.621093 6.253907-15.082031 6.253907s-10.921875-2.09375-15.082031-6.253907l-69.332031-69.332031c-8.34375-8.339843-8.34375-21.824219 0-30.164062 8.339843-8.34375 21.820312-8.34375 30.164062 0l54.25 54.25 123.585938-123.582031c8.339843-8.34375 21.820312-8.34375 30.164062 0 8.339844 8.339843 8.339844 21.820312 0 30.164062zm0 0" fill="#fff"></path></svg></span>
+											<?php } ?>
+										<?php } ?>
+										<?php if ($wo['story']['group_recipient_exists'] == true && $wo['page'] != 'group') {  ?>
+											<span class="fs-14">&nbsp;<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" style="margin: -2px 0 0;"><path fill="currentColor" d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"/></svg>&nbsp;</span>
+											<a href="<?php echo $wo['story']['group_recipient']['url']; ?>" data-ajax="?link1=timeline&u=<?php echo $wo['story']['group_recipient']['username']; ?>" class="name" onclick="InjectAPI('{&quot;profile_id&quot; : &quot;<?php echo $wo['story']['group_recipient']['id']?>&quot;, &quot;type&quot;:&quot;group&quot;}', event);"><?php echo $wo['story']['group_recipient']['name']; ?></a>
+										<?php } ?>
+										<?php if (!empty($wo['story']['album_name']) && empty($wo['story']['shared_from'])) {  ?>
+											<span class="fs-14">&nbsp;<?php echo $wo['lang']['added_new_photos_to'];?> <a class="name"><?php echo $wo['story']['album_name']; ?></a></span>
+										<?php } ?>
+										<?php if (!empty($wo['story']['product_id']) && empty($wo['story']['shared_from'])) {  ?>
+											<span class="fs-14">&nbsp;<?php echo $wo['lang']['added_new_product_for_sell']; ?></span>
+										<?php } ?>
+										<?php if (!empty($wo['story']['blog_id'])  && empty($wo['story']['shared_from'])) {  ?>
+											<span class="fs-14">&nbsp;<?php echo $wo['lang']['created_new_blog'] ?></span>
+										<?php } ?>
+										<?php if (empty($wo['story']['shared_from'])): ?>
+											<span class="fs-14"><?php 
+													if($wo['story']['postType'] == 'profile_picture') { 
+														$changed_profile_pic_lang = $wo['lang']['changed_profile_picture_male'];
+														if ($wo['story']['publisher']['gender'] == 'female') {
+															$changed_profile_pic_lang = $wo['lang']['changed_profile_picture_female'];
+														} else {
+															$changed_profile_pic_lang = $wo['lang']['changed_profile_picture_male'];
+														}
+														echo '&nbsp;' . $changed_profile_pic_lang;
+													} 
+													if($wo['story']['postType'] == 'profile_cover_picture') { 
+														$changed_profile_cover_pic_lang = $wo['lang']['changed_profile_cover_picture_male'];
+														if ($wo['story']['publisher']['gender'] == 'female') {
+															$changed_profile_cover_pic_lang = $wo['lang']['changed_profile_cover_picture_female'];
+														} else {
+															$changed_profile_cover_pic_lang = $wo['lang']['changed_profile_cover_picture_male'];
+														}
+														echo '&nbsp;' . $changed_profile_cover_pic_lang;
+													} 
+												?></span>
+										<?php endif; ?>
+										<?php if($wo['story']['via_type'] == 'share') {  ?>
+											<span class="fs-14">&nbsp;<?php echo $wo['story']['via']['name'];?> <?php echo $wo['lang']['shared_this_post'];?></span>
+										<?php } ?>
+										<?php 
+											$extra_exists = 0;
+											if (!empty($wo['story']['postFeeling'])) {
+												if (empty($changed_profile_pic_lang) 
+												&& $wo['story']['via_type'] != 'share'
+												&& $wo['story']['group_recipient_exists'] != true
+												&& empty($wo['story']['album_name'])) {
+										?>
+											<span class="feeling-text">&nbsp;<?php echo $wo['lang']['is_feeling'];?> <i class="twa-lg twa twa-<?php echo $wo['story']['postFeelingIcon'];?>"></i> <?php echo $wo['lang'][$wo['story']['postFeeling']];?></span>
+										<?php
+											} else {
+												$extra_exists = 1;
+											}
+											}
+											if (!empty($wo['story']['postTraveling'])) {
+												if (empty($changed_profile_pic_lang) 
+												&& $wo['story']['via_type'] != 'share'
+												&& $wo['story']['group_recipient_exists'] != true
+												&& empty($wo['story']['album_name'])) {
+										?>
+											<span class="feeling-text">&nbsp;<?php echo $wo['lang']['is_traveling'];?> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M17 20H7v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-9H2V8h1V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v3h1v4h-1v9a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-1zM5 5v7h14V5H5zm2.5 13a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm9 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"></path></svg> <?php echo $wo['story']['postTraveling'];?></span>
+										<?php
+											} else {
+												$extra_exists = 1;
+											}
+											}
+											if (!empty($wo['story']['postListening'])) {
+												if (empty($changed_profile_pic_lang) 
+												&& $wo['story']['via_type'] != 'share'
+												&& $wo['story']['group_recipient_exists'] != true
+												&& empty($wo['story']['album_name'])) {
+										?>
+											<span class="feeling-text">&nbsp;<?php echo $wo['lang']['is_listening'];?> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M4 12h3a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-7C2 6.477 6.477 2 12 2s10 4.477 10 10v7a2 2 0 0 1-2 2h-3a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h3a8 8 0 1 0-16 0z"></path></svg> <?php echo $wo['story']['postListening'];?></span>
+										<?php
+											} else {
+												$extra_exists = 1;
+											}
+											}
+											if (!empty($wo['story']['postPlaying'])) {
+												if (empty($changed_profile_pic_lang) 
+												&& $wo['story']['via_type'] != 'share'
+												&& $wo['story']['group_recipient_exists'] != true
+												&& empty($wo['story']['album_name'])) {
+										?>
+											<span class="feeling-text">&nbsp;<?php echo $wo['lang']['is_playing'];?> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M17 4a6 6 0 0 1 6 6v4a6 6 0 0 1-6 6H7a6 6 0 0 1-6-6v-4a6 6 0 0 1 6-6h10zm-7 5H8v2H6v2h1.999L8 15h2l-.001-2H12v-2h-2V9zm8 4h-2v2h2v-2zm-2-4h-2v2h2V9z"></path></svg> <?php echo $wo['story']['postPlaying'];?></span>
+										<?php
+											} else {
+												$extra_exists = 1;
+											}
+											}
+											if (!empty($wo['story']['postWatching'])) {
+												if (empty($changed_profile_pic_lang) 
+												&& $wo['story']['via_type'] != 'share'
+												&& $wo['story']['group_recipient_exists'] != true
+												&& empty($wo['story']['album_name'])) {
+										?>
+											<span class="feeling-text">&nbsp;<?php echo $wo['lang']['is_watching'];?> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.414 5h5.594c.548 0 .992.445.992 1v14c0 .552-.455 1-.992 1H2.992A.994.994 0 0 1 2 20V6c0-.552.455-1 .992-1h5.594L6.05 2.464 7.464 1.05 11.414 5h1.172l3.95-3.95 1.414 1.414L15.414 5z"></path></svg> <?php echo $wo['story']['postWatching'];?></span>
+										<?php
+											} else {
+												$extra_exists = 1;
+											}
+											}
+										?>
+									<?php } else {$extra_exists = 1;} ?>
+								</div>
+								<div class="valign tag_post_hdr_sub">
+									<span class="time"><a class="ajax-time" href="<?php echo $wo['story']['url'];?>" target="_blank"><?php echo Wo_Time_Elapsed_String($wo['story']['time']); ?></a></span>
+									<?php if(!empty($wo['story']['postMap'])) { ?>
+										<?php if(!empty($wo['story']['postSoundCloud']) || 
+											!empty($wo['story']['postVine']) || 
+											!empty($wo['story']['postYoutube']) || 
+											!empty($wo['story']['postPlaytube']) || 
+											!empty($wo['story']['postVimeo']) || 
+											!empty($wo['story']['postText']) || 
+											!empty($wo['story']['postFile']) || 
+											!empty($wo['story']['postLink']) || 
+											!empty($wo['story']['postFacebook']) || 
+											!empty($wo['story']['postDailymotion']) ||
+											!empty($wo['story']['album_name']) || $wo['config']['google_map'] == 0) {
+										?>
+											<span class="middot">·</span><span class="time"><?php echo $wo['story']['postMap'];?></span>
+										<?php } ?>
+									<?php } else { ?>
+										<?php
+											$small_icon = '';
+											$icon_type = '';
+											if(!empty($wo['story']['postVine'])) { 
+												$small_icon = 'vine';
+												$icon_type = 'Vine';
+											} else if (!empty($wo['story']['postVimeo'])) {
+												$small_icon = 'vimeo';
+												$icon_type = 'Vimeo';
+											} else if (!empty($wo['story']['postFacebook'])) {
+												$small_icon = 'facebook-official';
+												$icon_type = 'Facebook';
+											} else if (!empty($wo['story']['postDailymotion'])) {
+												$small_icon = 'film';
+												$icon_type = 'Dailymotion';
+											} else if (!empty($wo['story']['postYoutube'])) {
+												$small_icon = 'youtube-square';
+												$icon_type = 'Youtube';
+											} else if (!empty($wo['story']['postPlaytube'])) {
+												// $small_icon = 'play-circle';
+												// $icon_type = 'PlayTube';
+											} else if (!empty($wo['story']['postSoundCloud'])) {
+												$small_icon = 'soundcloud';
+												$icon_type = 'SoundCloud';
+											}
+											if (!empty($icon_type)) {
+										?>
+											<span class="middot">·</span><span class="time"><?php echo $icon_type; ?></span>
+										<?php } ?>
+									<?php } ?>
+									<?php if ($wo['story']['admin'] === true && $wo['story']['group_recipient_exists'] == false && empty($wo['story']['product_id'])) { ?>
+										<?php if (empty($wo['story']['page_id'])) { ?>
+											<span class="middot">·</span>
+											<span class="dropdown">
+												<div class="dropdown-toggle post-privacy" data-toggle="dropdown" role="button" aria-expanded="false">
+													<?php if($wo['story']['postPrivacy'] == 0) { ?>
+														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" opacity=".8"><title><?php echo $wo['lang']['everyone'];?></title><path fill="currentColor" d="M17.9,17.39C17.64,16.59 16.89,16 16,16H15V13A1,1 0 0,0 14,12H8V10H10A1,1 0 0,0 11,9V7H13A2,2 0 0,0 15,5V4.59C17.93,5.77 20,8.64 20,12C20,14.08 19.2,15.97 17.9,17.39M11,19.93C7.05,19.44 4,16.08 4,12C4,11.38 4.08,10.78 4.21,10.21L9,15V16A2,2 0 0,0 11,18M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"></path></svg>
+													<?php } ?>
+													<?php if($wo['story']['postPrivacy'] == 1) { ?>
+														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" opacity=".8"><title><?php echo ($wo['config']['connectivitySystem'] == 1) ? $wo['lang']['my_friends'] : $wo['lang']['people_follow_me'];?></title><path fill="currentColor" d="M16,13C15.71,13 15.38,13 15.03,13.05C16.19,13.89 17,15 17,16.5V19H23V16.5C23,14.17 18.33,13 16,13M8,13C5.67,13 1,14.17 1,16.5V19H15V16.5C15,14.17 10.33,13 8,13M8,11A3,3 0 0,0 11,8A3,3 0 0,0 8,5A3,3 0 0,0 5,8A3,3 0 0,0 8,11M16,11A3,3 0 0,0 19,8A3,3 0 0,0 16,5A3,3 0 0,0 13,8A3,3 0 0,0 16,11Z"></path></svg>
+													<?php } ?>
+													<?php if($wo['story']['postPrivacy'] == 2) { ?>
+														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" opacity=".8"><title><?php echo ($wo['config']['connectivitySystem'] == 1) ? $wo['lang']['my_friends'] : $wo['lang']['people_i_follow'];?></title><path fill="currentColor" d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"></path></svg>
+													<?php } ?>
+													<?php if($wo['story']['postPrivacy'] == 3) { ?>
+														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" opacity=".8"><title><?php echo $wo['lang']['only_me'];?></title><path fill="currentColor" d="M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z"></path></svg>
+													<?php } ?>
+												</div>
+												<ul class="dropdown-menu tag_create_menu" role="menu">
+													<li>
+														<a class="pointer" onclick="Wo_UpdatePostPrivacy(<?php echo $wo['story']['id']; ?>,3,event);">
+															<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z"></path></svg> <?php echo $wo['lang']['only_me'];?>
+														</a>
+													</li>
+													<li>
+														<a class="pointer" onclick="Wo_UpdatePostPrivacy(<?php echo $wo['story']['id']; ?>,0,event);">
+															<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M17.9,17.39C17.64,16.59 16.89,16 16,16H15V13A1,1 0 0,0 14,12H8V10H10A1,1 0 0,0 11,9V7H13A2,2 0 0,0 15,5V4.59C17.93,5.77 20,8.64 20,12C20,14.08 19.2,15.97 17.9,17.39M11,19.93C7.05,19.44 4,16.08 4,12C4,11.38 4.08,10.78 4.21,10.21L9,15V16A2,2 0 0,0 11,18M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"></path></svg> <?php echo $wo['lang']['everyone'];?>
+														</a>
+													</li>
+													<?php if ($wo['config']['connectivitySystem'] == 1) { ?>
+														<li>
+															<a class="pointer" onclick="Wo_UpdatePostPrivacy(<?php echo $wo['story']['id']; ?>,1,event);">
+																<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M16,13C15.71,13 15.38,13 15.03,13.05C16.19,13.89 17,15 17,16.5V19H23V16.5C23,14.17 18.33,13 16,13M8,13C5.67,13 1,14.17 1,16.5V19H15V16.5C15,14.17 10.33,13 8,13M8,11A3,3 0 0,0 11,8A3,3 0 0,0 8,5A3,3 0 0,0 5,8A3,3 0 0,0 8,11M16,11A3,3 0 0,0 19,8A3,3 0 0,0 16,5A3,3 0 0,0 13,8A3,3 0 0,0 16,11Z"></path></svg> <?php echo $wo['lang']['my_friends'];?>
+															</a>
+														</li>
+													<?php } else { ?>
+														<li>
+															<a class="pointer" onclick="Wo_UpdatePostPrivacy(<?php echo $wo['story']['id']; ?>,2,event);">
+																<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"></path></svg> <?php echo $wo['lang']['people_i_follow'];?>
+															</a>
+														</li>
+														<li>
+															<a class="pointer" onclick="Wo_UpdatePostPrivacy(<?php echo $wo['story']['id']; ?>,1,event);">
+																<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M16,13C15.71,13 15.38,13 15.03,13.05C16.19,13.89 17,15 17,16.5V19H23V16.5C23,14.17 18.33,13 16,13M8,13C5.67,13 1,14.17 1,16.5V19H15V16.5C15,14.17 10.33,13 8,13M8,11A3,3 0 0,0 11,8A3,3 0 0,0 8,5A3,3 0 0,0 5,8A3,3 0 0,0 8,11M16,11A3,3 0 0,0 19,8A3,3 0 0,0 16,5A3,3 0 0,0 13,8A3,3 0 0,0 16,11Z"></path></svg> <?php echo $wo['lang']['people_follow_me'];?>
+															</a>
+														</li>
+													<?php } ?>
+												</ul>
+											</span>
+										<?php } else { ?>
+											<span class="middot">·</span>
+											<span class="dropdown">
+												<div class="dropdown-toggle post-privacy" data-toggle="dropdown" role="button" aria-expanded="false">
+													<?php if($wo['story']['postPrivacy'] == 0) { ?>
+														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" opacity=".8"><title><?php echo $wo['lang']['everyone'];?></title><path fill="currentColor" d="M17.9,17.39C17.64,16.59 16.89,16 16,16H15V13A1,1 0 0,0 14,12H8V10H10A1,1 0 0,0 11,9V7H13A2,2 0 0,0 15,5V4.59C17.93,5.77 20,8.64 20,12C20,14.08 19.2,15.97 17.9,17.39M11,19.93C7.05,19.44 4,16.08 4,12C4,11.38 4.08,10.78 4.21,10.21L9,15V16A2,2 0 0,0 11,18M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"></path></svg>
+													<?php } ?>
+													<?php if($wo['story']['postPrivacy'] == 2) { ?>
+														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" opacity=".8"><title><?php echo $wo['lang']['liked_my_page'];?></title><path fill="currentColor" d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"></path></svg>
+													<?php } ?>
+												</div>
+												<ul class="dropdown-menu tag_create_menu" role="menu">
+													<li>
+														<a class="pointer" onclick="Wo_UpdatePostPrivacy(<?php echo $wo['story']['id']; ?>,0,event);">
+															<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M17.9,17.39C17.64,16.59 16.89,16 16,16H15V13A1,1 0 0,0 14,12H8V10H10A1,1 0 0,0 11,9V7H13A2,2 0 0,0 15,5V4.59C17.93,5.77 20,8.64 20,12C20,14.08 19.2,15.97 17.9,17.39M11,19.93C7.05,19.44 4,16.08 4,12C4,11.38 4.08,10.78 4.21,10.21L9,15V16A2,2 0 0,0 11,18M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"></path></svg> <?php echo $wo['lang']['everyone'];?>
+														</a>
+													</li>
+													<li>
+														<a class="pointer" onclick="Wo_UpdatePostPrivacy(<?php echo $wo['story']['id']; ?>,2,event);">
+															<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"></path></svg> <?php echo $wo['lang']['liked_my_page'];?>
+														</a>
+													</li>
+												</ul>
+											</span>
+										<?php } ?>
+									<?php }  ?>
+								</div>
+							</div>
+						</div>
+						<?php  if ($wo['story']['admin'] === true || $wo['story']['group_admin'] === true) { ?>
+							<div class="dropdown tag_post_hdr_menu">
+								<div class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M12 13.172l4.95-4.95 1.414 1.414L12 16 5.636 9.636 7.05 8.222z"/></svg>
+								</div>
+								<ul class="dropdown-menu dropdown-menu-right tag_create_menu" role="menu">
+									<div class="tag_post_men_disable"></div>
+									<?php if ($wo['story']['admin'] === true && empty($wo['story']['product_id'])) { ?>
+										<?php $edit_json = array('type' => 'edit_post', 'post_id' => $wo['story']['id'], 'edit_text' => $wo['story']['Orginaltext']); ?>
+										<li><a class="pointer" onclick="InjectAPI('<?php echo htmlentities(json_encode($edit_json)); ?>', event);" id="edit-post"><?php echo $wo['lang']['edit_post'];?></a></li>
+									<?php } else if (!empty($wo['story']['product_id'])) { 
+										if ($wo['story']['product']['status'] == 0) { ?>
+									<?php } } ?>
+									<li><a class="pointer" onclick="InjectAPI('<?php echo htmlentities(json_encode(array('type' => 'delete_post', 'post_id' => $wo['story']['id']))); ?>', event);"><?php echo $wo['lang']['delete_post'];?></a></li>
+									<li><a class="pointer disable-comments" onclick="Wo_DisableComment(<?php echo $wo['story']['id']; ?>, <?php echo $wo['story']['comments_status']; ?>);"><?php echo ($wo['story']['comments_status'] == 1) ? $wo['lang']['disable_comments'] : $wo['lang']['enable_comments'];?></a></li>
+								</ul>
+							</div>
+						<?php  } elseif ($wo['loggedin'] == true) { ?>
+							<div class="dropdown tag_post_hdr_menu">
+								<div class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M12 13.172l4.95-4.95 1.414 1.414L12 16 5.636 9.636 7.05 8.222z"/></svg>
+								</div>
+								<ul class="dropdown-menu dropdown-menu-right tag_create_menu" role="menu">
+									<div class="tag_post_men_disable"></div>
+									<li>
+										<a class="report-post pointer" onclick="Wo_ReportPost(<?php echo $wo['story']['id']; ?>);">
+											<?php if($wo['story']['is_post_reported'] === true) { ?>
+												<?php echo $wo['lang']['unreport_post'];?>
+											<?php } else { ?>
+												<?php echo $wo['lang']['report_post'];?>
+											<?php } ?>
+										</a>
+									</li>
+								</ul>
+							</div>
+						<?php } ?>
+					</div>
+				<?php } elseif (empty($wo['story']['parent_id'])) { ?>
+					<div class="valign post-heading">
+						<div class="valign">
+							<div class="image" onclick="InjectAPI('<?php echo htmlentities(json_encode(array('type' => $wo['story']['publisher']['type'], 'profile_id' => $wo['story']['publisher']['id']))); ?>', event);">
+								<img src="<?php echo $wo['story']['publisher']['avatar']; ?>" alt="<?php echo $wo['story']['publisher']['name']; ?>" class="avatar">
+							</div>
+							<div class="meta">
+								<div class="title">
+									<a onclick="InjectAPI('<?php echo htmlentities(json_encode(array('type' => $wo['story']['publisher']['type'], 'profile_id' => $wo['story']['publisher']['id']))); ?>', event);" class="name"><?php echo $wo['story']['publisher']['name']; ?></a>
+									<?php if($wo['story']['publisher']['verified'] == 1) { ?>
+										<span class="verified-color fs-14" title="<?php echo ($wo['story']['page_id'] > 0 ? $wo['lang']['verified_page'] : $wo['lang']['verified_user']);?>" data-toggle="tooltip">&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 512 512"><path d="m256 0c-141.164062 0-256 114.835938-256 256s114.835938 256 256 256 256-114.835938 256-256-114.835938-256-256-256zm0 0" fill="#2196f3"></path><path d="m385.75 201.75-138.667969 138.664062c-4.160156 4.160157-9.621093 6.253907-15.082031 6.253907s-10.921875-2.09375-15.082031-6.253907l-69.332031-69.332031c-8.34375-8.339843-8.34375-21.824219 0-30.164062 8.339843-8.34375 21.820312-8.34375 30.164062 0l54.25 54.25 123.585938-123.582031c8.339843-8.34375 21.820312-8.34375 30.164062 0 8.339844 8.339843 8.339844 21.820312 0 30.164062zm0 0" fill="#fff"></path></svg></span>
+									<?php } ?>
+									<?php 
+										if (isset($wo['story']['publisher']['is_pro'])) { 
+										if(Wo_IsUserPro($wo['story']['publisher']['is_pro']) === true) {
+									?>
+										<?php $user_pro_type = Wo_GetUserProType($wo['story']['publisher']['pro_type']); ?>
+										<span class="fs-14">&nbsp;<span class="pro-badge" style="background-color:<?php echo $user_pro_type['color_name'];?>" title="<?php echo $user_pro_type['type_name'];?>" data-toggle="tooltip">PRO</span></span>
+									<?php } } ?>
+									<?php if ($wo['story']['shared_from'] && is_array($wo['story']['shared_from'])): ?>
+										<span class="fs-14">&nbsp;<?php echo $wo['lang']['shared']; ?>&nbsp;</span> 
+										<a href="<?php echo $wo['story']['shared_from']['url']; ?>" data-ajax="?link1=timeline&u=<?php echo $wo['story']['shared_from']['username']; ?>" class="name"><?php echo $wo['story']['shared_from']['name']; ?></a>
+										<?php if($wo['story']['shared_from']['verified'] == 1) { ?>
+											<span class="verified-color fs-14" title="<?php echo ($wo['story']['page_id'] > 0 ? $wo['lang']['verified_page'] : $wo['lang']['verified_user']);?>" data-toggle="tooltip">&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 512 512"><path d="m256 0c-141.164062 0-256 114.835938-256 256s114.835938 256 256 256 256-114.835938 256-256-114.835938-256-256-256zm0 0" fill="#2196f3"></path><path d="m385.75 201.75-138.667969 138.664062c-4.160156 4.160157-9.621093 6.253907-15.082031 6.253907s-10.921875-2.09375-15.082031-6.253907l-69.332031-69.332031c-8.34375-8.339843-8.34375-21.824219 0-30.164062 8.339843-8.34375 21.820312-8.34375 30.164062 0l54.25 54.25 123.585938-123.582031c8.339843-8.34375 21.820312-8.34375 30.164062 0 8.339844 8.339843 8.339844 21.820312 0 30.164062zm0 0" fill="#fff"></path></svg></span>
+										<?php } ?>
+										<span class="fs-14">&nbsp;<a href="<?php echo $wo['story']['post_url']; ?>"><?php echo strtolower($wo['lang']['post']); ?></a></span>
+									<?php endif; ?>
+									<?php if ($wo['story']['recipient_exists'] == true) {  ?>
+										<span class="fs-14">&nbsp;<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" style="margin: -2px 0 0;"><path fill="currentColor" d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"/></svg>&nbsp;</span>
+										<a href="<?php echo $wo['story']['recipient']['url']; ?>" data-ajax="?link1=timeline&u=<?php echo $wo['story']['recipient']['username']; ?>" class="name" onclick="InjectAPI('{&quot;profile_id&quot; : &quot;<?php echo $wo['story']['recipient']['id']?>&quot;, &quot;type&quot;:&quot;user&quot;}', event);"><?php echo $wo['story']['recipient']['name']; ?></a>
+										<?php if($wo['story']['recipient']['verified'] == 1) { ?> 
+											<span class="verified-color fs-14" title="<?php echo ($wo['story']['page_id'] > 0 ? $wo['lang']['verified_page'] : $wo['lang']['verified_user']);?>" data-toggle="tooltip">&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 512 512"><path d="m256 0c-141.164062 0-256 114.835938-256 256s114.835938 256 256 256 256-114.835938 256-256-114.835938-256-256-256zm0 0" fill="#2196f3"></path><path d="m385.75 201.75-138.667969 138.664062c-4.160156 4.160157-9.621093 6.253907-15.082031 6.253907s-10.921875-2.09375-15.082031-6.253907l-69.332031-69.332031c-8.34375-8.339843-8.34375-21.824219 0-30.164062 8.339843-8.34375 21.820312-8.34375 30.164062 0l54.25 54.25 123.585938-123.582031c8.339843-8.34375 21.820312-8.34375 30.164062 0 8.339844 8.339843 8.339844 21.820312 0 30.164062zm0 0" fill="#fff"></path></svg></span>
+										<?php } ?>
+									<?php } ?>
+									<?php if ($wo['story']['group_recipient_exists'] == true && $wo['page'] != 'group') {  ?>
+										<span class="fs-14">&nbsp;<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" style="margin: -2px 0 0;"><path fill="currentColor" d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"/></svg>&nbsp;</span>
+										<a href="<?php echo $wo['story']['group_recipient']['url']; ?>" data-ajax="?link1=timeline&u=<?php echo $wo['story']['group_recipient']['username']; ?>" class="name" onclick="InjectAPI('{&quot;profile_id&quot; : &quot;<?php echo $wo['story']['group_recipient']['id']?>&quot;, &quot;type&quot;:&quot;group&quot;}', event);"><?php echo $wo['story']['group_recipient']['name']; ?></a>
+									<?php } ?>
+									<?php if (!empty($wo['story']['album_name']) && empty($wo['story']['shared_from'])) {  ?>
+										<span class="fs-14">&nbsp;<?php echo $wo['lang']['added_new_photos_to'];?> <a class="name"><?php echo $wo['story']['album_name']; ?></a></span>
+									<?php } ?>
+									<?php if (!empty($wo['story']['product_id']) && empty($wo['story']['shared_from'])) {  ?>
+										<span class="fs-14">&nbsp;<?php echo $wo['lang']['added_new_product_for_sell']; ?></span>
+									<?php } ?>
+									<?php if (!empty($wo['story']['blog_id'])  && empty($wo['story']['shared_from'])) {  ?>
+										<span class="fs-14">&nbsp;<?php echo $wo['lang']['created_new_blog'] ?></span>
+									<?php } ?>
+									<?php if (empty($wo['story']['shared_from'])): ?>
+										<span class="fs-14"><?php 
+												if($wo['story']['postType'] == 'profile_picture') { 
+													$changed_profile_pic_lang = $wo['lang']['changed_profile_picture_male'];
+													if ($wo['story']['publisher']['gender'] == 'female') {
+														$changed_profile_pic_lang = $wo['lang']['changed_profile_picture_female'];
+													} else {
+														$changed_profile_pic_lang = $wo['lang']['changed_profile_picture_male'];
+													}
+													echo '&nbsp;' . $changed_profile_pic_lang;
+												} 
+												if($wo['story']['postType'] == 'profile_cover_picture') { 
+													$changed_profile_cover_pic_lang = $wo['lang']['changed_profile_cover_picture_male'];
+													if ($wo['story']['publisher']['gender'] == 'female') {
+														$changed_profile_cover_pic_lang = $wo['lang']['changed_profile_cover_picture_female'];
+													} else {
+														$changed_profile_cover_pic_lang = $wo['lang']['changed_profile_cover_picture_male'];
+													}
+													echo '&nbsp;' . $changed_profile_cover_pic_lang;
+												} 
+											?></span>
+									<?php endif; ?>
+									<?php if($wo['story']['via_type'] == 'share') {  ?>
+										<span class="fs-14">&nbsp;<?php echo $wo['story']['via']['name'];?> <?php echo $wo['lang']['shared_this_post'];?></span>
+									<?php } ?>
+									<?php 
+										$extra_exists = 0;
+										if (!empty($wo['story']['postFeeling'])) {
+											if (empty($changed_profile_pic_lang) 
+											&& $wo['story']['via_type'] != 'share'
+											&& $wo['story']['group_recipient_exists'] != true
+											&& empty($wo['story']['album_name'])) {
+									?>
+										<span class="feeling-text">&nbsp;<?php echo $wo['lang']['is_feeling'];?> <i class="twa-lg twa twa-<?php echo $wo['story']['postFeelingIcon'];?>"></i> <?php echo $wo['lang'][$wo['story']['postFeeling']];?></span>
+									<?php
+										} else {
+											$extra_exists = 1;
+										}
+										}
+										if (!empty($wo['story']['postTraveling'])) {
+											if (empty($changed_profile_pic_lang) 
+											&& $wo['story']['via_type'] != 'share'
+											&& $wo['story']['group_recipient_exists'] != true
+											&& empty($wo['story']['album_name'])) {
+									?>
+										<span class="feeling-text">&nbsp;<?php echo $wo['lang']['is_traveling'];?> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M17 20H7v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-9H2V8h1V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v3h1v4h-1v9a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-1zM5 5v7h14V5H5zm2.5 13a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm9 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"></path></svg> <?php echo $wo['story']['postTraveling'];?></span>
+									<?php
+										} else {
+											$extra_exists = 1;
+										}
+										}
+										if (!empty($wo['story']['postListening'])) {
+											if (empty($changed_profile_pic_lang) 
+											&& $wo['story']['via_type'] != 'share'
+											&& $wo['story']['group_recipient_exists'] != true
+											&& empty($wo['story']['album_name'])) {
+									?>
+										<span class="feeling-text">&nbsp;<?php echo $wo['lang']['is_listening'];?> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M4 12h3a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-7C2 6.477 6.477 2 12 2s10 4.477 10 10v7a2 2 0 0 1-2 2h-3a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h3a8 8 0 1 0-16 0z"></path></svg> <?php echo $wo['story']['postListening'];?></span>
+									<?php
+										} else {
+											$extra_exists = 1;
+										}
+										}
+										if (!empty($wo['story']['postPlaying'])) {
+											if (empty($changed_profile_pic_lang) 
+											&& $wo['story']['via_type'] != 'share'
+											&& $wo['story']['group_recipient_exists'] != true
+											&& empty($wo['story']['album_name'])) {
+									?>
+										<span class="feeling-text">&nbsp;<?php echo $wo['lang']['is_playing'];?> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M17 4a6 6 0 0 1 6 6v4a6 6 0 0 1-6 6H7a6 6 0 0 1-6-6v-4a6 6 0 0 1 6-6h10zm-7 5H8v2H6v2h1.999L8 15h2l-.001-2H12v-2h-2V9zm8 4h-2v2h2v-2zm-2-4h-2v2h2V9z"></path></svg> <?php echo $wo['story']['postPlaying'];?></span>
+									<?php
+										} else {
+											$extra_exists = 1;
+										}
+										}
+										if (!empty($wo['story']['postWatching'])) {
+											if (empty($changed_profile_pic_lang) 
+											&& $wo['story']['via_type'] != 'share'
+											&& $wo['story']['group_recipient_exists'] != true
+											&& empty($wo['story']['album_name'])) {
+									?>
+										<span class="feeling-text">&nbsp;<?php echo $wo['lang']['is_watching'];?> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.414 5h5.594c.548 0 .992.445.992 1v14c0 .552-.455 1-.992 1H2.992A.994.994 0 0 1 2 20V6c0-.552.455-1 .992-1h5.594L6.05 2.464 7.464 1.05 11.414 5h1.172l3.95-3.95 1.414 1.414L15.414 5z"></path></svg> <?php echo $wo['story']['postWatching'];?></span>
+									<?php
+										} else {
+											$extra_exists = 1;
+										}
+										}
+									?>
+								</div>
+								<div class="valign tag_post_hdr_sub">
+									<span class="time"><a class="ajax-time" href="<?php echo $wo['story']['url'];?>" target="_blank"><?php echo Wo_Time_Elapsed_String($wo['story']['time']); ?></a></span>
+									<?php if(!empty($wo['story']['postMap'])) { ?>
+										<?php if(!empty($wo['story']['postSoundCloud']) || 
+											!empty($wo['story']['postVine']) || 
+											!empty($wo['story']['postYoutube']) || 
+											!empty($wo['story']['postPlaytube']) || 
+											!empty($wo['story']['postVimeo']) || 
+											!empty($wo['story']['postText']) || 
+											!empty($wo['story']['postFile']) || 
+											!empty($wo['story']['postLink']) || 
+											!empty($wo['story']['postFacebook']) || 
+											!empty($wo['story']['postDailymotion']) ||
+											!empty($wo['story']['album_name']) || $wo['config']['google_map'] == 0) {
+										?>
+											<span class="middot">·</span><span class="time"><?php echo $wo['story']['postMap'];?></span>
+										<?php } ?>
+									<?php } else { ?>
+										<?php
+											$small_icon = '';
+											$icon_type = '';
+											if(!empty($wo['story']['postVine'])) { 
+												$small_icon = 'vine';
+												$icon_type = 'Vine';
+											} else if (!empty($wo['story']['postVimeo'])) {
+												$small_icon = 'vimeo';
+												$icon_type = 'Vimeo';
+											} else if (!empty($wo['story']['postFacebook'])) {
+												$small_icon = 'facebook-official';
+												$icon_type = 'Facebook';
+											} else if (!empty($wo['story']['postDailymotion'])) {
+												$small_icon = 'film';
+												$icon_type = 'Dailymotion';
+											} else if (!empty($wo['story']['postYoutube'])) {
+												$small_icon = 'youtube-square';
+												$icon_type = 'Youtube';
+											} else if (!empty($wo['story']['postPlaytube'])) {
+												// $small_icon = 'play-circle';
+												// $icon_type = 'PlayTube';
+											} else if (!empty($wo['story']['postSoundCloud'])) {
+												$small_icon = 'soundcloud';
+												$icon_type = 'SoundCloud';
+											}
+											if (!empty($icon_type)) {
+										?>
+											<span class="middot">·</span><span class="time"><?php echo $icon_type; ?></span>
+										<?php } ?>
+									<?php } ?>
+									<?php if ($wo['story']['admin'] === true && $wo['story']['group_recipient_exists'] == false && empty($wo['story']['product_id'])) { ?>
+										<?php if (empty($wo['story']['page_id'])) { ?>
+											<span class="middot">·</span>
+											<span class="dropdown">
+												<div class="dropdown-toggle post-privacy" data-toggle="dropdown" role="button" aria-expanded="false">
+													<?php if($wo['story']['postPrivacy'] == 0) { ?>
+														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" opacity=".8"><title><?php echo $wo['lang']['everyone'];?></title><path fill="currentColor" d="M17.9,17.39C17.64,16.59 16.89,16 16,16H15V13A1,1 0 0,0 14,12H8V10H10A1,1 0 0,0 11,9V7H13A2,2 0 0,0 15,5V4.59C17.93,5.77 20,8.64 20,12C20,14.08 19.2,15.97 17.9,17.39M11,19.93C7.05,19.44 4,16.08 4,12C4,11.38 4.08,10.78 4.21,10.21L9,15V16A2,2 0 0,0 11,18M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"></path></svg>
+													<?php } ?>
+													<?php if($wo['story']['postPrivacy'] == 1) { ?>
+														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" opacity=".8"><title><?php echo ($wo['config']['connectivitySystem'] == 1) ? $wo['lang']['my_friends'] : $wo['lang']['people_follow_me'];?></title><path fill="currentColor" d="M16,13C15.71,13 15.38,13 15.03,13.05C16.19,13.89 17,15 17,16.5V19H23V16.5C23,14.17 18.33,13 16,13M8,13C5.67,13 1,14.17 1,16.5V19H15V16.5C15,14.17 10.33,13 8,13M8,11A3,3 0 0,0 11,8A3,3 0 0,0 8,5A3,3 0 0,0 5,8A3,3 0 0,0 8,11M16,11A3,3 0 0,0 19,8A3,3 0 0,0 16,5A3,3 0 0,0 13,8A3,3 0 0,0 16,11Z"></path></svg>
+													<?php } ?>
+													<?php if($wo['story']['postPrivacy'] == 2) { ?>
+														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" opacity=".8"><title><?php echo ($wo['config']['connectivitySystem'] == 1) ? $wo['lang']['my_friends'] : $wo['lang']['people_i_follow'];?></title><path fill="currentColor" d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"></path></svg>
+													<?php } ?>
+													<?php if($wo['story']['postPrivacy'] == 3) { ?>
+														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" opacity=".8"><title><?php echo $wo['lang']['only_me'];?></title><path fill="currentColor" d="M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z"></path></svg>
+													<?php } ?>
+												</div>
+												<ul class="dropdown-menu tag_create_menu" role="menu">
+													<li>
+														<a class="pointer" onclick="Wo_UpdatePostPrivacy(<?php echo $wo['story']['id']; ?>,3,event);">
+															<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z"></path></svg> <?php echo $wo['lang']['only_me'];?>
+														</a>
+													</li>
+													<li>
+														<a class="pointer" onclick="Wo_UpdatePostPrivacy(<?php echo $wo['story']['id']; ?>,0,event);">
+															<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M17.9,17.39C17.64,16.59 16.89,16 16,16H15V13A1,1 0 0,0 14,12H8V10H10A1,1 0 0,0 11,9V7H13A2,2 0 0,0 15,5V4.59C17.93,5.77 20,8.64 20,12C20,14.08 19.2,15.97 17.9,17.39M11,19.93C7.05,19.44 4,16.08 4,12C4,11.38 4.08,10.78 4.21,10.21L9,15V16A2,2 0 0,0 11,18M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"></path></svg> <?php echo $wo['lang']['everyone'];?>
+														</a>
+													</li>
+													<?php if ($wo['config']['connectivitySystem'] == 1) { ?>
+														<li>
+															<a class="pointer" onclick="Wo_UpdatePostPrivacy(<?php echo $wo['story']['id']; ?>,1,event);">
+																<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M16,13C15.71,13 15.38,13 15.03,13.05C16.19,13.89 17,15 17,16.5V19H23V16.5C23,14.17 18.33,13 16,13M8,13C5.67,13 1,14.17 1,16.5V19H15V16.5C15,14.17 10.33,13 8,13M8,11A3,3 0 0,0 11,8A3,3 0 0,0 8,5A3,3 0 0,0 5,8A3,3 0 0,0 8,11M16,11A3,3 0 0,0 19,8A3,3 0 0,0 16,5A3,3 0 0,0 13,8A3,3 0 0,0 16,11Z"></path></svg> <?php echo $wo['lang']['my_friends'];?>
+															</a>
+														</li>
+													<?php } else { ?>
+														<li>
+															<a class="pointer" onclick="Wo_UpdatePostPrivacy(<?php echo $wo['story']['id']; ?>,2,event);">
+																<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"></path></svg> <?php echo $wo['lang']['people_i_follow'];?>
+															</a>
+														</li>
+														<li>
+															<a class="pointer" onclick="Wo_UpdatePostPrivacy(<?php echo $wo['story']['id']; ?>,1,event);">
+																<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M16,13C15.71,13 15.38,13 15.03,13.05C16.19,13.89 17,15 17,16.5V19H23V16.5C23,14.17 18.33,13 16,13M8,13C5.67,13 1,14.17 1,16.5V19H15V16.5C15,14.17 10.33,13 8,13M8,11A3,3 0 0,0 11,8A3,3 0 0,0 8,5A3,3 0 0,0 5,8A3,3 0 0,0 8,11M16,11A3,3 0 0,0 19,8A3,3 0 0,0 16,5A3,3 0 0,0 13,8A3,3 0 0,0 16,11Z"></path></svg> <?php echo $wo['lang']['people_follow_me'];?>
+															</a>
+														</li>
+													<?php } ?>
+												</ul>
+											</span>
+										<?php } else { ?>
+											<span class="middot">·</span>
+											<span class="dropdown">
+												<div class="dropdown-toggle post-privacy" data-toggle="dropdown" role="button" aria-expanded="false">
+													<?php if($wo['story']['postPrivacy'] == 0) { ?>
+														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" opacity=".8"><title><?php echo $wo['lang']['everyone'];?></title><path fill="currentColor" d="M17.9,17.39C17.64,16.59 16.89,16 16,16H15V13A1,1 0 0,0 14,12H8V10H10A1,1 0 0,0 11,9V7H13A2,2 0 0,0 15,5V4.59C17.93,5.77 20,8.64 20,12C20,14.08 19.2,15.97 17.9,17.39M11,19.93C7.05,19.44 4,16.08 4,12C4,11.38 4.08,10.78 4.21,10.21L9,15V16A2,2 0 0,0 11,18M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"></path></svg>
+													<?php } ?>
+													<?php if($wo['story']['postPrivacy'] == 2) { ?>
+														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" opacity=".8"><title><?php echo $wo['lang']['liked_my_page'];?></title><path fill="currentColor" d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"></path></svg>
+													<?php } ?>
+												</div>
+												<ul class="dropdown-menu tag_create_menu" role="menu">
+													<li>
+														<a class="pointer" onclick="Wo_UpdatePostPrivacy(<?php echo $wo['story']['id']; ?>,0,event);">
+															<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M17.9,17.39C17.64,16.59 16.89,16 16,16H15V13A1,1 0 0,0 14,12H8V10H10A1,1 0 0,0 11,9V7H13A2,2 0 0,0 15,5V4.59C17.93,5.77 20,8.64 20,12C20,14.08 19.2,15.97 17.9,17.39M11,19.93C7.05,19.44 4,16.08 4,12C4,11.38 4.08,10.78 4.21,10.21L9,15V16A2,2 0 0,0 11,18M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"></path></svg> <?php echo $wo['lang']['everyone'];?>
+														</a>
+													</li>
+													<li>
+														<a class="pointer" onclick="Wo_UpdatePostPrivacy(<?php echo $wo['story']['id']; ?>,2,event);">
+															<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"></path></svg> <?php echo $wo['lang']['liked_my_page'];?>
+														</a>
+													</li>
+												</ul>
+											</span>
+										<?php } ?>
+									<?php } ?>
+								</div>
+							</div>
+						</div>
+						<?php  if ($wo['story']['admin'] === true || $wo['story']['group_admin'] === true) { ?>
+							<div class="dropdown tag_post_hdr_menu">
+								<div class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M12 13.172l4.95-4.95 1.414 1.414L12 16 5.636 9.636 7.05 8.222z"/></svg>
+								</div>
+								<ul class="dropdown-menu dropdown-menu-right tag_create_menu" role="menu">
+									<div class="tag_post_men_disable"></div>
+									<?php if ($wo['story']['admin'] === true && empty($wo['story']['product_id'])) { ?>
+										<?php $edit_json = array('type' => 'edit_post', 'post_id' => $wo['story']['id'], 'edit_text' => $wo['story']['Orginaltext']); ?>
+										<li><a class="pointer" onclick="InjectAPI('<?php echo htmlentities(json_encode($edit_json)); ?>', event);" id="edit-post"><?php echo $wo['lang']['edit_post'];?></a></li>
+									<?php } else if (!empty($wo['story']['product_id'])) { 
+										if ($wo['story']['product']['status'] == 0) {
+									?>
+										<li><a class="pointer mark-as-sold-post" onclick="Wo_MarkAsSold(<?php echo $wo['story']['id']; ?>, <?php echo $wo['story']['product_id']; ?>);"><?php echo $wo['lang']['mark_as_sold']?></a></li>
+									<?php } } ?>
+									<li><a class="pointer" onclick="InjectAPI('<?php echo htmlentities(json_encode(array('type' => 'delete_post', 'post_id' => $wo['story']['id']))); ?>', event);"><?php echo $wo['lang']['delete_post'];?></a></li>
+									<li><a class="pointer disable-comments" onclick="Wo_DisableComment(<?php echo $wo['story']['id']; ?>, <?php echo $wo['story']['comments_status']; ?>);"><?php echo ($wo['story']['comments_status'] == 1) ? $wo['lang']['disable_comments'] : $wo['lang']['enable_comments'];?></a></li>
+									<?php if (empty($wo['story']['recipient']) && $wo['story']['admin'] === true) { ?>
+									<?php if ($wo['story']['is_group_post'] == false) { ?>
+										<li>
+											<?php
+												$pin_post_id = $wo['story']['publisher']['id'];
+												$pin_post_text = 'profile';
+												if (!empty($wo['story']['page_id'])) {
+													$pin_post_id = $wo['story']['page_id'];
+													$pin_post_text = 'page';
+												} else if (!empty($wo['story']['group_id'])) {
+													$pin_post_id = $wo['story']['group_id'];
+													$pin_post_text = 'group';
+												}
+											?>
+											<a class="pin-post pointer" onclick="Wo_PinPost(<?php echo $wo['story']['id']; ?>, <?php echo $pin_post_id;?>, '<?php echo $pin_post_text; ?>');">
+												<?php if($wo['story']['is_post_pinned'] === true) { ?>
+													<?php echo $wo['lang']['unpin_post'];?>
+												<?php } else { ?>
+													<?php echo $wo['lang']['pin_post'];?>
+												<?php } ?>
+											</a>
+										</li>
+									<?php } } ?>
+								</ul>
+							</div>
+						<?php } elseif ($wo['loggedin'] == true) { ?>
+							<div class="dropdown tag_post_hdr_menu">
+								<div class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M12 13.172l4.95-4.95 1.414 1.414L12 16 5.636 9.636 7.05 8.222z"/></svg></div>
+								<ul class="dropdown-menu dropdown-menu-right tag_create_menu" role="menu">
+									<li>
+										<a class="save-post pointer" onclick="Wo_SavePost(<?php echo $wo['story']['id']; ?>);">
+											<?php if($wo['story']['is_post_saved'] === true) { ?>
+												<?php echo $wo['lang']['unsave_post'];?>
+											<?php } else { ?>
+												<?php echo $wo['lang']['save_post'];?>
+											<?php } ?>
+										</a>
+									</li>
+									<li>
+										<a class="report-post pointer" onclick="Wo_ReportPost(<?php echo $wo['story']['id']; ?>);">
+											<?php if($wo['story']['is_post_reported'] === true) { ?>
+												<?php echo $wo['lang']['unreport_post'];?>
+											<?php } else { ?>
+												<?php echo $wo['lang']['report_post'];?>
+											<?php } ?>
+										</a>
+									</li>
+								</ul>
+							</div>
+						<?php } ?>
+					</div>
+				<?php } ?>
+				<div class="post-description">
+					<?php if (!empty($wo['story']['parent_id'])) {
+						$post_shared_from = Wo_PostData($wo['story']['parent_id']);
+						$wo['story'] = $post_shared_from;
+					?>
+						<div class="bs-callout">
+							<div class="valign post-heading">
+								<div class="valign">
+									<div class="image">
+										<a href="<?php echo $wo['story']['publisher']['url']; ?>" data-ajax="?link1=timeline&u=<?php echo $wo['story']['publisher']['username']?>">
+											<img src="<?php echo $wo['story']['publisher']['avatar']; ?>" alt="<?php echo $wo['story']['publisher']['name']; ?>" class="avatar">
+										</a>
+									</div>
+									<div class="meta">
+										<div class="title">
+											<span class="user-popover" data-type="<?php echo $wo['story']['publisher']['type']; ?>" data-id="<?php echo $wo['story']['publisher']['id']; ?>"><a href="<?php echo $wo['story']['publisher']['url']; ?>" data-ajax="?link1=timeline&u=<?php echo $wo['story']['publisher']['username']; ?>" class="name"><?php echo $wo['story']['publisher']['name']; ?></a></span>
+											<?php if($wo['story']['publisher']['verified'] == 1) { ?>
+												<span class="verified-color fs-14" title="<?php echo ($wo['story']['page_id'] > 0 ? $wo['lang']['verified_page'] : $wo['lang']['verified_user']);?>" data-toggle="tooltip">&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 512 512"><path d="m256 0c-141.164062 0-256 114.835938-256 256s114.835938 256 256 256 256-114.835938 256-256-114.835938-256-256-256zm0 0" fill="#2196f3"></path><path d="m385.75 201.75-138.667969 138.664062c-4.160156 4.160157-9.621093 6.253907-15.082031 6.253907s-10.921875-2.09375-15.082031-6.253907l-69.332031-69.332031c-8.34375-8.339843-8.34375-21.824219 0-30.164062 8.339843-8.34375 21.820312-8.34375 30.164062 0l54.25 54.25 123.585938-123.582031c8.339843-8.34375 21.820312-8.34375 30.164062 0 8.339844 8.339843 8.339844 21.820312 0 30.164062zm0 0" fill="#fff"></path></svg></span>
+											<?php } ?>
+										</div>
+										<div class="valign tag_post_hdr_sub">
+											<span class="time"><a class="ajax-time" href="<?php echo $wo['story']['url'];?>" target="_blank"><?php echo Wo_Time_Elapsed_String($wo['story']['time']); ?></a></span>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="post-description">
+								<?php if (empty($wo['story']['color_id']) || (!empty($wo['story']['color_id']) && empty($wo['post_colors'][$wo['story']['color_id']]))) { ?>
+									<p class="wow_shared_posts_p"><?php echo $wo['story']['postText']; ?></p>
+								<?php } ?>
+								
+								<?php if (!empty($wo['story']['color_id']) && !empty($wo['post_colors'][$wo['story']['color_id']])) { ?>
+									<div dir="auto" 
+										<?php if($wo['config']['colored_posts_system'] == 1){ ?>
+											class="valign wo_actual_colrd_post" style="<?php if (!empty($wo['post_colors'][$wo['story']['color_id']]) && !empty($wo['post_colors'][$wo['story']['color_id']]->color_1) && !empty($wo['post_colors'][$wo['story']['color_id']]->color_2) && !empty($wo['post_colors'][$wo['story']['color_id']]->text_color)) { ?>background-image: linear-gradient(45deg, <?php echo $wo['post_colors'][$wo['story']['color_id']]->color_1; ?> 0%, <?php echo $wo['post_colors'][$wo['story']['color_id']]->color_2; ?> 100%);<?php }else{ ?>background-image:url('<?php echo Wo_GetMedia($wo['post_colors'][$wo['story']['color_id']]->image); ?>'); <?php } ?><?php if(strlen($wo['story']['postText']) > 330){ ?>font-size: 16px;font-weight: normal;<?php } ?>"<?php } ?>>
+										<span <?php if($wo['config']['colored_posts_system'] == 1){ ?> style="<?php if (!empty($wo['post_colors'][$wo['story']['color_id']]) && !empty($wo['post_colors'][$wo['story']['color_id']]->text_color)) { ?>color:<?php echo $wo['post_colors'][$wo['story']['color_id']]->text_color; ?><?php } ?>"<?php } ?>><?php echo $wo['story']['postText']; ?></span>
+									</div>
+								<?php } ?>
+
+								<?php $wo['story'] = $current_post; ?>
+								
+								<?php
+									if (!empty($wo['story']['product_id'])) {
+										$symbol = (!empty($wo['currencies'][$wo['story']['product']['currency']]['symbol'])) ? $wo['currencies'][$wo['story']['product']['currency']]['symbol'] : $wo['config']['classified_currency_s'];
+										$text = (!empty($wo['currencies'][$wo['story']['product']['currency']]['text'])) ? $wo['currencies'][$wo['story']['product']['currency']]['text'] : $wo['config']['classified_currency'];
+										$status = ($wo['story']['product']['status'] == 0) ? '' . $wo['lang']['in_stock'] . '' : '<span class="product-status-sold">' . $wo['lang']['sold'] . '</span>';
+										$type = ($wo['story']['product']['type'] == 0) ? '<span class="product-description">' . $wo['lang']['new'] . '</span>' : '<span class="product-description">' . $wo['lang']['used'] . '</span>';
+										
+										echo '<div class="valign tag_post_prods">';
+										
+										echo '<div id="tpc_' . $wo['story']['product_id'] . '" class="carousel slide">';
+										echo '<div class="carousel-inner" role="listbox">';
+										foreach ($wo['story']['product']['images'] as $photo) {
+											echo '<div class="item tag_post_prods_slide">';
+											echo '<div class="tag_lbox_blur_img">';
+											echo '<div class="tag_lbox_blur_img_innr">';
+											echo "<img src='" . ($photo['image_org']) ."'>";
+											echo '</div>';
+											echo '</div>';
+											echo '<div class="tag_post_prods_thumb">';
+											echo "<img src='" . ($photo['image_org']) ."' class='pointer' onclick='Wo_OpenAlbumLightBox(" . $photo['id'] . ", \"product\");'>";
+											echo '</div>';
+											echo '</div>';
+										}
+										echo '</div>';
+										if (count($wo['story']['product']['images']) > 1) {
+											echo '<a class="left carousel-control" href="#tpc_' . $wo['story']['product_id'] . '" role="button" data-slide="prev">';
+											echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M10.828 12l4.95 4.95-1.414 1.414L8 12l6.364-6.364 1.414 1.414z"></path></svg>';
+											echo '</a>';
+											echo '<a class="right carousel-control" href="#tpc_' . $wo['story']['product_id'] . '" role="button" data-slide="next">';
+											echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M13.172 12l-4.95-4.95 1.414-1.414L16 12l-6.364 6.364-1.414-1.414z"></path></svg>';
+											echo '</a>';
+										}
+										echo '</div>';
+										
+										echo '<div class="full_width wow_post_prod">';
+										echo '<h4 class="wow_post_prod_name">' . $wo['story']['product']['name'] . '</h4>';
+										echo '<p class="wow_post_prod_price">' . $symbol . $wo['story']['product']['price'] . ' (' . $text . ')</p>';
+										echo '<div class="wow_post_prod_shead">';
+										if (!empty($wo['story']['product']['location'])) {
+											echo '<span> ' . $wo['story']['product']['location'] . '</span><span class="middot">·</span>';
+										}
+										echo '<span class="product-status"> ' . $status . '</span><span class="middot">·</span>';
+										echo '<span> ' . $type . '</span>';
+										echo '</div>';
+										echo '<hr>';
+										echo '<div class="wow_post_prod_infos"><p class="product-description product-description-'.$wo['story']['product']['id'].'">' . $wo['story']['product']['description'] . '</p></div>';
+										$fields = Wo_GetCustomFields('product'); 
+										if (!empty($fields)) {
+											foreach ($fields as $key => $wo['field']) { 
+												if (!empty($wo['story']['product']['fid_'.$wo['field']['id']])) {
+													if ($wo['field']['type'] == 'selectbox') {
+														$options = @explode(',', $wo['field']['options']);
+														foreach ($options as $key => $value) {
+															if (($key + 1) == $wo['story']['product']['fid_'.$wo['field']['id']]) {
+																$wo['story']['product']['fid_'.$wo['field']['id']] = $value;
+															}
+														}
+													}
+													echo '<div class="wow_post_prod_infos"><p class="product-description">' . $wo['story']['product']['fid_'.$wo['field']['id']] . '</p></div>';
+												} 
+											} 
+										}
+										echo '</div>';
+										echo '</div>';
+									} 
+								?>
+								
+								<p dir="auto" class="wow_shared_posts_p"><?php if (!empty($wo['story']['postFeeling']) && $extra_exists == 1) { ?>
+									<span class="feeling-text">&nbsp;<?php echo $wo['lang']['feeling'];?> <i class="twa-lg twa twa-<?php echo $wo['story']['postFeelingIcon'];?>"></i> <?php echo $wo['lang'][$wo['story']['postFeeling']];?></span>
+								<?php } ?><?php if (!empty($wo['story']['postTraveling']) && $extra_exists == 1) { ?>
+									<span class="feeling-text">&nbsp;<?php echo $wo['lang']['traveling'];?> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M17 20H7v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-9H2V8h1V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v3h1v4h-1v9a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-1zM5 5v7h14V5H5zm2.5 13a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm9 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"></path></svg> <?php echo $wo['story']['postTraveling'];?></span>
+								<?php } ?><?php if (!empty($wo['story']['postWatching']) && $extra_exists == 1) { ?>
+									<span class="feeling-text">&nbsp;<?php echo $wo['lang']['watching'];?> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.414 5h5.594c.548 0 .992.445.992 1v14c0 .552-.455 1-.992 1H2.992A.994.994 0 0 1 2 20V6c0-.552.455-1 .992-1h5.594L6.05 2.464 7.464 1.05 11.414 5h1.172l3.95-3.95 1.414 1.414L15.414 5z"></path></svg> <?php echo $wo['story']['postWatching'];?></span>
+								<?php } ?><?php if (!empty($wo['story']['postPlaying']) && $extra_exists == 1) { ?>
+									<span class="feeling-text">&nbsp;<?php echo $wo['lang']['playing'];?> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M17 4a6 6 0 0 1 6 6v4a6 6 0 0 1-6 6H7a6 6 0 0 1-6-6v-4a6 6 0 0 1 6-6h10zm-7 5H8v2H6v2h1.999L8 15h2l-.001-2H12v-2h-2V9zm8 4h-2v2h2v-2zm-2-4h-2v2h2V9z"></path></svg> <?php echo $wo['story']['postPlaying'];?></span>
+								<?php } ?><?php if (!empty($wo['story']['postListening']) && $extra_exists == 1) { ?>
+									<span class="feeling-text">&nbsp;<?php echo $wo['lang']['listening'];?> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M4 12h3a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-7C2 6.477 6.477 2 12 2s10 4.477 10 10v7a2 2 0 0 1-2 2h-3a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h3a8 8 0 1 0-16 0z"></path></svg> <?php echo $wo['story']['postListening'];?></span>
+								<?php } ?></p>
+								
+								<?php if(!empty($wo['story']['postYoutube'])) {  ?>
+									<div class="post-youtube embed-responsive embed-responsive-16by9">
+										<iframe type="text/html" width="100%" class="embed-responsive-item" src="https://www.youtube.com/embed/<?php echo $wo['story']['postYoutube']; ?>?modestbranding=1&showinfo=0&rel=0&autoplay=0" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+									</div>
+								<?php } ?>
+								
+								<?php if(!empty($wo['story']['postPlaytube'])) {  ?>
+									<div class="post-youtube embed-responsive embed-responsive-16by9">
+										<iframe type="text/html" width="100%" class="embed-responsive-item" src="<?php echo $wo['config']['playtube_url']; ?>/embed/<?php echo $wo['story']['postPlaytube']; ?>?autoplay=0&fullscreen=1" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+									</div>
+								<?php } ?>
+								
+								<?php if(!empty($wo['story']['postDeepsound'])) {  ?>
+									<div class="post-youtube">
+										<iframe type="text/html" width="100%" height="136" src="<?php echo $wo['config']['deepsound_url']; ?>/embed/<?php echo $wo['story']['postDeepsound']; ?>?autoplay=0&fullscreen=1" frameborder="0"></iframe>
+									</div>
+								<?php } ?>
+								
+								<?php if(!empty($wo['story']['postVimeo'])) {  ?>
+									<div class="post-youtube embed-responsive embed-responsive-16by9">
+										<iframe src="https://player.vimeo.com/video/<?php echo $wo['story']['postVimeo'];?>?byline=0&portrait=0" width="100%" class="embed-responsive-item" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+									</div>
+								<?php } ?>
+								
+								<?php if(!empty($wo['story']['postFacebook'])) {  ?>
+									<div class="post-youtube embed-responsive embed-responsive-16by9">
+										<iframe src="https://www.facebook.com/plugins/video.php?href=https://www.facebook.com/<?php echo $wo['story']['postFacebook'];?>&show_text=0" width="100%" class="embed-responsive-item" frameborder="0" allowfullscreen></iframe>
+									</div>
+								<?php } ?>
+								
+								<?php if(!empty($wo['story']['postDailymotion'])) {  ?>
+									<div class="post-youtube embed-responsive embed-responsive-16by9">
+										<iframe frameborder="0" width="100%" class="embed-responsive-item" src="https://www.dailymotion.com/embed/video/<?php echo $wo['story']['postDailymotion']?>" allowfullscreen></iframe>
+									</div>
+								<?php } ?>
+								
+								<?php if(!empty($wo['story']['postVine'])) {  ?>
+									<iframe src="https://vine.co/v/<?php echo $wo['story']['postVine']; ?>/embed/simple" width="100%" height="400" frameborder="0"></iframe>
+								<?php } ?>
+								
+								<?php if(!empty($wo['story']['postSoundCloud'])) { ?>
+									<iframe width="100%" src="https://w.soundcloud.com/player/?url=https://api.soundcloud.com/tracks/<?php echo $wo['story']['postSoundCloud'];?>&auto_play=false"></iframe>
+								<?php } ?>
+								
+								<?php if(!empty($wo['story']['postMap']) && empty($wo['story']['postText']) && empty($wo['story']['postVine']) && empty($wo['story']['postSoundCloud']) && empty($wo['story']['postVimeo']) && empty($wo['story']['postDailymotion']) && empty($wo['story']['postDeepsound']) && empty($wo['story']['postYoutube']) && empty($wo['story']['postFile']) && $wo['config']['google_map'] == 1) { ?>
+									<div class="post-map" onclick="InjectAPI('{&quot;type&quot; : &quot;map&quot;, &quot;location&quot;:&quot;<?php echo $wo['story']['postMap'];?>&quot;}', event);">
+										<div class="post-map-innr"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M18.364 17.364L12 23.728l-6.364-6.364a9 9 0 1 1 12.728 0zM12 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm0-2a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/></svg><?php echo $wo['story']['postMap'];?></div>
+										<img src="https://maps.googleapis.com/maps/api/staticmap?center=<?php echo $wo['story']['postMap'];?>&zoom=13&size=600x300&maptype=roadmap&markers=color:red%7C<?php echo $wo['story']['postMap'];?>&key=<?php echo $wo['config']['google_map_api'];?>" width="100%">
+									</div>
+								<?php } ?>
+								
+								<?php if(!empty($wo['story']['postLink']) && empty($wo['story']['postVine']) && empty($wo['story']['postSoundCloud']) && empty($wo['story']['postYoutube']) && empty($wo['story']['postFile']) && empty($wo['story']['postDeepsound'])) { ?>
+									<div class="post-fetched-url">
+										<?php $parse = parse_url($wo['story']['postLink']); ?>
+										<a onclick="InjectAPI('{&quot;type&quot; : &quot;url&quot;, &quot;link&quot;:&quot;<?php echo $wo['story']['postLink'];?>&quot;}', event);">
+											<?php if (!empty($wo['story']['postLinkImage'])) {?>
+												<div class="post-fetched-url-con">
+													<img src="<?php echo $wo['story']['postLinkImage'];?>" alt="<?php echo $wo['story']['postLinkTitle'];?>"/>
+												</div>
+											<?php } ?>
+											<div class="fetched-url-text">
+												<div class="valign url">
+													<img src="https://www.google.com/s2/favicons?sz=32&domain_url=<?php echo $parse['host'];?>" alt="Favicon">&nbsp;<div class="main"><?php echo $parse['host']; ?></div>
+												</div>
+												<h4 class="truncate"><?php echo $wo['story']['postLinkTitle'];?></h4>
+												<div class="description"><?php echo $wo['story']['postLinkContent'];?></div>
+											</div>
+											<div class="clear"></div>
+										</a>
+									</div>
+								<?php } ?>
+								
+								<?php if(!empty($wo['story']['blog_id'])) { ?>
+									<div class="post-fetched-url wo_post_fetch_blog">
+										<a onclick="InjectAPI('{&quot;type&quot; : &quot;url&quot;, &quot;link&quot;:&quot;<?php echo $wo['story']['blog']['url'];?>&quot;}', event);">
+											<?php if (!empty($wo['story']['blog']['thumbnail'])) {?>
+												<div class="post-fetched-url-con">
+													<img src="<?php echo $wo['story']['blog']['thumbnail'];?>" alt="<?php echo $wo['story']['blog']['title'];?>"/>
+												</div>
+											<?php } ?>
+											<div class="fetched-url-text">
+												<h4 class="truncate"><?php echo $wo['story']['blog']['title'];?></h4>
+												<div class="description"><?php echo $wo['story']['blog']['description'];?></div>
+											</div>
+											<div class="clear"></div>
+										</a>
+									</div>
+								<?php } ?>
+								
+								<?php if(!empty($wo['story']['postFile'])) { ?>
+									<div class="valign tag_post_full_img bold wo_shared_doc_file">
+										<?php
+										$media = array(
+											'type' => 'post',
+											'storyId' => $wo['story']['id'],
+											'filename' => $wo['story']['postFile'],
+											'name' => $wo['story']['postFileName'],
+											'postFileThumb' => $wo['story']['postFileThumb'],
+										);
+										echo Wo_DisplaySharedFile($media, 'api', $wo['story']['cache']);
+										?>
+									</div>
+								<?php } ?>
+								
+								<?php if (Wo_IsUrl($wo['story']['postSticker'])): ?>
+									<div class="tag_post_full_stick">
+										<?php if (strpos('.mp4', $wo['story']['postSticker'])) { ?>
+											<video autoplay loop><source src="<?php echo $wo['story']['postSticker']; ?>" type="video/mp4"></video>
+										<?php } else { ?>
+											<img src="<?php echo $wo['story']['postSticker']; ?>" alt="GIF">
+										<?php } ?>
+									</div>
+								<?php endif; ?>
+								
+								<div class="valign tag_post_full_albm">
+									<?php if (!empty($wo['story']['photo_album'])) {
+										$class = '';
+										$small = '';
+										if (count($wo['story']['photo_album']) == 2) {
+											$class = 'width-2';
+										}
+										if (count($wo['story']['photo_album']) > 1) {
+											$small = '_small';
+										}
+										if (count($wo['story']['photo_album']) > 2) {
+											$class = 'width-3';
+										}
+										$delete  = '';
+
+										foreach ($wo['story']['photo_album'] as $photo) {
+											if ($wo['story']['admin'] === true) {
+												$delete = "<span onclick='Wo_RemoveAlbumImage(" . $photo['post_id'] . "," . $photo['id'] . ");' class='btn btn-mat thumb-image-delete-btn'><svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24'><path fill='currentColor' d='M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z'></path></svg></span>";
+											}
+											echo  "<div class='album-image " . $class . "' id='image-" . $photo['id'] . "'>{$delete}<img src='" . Wo_GetMedia($photo['image_org']) . "' alt='image' class='image-file pointer' onclick=\"InjectAPI('{&quot;type&quot; : &quot;lightbox&quot;, &quot;image_url&quot;:&quot;" . $photo['image'] . "&quot;}', event);\"></div>";
+										}
+									}
+									?>
+									<?php if ($wo['story']['multi_image'] == 1) {
+										$class = '';
+										$small = '';
+										if (count($wo['story']['photo_multi']) == 2) {
+											$class = 'width-2';
+										}
+										if (count($wo['story']['photo_multi']) > 1) {
+											$small = '_small';
+										}
+										if (count($wo['story']['photo_multi']) > 2) {
+											$class = 'width-3';
+										}
+										foreach ($wo['story']['photo_multi'] as $photo) {
+											echo  "<img src='" . Wo_GetMedia($photo['image_org']) ."' alt='image' class='" . $class . " image-file pointer' onclick=\"InjectAPI('{&quot;type&quot; : &quot;lightbox&quot;, &quot;image_url&quot;:&quot;" . $photo['image'] . "&quot;}', event);\">";
+										}
+									} 
+									?>
+								</div>
+								<?php
+									if ($wo['story']['poll_id'] == 1) {
+										echo Wo_LoadPage('story/entries/options');
+									}
+								?>
+							</div>
+						</div>
+						<div class="clear"></div>
+					<?php $wo['story'] = $current_post;} ?>
+
+					<?php if (empty($current_post['parent_id'])) { ?>
+						<?php
+							if (!empty($wo['story']['product_id'])) {
+								$symbol = (!empty($wo['currencies'][$wo['story']['product']['currency']]['symbol'])) ? $wo['currencies'][$wo['story']['product']['currency']]['symbol'] : $wo['config']['classified_currency_s'];
+								$text = (!empty($wo['currencies'][$wo['story']['product']['currency']]['text'])) ? $wo['currencies'][$wo['story']['product']['currency']]['text'] : $wo['config']['classified_currency'];
+								$status = ($wo['story']['product']['status'] == 0) ? '' . $wo['lang']['in_stock'] . '' : '<span class="product-status-sold">' . $wo['lang']['sold'] . '</span>';
+								$type = ($wo['story']['product']['type'] == 0) ? '<span class="product-description">' . $wo['lang']['new'] . '</span>' : '<span class="product-description">' . $wo['lang']['used'] . '</span>';
+								
+								echo '<div class="valign tag_post_prods">';
+								
+								echo '<div id="tpc_' . $wo['story']['product_id'] . '" class="carousel slide">';
+								echo '<div class="carousel-inner" role="listbox">';
+								foreach ($wo['story']['product']['images'] as $photo) {
+									echo '<div class="item tag_post_prods_slide">';
+									echo '<div class="tag_lbox_blur_img">';
+									echo '<div class="tag_lbox_blur_img_innr">';
+									echo "<img src='" . ($photo['image_org']) ."'>";
+									echo '</div>';
+									echo '</div>';
+									echo '<div class="tag_post_prods_thumb">';
+									echo "<img src='" . ($photo['image_org']) ."' class='pointer' onclick='Wo_OpenAlbumLightBox(" . $photo['id'] . ", \"product\");'>";
+									echo '</div>';
+									echo '</div>';
+								}
+								echo '</div>';
+								if (count($wo['story']['product']['images']) > 1) {
+									echo '<a class="left carousel-control" href="#tpc_' . $wo['story']['product_id'] . '" role="button" data-slide="prev">';
+									echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M10.828 12l4.95 4.95-1.414 1.414L8 12l6.364-6.364 1.414 1.414z"></path></svg>';
+									echo '</a>';
+									echo '<a class="right carousel-control" href="#tpc_' . $wo['story']['product_id'] . '" role="button" data-slide="next">';
+									echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M13.172 12l-4.95-4.95 1.414-1.414L16 12l-6.364 6.364-1.414-1.414z"></path></svg>';
+									echo '</a>';
+								}
+								echo '</div>';
+								
+								echo '<div class="full_width wow_post_prod">';
+								echo '<h4 class="wow_post_prod_name">' . $wo['story']['product']['name'] . '</h4>';
+								echo '<p class="wow_post_prod_price">' . $symbol . $wo['story']['product']['price'] . ' (' . $text . ')</p>';
+								echo '<div class="wow_post_prod_shead">';
+								if (!empty($wo['story']['product']['location'])) {
+									echo '<span> ' . $wo['story']['product']['location'] . '</span><span class="middot">·</span>';
+								}
+								echo '<span class="product-status"> ' . $status . '</span><span class="middot">·</span>';
+								echo '<span> ' . $type . '</span>';
+								echo '</div>';
+								echo '<hr>';
+								echo '<div class="wow_post_prod_infos"><p class="product-description product-description-'.$wo['story']['product']['id'].'">' . $wo['story']['product']['description'] . '</p></div>';
+								$fields = Wo_GetCustomFields('product'); 
+								if (!empty($fields)) {
+									foreach ($fields as $key => $wo['field']) { 
+										if (!empty($wo['story']['product']['fid_'.$wo['field']['id']])) {
+											if ($wo['field']['type'] == 'selectbox') {
+												$options = @explode(',', $wo['field']['options']);
+												foreach ($options as $key => $value) {
+													if (($key + 1) == $wo['story']['product']['fid_'.$wo['field']['id']]) {
+														$wo['story']['product']['fid_'.$wo['field']['id']] = $value;
+													}
+												}
+											}
+											echo '<div class="wow_post_prod_infos"><p class="product-description">' . $wo['story']['product']['fid_'.$wo['field']['id']] . '</p></div>';
+										} 
+									} 
+								}
+								echo '</div>';
+								echo '</div>';
+							} 
+						?>
+						
+						<?php if (empty($wo['story']['color_id']) || (!empty($wo['story']['color_id']) && empty($wo['post_colors'][$wo['story']['color_id']]))) { ?>
+							<p dir="auto" class="wow_shared_posts_p"><?php if (!empty($wo['story']['postFeeling']) && $extra_exists == 1) { ?>
+								<span class="feeling-text">&nbsp;<?php echo $wo['lang']['feeling'];?> <i class="twa-lg twa twa-<?php echo $wo['story']['postFeelingIcon'];?>"></i> <?php echo $wo['lang'][$wo['story']['postFeeling']];?></span>
+							<?php } ?><?php if (!empty($wo['story']['postTraveling']) && $extra_exists == 1) { ?>
+								<span class="feeling-text">&nbsp;<?php echo $wo['lang']['traveling'];?> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M17 20H7v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-9H2V8h1V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v3h1v4h-1v9a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-1zM5 5v7h14V5H5zm2.5 13a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm9 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"></path></svg> <?php echo $wo['story']['postTraveling'];?></span>
+							<?php } ?><?php if (!empty($wo['story']['postWatching']) && $extra_exists == 1) { ?>
+								<span class="feeling-text">&nbsp;<?php echo $wo['lang']['watching'];?> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.414 5h5.594c.548 0 .992.445.992 1v14c0 .552-.455 1-.992 1H2.992A.994.994 0 0 1 2 20V6c0-.552.455-1 .992-1h5.594L6.05 2.464 7.464 1.05 11.414 5h1.172l3.95-3.95 1.414 1.414L15.414 5z"></path></svg> <?php echo $wo['story']['postWatching'];?></span>
+							<?php } ?><?php if (!empty($wo['story']['postPlaying']) && $extra_exists == 1) { ?>
+								<span class="feeling-text">&nbsp;<?php echo $wo['lang']['playing'];?> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M17 4a6 6 0 0 1 6 6v4a6 6 0 0 1-6 6H7a6 6 0 0 1-6-6v-4a6 6 0 0 1 6-6h10zm-7 5H8v2H6v2h1.999L8 15h2l-.001-2H12v-2h-2V9zm8 4h-2v2h2v-2zm-2-4h-2v2h2V9z"></path></svg> <?php echo $wo['story']['postPlaying'];?></span>
+							<?php } ?><?php if (!empty($wo['story']['postListening']) && $extra_exists == 1) { ?>
+								<span class="feeling-text">&nbsp;<?php echo $wo['lang']['listening'];?> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M4 12h3a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-7C2 6.477 6.477 2 12 2s10 4.477 10 10v7a2 2 0 0 1-2 2h-3a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h3a8 8 0 1 0-16 0z"></path></svg> <?php echo $wo['story']['postListening'];?></span>
+							<?php } ?></p>
+						<?php } ?>
+						
+						<?php if (!empty($wo['story']['color_id']) && !empty($wo['post_colors'][$wo['story']['color_id']])) { ?>
+							<div dir="auto" 
+								<?php if($wo['config']['colored_posts_system'] == 1){ ?>
+									class="valign wo_actual_colrd_post" style="<?php if (!empty($wo['post_colors'][$wo['story']['color_id']]) && !empty($wo['post_colors'][$wo['story']['color_id']]->color_1) && !empty($wo['post_colors'][$wo['story']['color_id']]->color_2) && !empty($wo['post_colors'][$wo['story']['color_id']]->text_color)) { ?>background-image: linear-gradient(45deg, <?php echo $wo['post_colors'][$wo['story']['color_id']]->color_1; ?> 0%, <?php echo $wo['post_colors'][$wo['story']['color_id']]->color_2; ?> 100%);<?php }else{ ?>background-image:url('<?php echo Wo_GetMedia($wo['post_colors'][$wo['story']['color_id']]->image); ?>'); <?php } ?><?php if(strlen($wo['story']['postText']) > 330){ ?>font-size: 16px;font-weight: normal;<?php } ?>"<?php } ?>>
+								<span data-translate-text="<?php echo $wo['story']['id']; ?>" <?php if($wo['config']['colored_posts_system'] == 1){ ?> style="<?php if (!empty($wo['post_colors'][$wo['story']['color_id']]) && !empty($wo['post_colors'][$wo['story']['color_id']]->text_color)) { ?>color:<?php echo $wo['post_colors'][$wo['story']['color_id']]->text_color; ?><?php } ?>"<?php } ?>><?php echo $wo['story']['postText']; ?></span>
+								<?php if (!empty($wo['story']['postFeeling']) && $extra_exists == 1) { ?>
+									<span class="feeling-text">&nbsp;<?php echo $wo['lang']['feeling'];?> <i class="twa-lg twa twa-<?php echo $wo['story']['postFeelingIcon'];?>"></i> <?php echo $wo['lang'][$wo['story']['postFeeling']];?></span>
+								<?php } ?>
+								<?php if (!empty($wo['story']['postTraveling']) && $extra_exists == 1) { ?>
+									<span class="feeling-text">&nbsp;<?php echo $wo['lang']['traveling'];?> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M17 20H7v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-9H2V8h1V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v3h1v4h-1v9a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-1zM5 5v7h14V5H5zm2.5 13a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm9 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"></path></svg> <?php echo $wo['story']['postTraveling'];?></span>
+								<?php } ?>
+								<?php if (!empty($wo['story']['postWatching']) && $extra_exists == 1) { ?>
+									<span class="feeling-text">&nbsp;<?php echo $wo['lang']['watching'];?> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.414 5h5.594c.548 0 .992.445.992 1v14c0 .552-.455 1-.992 1H2.992A.994.994 0 0 1 2 20V6c0-.552.455-1 .992-1h5.594L6.05 2.464 7.464 1.05 11.414 5h1.172l3.95-3.95 1.414 1.414L15.414 5z"></path></svg> <?php echo $wo['story']['postWatching'];?></span>
+								<?php } ?>
+								<?php if (!empty($wo['story']['postPlaying']) && $extra_exists == 1) { ?>
+									<span class="feeling-text">&nbsp;<?php echo $wo['lang']['playing'];?> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M17 4a6 6 0 0 1 6 6v4a6 6 0 0 1-6 6H7a6 6 0 0 1-6-6v-4a6 6 0 0 1 6-6h10zm-7 5H8v2H6v2h1.999L8 15h2l-.001-2H12v-2h-2V9zm8 4h-2v2h2v-2zm-2-4h-2v2h2V9z"></path></svg> <?php echo $wo['story']['postPlaying'];?></span>
+								<?php } ?>
+								<?php if (!empty($wo['story']['postListening']) && $extra_exists == 1) { ?>
+									<span class="feeling-text">&nbsp;<?php echo $wo['lang']['listening'];?> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M4 12h3a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-7C2 6.477 6.477 2 12 2s10 4.477 10 10v7a2 2 0 0 1-2 2h-3a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h3a8 8 0 1 0-16 0z"></path></svg> <?php echo $wo['story']['postListening'];?></span>
+								<?php } ?>
+							</div>
+						<?php } ?>
+						
+						<?php if(!empty($wo['story']['postYoutube'])) {  ?>
+							<div class="post-youtube embed-responsive embed-responsive-16by9">
+								<iframe type="text/html" width="100%" class="embed-responsive-item" src="https://www.youtube.com/embed/<?php echo $wo['story']['postYoutube']; ?>?modestbranding=1&showinfo=0&rel=0&autoplay=0" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+							</div>
+						<?php } ?>
+						
+						<?php if(!empty($wo['story']['postPlaytube'])) {  ?>
+							<div class="post-youtube embed-responsive embed-responsive-16by9">
+								<iframe type="text/html" width="100%" class="embed-responsive-item" src="<?php echo $wo['config']['playtube_url']; ?>/embed/<?php echo $wo['story']['postPlaytube']; ?>?autoplay=0&fullscreen=1" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+							</div>
+						<?php } ?>
+						
+						<?php if(!empty($wo['story']['postDeepsound'])) {  ?>
+							<div class="post-youtube">
+								<iframe type="text/html" width="100%" height="136" src="<?php echo $wo['config']['deepsound_url']; ?>/embed/<?php echo $wo['story']['postDeepsound']; ?>?autoplay=0&fullscreen=1" frameborder="0"></iframe>
+							</div>
+						<?php } ?>
+						
+						<?php if(!empty($wo['story']['postVimeo'])) {  ?>
+							<div class="post-youtube embed-responsive embed-responsive-16by9">
+								<iframe src="https://player.vimeo.com/video/<?php echo $wo['story']['postVimeo'];?>?byline=0&portrait=0" width="100%" class="embed-responsive-item" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+							</div>
+						<?php } ?>
+						
+						<?php if(!empty($wo['story']['postFacebook'])) {  ?>
+							<div class="post-youtube embed-responsive embed-responsive-16by9">
+								<iframe src="https://www.facebook.com/plugins/video.php?href=https://www.facebook.com/<?php echo $wo['story']['postFacebook'];?>&show_text=0" width="100%" class="embed-responsive-item" frameborder="0" allowfullscreen></iframe>
+							</div>
+						<?php } ?>
+						
+						<?php if(!empty($wo['story']['postDailymotion'])) {  ?>
+							<div class="post-youtube embed-responsive embed-responsive-16by9">
+								<iframe frameborder="0" width="100%" class="embed-responsive-item" src="https://www.dailymotion.com/embed/video/<?php echo $wo['story']['postDailymotion']?>" allowfullscreen></iframe>
+							</div>
+						<?php } ?>
+						
+						<?php if(!empty($wo['story']['postVine'])) {  ?>
+							<iframe src="https://vine.co/v/<?php echo $wo['story']['postVine']; ?>/embed/simple" width="100%" height="400" frameborder="0"></iframe>
+						<?php } ?>
+						
+						<?php if(!empty($wo['story']['postSoundCloud'])) { ?>
+							<iframe width="100%" src="https://w.soundcloud.com/player/?url=https://api.soundcloud.com/tracks/<?php echo $wo['story']['postSoundCloud'];?>&auto_play=false"></iframe>
+						<?php } ?>
+						
+						<?php if(!empty($wo['story']['postMap']) && empty($wo['story']['postText']) && empty($wo['story']['postVine']) && empty($wo['story']['postSoundCloud']) && empty($wo['story']['postVimeo']) && empty($wo['story']['postDailymotion']) && empty($wo['story']['postDeepsound']) && empty($wo['story']['postYoutube']) && empty($wo['story']['postFile']) && $wo['config']['google_map'] == 1) { ?>
+							<div class="post-map" onclick="InjectAPI('{&quot;type&quot; : &quot;map&quot;, &quot;location&quot;:&quot;<?php echo $wo['story']['postMap'];?>&quot;}', event);">
+								<div class="post-map-innr"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M18.364 17.364L12 23.728l-6.364-6.364a9 9 0 1 1 12.728 0zM12 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm0-2a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/></svg><?php echo $wo['story']['postMap'];?></div>
+								<img src="https://maps.googleapis.com/maps/api/staticmap?center=<?php echo $wo['story']['postMap'];?>&zoom=13&size=600x300&maptype=roadmap&markers=color:red%7C<?php echo $wo['story']['postMap'];?>&key=<?php echo $wo['config']['google_map_api'];?>" width="100%">
+							</div>
+						<?php } ?>
+						
+						<?php if(!empty($wo['story']['postLink']) && empty($wo['story']['postVine']) && empty($wo['story']['postSoundCloud']) && empty($wo['story']['postYoutube']) && empty($wo['story']['postFile']) && empty($wo['story']['postDeepsound'])) { ?>
+							<div class="post-fetched-url">
+								<?php $parse = parse_url($wo['story']['postLink']); ?>
+								<a onclick="InjectAPI('{&quot;type&quot; : &quot;url&quot;, &quot;link&quot;:&quot;<?php echo $wo['story']['postLink'];?>&quot;}', event);">
+									<?php if (!empty($wo['story']['postLinkImage'])) {?>
+										<div class="post-fetched-url-con">
+											<img src="<?php echo $wo['story']['postLinkImage'];?>" alt="<?php echo $wo['story']['postLinkTitle'];?>"/>
+										</div>
+									<?php } ?>
+									<div class="fetched-url-text">
+										<div class="valign url">
+											<img src="https://www.google.com/s2/favicons?sz=32&domain_url=<?php echo $parse['host'];?>" alt="Favicon">&nbsp;<div class="main"><?php echo $parse['host']; ?></div>
+										</div>
+										<h4 class="truncate"><?php echo $wo['story']['postLinkTitle'];?></h4>
+										<div class="description"><?php echo $wo['story']['postLinkContent'];?></div>
+									</div>
+									<div class="clear"></div>
+								</a>
+							</div>
+						<?php } ?>
+						
+						<?php if(!empty($wo['story']['blog_id'])) { ?>
+							<div class="post-fetched-url wo_post_fetch_blog">
+								<a onclick="InjectAPI('{&quot;type&quot; : &quot;url&quot;, &quot;link&quot;:&quot;<?php echo $wo['story']['blog']['url'];?>&quot;}', event);">
+									<?php if (!empty($wo['story']['blog']['thumbnail'])) {?>
+										<div class="post-fetched-url-con">
+											<img src="<?php echo $wo['story']['blog']['thumbnail'];?>" alt="<?php echo $wo['story']['blog']['title'];?>"/>
+										</div>
+									<?php } ?>
+									<div class="fetched-url-text">
+										<h4 class="truncate"><?php echo $wo['story']['blog']['title'];?></h4>
+										<div class="description"><?php echo $wo['story']['blog']['description'];?></div>
+									</div>
+									<div class="clear"></div>
+								</a>
+							</div>
+						<?php } ?>
+						
+						<?php if(!empty($wo['story']['postFile'])) { ?>
+							<div class="valign tag_post_full_img bold wo_shared_doc_file">
+								<?php
+								$media = array(
+									'type' => 'post',
+									'storyId' => $wo['story']['id'],
+									'filename' => $wo['story']['postFile'],
+									'name' => $wo['story']['postFileName'],
+									'postFileThumb' => $wo['story']['postFileThumb'],
+								);
+								echo Wo_DisplaySharedFile($media, 'api', $wo['story']['cache']);
+								?>
+							</div>
+						<?php } ?>
+						
+						<?php if (Wo_IsUrl($wo['story']['postSticker'])): ?>
+							<div class="tag_post_full_stick">
+								<?php if (strpos('.mp4', $wo['story']['postSticker'])) { ?>
+									<video autoplay loop><source src="<?php echo $wo['story']['postSticker']; ?>" type="video/mp4"></video>
+								<?php } else { ?>
+									<img src="<?php echo $wo['story']['postSticker']; ?>" alt="GIF">
+								<?php } ?>
+							</div>
+						<?php endif; ?>
+						
+						<div class="valign tag_post_full_albm">
+							<?php if (!empty($wo['story']['photo_album'])) {
+								$class = '';
+								$small = '';
+								if (count($wo['story']['photo_album']) == 2) {
+									$class = 'width-2';
+								}
+								if (count($wo['story']['photo_album']) > 1) {
+									$small = '_small';
+								}
+								if (count($wo['story']['photo_album']) > 2) {
+									$class = 'width-3';
+								}
+								$delete  = '';
+
+								foreach ($wo['story']['photo_album'] as $photo) {
+									if ($wo['story']['admin'] === true) {
+										$delete = "<span onclick='Wo_RemoveAlbumImage(" . $photo['post_id'] . "," . $photo['id'] . ");' class='btn btn-mat thumb-image-delete-btn'><svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24'><path fill='currentColor' d='M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z'></path></svg></span>";
+									}
+									echo  "<div class='album-image " . $class . "' id='image-" . $photo['id'] . "'>{$delete}<img src='" . Wo_GetMedia($photo['image_org']) . "' alt='image' class='image-file pointer' onclick=\"InjectAPI('{&quot;type&quot; : &quot;lightbox&quot;, &quot;image_url&quot;:&quot;" . $photo['image'] . "&quot;}', event);\"></div>";
+								}
+							}
+							?>
+							<?php if ($wo['story']['multi_image'] == 1) {
+								$class = '';
+								$small = '';
+								if (count($wo['story']['photo_multi']) == 2) {
+									$class = 'width-2';
+								}
+								if (count($wo['story']['photo_multi']) > 1) {
+									$small = '_small';
+								}
+								if (count($wo['story']['photo_multi']) > 2) {
+									$class = 'width-3';
+								}
+								foreach ($wo['story']['photo_multi'] as $photo) {
+									echo  "<img src='" . Wo_GetMedia($photo['image_org']) ."' alt='image' class='" . $class . " image-file pointer' onclick=\"InjectAPI('{&quot;type&quot; : &quot;lightbox&quot;, &quot;image_url&quot;:&quot;" . $photo['image'] . "&quot;}', event);\">";
+								}
+							} 
+							?>
+						</div>
+						<?php
+							if ($wo['story']['poll_id'] == 1) {
+								echo Wo_LoadPage('story/entries/options');
+							}
+						?>
+					<?php } ?>
+					<div class="clear"></div>
+					
+					<?php if($wo['loggedin'] == true) { ?>
+						<div class="valign stats tag_post_actions">
+							<div class="valign">
+								<?php echo Wo_LoadPage('buttons/like-wonder');?>
+								<div class="valign stat-item" onclick="Wo_ShowComments(<?php echo $wo['story']['id']; ?>);" id="comments-button">
+									<span class="icoo"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"><path fill="currentColor" d="M20,2H4C2.897,2,2,2.897,2,4v18l4-4h14c1.103,0,2-0.897,2-2V4C22,2.897,21.103,2,20,2z M9,12c-1.104,0-2-0.896-2-2 s0.896-2,2-2s2,0.896,2,2S10.104,12,9,12z M15,12c-1.104,0-2-0.896-2-2s0.896-2,2-2s2,0.896,2,2S16.104,12,15,12z"/></svg></span><span class="like-btn-mobile"><?php echo $wo['lang']['comment_post_label'] ?></span> 
+								</div>
+							</div>
+							<?php if (empty($wo['story']['parent_id']) && $wo['story']['post_is_promoted'] != 1) { ?>
+								<div class="valign stat-item" onclick="Wo_SharePostOn(<?php echo $wo['story']['id']; ?>,<?php echo $wo['story']['user_id']; ?>,'timeline')" title="<?php echo $wo['lang']['share'];?>" data-toggle="tooltip">
+									<span class="icoo"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"><path fill="currentColor" d="M3,12c0,1.654,1.346,3,3,3c0.794,0,1.512-0.315,2.049-0.82l5.991,3.424C14.022,17.734,14,17.864,14,18c0,1.654,1.346,3,3,3 s3-1.346,3-3s-1.346-3-3-3c-0.794,0-1.512,0.315-2.049,0.82L8.96,12.397C8.978,12.266,9,12.136,9,12s-0.022-0.266-0.04-0.397 l5.991-3.423C15.488,8.685,16.206,9,17,9c1.654,0,3-1.346,3-3s-1.346-3-3-3s-3,1.346-3,3c0,0.136,0.022,0.266,0.04,0.397 L8.049,9.82C7.512,9.315,6.794,9,6,9C4.346,9,3,10.346,3,12z"/></svg></span>
+								</div>
+							<?php } ?>
+						</div>
+					<?php } else { ?>
+						<div class="clear"></div>
+					<?php } ?>
+					
+					<?php if ($wo['loggedin'] == true) { ?>
+						<div class="valign tag_post_foot_stats" id="active_react">
+						<?php if ($wo['config']['second_post_button'] == 'reaction') { ?>
+							<div class="valign post-actions">
+								<div class="valign like-stat stat-item">
+									<span class="valign like-emo post-reactions-icons-<?php echo $wo['story']['id']; ?>"><?php echo Wo_GetPostReactions($wo['story']['id']);?></span>&nbsp;reactions
+								</div>
+							</div>
+						<?php } else { ?>
+							<div class="valign post-actions">
+								<div class="pointer stat-item" onclick="InjectAPI('{&quot;post_id&quot; : &quot;<?php echo $wo['story']['id']?>&quot;, &quot;type&quot;:&quot;post_likes&quot;}', event);">
+									<span id="likes"><?php echo $wo['story']['post_likes'];?></span> <?php echo $wo['lang']['likes'];?>
+								</div>
+								<?php if ($wo['config']['second_post_button'] != 'disabled') { ?>
+									<span class="middot">·</span><div class="pointer stat-item" onclick="InjectAPI('{&quot;post_id&quot; : &quot;<?php echo $wo['story']['id']?>&quot;, &quot;type&quot;:&quot;post_wonders&quot;}', event);">
+										<span id="wonders"><?php echo $wo['story']['post_wonders'];?></span> <?php echo ($wo['config']['second_post_button'] == 'wonder') ? $wo['lang']['wonders']: $wo['lang']['dislikes'];?>
+									</div>
+								<?php } ?>
+							</div>
+						<?php } ?>
+						<?php if ($wo['story']['comments_status'] == 1) { ?> 
+							<div class="valign post-actions">
+								<div class="pointer stat-item" onclick="InjectAPI('{&quot;post_id&quot; : &quot;<?php echo $wo['story']['id']?>&quot;, &quot;type&quot;:&quot;post_comments&quot;}', event);">
+									<span id="comments"><?php echo $wo['story']['post_comments'];?></span> <?php echo $wo['lang']['comments'];?>
+								</div>
+							</div>
+						<?php } ?>
+						</div>
+					<?php } ?>
+					<div class="clear"></div>
+				</div>
+			
+				<?php if ($wo['loggedin'] == true) { ?>
+					<div class="post-footer post-likes"></div>
+					<div class="clear"></div>
+					<div class="post-footer post-wonders"></div>
+					<div class="clear"></div>
+					<div class="post-footer post-reacted"></div>
+					<div class="clear"></div>
+					<div class="post-footer post-comments <?php echo ($wo['page'] != 'story') ? 'hidden' : ''; ?>" id="post-comments-<?php echo $wo['story']['id']; ?>">
+						<div class="msg_progress"><div class="indeterminate"></div></div>
+						<div id="hidden_inputbox_comment"></div>
+						<?php if($wo['story']['post_comments'] > 3 && $wo['story']['limited_comments'] === true && $wo['story']['comments_status'] == 1) { ?>
+							<div class="valign view-more-wrapper load-more-comments"><span class="pointer" onclick="Wo_loadAllComments(<?php echo $wo['story']['id']; ?>,this);"><?php echo $wo['lang']['view_more_comments'];?></span></div>
+						<?php } ?>
+						<div class="comments-list">
+							<span class="comment-container"></span>
+							<?php 
+								foreach($wo['story']['get_post_comments'] as $wo['comment']) {
+									echo Wo_LoadPage('comment/content');
+								}
+							?>
+						</div>
+						<?php if ($wo['story']['comments_status'] == 1) { ?>
+							<div class="post-commet-textarea">
+								<div class="valign wo_comment_combo">
+									<img class="avatar" src="<?php echo $wo['user']['avatar'];?>"/>
+									<div class="valign">
+										<textarea class="form-control comment-textarea textarea" placeholder="<?php echo $wo['lang']['write_comment'];?>" type="text" onclick="Wo_ShowCommentCombo(<?php echo $wo['story']['id']; ?>);" onkeydown="Wo_RegisterComment(this.value,<?php echo $wo['story']['id']; ?>,<?php echo $wo['story']['publisher']['user_id']; ?>, event, <?php echo (!empty($wo['story']['publisher']['page_id'])) ? $wo['story']['publisher']['page_id'] : '0'; ?>)" onkeyup="textAreaAdjust(this, 36,'comm'); " dir="auto"></textarea>
+										<div class="valign comment_combo_footer">
+											<div class="dropup">
+												<div data-toggle="dropdown" role="button" aria-expanded="false" onclick="load_ajax_emojii('<?php echo $wo["story"]["id"];?>','<?php echo $wo['config']['theme_url'];?>/emoji/');"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"><circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.4"></circle><path fill="currentColor" d="M12,17.0918a5.67258,5.67258,0,0,1-3.64258-1.32618.99954.99954,0,1,1,1.28516-1.53124,3.76605,3.76605,0,0,0,4.71484,0,.99954.99954,0,1,1,1.28516,1.53124A5.67258,5.67258,0,0,1,12,17.0918Z"></path><circle cx="15" cy="10" r="1" fill="currentColor"></circle><circle cx="9" cy="10" r="1" fill="currentColor"></circle></svg></div>
+												<ul class="dropdown-menu dropdown-menu-right tag_scroll wo_comm_emojis">
+													<?php  
+														foreach ($wo['emo'] as $code => $name) {
+															$code   = $code;
+															echo  '<span onclick="Wo_AddEmoToCommentInput(' . $wo["story"]["id"] . ', \'' . $code . '\');"><i class="pointer twa-lg twa twa-' . $name . '"></i></span>'; 
+														} 
+													?>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						<?php } else { ?>
+							<div class="comments_disabled"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"><path fill="currentColor" d="M20,2H4C2.897,2,2,2.897,2,4v18l4-4h14c1.103,0,2-0.897,2-2V4C22,2.897,21.103,2,20,2z M16.706,13.543l-1.414,1.414 l-3.293-3.292l-3.292,3.292l-1.414-1.414l3.292-3.292L7.293,6.958l1.414-1.414l3.292,3.292l3.293-3.292l1.414,1.414l-3.292,3.293 L16.706,13.543z"/></svg> <?php echo str_replace('%d', $wo['story']['publisher']['name'],$wo['lang']['comments_disabled']);?></div>
+						<?php } ?>
+					</div>
+				<?php } ?>
+			
+				<?php 
+					if ($wo['loggedin'] == true) {
+						echo Wo_LoadPage('modals/edit-post');
+						echo Wo_LoadPage('modals/delete-post');
+					}
+				?>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+	$(function () {
+		$("#post-<?php echo $wo['story']['id']; ?> .textarea").triggeredAutocomplete({
+			hidden: '#hidden_inputbox_comment',
+			source: Wo_Ajax_Requests_File() + "?f=mention",
+			trigger: "@" 
+		});
+		$('[data-toggle="tooltip"]').tooltip();
+		$('.dropdown-menu.post-recipient, .dropdown-menu.post-options, .wo_emoji_post').click(function (e) {
+			e.stopPropagation();
+		});
+	});
+	</script>
+<?php endif; ?>

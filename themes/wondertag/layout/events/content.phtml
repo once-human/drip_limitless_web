@@ -1,0 +1,374 @@
+<div class="page-margin wo_event_profile" data-id="<?php echo $wo['event']['id'];?>">
+	<div class="container-fluid tag_cont_fluid">
+		<div class="profile-container tag_cover_bg">
+			<button class="btn btn-mat btn_goback" onclick="window.history.back();"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path fill="currentColor" d="M19 11H7.83l4.88-4.88c.39-.39.39-1.03 0-1.42-.39-.39-1.02-.39-1.41 0l-6.59 6.59c-.39.39-.39 1.02 0 1.41l6.59 6.59c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L7.83 13H19c.55 0 1-.45 1-1s-.45-1-1-1z"></path></svg></button>
+			<div class="tag_cover_sec_bg">
+				<img src="<?php echo $wo['event']['cover']?>" alt="<?php echo $wo['event']['name']?>"/>
+				<div class="tag_cover_bg_grad"></div>
+			</div>
+			<div class="container">
+				<div class="row">
+					<div class="col-xl-1"></div>
+					<div class="col-xl-10">
+						<div class="card hovercard">
+							<div class="wow_content cardheader user-cover">
+								<?php if($wo['event']['is_owner']) { ?>
+									<form action="#" method="post" class="profile-cover-changer" id="event-cover-changer">
+										<span class="btn btn-file btn-mat">
+											<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path fill="currentColor" d="M23 18V6c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2zM8.9 12.98l2.1 2.53 3.1-3.99c.2-.26.6-.26.8.01l3.51 4.68c.25.33.01.8-.4.8H6.02c-.42 0-.65-.48-.39-.81L8.12 13c.19-.26.57-.27.78-.02z"/></svg> <?php echo $wo['lang']['cover']; ?>
+											<input type="file" name="cover" accept="image/x-png, image/jpeg" onchange="Wo_UpdateEventCover()">
+										</span>
+										<input type="hidden" name="event_id" id="event_id" value="<?php echo $wo['event']['id'];?>">
+									</form>
+								<?php } ?>
+								<div class="user-cover-uploading-progress">
+									<div class="pace-activity-parent"><div class="pace-activity"></div></div>
+								</div>
+								<img id="cover-image" src="<?php echo $wo['event']['cover']?>" alt="<?php echo $wo['event']['name']?>"/>
+								<span class="short_start_dt">
+									<span><?php echo date('M',strtotime($wo['event']['start_edit_date'])); ?></span>
+									<b><?php echo date('d',strtotime($wo['event']['start_edit_date'])); ?></b>
+								</span>
+								<?php echo Wo_GetInterestedButton($wo['event']['id']);?>
+								<?php if ($wo['event']['is_owner']): ?>
+									<button class="btn btn-default btn-mat delete-event" id="<?php echo $wo['event']['id']?>" title="<?php echo $wo['lang']['delete'];?>"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" /></svg></button>
+								<?php endif ?>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-1"></div>
+				</div>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+				<div class="col-xl-1"></div>
+				<div class="col-xl-10">
+					<div class="valign wow_content p15 tag_event_name_hdr">
+						<div class="event-info-cont-small">
+							<h3><?php echo $wo['event']['name']; ?></h3>
+							<div class="event_cdown">
+								<span id="days"></span> <?php echo $wo['lang']['days']; ?> <span id="hours"></span> <?php echo $wo['lang']['hours']; ?> <?php echo $wo['lang']['event_remaining']; ?>
+							</div>
+						</div>
+						<div class="wow_event_page_btns">
+							<?php echo Wo_GetGoingButton($wo['event']['id']);?>
+							<?php if ($wo['event']['is_owner']): ?>
+								<a href="<?php echo Wo_SeoLink('index.php?link1=edit-event&eid='.$wo['event']['id']); ?>" class="btn btn-default btn-mat">
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" /></svg> <?php echo $wo['lang']['edit_event']; ?>
+								</a>
+							<?php endif ?>
+							<button data-toggle="modal" data-target="#invite_event_frnd" class="btn btn-default btn-mat invite_event_frnd" title="<?php echo $wo['lang']['invite_your_frineds_home']; ?>">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-.4 4.25l-6.54 4.09c-.65.41-1.47.41-2.12 0L4.4 8.25c-.25-.16-.4-.43-.4-.72 0-.67.73-1.07 1.3-.72L12 11l6.7-4.19c.57-.35 1.3.05 1.3.72 0 .29-.15.56-.4.72z" /></svg>
+							</button>
+							<a href="https://www.google.com/calendar/render?action=TEMPLATE&text=<?php echo $wo['event']['name']; ?>&details=<?php echo $wo['event']['description']?>&location=<?php echo $wo['event']['location']; ?>&dates=undefined%2Fundefined" target="_blank" rel="nofollow" class="btn btn-default btn-mat invite_event_frnd" title="<?php echo $wo['lang']['add_google_calendar']; ?>">
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 511.999 511.999"> <path style="fill:#fff;" d="M455.617,10.846H56.367c-12.437,0-22.517,10.094-22.517,22.531v74.912h444.296V33.377 C478.147,20.939,468.053,10.846,455.617,10.846z M148.16,55.922c-5.953,0-10.784-4.831-10.784-10.784s4.831-10.784,10.784-10.784 c5.953,0,10.784,4.831,10.784,10.784S154.112,55.922,148.16,55.922z M366.656,55.922c-5.953,0-10.784-4.831-10.784-10.784 s4.831-10.784,10.784-10.784s10.784,4.831,10.784,10.784S372.608,55.922,366.656,55.922z"/> <path style="fill:#3A5BBC;" d="M511.505,113.523l-34.077,177.704l13.918,184.793c1.021,13.559-9.706,25.134-23.322,25.134H43.96 c-13.602,0-24.343-11.575-23.322-25.134l13.933-184.793L0.494,113.523C-2.712,96.815,10.099,81.3,27.123,81.3h457.74 C501.901,81.3,514.711,96.815,511.505,113.523z"/> <path style="fill:#518EF8;" d="M468.024,501.153H43.96c-13.602,0-24.343-11.575-23.322-25.134l13.933-184.793h244.435h198.423 l13.918,184.793C492.368,489.578,481.641,501.153,468.024,501.153z"/> <g> <path style="fill:#FFFFFF;" d="M247.371,244.856c0-34.687-29.026-62.906-64.703-62.906s-64.703,28.219-64.703,62.906h21.568 c0-22.794,19.351-41.338,43.136-41.338s43.136,18.544,43.136,41.338s-19.351,41.338-43.136,41.338h-20.13v21.568h20.13 c23.785,0,43.136,18.544,43.136,41.338c0,22.794-19.351,41.338-43.136,41.338s-43.136-18.544-43.136-41.338h-21.568 c0,34.687,29.026,62.906,64.703,62.906s64.703-28.219,64.703-62.906c0-21.663-11.322-40.802-28.513-52.122 C236.05,285.659,247.371,266.519,247.371,244.856z"/> <polygon style="fill:#FFFFFF;" points="289.289,218.704 300.353,237.218 342.989,211.741 342.989,401.222 364.556,401.222 364.556,173.728"/> </g></svg>
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-xl-1"></div>
+			</div>
+			<div class="row">
+				<div class="col-xl-1"></div>
+				<div class="col-xl-10">
+					<div class="page-margin wow_content p15">
+						<div class="event_info_blocks">
+							<div>
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM11 7h2v2h-2V7zm0 4h2v6h-2v-6z"/></svg>
+								<?php echo $wo['event']['description']?>
+							</div>
+						</div>
+						<div class="valign event_info_blocks_prnt">
+							<div class="event_info_blocks">
+								<div class="bold">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M17 3h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h4V1h2v2h6V1h2v2zm3 8H4v8h16v-8zm-5-6H9v2H7V5H4v4h16V5h-3v2h-2V5zm-9 8h2v2H6v-2zm5 0h2v2h-2v-2zm5 0h2v2h-2v-2z"/></svg>
+									<?php echo $wo['event']['start_date']. ' - ' . date('H:i',strtotime($wo['event']['start_time'])); ?>
+									<span><?php echo $wo['lang']['start_date']; ?></span>
+								</div>
+								<div class="bold">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M17 3h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h4V1h2v2h6V1h2v2zm-2 2H9v2H7V5H4v4h16V5h-3v2h-2V5zm5 6H4v8h16v-8zM6 14h2v2H6v-2zm4 0h8v2h-8v-2z"/></svg>
+									<?php echo $wo['event']['end_date'] . ' - ' . date('H:i',strtotime($wo['event']['end_time'])); ?>
+									<span><?php echo $wo['lang']['end_date']; ?></span>
+								</div>
+								<div class="bold">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M12 14v2a6 6 0 0 0-6 6H4a8 8 0 0 1 8-8zm0-1c-3.315 0-6-2.685-6-6s2.685-6 6-6 6 2.685 6 6-2.685 6-6 6zm0-2c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm8.828 10.071L18 24l-2.828-2.929c-1.563-1.618-1.563-4.24 0-5.858a3.904 3.904 0 0 1 5.656 0c1.563 1.618 1.563 4.24 0 5.858zm-1.438-1.39c.813-.842.813-2.236 0-3.078a1.904 1.904 0 0 0-2.78 0c-.813.842-.813 2.236 0 3.079L18 21.12l1.39-1.44z"/></svg>
+									<a href="<?php echo $wo['event']['url']; ?>?type=going">
+										<?php echo $wo['event']['going']; ?> <?php echo $wo['lang']['going_people']; ?>
+									</a>
+								</div>
+								<div class="bold">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M12 18.26l-7.053 3.948 1.575-7.928L.587 8.792l8.027-.952L12 .5l3.386 7.34 8.027.952-5.935 5.488 1.575 7.928L12 18.26zm0-2.292l4.247 2.377-.949-4.773 3.573-3.305-4.833-.573L12 5.275l-2.038 4.42-4.833.572 3.573 3.305-.949 4.773L12 15.968z"/></svg>
+									<a href="<?php echo $wo['event']['url']; ?>?type=interested">
+										 <?php echo $wo['event']['interested']; ?> <?php echo $wo['lang']['interested_people']; ?>
+									</a>
+								</div>
+								 <?php if (!empty($wo['event']['location'])): ?>
+									<div class="bold">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M12 23.728l-6.364-6.364a9 9 0 1 1 12.728 0L12 23.728zm4.95-7.778a7 7 0 1 0-9.9 0L12 20.9l4.95-4.95zM12 13a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/></svg>
+										 <?php echo $wo['event']['location']; ?>
+									</div>
+								<?php endif; ?>
+							</div>
+							<?php if (Wo_IsMobile() == false) { ?>
+							<?php if (!empty($wo['event']['location'])): ?>
+							<?php if ($wo['config']['google_map'] == 1) { ?>
+								<div class="user-social-links tag_evnt_map">
+									<iframe width="100%" frameborder="0" src="https://www.google.com/maps/embed/v1/place?key=<?php echo $wo['config']['google_map_api']; ?>&q=<?php echo $wo['event']['location']; ?>&language=en"></iframe>
+								</div>
+							<?php } ?>
+							<?php endif; ?>
+							<?php } ?>
+						</div>
+					</div>
+				</div>
+				<div class="col-xl-1"></div>
+			</div>
+			<div class="row">
+				<div class="col-lg-2"></div>
+				<div class="col-lg-8">
+					<?php if (!empty($_GET['type']) && $_GET['type'] == 'interested') { ?>
+						<div class="page-margin wow_content wow_sett_content mt-0">
+							<div class="valign wo_page_hdng">
+								<span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M12,17.27l4.15,2.51c0.76,0.46,1.69-0.22,1.49-1.08l-1.1-4.72l3.67-3.18c0.67-0.58,0.31-1.68-0.57-1.75l-4.83-0.41 l-1.89-4.46c-0.34-0.81-1.5-0.81-1.84,0L9.19,8.63L4.36,9.04c-0.88,0.07-1.24,1.17-0.57,1.75l3.67,3.18l-1.1,4.72 c-0.2,0.86,0.73,1.54,1.49,1.08L12,17.27z"></path></svg></span> <?php echo $wo['lang']['interested_people']; ?>
+							</div>
+							<div id="following-list" class="row">
+								<?php
+									$interested = Wo_GetInterestedEventsUsers($wo['event']['id']);
+									if (empty($interested)) {
+										echo '<div class="empty_state"><svg height="512" viewBox="0 0 32 32" width="512" xmlns="http://www.w3.org/2000/svg"><path d="m26.042 32.042h-20c-3.314 0-6-2.686-6-6v-20c0-3.314 2.686-6 6-6h20c3.314 0 6 2.686 6 6v20c0 3.313-2.687 6-6 6z" fill="#ffe6e2"/><path d="m22 10h-.667v-1.333c0-.369-.298-.667-.666-.667h-.667c-.368 0-.667.299-.667.667v1.333h-6.667v-1.333c.001-.369-.298-.667-.666-.667h-.667c-.368 0-.667.299-.667.667v1.333h-.666c-1.103 0-2 .897-2 2v10c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-10c0-1.103-.897-2-2-2zm0 12.667h-12c-.368 0-.667-.299-.667-.667v-7.973h13.333v7.973c.001.368-.298.667-.666.667z" fill="#fc573b"/><g fill="#fd907e"><path d="m16 20.199-1.751.968.334-2.05-1.416-1.453 1.957-.299.876-1.865.876 1.865 1.957.299-1.416 1.453.334 2.05z"/><path d="m16 20.199-.242-.438-.85.47.169-1.034c.026-.157-.025-.316-.136-.43l-.737-.756.996-.151c.165-.025.306-.13.377-.282l.423-.901.423.901c.071.151.212.257.377.282l.996.152-.737.756c-.111.114-.161.273-.136.43l.169 1.034-.85-.47c-.151-.083-.333-.083-.484 0l.242.437-.242.438 1.751.968c.167.093.373.081.53-.029.156-.11.236-.3.205-.489l-.294-1.801 1.24-1.272c.13-.134.175-.331.116-.508s-.214-.307-.399-.336l-1.694-.259-.762-1.624c-.081-.176-.257-.287-.451-.287s-.37.111-.453.288l-.762 1.624-1.694.259c-.184.028-.339.159-.399.336-.059.177-.014.374.116.508l1.24 1.272-.294 1.801c-.031.189.049.379.205.489s.362.121.53.029l1.751-.968-.24-.439-.242.438z"/></g></svg>' . $wo['lang']['no_interested_people'] . '</div>';
+									} else {
+										foreach ($interested as $wo['UsersList']) {
+											echo Wo_LoadPage('events/includes/users-list');
+										}
+									}
+								?>
+							</div>
+							<div class="clear"></div>
+						</div>
+					<?php }elseif (!empty($_GET['type']) && $_GET['type'] == 'going') { ?>
+						<div class="page-margin wow_content wow_sett_content mt-0">
+							<div class="valign wo_page_hdng">
+								<span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M12 14v8H4a8 8 0 0 1 8-8zm0-1c-3.315 0-6-2.685-6-6s2.685-6 6-6 6 2.685 6 6-2.685 6-6 6zm8.828 7.828L18 23.657l-2.828-2.829a4 4 0 1 1 5.656 0zM18 17a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" /></svg></span> <?php echo $wo['lang']['going_people']; ?>
+							</div>
+							<div id="following-list" class="row">
+								<?php
+									$interested = Wo_GetGoingEventsUsers($wo['event']['id']);
+									if (empty($interested)) {
+										echo '<div class="empty_state"><svg xmlns="http://www.w3.org/2000/svg" height="512" viewBox="0 0 32 32" width="512"><path d="m26 32h-20c-3.314 0-6-2.686-6-6v-20c0-3.314 2.686-6 6-6h20c3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6z" fill="#ffe6e2"/><g fill="#fd907e"><circle cx="10.667" cy="14.917" r="1.333"/><path d="m12.447 17.183c-.673.507-1.113 1.32-1.113 2.233v.167h-2.834c-.273 0-.5-.227-.5-.5v-.333c0-1.013.82-1.833 1.833-1.833h1.667c.347 0 .673.1.947.266z"/><circle cx="21.333" cy="14.917" r="1.333"/><path d="m24 18.75v.333c0 .273-.227.5-.5.5h-2.833v-.167c0-.913-.44-1.727-1.113-2.233.273-.167.6-.267.947-.267h1.667c1.012.001 1.832.821 1.832 1.834z"/></g><circle cx="16" cy="14.583" fill="#fc573b" r="2"/><path d="m17.833 17.583h-3.667c-1.011 0-1.833.822-1.833 1.833v1c0 .276.224.5.5.5h6.333c.276 0 .5-.224.5-.5v-1c.001-1.01-.822-1.833-1.833-1.833z" fill="#fc573b"/></svg>' . $wo['lang']['no_going_people'] . '</div>';
+									} else {
+										foreach ($interested as $wo['UsersList']) {
+											echo Wo_LoadPage('events/includes/users-list');
+										}
+									}
+								?>
+							</div>
+							<div class="clear"></div>
+						</div>
+					<?php } else{ ?>
+						
+						<?php echo Wo_LoadPage('story/publisher-box'); ?>
+
+						<?php if ($wo['loggedin'] == true) { echo Wo_LoadPage('story/filter-by'); } ?>
+
+						<div id="posts" data-story-event="<?php echo $wo['event']['id'];?>">
+							<div class="pinned-post-container">
+								<?php
+								$pinedstory = Wo_GetPinnedPost($wo['event']['id'], 'event');
+								if (count($pinedstory) == 1) {
+									foreach ($pinedstory  as $wo['story']) {
+										echo Wo_LoadPage('story/content');
+									}
+								}
+								?>
+							</div>
+							<div id="posts-hashtag">	     
+								<?php
+									$stories = Wo_GetPosts(array('filter_by' => 'all', 'event_id' => $wo['event']['id'])); 
+									if (count($stories) == 0 ) {
+										echo Wo_LoadPage('story/no-event-stories');
+									} else {
+									foreach ($stories as $wo['story']) {
+										echo Wo_LoadPage('story/content');
+									}
+									}
+								?>
+							</div>
+						</div>
+						<?php if (!empty($stories)) { ?>
+							<div class="load-more pointer" id="load-more-posts" onclick="">
+								<span class="btn btn-default text-center pointer"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"></path></svg></span> <?php echo $wo['lang']['load_more_posts']; ?><span>
+							</div>
+						<?php } ?>
+						<div id="load-more-filter">
+							<span class="filter-by-more hidden" data-filter-by="all"></span>
+						</div>
+					<?php } ?>
+				</div>
+				<div class="col-lg-2"></div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="invite_event_frnd">
+		<div class="modal-dialog modal-md wow_mat_mdl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title"><?php echo $wo['lang']['invite_your_frineds'] ?></h4>
+				</div>
+				<div class="modal-body">
+					<label class="tag_field">
+						<input type="text" id="invite_your_frineds" class="event-people-invite" placeholder=" " />
+						<span><?php echo $wo['lang']['name'] ?></span>
+						<div class="event-people-invition-list"></div>
+					</label>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default btn-mat disable_btn" data-dismiss="modal" aria-label="Close"><?php echo $wo['lang']['close'] ?></button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<?php echo Wo_LoadPage('events/includes/delete-event')?>
+</div>
+
+<script>
+const second = 1000,
+      minute = second * 60,
+      hour = minute * 60,
+      day = hour * 24;
+
+let countDown = new Date('<?php echo date("m/d/y",strtotime($wo['event']['start_date_js'])) . ' ' . date('H:i',strtotime($wo['event']['start_time'])) ?>').getTime(),
+    x = setInterval(function() {
+      let now = new Date().getTime(),
+          distance = countDown - now;
+
+      document.getElementById('days').innerHTML = Math.floor(distance / (day)),
+        document.getElementById('hours').innerHTML = Math.floor((distance % (day)) / (hour));
+      
+      //do something later when date is reached
+      if (distance < 0) {
+       clearInterval(x);
+        $('.event_cdown').remove();
+      }
+
+    }, second)
+
+$(function () {
+	$(".event-people-invite").keyup(function(event) {
+	  	var filter = $(this).val();
+	  	var event_id = $('#event_id').val();
+	  	if (filter.length > 1) {
+		  	$.ajax({
+		  		url: Wo_Ajax_Requests_File(),
+		  		type: 'GET',
+		  		dataType: 'json',
+		  		data: {f: 'search-my-followers',filter:filter, event_id: <?php echo $_GET['eid']; ?>},
+		  	}).done(function(data) {
+		  		if (data['status'] == 200) {
+		  			$(".event-people-invition-list").css("display","block").html(data['html'])
+		  		}
+		  		else{
+		  			$(".event-people-invition-list").css("display","block").html('<h5 class="text-center">' + data['html'] + '</h5>')
+		  		}
+		  		
+		  	}).fail(function() {
+		  		console.log("error");
+		  	})
+	    }else{
+	    	$(".event-people-invition-list").css("display","none").html('')
+	    }
+	});
+
+	$(".delete-event").click(function(event) {
+	  	$("#delete-event").attr('data-event-ident', $(this).attr('id')).modal("show")
+	});
+
+	$("form#event-cover-changer").ajaxForm({
+	    url: Wo_Ajax_Requests_File() + '?f=update_event_cover_picture',
+
+	    beforeSend: function () {
+	      $('.user-cover-uploading-progress').fadeIn(200);
+	    },
+	    success: function (data) {
+	      if(data.status == 200) {
+	        $('[id^=cover-image]').attr("src", data.img);
+	      }
+	      $('.user-cover-uploading-progress').fadeOut(200);
+	    }
+	  });
+	});
+
+	$(document).on("click",".going-to-event",function(event) {
+		var eid = $(this).attr('data-event-ident');
+		$.ajax({
+			url: Wo_Ajax_Requests_File(),
+			type: 'GET',
+			dataType: 'json',
+			data: {f: 'going-to-event',eid:eid},
+			success:function(data){
+				if (data['status'] == 200) {
+					$("[data-suggested-event=" + eid + "]").addClass('disabled')
+					$(".suggest-event-action-" + eid).html('<span class="main">'+data['html']+'</span>')
+				}
+			}
+		})
+	});
+
+	$(document).on("click",".interested-in-event",function(event) {
+		var eid = $(this).attr('data-event-ident');
+		$.ajax({
+			url: Wo_Ajax_Requests_File(),
+			type: 'GET',
+			dataType: 'json',
+			data: {f: 'interested-in-event',eid:eid},
+			success:function(data){
+				if (data['status'] == 200) {
+					$("[data-suggested-event=" + eid + "]").addClass('disabled')
+					$(".suggest-event-action-" + eid).html('<span class="main">'+data['html']+'</span>')
+				}
+			}
+		})
+	});
+
+	function Wo_SendEventInvation(user_id){
+		if (!user_id) {
+			return false;
+		}
+		else{
+			$.ajax({
+				url: Wo_Ajax_Requests_File(),
+				type: 'GET',
+				dataType: 'json',
+				data: {f: 'register_event_invite',event_id:<?php echo $_GET['eid']; ?>,user_id:user_id},
+				success:function(data){
+					if (data['status'] == 200) {
+						if (node_socket_flow == "1") {
+					        socket.emit("user_notification", { to_id: user_id, user_id: _getCookie("user_id"), type: "added" });
+					    }
+						$("[data-hide-invited-user=" + user_id + "]").slideUp("fast")
+					}else{
+						$("[data-hide-invited-user=" + user_id + "]").find('button').remove();
+					}
+				}
+			})
+		}
+	}
+
+	function Wo_UpdateEventCover() {
+	  $("form#event-cover-changer").submit();
+	}
+
+	function Wo_DeleteEvent(id) {
+	  if (!id) {
+	   return false;
+	  }
+	  else{
+	      $.get(Wo_Ajax_Requests_File(),{f:'delete-event',id: id}, function(data) {
+	       if (data.status == 200) {
+	         $("#delete-event").modal('hide')
+	         window.location = "<?php echo Wo_SeoLink('index.php?link1=welcome')?>";
+	       }
+	     });
+	  }
+	}
+</script>

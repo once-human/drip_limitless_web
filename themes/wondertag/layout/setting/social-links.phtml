@@ -1,0 +1,89 @@
+<h2 class="tag_page_title"><button type="button" class="btn setting_navigation" onclick="$('.tag_sett_sidebar').fadeIn(50);$('#tag_sett_right_prt').fadeOut(50);"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" fill="currentColor"></path></svg></button> <?php echo $wo['lang']['social_links']; ?></h2>
+<div class="wow_sett_content wow_content p20">
+	<form method="post" class="form-horizontal setting-profile-form tag_field_full_margin wo_settings_page" enctype="multipart/form-data">
+		<div class="setting-profile-alert setting-update-alert"></div>
+		
+		<div class="row">
+			<div class="col-lg-6">
+				<label class="tag_field">
+					<input id="facebook" name="facebook" type="text" placeholder=" " value="<?php echo $wo['setting']['facebook']?>"> 
+					<span><?php echo $wo['lang']['facebook']; ?> <?php echo $wo['lang']['username'];?></span>
+				</label>
+			</div>
+			<div class="col-lg-6">
+				<label class="tag_field">
+					<input id="twitter" name="twitter" type="text" placeholder=" " value="<?php echo $wo['setting']['twitter']?>"> 
+					<span><?php echo $wo['lang']['twitter']; ?> <?php echo $wo['lang']['username'];?></span>
+				</label>
+			</div>
+			<div class="col-lg-6">
+				<label class="tag_field">
+					<input id="vk" name="vk" type="text" placeholder=" " value="<?php echo $wo['setting']['vk']?>"> 
+					<span><?php echo $wo['lang']['vkontakte']; ?> <?php echo $wo['lang']['username'];?></span>
+				</label>
+			</div>
+			<div class="col-lg-6">
+				<label class="tag_field">
+					<input id="linkedin" name="linkedin" type="text" placeholder=" " value="<?php echo $wo['setting']['linkedin']?>"> 
+					<span><?php echo $wo['lang']['linkedin']; ?> <?php echo $wo['lang']['username'];?></span>
+				</label>
+			</div>
+			<div class="col-lg-6">
+				<label class="tag_field">
+					<input id="instagram" name="instagram" type="text" placeholder=" " value="<?php echo $wo['setting']['instagram']?>"> 
+					<span><?php echo $wo['lang']['instagram']; ?> <?php echo $wo['lang']['username'];?></span>
+				</label>
+			</div>
+			<div class="col-lg-6">
+				<label class="tag_field">
+					<input id="youtube" name="youtube" type="text" placeholder=" " value="<?php echo $wo['setting']['youtube']?>"> 
+					<span><?php echo $wo['lang']['youtube']; ?> <?php echo $wo['lang']['username'];?></span>
+				</label>
+			</div>
+		</div>
+		
+		<?php
+			$fields = Wo_GetProfileFields('social');
+			if (count($fields) > 0) {
+				foreach ($fields as $key => $wo['field']) {
+				echo Wo_LoadPage('setting/profile-fields');
+			}
+				echo '<input name="custom_fields" type="hidden" value="1">';
+			}
+		?>
+		
+		<div class="text-center">
+			<button type="submit" class="btn btn-main btn-mat btn-mat-raised disable_btn"><?php echo $wo['lang']['save']; ?></button>
+		</div>
+
+		<input type="hidden" name="user_id" id="user-id" value="<?php echo $wo['setting']['user_id'];?>">
+		<input type="hidden" name="hash_id" value="<?php echo Wo_CreateSession();?>">
+   </form>
+</div>
+<script type="text/javascript">
+$(function() {
+  $('form.setting-profile-form').ajaxForm({
+    url: Wo_Ajax_Requests_File() + '?f=update_socialinks_setting',
+    beforeSend: function() {
+      $('.wo_settings_page').find('.disable_btn').attr('disabled','disabled');
+    },
+    success: function(data) {
+      if (data.status == 200) {
+        scrollToTop();
+        $('.setting-profile-alert').html('<div class="alert alert-success">' + data.message + '</div>');
+        $('.alert-success').fadeIn('fast', function() {
+          $(this).delay(2500).slideUp(500, function() {
+            $(this).remove();
+          });
+        });
+      } else if (data.errors) {
+        var errors = data.errors.join("<br>");
+        scrollToTop();
+        $('.setting-profile-alert').html('<div class="alert alert-danger">' + errors + '</div>');
+        $('.alert-danger').fadeIn(300);
+      }
+      $('.wo_settings_page').find('.disable_btn').removeAttr("disabled");
+    }
+  });
+});
+</script>

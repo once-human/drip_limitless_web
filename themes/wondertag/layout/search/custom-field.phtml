@@ -1,0 +1,31 @@
+<?php $fid = '';
+	if (!empty($wo['setting']['fileds'][$wo['field']['fid']])) {
+		$fid = $wo['setting']['fileds'][$wo['field']['fid']];
+	} 
+	if( isset( $_GET[ $wo['field']['fid'] ] ) && !empty( $_GET[ $wo['field']['fid'] ] ) ){
+		$fid = Wo_Secure( $_GET[ $wo['field']['fid'] ] );
+	}
+?>
+<div class="tag_srch_fltr_country">
+	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M3,3H11V7.34L16.66,1.69L22.31,7.34L16.66,13H21V21H13V13H16.66L11,7.34V11H3V3M3,13H11V21H3V13Z" /></svg>
+	<?php 
+		if ($wo['field']['select_type'] == 'yes') {
+		$options = @explode(',', $wo['field']['type']); ?>
+		<select name="<?php echo $wo['field']['fid'];?>">
+			<option value=""><?php echo $wo['field']['name']; ?></option>
+			<?php
+				foreach ($options as $key => $value) {
+				$selected = (($key + 1) == $fid) ? 'selected' : '';
+			?>
+				<option value="<?php echo $key + 1;?>" <?php echo $selected;?>><?php echo $value;?></option>
+			<?php } ?>
+		</select>
+		<span class="caret"></span>
+	<?php
+	} else {
+	if ($wo['field']['type'] == 'textbox') { ?>
+		<input id="<?php echo $wo['field']['fid'];?>" name="<?php echo $wo['field']['fid'];?>" type="text" value="<?php echo $fid?>" placeholder="<?php echo $wo['field']['name']; ?>">
+	<?php } else if ($wo['field']['type'] == 'textarea') {?>
+		<textarea id="<?php echo $wo['field']['fid'];?>" name="<?php echo $wo['field']['fid'];?>" rows="1" placeholder="<?php echo $wo['field']['name']; ?>"><?php echo br2nl($fid);?></textarea>
+	<?php } } ?>
+</div>

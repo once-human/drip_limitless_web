@@ -1,0 +1,76 @@
+<div class="wow_sett_content">
+	<form  method="post" class="form-horizontal setting-profile-form tag_field_full_margin" enctype="multipart/form-data">
+		<div class="setting-profile-alert setting-update-alert"></div>
+		<div class="row">
+			<div class="col-xl-6">
+				<label class="tag_field">
+					<input id="facebook" name="facebook" type="text" placeholder=" " value="<?php echo $wo['setting']['facebook'];?>">
+					<span><?php echo $wo['lang']['facebook'] ?> <?php echo $wo['lang']['username'];?></span>
+				</label>
+			</div>
+			<div class="col-xl-6">
+				<label class="tag_field">
+					<input id="twitter" name="twitter" type="text" placeholder=" " value="<?php echo $wo['setting']['twitter'];?>">
+					<span><?php echo $wo['lang']['twitter'] ?> <?php echo $wo['lang']['username'];?></span>
+				</label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xl-6">
+				<label class="tag_field">
+					<input id="instagram" name="instgram" type="text" placeholder=" " value="<?php echo $wo['setting']['instgram'];?>">
+					<span><?php echo $wo['lang']['instagram'] ?> <?php echo $wo['lang']['username'];?></span>
+				</label>
+			</div>
+			<div class="col-xl-6">
+				<label class="tag_field">
+					<input id="vk" name="vk" type="text" placeholder=" " value="<?php echo $wo['setting']['vk'];?>">
+					<span><?php echo $wo['lang']['vkontakte'] ?> <?php echo $wo['lang']['username'];?></span>
+				</label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xl-6">
+				<label class="tag_field">
+					<input id="linkedin" name="linkedin" type="text" placeholder=" " value="<?php echo $wo['setting']['linkedin'];?>">
+					<span><?php echo $wo['lang']['linkedin'] ?> <?php echo $wo['lang']['username'];?></span>
+				</label>
+			</div>
+			<div class="col-xl-6">
+				<label class="tag_field">
+					<input id="youtube" name="youtube" type="text" placeholder=" " value="<?php echo $wo['setting']['youtube'];?>">
+					<span><?php echo $wo['lang']['youtube'] ?> <?php echo $wo['lang']['username'];?></span>
+				</label>
+			</div>
+		</div>
+
+        <div class="text-center">
+			<button type="submit" class="btn btn-main btn-mat btn-mat-raised disable_btn"><?php echo $wo['lang']['save']; ?></button>
+		</div>
+        <input type="hidden" name="page_id" id="page-id" value="<?php echo $wo['setting']['page_id'];?>">
+		<input type="hidden" name="hash_id" value="<?php echo Wo_CreateSession();?>">
+	</form>
+</div>
+
+<script type="text/javascript">
+$(function() {
+  $('form.setting-profile-form').ajaxForm({
+    url: Wo_Ajax_Requests_File() + '?f=pages&s=update_sociallink_setting',
+    beforeSend: function() {
+      $('.setting-profile-form').find('.disable_btn').attr('disabled','disabled');
+    },
+    success: function(data) {
+      if (data.status == 200) {
+        scrollToTop();
+        $('.setting-profile-alert').html('<div class="alert alert-success">' + data.message + '</div>');
+        $('.alert-success').fadeIn('fast', function() {
+          $(this).delay(2500).slideUp(500, function() {
+            $(this).remove();
+          });
+        });
+      } 
+      $('.setting-profile-form').find('.disable_btn').removeAttr("disabled");
+    }
+  });
+});
+</script>

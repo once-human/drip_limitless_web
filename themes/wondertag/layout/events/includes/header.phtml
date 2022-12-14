@@ -1,0 +1,41 @@
+<?php
+$page_name = '';
+$page_icon = '';
+switch ($wo['active']) {
+		case 1:
+			$page_name = $wo['lang']['events'];
+			break;
+		case 2:
+			$page_name = $wo['lang']['going'];
+			break;
+		case 3:
+			$page_name = $wo['lang']['invited'];
+			break;
+		case 4:
+			$page_name = $wo['lang']['interested'];
+			break;
+		case 5:
+			$page_name = $wo['lang']['past'];
+			break;
+		case 6:
+			$page_name = $wo['lang']['create'];
+			break;
+		case 7:
+			$page_name = $wo['lang']['my_events'];
+			break;
+		default:
+	}
+?>
+
+<div class="page-margin">
+	<div class="container">
+		<h2 class="tag_page_title m5"><?php echo $wo['lang']['events']; ?></h2>
+		<ul class="list-unstyled tag_page_nav">
+			<li class="separate <?php echo ($wo['active'] == "7" ? "active" : "")?>"><a class="btn-mat" href="<?php echo Wo_SeoLink('index.php?link1=my-events'); ?>" data-ajax="?link1=my-events"><?php echo $wo['lang']['my_events']; ?></a></li>
+			<li class="<?php echo ($wo['active'] == "1" ? "active" : "")?>"><a class="btn-mat" href="<?php echo Wo_SeoLink('index.php?link1=events'); ?>" data-ajax="?link1=events"><?php echo $wo['lang']['browse_events'] ?></a></li>
+			<li class="<?php echo ($wo['active'] == "2" ? "active" : "")?>"><a class="btn-mat" href="<?php echo Wo_SeoLink('index.php?link1=events-going'); ?>" data-ajax="?link1=events-going"><?php echo $wo['lang']['event_going']; ?>	</a></li>
+			<li class="<?php echo ($wo['active'] == "3" ? "active" : "")?>"><a class="btn-mat" href="<?php echo Wo_SeoLink('index.php?link1=events-invited'); ?>" data-ajax="?link1=events-invited"><?php echo $wo['lang']['event_invited']; ?></a></li>
+			<li class="<?php echo ($wo['active'] == "4" ? "active" : "")?>"><a class="btn-mat" href="<?php echo Wo_SeoLink('index.php?link1=events-interested'); ?>" data-ajax="?link1=events-interested"><?php echo $wo['lang']['event_intersted']; ?></a></li>
+			<li class="<?php echo ($wo['active'] == "5" ? "active" : "")?>"><a class="btn-mat" href="<?php echo Wo_SeoLink('index.php?link1=events-past'); ?>" data-ajax="?link1=events-past"><?php echo $wo['lang']['events_past']; ?></a></li>
+		</ul>
+			<div class="events-content-wrapper">

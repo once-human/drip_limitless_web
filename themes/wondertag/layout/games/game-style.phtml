@@ -1,0 +1,11 @@
+<div class="col-sm-12 col-md-6 col-lg-4 col-xl-3" id="game_<?php echo $wo['game']['id'];?>">
+	<div class="wo_game_style">
+		<a href="<?php echo $wo['game']['url'];?>" data-ajax="?link1=game&id=<?php echo $wo['game']['id'];?>">
+			<div class="avatar">
+				<img src="<?php echo $wo['game']['game_avatar'];?>" alt="<?php echo $wo['game']['game_name']; ?>" />
+			</div>
+			<div class="truncate bold game-name"><?php echo $wo['game']['game_name']; ?></div>
+			<div class="btn btn-main-rev btn-mat"><?php echo $wo['lang']['play'];?></div>
+		</a>
+	</div>
+</div>

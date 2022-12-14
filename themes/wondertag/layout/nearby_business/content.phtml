@@ -1,0 +1,193 @@
+<div class="page-margin">
+	<div class="container">
+		<h2 class="tag_page_title m5"><?php echo $wo['lang']['nearby_business']; ?></h2>
+		<?php if (Wo_IsAdmin() && strpos($wo['config']['site_url'], 'https') === false): ?>
+			<div class="alert alert-warning">SSL is required to able to use this feature. (Just admin can see this warning)</div>
+		<?php endif; ?>
+		<div class="page-margin mb-15">
+			<div class="wow_content p15">
+				<div class="valign tag_fndfrnd_srch tag_nearby_pages">
+					<form action="#">
+						<div class="search-blog">
+							<div class="wow_form_fields">
+								<input type="text" placeholder="<?php echo $wo['lang']['search_in']; ?> <?php echo $wo['lang']['nearby_business']; ?>" id="nearby-username" onkeydown="Wo_LoadNearByBusiness(this);">
+							</div>
+						</div>
+					</form>
+					<div class="dropdown">
+						<a href="#" class="btn btn-mat btn-main-rev" data-toggle="dropdown" role="button" aria-expanded="true" title="<?php echo $wo['lang']['filter']; ?>">
+							<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path fill="currentColor" d="M11 18h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM3 7c0 .55.45 1 1 1h16c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1zm4 6h10c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1z"></path></svg>
+						</a>
+						<ul class="dropdown-menu dropdown-menu-right dropdown-static-menu" role="menu">
+							<div class="wow_frnd_field">
+								<h4><?php echo $wo['lang']['location_dist'];?> (km)</h4>
+								<div class="select-nearby-users-distance">
+									<form class="valign">
+										<input type="range" class="cusrange" id="nearby-users-distance" name="amountRange" onchange="Wo_LoadNearByBusiness(this);" value="0" min="1" max="1000" oninput="this.form.amountInput.value=this.value">
+										<input type="number" name="amountInput" min="1" max="1000" value="1" oninput="this.form.amountRange.value=this.value" readonly="" id="cusrange-reader">
+									</form>
+								</div>
+							</div>
+						</ul>
+					</div>
+				</div>
+				<div id="map" class="wow_frnd_map tag_nearby_pages_map"></div>
+			</div>
+			<div class="page-margin wow_content" id="nearby_users_list">
+				<?php
+					$nearby_users = Wo_GetNearbyBusiness(array('country' => $wo['user']['country_id']));
+					if (count($nearby_users) > 0) {
+						foreach ($nearby_users as $wo['UsersList']) {
+							$wo['result'] = $wo['UsersList']['page_data'];
+							echo Wo_LoadPage('nearby_business/list');
+						}
+					}
+					else{
+						echo '<div class="empty_state"><svg height="512" viewBox="0 0 32 32" width="512" xmlns="http://www.w3.org/2000/svg"><path d="m26 32h-20c-3.314 0-6-2.686-6-6v-20c0-3.314 2.686-6 6-6h20c3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6z" fill="#ffe6e2"/><path d="m23.333 22.667v-10.834c0-.276-.224-.5-.5-.5h-4.833v11.333h-.667v-14.166c0-.276-.224-.5-.5-.5h-7c-.276 0-.5.224-.5.5v14.167h-.666c-.369 0-.667.298-.667.666s.298.667.667.667h14.667c.368 0 .666-.298.666-.667s-.298-.666-.667-.666zm-2-8.834c0-.276.224-.5.5-.5s.5.224.5.5v1c0 .276-.224.5-.5.5s-.5-.224-.5-.5zm0 3.334c0-.276.224-.5.5-.5s.5.224.5.5v1c0 .276-.224.5-.5.5s-.5-.224-.5-.5zm0 3.333c0-.276.224-.5.5-.5s.5.224.5.5v1.167c0 .276-.224.5-.5.5s-.5-.224-.5-.5zm-2.333-6.667c0-.276.224-.5.5-.5s.5.224.5.5v1c0 .276-.224.5-.5.5s-.5-.224-.5-.5zm0 3.334c0-.276.224-.5.5-.5s.5.224.5.5v1c0 .276-.224.5-.5.5s-.5-.224-.5-.5zm0 3.333c0-.276.224-.5.5-.5s.5.224.5.5v1.167c0 .276-.224.5-.5.5s-.5-.224-.5-.5zm-4.667-10c0-.276.224-.5.5-.5s.5.224.5.5v1c0 .276-.224.5-.5.5s-.5-.224-.5-.5zm0 3.333c0-.276.224-.5.5-.5s.5.224.5.5v1c0 .276-.224.5-.5.5s-.5-.224-.5-.5zm0 3.334c0-.276.224-.5.5-.5s.5.224.5.5v1c0 .276-.224.5-.5.5s-.5-.224-.5-.5zm0 3.333c0-.276.224-.5.5-.5s.5.224.5.5v1c0 .276-.224.5-.5.5s-.5-.224-.5-.5zm-3-10c0-.276.224-.5.5-.5s.5.224.5.5v1c0 .276-.224.5-.5.5s-.5-.224-.5-.5zm0 3.333c0-.276.224-.5.5-.5s.5.224.5.5v1c0 .276-.224.5-.5.5s-.5-.224-.5-.5zm0 3.334c0-.276.224-.5.5-.5s.5.224.5.5v1c0 .276-.224.5-.5.5s-.5-.224-.5-.5zm0 3.333c0-.276.224-.5.5-.5s.5.224.5.5v1c0 .276-.224.5-.5.5s-.5-.224-.5-.5z" fill="#fc573b"/></svg>' . $wo['lang']['no_business_found'] . '</div>';
+					}
+				?>
+			</div>
+			<div class="posts_load">
+				<?php if (count($nearby_users) >= 1): ?>
+					<div class="load-more">
+						<div class="btn btn-default text-center pointer" id="load_more_nearby_users" onclick="Wo_LoadMoreNearByBusiness();"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"></path></svg></span> <?php echo $wo['lang']['load_more'] ?></div>
+					</div>
+				<?php endif ?>
+			</div>
+		</div>
+	</div>
+</div>
+
+<link rel="stylesheet" href="<?php echo $wo['config']['theme_url'];?>/stylesheet/leaflet.css?version=<?php echo $wo['config']['version']; ?>">
+<script>
+	var planes = [];
+	var markersArray = [];
+	$.getScript('<?php echo $wo['config']['theme_url'];?>/javascript/leaflet.js?version=<?php echo $wo['config']['version']; ?>', function(data, textStatus) {
+		<?php foreach ($nearby_users as $user) : ?>
+		planes.push(['<?php echo $user['page_data']['name']?>',<?php echo $user['job']['lat']?>, <?php echo $user['job']['lng']?>]);
+		<?php endforeach; ?>
+		var map = L.map('map').setView([<?php echo $wo['user']['lat']?>, <?php echo $wo['user']['lng']?>], 7);
+
+		L.tileLayer(
+			'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+				attribution: '',
+				maxZoom: 18,
+			}).addTo(map);
+
+		for (var i = 0; i < planes.length; i++) {
+			marker = new L.marker([planes[i][1],planes[i][2]])
+			.bindPopup(planes[i][0])
+			.addTo(map);
+			markersArray.push(marker);
+		};
+	});
+
+	function Wo_LoadNearByBusiness(self = false){
+		var name     = $("#nearby-username").val();
+		var distance = $("#nearby-users-distance").val();
+		if (!name && !distance) { return false;}
+		if (self) {
+			Wo_progressIconLoader($(self));
+		}
+		else{
+			Wo_StartBar();
+		}
+		
+		$.ajax({
+			url: Wo_Ajax_Requests_File(),
+			type: 'GET',
+			dataType: 'json',
+			data: {
+				f:'nearby_shops',
+				s:'load_jobs',
+				name:name,
+				distance:distance
+			},
+		})
+		.done(function(data) {
+
+	        if (data['status'] == 200){
+	        	$("#nearby_users_list").html(data.html);
+	        	$("[data-toggle]").tooltip();
+	        	$("#load_more_nearby_users").html('<span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"></path></svg></span> <?php echo $wo['lang']['load_more']; ?>');
+	        	if (data.users_info != '') {
+	        		for (var i = 0; i < markersArray.length; i++ ) {
+	        			map.removeLayer(markersArray[i]);
+					}
+					markersArray = [];
+					markersArray.length = 0;
+ 
+	        		data.users_info.forEach(function(element) {
+	        			marker = new L.marker([element.lat,element.lng])
+						.bindPopup(element.name)
+						.addTo(map);
+						markersArray.push(marker);
+					});
+	        	}
+	        	$('.sun_users_count').find('b').text(data.count);
+
+	        } 
+
+	        else{
+	        	$('.sun_users_count').find('b').text(0);
+	        	for (var i = 0; i < markersArray.length; i++ ) {
+        			map.removeLayer(markersArray[i]);
+				}
+				markersArray = [];
+				markersArray.length = 0;
+	        	scrollToTop();
+	        	$("#nearby_users_list").html('<div class="empty_state"><svg height="512" viewBox="0 0 32 32" width="512" xmlns="http://www.w3.org/2000/svg"><path d="m26 32h-20c-3.314 0-6-2.686-6-6v-20c0-3.314 2.686-6 6-6h20c3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6z" fill="#ffe6e2"/><path d="m23.333 22.667v-10.834c0-.276-.224-.5-.5-.5h-4.833v11.333h-.667v-14.166c0-.276-.224-.5-.5-.5h-7c-.276 0-.5.224-.5.5v14.167h-.666c-.369 0-.667.298-.667.666s.298.667.667.667h14.667c.368 0 .666-.298.666-.667s-.298-.666-.667-.666zm-2-8.834c0-.276.224-.5.5-.5s.5.224.5.5v1c0 .276-.224.5-.5.5s-.5-.224-.5-.5zm0 3.334c0-.276.224-.5.5-.5s.5.224.5.5v1c0 .276-.224.5-.5.5s-.5-.224-.5-.5zm0 3.333c0-.276.224-.5.5-.5s.5.224.5.5v1.167c0 .276-.224.5-.5.5s-.5-.224-.5-.5zm-2.333-6.667c0-.276.224-.5.5-.5s.5.224.5.5v1c0 .276-.224.5-.5.5s-.5-.224-.5-.5zm0 3.334c0-.276.224-.5.5-.5s.5.224.5.5v1c0 .276-.224.5-.5.5s-.5-.224-.5-.5zm0 3.333c0-.276.224-.5.5-.5s.5.224.5.5v1.167c0 .276-.224.5-.5.5s-.5-.224-.5-.5zm-4.667-10c0-.276.224-.5.5-.5s.5.224.5.5v1c0 .276-.224.5-.5.5s-.5-.224-.5-.5zm0 3.333c0-.276.224-.5.5-.5s.5.224.5.5v1c0 .276-.224.5-.5.5s-.5-.224-.5-.5zm0 3.334c0-.276.224-.5.5-.5s.5.224.5.5v1c0 .276-.224.5-.5.5s-.5-.224-.5-.5zm0 3.333c0-.276.224-.5.5-.5s.5.224.5.5v1c0 .276-.224.5-.5.5s-.5-.224-.5-.5zm-3-10c0-.276.224-.5.5-.5s.5.224.5.5v1c0 .276-.224.5-.5.5s-.5-.224-.5-.5zm0 3.333c0-.276.224-.5.5-.5s.5.224.5.5v1c0 .276-.224.5-.5.5s-.5-.224-.5-.5zm0 3.334c0-.276.224-.5.5-.5s.5.224.5.5v1c0 .276-.224.5-.5.5s-.5-.224-.5-.5zm0 3.333c0-.276.224-.5.5-.5s.5.224.5.5v1c0 .276-.224.5-.5.5s-.5-.224-.5-.5z" fill="#fc573b"/></svg> <?php echo $wo['lang']['no_result']; ?></div>');
+	        } 
+	        if (self) {
+				Wo_progressIconLoader($(self));
+			}
+			else{
+				Wo_FinishBar();
+			}
+		})
+		.fail(function() {
+			console.log("error");
+		})
+	}
+	function Wo_LoadMoreNearByBusiness(){
+		var after_id = ($(".page_last_id").length > 0) ? $(".page_last_id").last().attr('data-id') : 0;
+		var name     = $("#nearby-username").val();
+		var distance = $("#nearby-users-distance").val();
+		if (!after_id && !name && !distance) { return false;}
+		Wo_progressIconLoader($('#load_more_nearby_users'));
+		$.ajax({
+			url: Wo_Ajax_Requests_File(),
+			type: 'GET',
+			dataType: 'json',
+			data: {
+				f:'nearby_shops',
+				s:'load_jobs',
+				offset:after_id,
+				name:name,
+				distance:distance,
+
+			},
+		})
+		.done(function(data) {
+	        if (data['status'] == 200){
+	        	$("#nearby_users_list").append(data.html);
+	        	$("[data-toggle]").tooltip();
+	        	$("#load_more_nearby_users").html('<span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"></path></svg></span> <?php echo $wo['lang']['load_more']; ?>');
+	        	if (data.users_info != '') {
+	        		data.users_info.forEach(function(element) {
+	        			marker = new L.marker([element.lat,element.lng])
+						.bindPopup(element.name)
+						.addTo(map);
+						markersArray.push(marker);
+					});
+	        	}
+	        } 
+	        else{
+	        	$("#load_more_nearby_users").html('<?php echo $wo['lang']['no_result']; ?>');
+	        } 
+		})
+		.fail(function() {
+			console.log("error");
+		})
+	}
+</script>

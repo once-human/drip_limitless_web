@@ -1,0 +1,14 @@
+<div class="wow_content mb-15 tag_sidebar_widget sidebar-add-wrapper rads-<?php echo $wo['sidebar-ad']['bidding']; ?>" id="<?php echo $wo['sidebar-ad']['id']; ?>">
+	<div class="valign tag_sidebar_widget_title">
+		<b><?php echo $wo['lang']['sponsored'] ?></b>
+	</div>
+	<div class="pointer sidebar-add-body">
+        <img src="<?php echo $wo['sidebar-ad']['ad_media']; ?>" alt="<?php echo $wo['lang']['sponsored'] ?>">
+    </div>
+	<div class="pointer sidebar-add-footer">
+        <p class="bold truncate add-title"><?php echo $wo['sidebar-ad']['headline']; ?></p>
+        <p class="add-descrition"><?php echo $wo['sidebar-ad']['description']; ?></p>
+        <time><a href="<?php  echo $wo['sidebar-ad']['url'];?>" class="main" target="_blank"><?php echo Wo_UrlDomain($wo['sidebar-ad']['url']); ?></a></time>
+    </div>
+	<div class="clear"></div>
+</div>

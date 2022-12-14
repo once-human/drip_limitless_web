@@ -1,0 +1,27 @@
+<div class="modal fade" id="select-language" role="dialog">
+	<div class="modal-dialog wow_mat_mdl">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title"><?php echo $wo['lang']['language'];?></h4>
+			</div>
+			<div class="modal-body" id="wo_language_modal">
+				<ul>
+					<?php
+						$langs = Wo_LangsNamesFromDB();
+						if (count($langs) > 0) {
+							foreach ($langs as $key => $wo['langs']) {
+								if ($wo['config'][$wo['langs']] == 1) {
+									$language = $wo['langs'];
+									$languages_name = ucfirst($wo['langs']);
+									$link = ($wo['config']['seoLink'] == 1) ? '?lang=' . $language: '?&lang=' . $language;
+					?>
+						<li class="language_select"><a href="<?php echo $link;?>" rel="nofollow" class="<?php echo $languages_name;?>"><?php echo $languages_name;?></a></li>
+					<?php } } } ?>
+				</ul>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default btn-mat" data-dismiss="modal" aria-label="Close"><?php echo $wo['lang']['close'] ?></button>
+			</div>
+      </div>
+	</div>
+</div>

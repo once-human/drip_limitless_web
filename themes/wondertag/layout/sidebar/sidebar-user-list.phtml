@@ -1,0 +1,9 @@
+<div class="wow_side_usrs">
+	<div class="tag_sidebar_users">
+		<a href="<?php echo $wo['UsersList']['url'];?>" data-ajax="?link1=timeline&u=<?php echo $wo['UsersList']['username']?>" class="avatar">
+			<img src="<?php echo $wo['UsersList']['avatar'];?>" alt="<?php echo $wo['UsersList']['name']; ?>"/>
+		</a>
+		<a href="<?php echo $wo['UsersList']['url'];?>" data-ajax="?link1=timeline&u=<?php echo $wo['UsersList']['username']?>" class="truncate"><?php echo $wo['UsersList']['name']; ?></a>
+		<div><?php echo Wo_GetFollowButton($wo['UsersList']['user_id']);?></div>
+	</div>
+</div>

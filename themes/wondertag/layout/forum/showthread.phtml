@@ -1,0 +1,137 @@
+<?php echo Wo_LoadPage('forum/headers/header'); ?>
+<div role="tabpanel" class="tab-pane active" id="showthread">
+	<div class="page-margin wow_content p20">
+		<div class="tag_forum_main_hdr">
+			<h3 class="ftitle"><?php echo $wo['thread']['headline']; ?></h3>
+			<div class="read-blog-info-user">
+				<div class="postMeta--author-avatar">
+					<a class="reply_user" href="<?php echo ($wo['thread']['user_data']['url']); ?>" data-ajax="?link1=timeline&u=<?php echo $wo['thread']['user_data']['username']; ?>"><img src="<?php echo $wo['thread']['user_data']['avatar']?>" alt="User Image"></a>
+				</div>
+				<div class="postMeta--author-text">
+					<a class="reply_user" href="<?php echo ($wo['thread']['user_data']['url']); ?>" data-ajax="?link1=timeline&u=<?php echo $wo['thread']['user_data']['username']; ?>"><?php echo $wo['thread']['user_data']['name']; ?></a>
+					<time><?php echo Wo_Time_Elapsed_String($wo['thread']['posted']); ?></time>
+				</div>
+			</div>
+			<p><?php echo Wo_BbcodeToHtml($wo['thread']['post']); ?></p>
+			<a class="btn btn-main btn-mat" href="<?php echo Wo_SeoLink('index.php?link1=threadreply&tid='.$wo['thread']['id']);?>" data-ajax="?link1=threadreply&tid=<?php echo $wo['thread']['id'];?>"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M10,9V5L3,12L10,19V14.9C15,14.9 18.5,16.5 21,20C20,15 17,10 10,9Z"></path></svg> <?php echo $wo['lang']['reply_to_topic']; ?></a>
+			<a class="btn btn-default btn-mat" href="javascript:void(0)" onclick="ThreadShare(this)"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z"></path></svg> <?php echo $wo['lang']['share_on_timeline']; ?></a>
+		</div>
+		<hr>
+		<h4 class="tag_forum_reply_count"><?php echo $wo['thread']['replies']; ?> <?php echo $wo['lang']['replies']; ?></h4>
+		<div class="wow_thread_replies" id="thread-reply-list">
+			<?php 
+				if (count($wo['thread']['threadreplies']) > 0) {
+					foreach ($wo['thread']['threadreplies'] as $wo['threadreply']) {
+						echo Wo_LoadPage("forum/includes/threadreply-list");
+					}
+				} else {
+					echo '<div class="empty_state"><svg height="512" viewBox="0 0 32 32" width="512" xmlns="http://www.w3.org/2000/svg"><path d="m26 32h-20c-3.314 0-6-2.686-6-6v-20c0-3.314 2.686-6 6-6h20c3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6z" fill="#ffe6e2"/><path d="m14.667 12.668v-2.835c0-.201-.12-.382-.305-.461-.184-.078-.399-.038-.543.102l-5.667 5.5c-.097.095-.152.224-.152.359s.055.265.152.359l5.667 5.5c.145.14.359.179.543.102.185-.078.305-.26.305-.461v-2.833h.945c3.091 0 5.94 1.68 7.436 4.381l.014.025c.089.163.259.26.439.26.041 0 .083-.005.124-.016.22-.055.375-.255.375-.483 0-5.183-4.171-9.41-9.333-9.499z" fill="#fc573b"/></svg>' . $wo['lang']['no_replies_found'] .  '</div>';
+				}
+			?>
+			<div class="clear"></div>
+		</div>
+	</div>
+	<div class="posts_load">
+		<?php if (count($wo['thread']['threadreplies']) >= 1): ?>
+			<div class="load-more">
+				<button class="btn btn-default text-center wo_load_more" id="load-thread-replies"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"></path></svg></span> <?php echo $wo['lang']['load_more_posts'] ?></button>
+			</div>
+		<?php endif ?>
+	</div>
+</div>
+<div class="clear"></div>
+<?php echo Wo_LoadPage('forum/includes/delete-reply'); ?>
+<?php echo Wo_LoadPage('forum/headers/footer'); ?>
+
+<script>
+	function ThreadShare(self) {
+		$(self).attr('disabled', 'true');
+		$.post(Wo_Ajax_Requests_File() + '?f=thread_share&hash_id=' + $('.main_session').val(), {id: <?php echo $wo['thread']['id']; ?>}, function(data, textStatus, xhr) {
+			setTimeout(function (argument) {
+				$(self).removeAttr('disabled');
+				$("body").snackbar({
+					message: "<?php echo $wo['lang']['thread_shared']; ?>"
+				});
+			},1000);
+		});
+	}
+
+	$('#forum-messages-search').submit(function(event) {
+		if (true) {}
+		event.preventDefault()
+	    $.ajax({
+          url: Wo_Ajax_Requests_File()  +  '?f=forum-messages-search&tid=<?php echo $wo['thread']['id']; ?>',
+          data:$(this).serialize(),
+          type: 'GET',
+          dataType: 'json',
+          beforeSend: function() {
+            Wo_progressIconLoader($('#forum-messages-search').find('button'));
+          },
+          success: function(data) {
+            $(".posts_load").remove()
+            if (data['status'] == 200) {
+                $("#thread-reply-list").html(data['html']);
+            } else {
+                $("#thread-reply-list").html('<h5 class="search-filter-center-text">' + data['html'] + '</h5>');
+            } 
+            Wo_progressIconLoader($('#quotereply').find('button'));
+          }
+        });
+    });
+
+      $("#load-thread-replies").click(function () {
+        $.ajax({
+             url: Wo_Ajax_Requests_File(),
+             type: 'GET',
+             dataType: 'json',
+             data: {
+                f:"load-thread-replies",
+                tid:<?php echo $wo['thread']['id']; ?>,
+                offset:($(".thread-replies").length > 0) ? $(".thread-replies:last").attr('data-thread-reply') : 0
+             },
+             success:function(data){
+                if (data['status'] == 200) {
+                    $("#thread-reply-list").append(data['html'])
+                 }
+                 else{
+                   $(".posts_load").remove()
+                   
+                 }
+             }
+          });
+      });
+
+  	var delay = (function(){
+	var timer = 0;
+	return function(callback, ms){
+	  clearTimeout (timer);
+	  timer = setTimeout(callback, ms);
+		};
+	})();
+
+	$("#forum-messages-search").keyup(function(event) {
+      delay(function(){
+      if ($("#forum-messages-search").val().trim()) {
+	      $.ajax({
+	        url: Wo_Ajax_Requests_File(),
+	        type: 'GET',
+	        data: {	f:"forum-messages-search",
+	        		keyword:$("#forum-messages-search").val(),
+	        		tid:<?php echo $wo['thread']['id']; ?>
+	        	},
+	        dataType: "json",
+	        success: function(data){
+	          if (data['status'] == 200) {
+	          	$("#thread-reply-list").html(data['html']);
+	          	$(".posts_load").remove()
+	          }
+	          else if(data['status'] == 404){
+	         	$("#thread-reply-list").html('<h5 class="search-filter-center-text">' + data['html'] + '</h5>');
+	         	$(".posts_load").remove()
+	          }
+	        }
+	      })}
+
+      }, 1000 );
+  	});
+</script>

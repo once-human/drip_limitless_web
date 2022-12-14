@@ -1,0 +1,41 @@
+<div class="valign tag_hdr_right flex-end">
+	<div class="tag_main_usr_ddmenu dropdown">
+		<button class="tag_hdr_droptoggle" data-toggle="dropdown" data-display="static" role="button" aria-expanded="false">
+			<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+		</button>
+		<ul class="dropdown-menu dropdown-menu-right dropdown-static-menu tag_hdr_user_dropdown tag_scroll" role="menu">
+			<li>
+				<a href="<?php echo Wo_SeoLink('index.php?link1=welcome&last_url=' . $wo['actual_link']);?>"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,3c-4.625,0-8.442,3.507-8.941,8.001H10v-3l5,4l-5,4v-3H3.06C3.56,17.494,7.376,21,12,21c4.963,0,9-4.037,9-9 S16.963,3,12,3z" /></svg> <?php echo $wo['lang']['login']; ?></a>
+			</li>
+			<?php if ($wo['config']['user_registration'] == 1): ?>
+				<li>
+					<a href="<?php echo Wo_SeoLink('index.php?link1=register');?>"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 8.552c0 1.995 1.505 3.5 3.5 3.5s3.5-1.505 3.5-3.5-1.505-3.5-3.5-3.5S4.5 6.557 4.5 8.552zM19 8L17 8 17 11 14 11 14 13 17 13 17 16 19 16 19 13 22 13 22 11 19 11zM4 19h8 1 1v-1c0-2.757-2.243-5-5-5H7c-2.757 0-5 2.243-5 5v1h1H4z" /></svg> <?php echo $wo['lang']['register']; ?></a>
+				</li>
+			<?php endif ?>
+			<hr class="style-two">
+			<li>
+				<a href="<?php echo '?mode=' . $wo['mode_link'] ?>"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,11.807C9.349,9.155,8.7,5.261,10.049,2c-1.875,0.37-3.666,1.281-5.12,2.735c-3.905,3.905-3.905,10.237,0,14.142	c3.906,3.906,10.237,3.905,14.143,0c1.454-1.454,2.364-3.244,2.735-5.119C18.545,15.106,14.651,14.458,12,11.807z" /></svg> <?php echo $wo['mode_text']; ?></a>
+			</li>
+			<div class="tag_footer_mobi"><?php echo Wo_LoadPage('footer/content')?></div>
+		</ul>
+		<ul class="dropdown-menu dropdown-static-menu tag_scroll tag_mobi_langs_menu dropdown-menu-right">
+			<button type="button" class="btn" onclick="$('.tag_main_usr_ddmenu').removeClass('open-lang');"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24"><path fill="currentColor" d="M20 11H6.83l2.88-2.88c.39-.39.39-1.02 0-1.41-.39-.39-1.02-.39-1.41 0L3.71 11.3c-.39.39-.39 1.02 0 1.41L8.3 17.3c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L6.83 13H20c.55 0 1-.45 1-1s-.45-1-1-1z" /></svg></button>
+			<h3><?php echo $wo['lang']['select'];?> <?php echo $wo['lang']['language'];?></h3>
+			<?php
+				$langs = Wo_LangsNamesFromDB();
+				if (count($langs) > 0) {
+					foreach ($langs as $key => $wo['langs']) {
+						if ($wo['config'][$wo['langs']] == 1) {
+						$language = $wo['langs'];
+						$languages_name = ucfirst($wo['langs']);
+						$link = ($wo['config']['seoLink'] == 1) ? '?lang=' . $language: '?&lang=' . $language;
+			?>
+				<li><a href="<?php echo $link;?>" rel="nofollow"><?php echo $languages_name;?></a></li>
+			<?php } } } ?>
+		</ul>
+	</div>
+</div>
+
+<script>
+window.addEventListener('resize', () => {let vh = window.innerHeight * 0.01;document.documentElement.style.setProperty('--vh', `${vh}px`);});
+</script>

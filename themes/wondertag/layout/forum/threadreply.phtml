@@ -1,0 +1,57 @@
+<?php echo Wo_LoadPage('forum/headers/header'); ?>
+<div class="row" id="threadreply">
+	<div class="col-xl-1"></div>
+	<div class="col-xl-10">
+		<div class="page-margin wow_content wow_sett_content">
+			<div class="valign wo_page_hdng">
+				<span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M10,9V5L3,12L10,19V14.9C15,14.9 18.5,16.5 21,20C20,15 17,10 10,9Z"></path></svg></span> <?php echo $wo['lang']['reply'];?> > <?php echo $wo['thread']['headline']; ?>
+			</div>
+			<form action="#" class="form" id="newtopicreply" method="post">
+				<div id="newtopicreply-alert"></div>
+				<label class="tag_field">
+					<input type="text" name="subject" id="subject" placeholder=" " value="<?php echo($wo['thread']['headline']); ?>">
+					<span><?php echo $wo['lang']['subject']; ?></span>
+				</label>
+				<div class="form-group">
+					<textarea rows="10" class="form-control" id="replythread" name="content"></textarea>
+				</div>
+				<div class="text-center">
+					<button class="btn btn-main btn-mat btn-mat-raised disable_btn" id="forum-search-btn" type="submit"><?php echo $wo['lang']['reply']; ?></button>
+				</div>
+			</form>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="col-xl-1"></div>
+</div>
+<?php echo Wo_LoadPage('forum/headers/footer'); ?>
+
+<?php if (isset($wo['bbcodeditor']) && $wo['bbcodeditor']): ?>
+<script>
+	jQuery(document).ready(function($) {
+		$('#newtopicreply').ajaxForm({
+	      url: Wo_Ajax_Requests_File()  +  '?f=threadreply&tid=<?php echo $wo['thread']['id']; ?>&fid=<?php echo $wo['thread']['forum']; ?>&q=0&hash=' + $('.main_session').val(),
+	      dataType:'json',
+	      beforeSend: function() {
+	        $('#newtopicreply').find('.disable_btn').attr('disabled','disabled');
+	      },
+	      success: function(data) {
+	        scrollToTop();
+	        if (data['status'] == 200) {
+				if (node_socket_flow == "1") {
+			        socket.emit("user_notification", { to_id: data.user_id, user_id: _getCookie("user_id"), type: "added" });
+			    }
+	         	$("#newtopicreply-alert").html('<div class="alert alert-success">'+ data['message'] +'</div>');
+	         	window.location = data.url;
+	        } else {
+	         	$("#newtopicreply-alert").html('<div class="alert alert-danger">' + data['message'] + '</div>');
+	        } 
+	        $('#newtopicreply').find('.disable_btn').removeAttr("disabled");
+	      }
+		});
+		
+		$('#replythread').bbcode();
+		$("#replythread").autogrow({vertical: true, horizontal: false});
+	});
+</script>
+<?php endif ?>

@@ -1,0 +1,16 @@
+<div class="col-lg-4 col-md-6 tag_main_blog_col" data-blog-id="<?php echo $wo['article']['id']; ?>">
+	<div class="tag_main_blog">
+		<a href="<?php echo $wo['article']['url']; ?>" class="avatar">
+			<img src="<?php echo $wo['article']['thumbnail']; ?>" alt="<?php echo $wo['article']['title']; ?>">
+		</a>
+		<a class="postCategory" href="<?php echo $wo['article']['category_link']; ?>" data-ajax="?link1=blog-category&id=<?php echo $wo['article']['category']; ?>"><?php echo $wo['blog_categories'][$wo['article']['category']]; ?></a>
+		<div class="info">
+			<h2 class="art-title"><a href="<?php echo $wo['article']['url']; ?>"><?php echo $wo['article']['title']; ?></a></h2>
+			<div class="postMeta--author-text truncate">
+				<a href="<?php echo $wo['article']['author']['url']; ?>" data-ajax="?link1=timeline&u=<?php echo $wo['article']['author']['username']; ?>"><?php echo $wo['article']['author']['name']; ?></a>
+				<span class="middot">·</span>
+				<time><?php echo date("d M Y",$wo['article']['posted']); ?></time>
+			</div>
+		</div>
+	</div>
+</div>

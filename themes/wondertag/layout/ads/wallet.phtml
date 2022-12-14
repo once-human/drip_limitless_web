@@ -1,0 +1,714 @@
+<style type="text/css">input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {-webkit-appearance: none;margin: 0;}</style>
+<script src="https://js.stripe.com/v3/"></script>
+<?php $loadPage = Wo_LoadPage('thirdparty/paypal-demo'); echo (!empty($loadPage)) ? $loadPage : '';?>
+<div class="container">
+	<h2 class="tag_page_title"><?php echo $wo['lang']['wallet']; ?></h2>
+	<?php echo Wo_LoadPage('ads/includes/header'); ?>
+	<div class="page-margin">
+		<div class="page-margin wow_content">
+			<?php if (isset($wo['replenishment_notif'])): ?>
+				<div id="replenish-user-account-alert">
+					<div class="alert alert-success"><?php echo $wo['replenishment_notif'];?></div>
+				</div>
+			<?php endif; ?>
+			<div id="replenish-user-account-alert-warning"></div>
+			<div class="alert alert-danger hidden please-check"><?php echo $wo['lang']['please_check_details'];?></div>
+			<div class="my_wallet valign wow_mini_wallets">
+				<div>
+					<p class="bold"><?php echo $wo['lang']['my_balance'];?></p>
+					<h5><sup><?php echo Wo_GetCurrency($wo['config']['ads_currency']); ?></sup><?php echo sprintf('%.2f',$wo['user']['wallet']);?></h5>
+				</div>
+				<div class="wow_mini_wallets_btns">
+					<button class="btn btn-mat" onclick="$('.wow_add_money_hid_form').slideToggle();">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36"><g fill="none" fill-rule="evenodd"><path d="M0 0H36V36H0z"></path><path d="M24,8 L27,8 C29.209139,8 31,9.790861 31,12 L31,21 C31,21.5522847 30.5522847,22 30,22 C29.4477153,22 29,21.5522847 29,21 L29,12 C29,10.8954305 28.1045695,10 27,10 L24,9.99965823 L8.00022697,10 C7.8335169,10 7.66997018,9.98639821 7.51063929,9.96024169 C7.32712607,9.93961912 7.15695063,9.91350998 7,9.88018522 L7,24 C7,25.1045695 7.8954305,26 9,26 L20,26 C20.5522847,26 21,26.4477153 21,27 C21,27.5522847 20.5522847,28 20,28 L9,28 C6.790861,28 5,26.209139 5,24 L5,6.88758976 L5.00223942,6.88815442 C5.06027967,5.28579284 6.36572233,4.00833373 7.97450277,4.00003973 C7.97964051,4.00001766 12.3214729,4.00000441 21,4 C22.6568542,4 24,5.34314575 24,7 L24,8 Z M28,26 L30,26 C30.5522847,26 31,26.4477153 31,27 C31,27.5522847 30.5522847,28 30,28 L28,28 L28,30 C28,30.5522847 27.5522847,31 27,31 C26.4477153,31 26,30.5522847 26,30 L26,28 L24,28 C23.4477153,28 23,27.5522847 23,27 C23,26.4477153 23.4477153,26 24,26 L26,26 L26,24 C26,23.4477153 26.4477153,23 27,23 C27.5522847,23 28,23.4477153 28,24 L28,26 Z M23,19 C22.4477153,19 22,18.5522847 22,18 C22,17.4477153 22.4477153,17 23,17 L25,17 C25.5522847,17 26,17.4477153 26,18 C26,18.5522847 25.5522847,19 25,19 L23,19 Z M22,7 C22,6.44771525 21.5522847,6 21,6 L7.98991605,6 C7.43820134,6.00283119 6.99736906,6.4482324 7.0001871,6.99484461 L7.00024026,7.00515539 C7.00307712,7.55542059 7.44995446,8 8.00022697,8 L22,8 L22,7 Z" fill="#4caf50" fill-rule="nonzero"></path></g></svg> <?php echo $wo['lang']['add_funds'];?>
+					</button>
+					<button data-toggle="modal" data-target="#send_money_modal" class="btn btn-mat">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36"><g fill="none" fill-rule="evenodd"><path d="M0 0H36V36H0z"></path><path d="M27,26 L25.4,24.8 C24.9581722,24.4686292 24.8686292,23.8418278 25.2,23.4 C25.5313708,22.9581722 26.1581722,22.8686292 26.6,23.2 L30.6,26.2 C31.1333333,26.6 31.1333333,27.4 30.6,27.8 L26.6,30.8 C26.1581722,31.1313708 25.5313708,31.0418278 25.2,30.6 C24.8686292,30.1581722 24.9581722,29.5313708 25.4,29.2 L27,28 L9,28 C6.790861,28 5,26.209139 5,24 L5,6.88758976 L5.00223942,6.88815442 C5.06027967,5.28579284 6.36572233,4.00833373 7.97450277,4.00003973 C7.97964051,4.00001766 12.3214729,4.00000441 21,4 C22.6568542,4 24,5.34314575 24,7 L24,8 L27,8 C29.209139,8 31,9.790861 31,12 L31,21 C31,21.5522847 30.5522847,22 30,22 C29.4477153,22 29,21.5522847 29,21 L29,12 C29,10.8954305 28.1045695,10 27,10 L24,9.99965823 L8.00022697,10 C7.8335169,10 7.66997018,9.98639821 7.51063929,9.96024169 C7.32712607,9.93961912 7.15695063,9.91350998 7,9.88018522 L7,24 C7,25.1045695 7.8954305,26 9,26 L27,26 Z M23,19 C22.4477153,19 22,18.5522847 22,18 C22,17.4477153 22.4477153,17 23,17 L25,17 C25.5522847,17 26,17.4477153 26,18 C26,18.5522847 25.5522847,19 25,19 L23,19 Z M22,7 C22,6.44771525 21.5522847,6 21,6 L7.98991605,6 C7.43820134,6.00283119 6.99736906,6.4482324 7.0001871,6.99484461 L7.00024026,7.00515539 C7.00307712,7.55542059 7.44995446,8 8.00022697,8 L22,8 L22,7 Z" fill="#2196f3" fill-rule="nonzero"></path></g></svg> <?php echo $wo['lang']['send_money'];?>
+					</button>
+				</div>
+			</div>
+			<div class="wow_add_money_hid_form text-center">
+				<form class="form" id="replenish-user-account">
+					<p class="bold"><?php echo $wo['lang']['replenish_my_balance'];?></p>
+					<div class="add-amount">
+						<h5><sup><?php echo Wo_GetCurrency($wo['config']['ads_currency']); ?></sup><input type="number" placeholder="0" min="1" max="1000" name="amount" id="amount" class="width-dynamic"/></h5>
+					</div>
+					<button type="submit" class="btn btn-main btn-mat btn-mat-raised">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M0.41,13.41L6,19L7.41,17.58L1.83,12M22.24,5.58L11.66,16.17L7.5,12L6.07,13.41L11.66,19L23.66,7M18,7L16.59,5.58L10.24,11.93L11.66,13.34L18,7Z"></path></svg> <?php echo $wo['lang']['continue'];?>
+					</button>
+				</form>
+			</div>
+		</div>
+		
+		<div class="page-margin wow_content">
+			<?php 
+				$wo['trans'] = Wo_GetMytransactions();
+			?>
+			<div class="wallet_transactions">
+				<p class="bold"><?php echo $wo['lang']['transaction_log']; ?></p>
+				<div class="tabbable">
+					<?php echo Wo_LoadPage('ads/includes/latest_activities');?>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<?php echo Wo_LoadPage('ads/send_money'); ?>
+
+<div id="pay-modal"></div>
+
+<div class="modal fade" id="paystack_wallet_modal" role="dialog" data-keyboard="false">
+	<div class="modal-dialog wow_mat_mdl modal-md">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title"><?php echo $wo['lang']['paystack'] ?></h4>
+			</div>
+			<form class="form form-horizontal" method="post" id="paystack_wallet_form" action="#">
+				<div class="modal-body">
+					<div id="paystack_wallet_alert"></div>
+					<div class="clear"></div>
+					<label class="tag_field">
+						<input id="paystack_wallet_email" type="email" autocomplete="off" placeholder=" " value="<?php echo($wo['user']['email']) ?>">
+						<span><?php echo $wo['lang']['email']; ?></span>
+					</label>
+					<input type="hidden" name="paystack_type" id="paystack_type">
+					<div class="clear"></div>
+				</div>
+				<div class="clear"></div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-mat btn-default disable_btn" data-dismiss="modal" aria-label="Close"><?php echo $wo['lang']['cancel']; ?></button>
+					<button type="button" class="btn btn-mat btn-main disable_btn" id="paystack_btn" onclick="InitializeWalletPaystack()"><?php echo $wo['lang']['pay']; ?></button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="cashfree_wallet_modal" role="dialog" data-keyboard="false">
+	<div class="modal-dialog wow_mat_mdl modal-md">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title"><?php echo $wo['lang']['cashfree'] ?></h4>
+			</div>
+			<form class="form form-horizontal" method="post" id="cashfree_form" action="#">
+				<div class="modal-body">
+					<div id="cashfree_alert"></div>
+					<div class="clear"></div>
+					<label class="tag_field">
+						<input id="cashfree_name" type="text" autocomplete="off" placeholder=" " value="<?php echo($wo['user']['name']) ?>">
+						<span><?php echo $wo['lang']['name']; ?></span>
+					</label>
+					<label class="tag_field">
+						<input id="cashfree_email" type="email" autocomplete="off" placeholder=" " value="<?php echo($wo['user']['email']) ?>">
+						<span><?php echo $wo['lang']['email']; ?></span>
+					</label>
+					<label class="tag_field">
+						<input id="cashfree_phone" type="text" autocomplete="off" placeholder=" " value="<?php echo($wo['user']['phone_number']) ?>">
+						<span><?php echo $wo['lang']['phone_number']; ?></span>
+					</label>
+					<input type="hidden" name="cashfree_type" id="cashfree_type">
+					<div class="clear"></div>
+				</div>
+				<div class="clear"></div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-mat btn-default disable_btn" data-dismiss="modal" aria-label="Close"><?php echo $wo['lang']['cancel']; ?></button>
+					<button type="button" class="btn btn-main disable_btn" id="cashfree_btn" onclick="SignatureWalletCashfree()"><?php echo $wo['lang']['pay']; ?></button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<?php if ($wo['config']['razorpay_payment'] == 'yes' && !empty($wo['config']['razorpay_key_id']) && !empty($wo['config']['razorpay_key_secret'])) { ?>
+<div class="modal fade" id="razorpay_modal" role="dialog" data-keyboard="false">
+	<div class="modal-dialog wow_mat_mdl modal-md">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title"><?php echo $wo['lang']['razorpay'] ?></h4>
+			</div>
+			<form class="form form-horizontal" method="post" id="razorpay_form" action="#">
+				<div class="modal-body">
+					<div id="razorpay_alert"></div>
+					<div class="clear"></div>
+					<label class="tag_field">
+						<input id="razorpay_name" type="text" autocomplete="off" placeholder=" " value="<?php echo($wo['user']['name']) ?>">
+						<span><?php echo $wo['lang']['name']; ?></span>
+					</label>
+					<label class="tag_field">
+						<input id="razorpay_email" type="email" autocomplete="off" placeholder=" " value="<?php echo($wo['user']['email']) ?>">
+						<span><?php echo $wo['lang']['email']; ?></span>
+					</label>
+					<label class="tag_field">
+						<input id="razorpay_phone" type="text" autocomplete="off" placeholder=" " value="<?php echo($wo['user']['phone_number']) ?>">
+						<span><?php echo $wo['lang']['phone_number']; ?></span>
+					</label>
+					<input type="hidden" name="razorpay_type" id="razorpay_type">
+					<div class="clear"></div>
+				</div>
+				<div class="clear"></div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-mat btn-default disable_btn" data-dismiss="modal" aria-label="Close"><?php echo $wo['lang']['cancel']; ?></button>
+					<button type="button" class="btn btn-main disable_btn" id="razorpay_btn" onclick="SignatureRazorpay()"><?php echo $wo['lang']['pay']; ?></button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<?php } ?>
+
+<script>
+$.fn.textWidth = function(text, font) {
+    
+    if (!$.fn.textWidth.fakeEl) $.fn.textWidth.fakeEl = $('<span>').hide().appendTo(document.body);
+    
+    $.fn.textWidth.fakeEl.text(text || this.val() || this.text() || this.attr('placeholder')).css('font', font || this.css('font'));
+    
+    return $.fn.textWidth.fakeEl.width();
+};
+
+$('.width-dynamic').on('input', function() {
+    var inputWidth = $(this).textWidth();
+    $(this).css({
+        width: inputWidth
+    })
+}).trigger('input');
+
+
+function inputWidth(elem, minW, maxW) {
+    elem = $(this);
+    console.log(elem)
+}
+
+var targetElem = $('.width-dynamic');
+
+inputWidth(targetElem);
+
+<?php if ($wo['config']['razorpay_payment'] == 'yes' && !empty($wo['config']['razorpay_key_id']) && !empty($wo['config']['razorpay_key_secret'])) { ?>
+function pay_using_razorpay(type) {
+	$("#razorpay_alert").html('');
+	$('#razorpay_type').val(type)
+	$('#pay-go-pro').modal('hide');
+	$('#razorpay_modal').modal({
+        show: true
+    });
+}
+
+function SignatureRazorpay() {
+	$('#razorpay_btn').html("<?php echo($wo['lang']['please_wait']) ?>");
+	$('#razorpay_btn').attr('disabled','true');
+    var merchant_order_id = "<?php echo(round(111111,9999999)) ?>";
+    var card_holder_name_id = $('#razorpay_name').val();
+    var type = $('#razorpay_type').val();
+    var email = $('#razorpay_email').val();
+    var phone = $('#razorpay_phone').val();
+    //var currency_code_id = "<?php echo($wo['config']['currency']) ?>";
+    var currency_code_id = "INR";
+
+    if (!email || !phone || !card_holder_name_id) {
+    	$('#razorpay_alert').html("<div class='alert alert-danger'><?php echo($wo['lang']['please_check_details']) ?></div>");
+		setTimeout(function () {
+			$('#razorpay_alert').html("");
+		},3000);
+		$('#razorpay_btn').html("<?php echo($wo['lang']['pay']) ?>");
+		$('#razorpay_btn').removeAttr('disabled');
+		return false;
+    }
+
+
+    var merchant_total = Number($('#amount').val()) * 100;
+    
+    var razorpay_options = {
+        key: "<?php echo $wo['config']['razorpay_key_id']; ?>",
+        amount: merchant_total,
+        name: "<?php echo $wo['config']['siteName']; ?>",
+        description: "Top up wallet",
+        image: '<?php echo $wo['config']['theme_url'];?>/img/logo.<?php echo $wo['config']['logo_extension'];?>',
+        netbanking: true,
+        currency: currency_code_id,
+        prefill: {
+            name: card_holder_name_id,
+            email: email,
+            contact: phone
+        },
+        notes: {
+            soolegal_order_id: merchant_order_id,
+        },
+        handler: function (transaction) {
+            jQuery.ajax({
+                url:Wo_Ajax_Requests_File() + '?f=razorpay&s=wallet',
+                type: 'post',
+                data: {payment_id: transaction.razorpay_payment_id, order_id: merchant_order_id, card_holder_name_id: card_holder_name_id,  merchant_amount: merchant_total, currency: currency_code_id, type: 'wallet'}, 
+                dataType: 'json',
+                success: function (data) {
+                	if (data.status == 200) {
+                		window.location = data.url;
+                	}
+                	else{
+                		if (data.url != '') {
+                			window.location = data.url;
+                		}
+                		else{
+                			$('#razorpay_alert').html("<div class='alert alert-danger'>"+data.message+"</div>");
+							setTimeout(function () {
+								$('#razorpay_alert').html("");
+							},3000);
+							$('#razorpay_btn').html("<?php echo($wo['lang']['pay']) ?>");
+							$('#razorpay_btn').removeAttr('disabled');
+
+                		}
+                	}
+                }
+            });
+        },
+        "modal": {
+            "ondismiss": function () {
+                // code here
+            }
+        }
+    };
+    // obj        
+    var objrzpv1 = new Razorpay(razorpay_options);
+    objrzpv1.open();
+    e.preventDefault();
+}
+<?php } ?>
+
+<?php if ($wo['config']['paysera_payment'] == 'yes' && !empty($wo['config']['paysera_project_id']) && !empty($wo['config']['paysera_sign_password'])) { ?>
+	function pay_using_paysera(type) {
+		$('.btn-paysera').attr('disabled', true).text("<?php echo $wo["lang"]["please_wait"]?>");
+		amount = $('#amount').val();
+	    $.post(Wo_Ajax_Requests_File() + '?f=paysera&s=get_url', {type:'wallet',amount:amount}, function(data) {
+	        if (data.status == 200) {
+	            window.location.href = data.url;
+	        } else {
+	         	$('.btn-paysera').attr('disabled', false).html("Paysera App not set yet.");
+	        }
+	    });
+	}
+<?php } ?>
+
+
+
+
+	function pay_using_cashfree(type) {
+		$("#cashfree_wallet_alert").html('');
+		$('#pay-go-pro').modal('hide');
+		$('#cashfree_wallet_modal').modal({
+	        show: true
+	    });
+	}
+	function SignatureWalletCashfree() {
+		$('#cashfree_btn').html("<?php echo($wo['lang']['please_wait']) ?>");
+		$('#cashfree_btn').attr('disabled','true');
+		type = $('#cashfree_type').val();
+		email = $('#cashfree_email').val();
+		name = $('#cashfree_name').val();
+		phone = $('#cashfree_phone').val();
+		amount = $('#amount').val();
+		$.post(Wo_Ajax_Requests_File() + '?f=cashfree&s=initialize', {type:'wallet',email:email,name:name,phone:phone,amount:amount}, function(data) {
+			if (data.status == 200) {
+				$('body').append(data.html);
+				document.getElementById("redirectForm").submit();
+			} else {
+				$('#cashfree_wallet_alert').html("<div class='alert alert-danger'>"+data.message+"</div>");
+				setTimeout(function () {
+					$('#cashfree_wallet_alert').html("");
+				},3000);
+			}
+			$('#cashfree_btn').html("<?php echo($wo['lang']['pay']) ?>");
+			$('#cashfree_btn').removeAttr('disabled');
+		});
+	}
+
+
+
+	function pay_using_paystack(type) {
+		$("#paystack_wallet_alert").html('');
+		$('#pay-go-pro').modal('hide');
+		$('#paystack_wallet_modal').modal({
+	        show: true
+	    });
+	}
+
+	function InitializeWalletPaystack() {
+		$('#paystack_btn').html("<?php echo($wo['lang']['please_wait']) ?>");
+	    $('#paystack_btn').attr('disabled','true');
+		email = $('#paystack_wallet_email').val();
+		amount = $('#amount').val() * 100;
+		$.post(Wo_Ajax_Requests_File() + '?f=paystack&s=initialize', {type:'wallet',email:email,amount:amount}, function(data) {
+			if (data.status == 200) {
+				window.location.href = data.url;
+			} else {
+				$('#paystack_wallet_alert').html("<div class='alert alert-danger'>"+data.message+"</div>");
+				setTimeout(function () {
+					$('#paystack_wallet_alert').html("");
+				},3000);
+			}
+			$('#paystack_btn').html("<?php echo($wo['lang']['pay']) ?>");
+		    $('#paystack_btn').removeAttr('disabled');
+		});
+	}
+
+	function Wo_GetPayPalLink(type) {
+		$('.btn-paypal').attr('disabled', true).text("<?php echo $wo["lang"]["please_wait"]?>");
+		$.get(Wo_Ajax_Requests_File() + '?f=wallet&s=replenish-user-account', {amount:$('#amount').val(), desc: '<?php echo $wo['lang']['replenish_my_balance'];?>'}, function(data) {
+			if (data.status == 200) {
+				window.location.href = data.url;
+			} else {
+				$('.btn-paypal').attr('disabled', false).html("PayPal App not set yet.");
+			}
+		});
+	}
+	function Wo_CheckOutCard(type, description, amount, payment_type) {
+		description = "Wallet replenishment";
+		amount = $('#amount').val() * 100;
+
+		if (payment_type == 'bitcoin') {
+			$('.btn-bitcoin').attr('disabled', true).text("<?php echo $wo["lang"]["please_wait"]?>");
+			$('#pay-go-pro').modal({
+				show: false
+			});
+		} else if (payment_type == 'credit_card') {
+			$('.btn-cart').attr('disabled', true).text("<?php echo $wo["lang"]["please_wait"]?>");
+		} else if (payment_type == 'alipay') {
+			$('.btn-alipay').attr('disabled', true).text("<?php echo $wo["lang"]["please_wait"]?>");
+		}
+		var img = 'star';
+		if (type == 1) {
+			img = 'star';
+		} else if (type == 2) {
+			img = 'hot';
+		} else if (type == 3) {
+			img = 'ultima';
+		} else if (type == 4) {
+			img = 'vip';
+		}
+		if (payment_type != 'bank_payment' && payment_type != 'checkout' && payment_type != 'bitcoin') {
+			var stripe = Stripe('<?php echo $wo['config']['stripe_id'];?>');
+			$.post(Wo_Ajax_Requests_File() + '?f=stripe&s=session', {amount: $('#amount').val(),type:'wallet',payment_type:payment_type}, function(data, textStatus, xhr) {
+				if (data.status == 200) {
+					return stripe.redirectToCheckout({ sessionId: data.sessionId });
+				}
+			});
+		}
+		if (payment_type == 'bitcoin') {
+			if( $('#amount').val() <= 0 ){
+				$('#pay-go-pro').modal('hide');
+				alert('You must enter value greater than ZERO');
+				return false;
+			}else{
+				$.get(Wo_Ajax_Requests_File() + '?f=pay_with_bitcoin&amount=' + $('#amount').val(), function (data) {
+					if (data.status == 200) {
+						$(data.html).appendTo('body').submit();
+					}
+				});
+			}
+
+		} else if (payment_type == 'bank_payment') {
+	    	$('#configreset').click();
+	    	$(".prv-img").html('<div class="thumbnail-rendderer"><div><h4 class="bold"><?php echo $wo['lang']['drop_img_here']; ?></h4><div class="error-text-renderer"></div><div><span><?php echo $wo['lang']['or']; ?></span><p><?php echo $wo['lang']['browse_to_upload']; ?></p></div></div> </div>');
+			$("#blog-alert").html('');
+	    	$('#bank_transfer_des').val('Add to balance');
+	    	$('#bank_transfer_price').val($('#amount').val());
+	    	$('#pay-go-pro').modal('hide');
+	    	$('#bank_transfer_modal').modal({
+	             show: true
+	            });
+	    	
+	   	  
+		} else if (payment_type == 'checkout') {
+			$("#2checkout_alert_wallet").html('');
+			$('#pay-go-pro').modal('hide');
+	    	$('#2checkout_wallet_modal').modal({
+	            show: true
+	        });
+		}
+		$(window).on('popstate', function() {
+		handler.close();
+		});
+	}
+
+	jQuery(document).ready(function($) {
+
+		$("#replenish-user-account").submit(function(e) {
+			e.preventDefault();
+			var string = $('#amount').val();
+			if (string.indexOf(',') > -1 || string < 0 || string == 0) { 
+				$('.please-check').removeClass("hidden");
+				return false;
+			}
+			$('.please-check').addClass("hidden");
+			var type = 1;
+			$.get(Wo_Ajax_Requests_File() + '?f=get_payment_method&type=' + type, function (data) {
+				if (data.status == 200) {
+					$('#pay-modal').html(data.html);
+					$('#pay-go-pro').modal({
+						show: true
+					});
+				}
+			});
+		});
+		$('#bank_transfer_form_wallet').ajaxForm({
+		  url: Wo_Ajax_Requests_File() + '?f=bank_transfer_wallet',
+		  beforeSend: function() {
+	    $('#bank_transfer_form_wallet').find('.disable_btn').attr('disabled','disabled');
+	  },
+	  success: function(data) {
+	    if (data['status'] == 200) {
+	    	$("#blog-alert").html('<div class="alert alert-success">'+ data['message'] +'</div>');
+	    	setTimeout(function () {
+	    		window.location = "<?php echo $wo['config']['site_url'];?>";
+	    		$(".prv-img").html('<div class="thumbnail-rendderer"><div><h4 class="bold"><?php echo $wo['lang']['drop_img_here']; ?></h4><div class="error-text-renderer"></div><div><span><?php echo $wo['lang']['or']; ?></span><p><?php echo $wo['lang']['browse_to_upload']; ?></p></div></div> </div>');
+	    		$("#blog-alert").html('');
+	    		$('#configreset').click();
+
+	    	},3000)
+	    } else if (data['message']) {
+	      $("#blog-alert").html('<div class="alert alert-danger">' + data['message'] + '</div>');
+	    } 
+	    $('#bank_transfer_form_wallet').find('.disable_btn').removeAttr("disabled");
+		}});
+	});
+	$(document).on('change', '#upload', function(event) {
+	let imgPath = $(this)[0].files[0].name;
+    if (typeof(FileReader) != "undefined") {
+        let reader = new FileReader();
+        reader.onload = function(e) {
+			$('#receipt_img_preview').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(this.files[0]);
+    }
+	$('#bank_transfer_modal').addClass('up_rec_img_ready');
+});
+
+// Called when token created successfully.
+var successCallback = function(data) {
+	console.log(data);
+    var myForm = document.getElementById('2checkout_form_wallet');
+    $.post(Wo_Ajax_Requests_File() + '?f=2checkout_wallet', {card_number: $("#card_number").val(),card_cvc: $("#card_cvc").val(),card_month: $("#card_month").val(),card_year: $("#card_year").val(),card_name: $("#card_name").val(),card_address: $("#card_address").val(),card_city: $("#card_city").val(),card_state: $("#card_state").val(),card_zip: $("#card_zip").val(),card_country: $("#card_country").val(),card_email: $("#card_email").val(),card_phone: $("#card_phone").val(),amount: $('#amount').val(),token: data.response.token.token}, function(data, textStatus, xhr) {
+    	$('#2checkout_btn_wallet').html("<?php echo($wo['lang']['pay']) ?>");
+    	$('#2checkout_btn_wallet').attr('disabled');
+    	$('#2checkout_btn_wallet').removeAttr('disabled');
+    	$('#2checkout_form_wallet').find('.ball-pulse').fadeOut(100);
+    	if (data.status == 200) {
+      	 	window.location.href = data.location;
+      	} else {
+      	 	$('#2checkout_alert_wallet').html("<div class='alert alert-danger'>"+data.error+"</div>");
+			setTimeout(function () {
+				$('#2checkout_alert_wallet').html("");
+			},3000);
+      	}
+    	/*optional stuff to do after success */
+    });
+};
+
+// Called when token creation fails.
+var errorCallback = function(data) {
+	$('#2checkout_btn_wallet').html("<?php echo($wo['lang']['pay']) ?>");
+	$('#2checkout_btn_wallet').removeAttr('disabled');
+	$('#2checkout_form_wallet').find('.ball-pulse').fadeOut(100);
+    if (data.errorCode === 200) {
+        tokenRequest();
+    } else {
+    	$('#2checkout_alert_wallet').html("<div class='alert alert-danger'>"+data.errorMsg+"</div>");
+		setTimeout(function () {
+			$('#2checkout_alert_wallet').html("");
+		},3000);
+    }
+};
+
+var tokenRequest = function() {
+	$('#card_number').val($('#_number_').val());
+	$('#2checkout_btn_wallet').html("<?php echo($wo['lang']['please_wait']) ?>");
+	$('#2checkout_btn_wallet').attr('disabled','true');
+	if ($("#card_number").val() != '' && $("#card_cvc").val() != '' && $("#card_month").val() != '' && $("#card_year").val() != '' && $("#card_name").val() != '' && $("#card_address").val() != '' && $("#card_city").val() != '' && $("#card_state").val() != '' && $("#card_zip").val() != '' && $("#card_country").val() != 0 && $("#card_email").val() != '' && $("#card_phone").val() != '') {
+		$('#2checkout_form_wallet').find('.ball-pulse').fadeIn(100);
+		// Setup token request arguments
+	    var args = {
+	        sellerId: "<?php echo($wo['config']['checkout_seller_id']) ?>",
+	        publishableKey: "<?php echo($wo['config']['checkout_publishable_key']) ?>",
+	        ccNo: $("#card_number").val(),
+	        cvv: $("#card_cvc").val(),
+	        expMonth: $("#card_month").val(),
+	        expYear: $("#card_year").val()
+	    };
+
+	    // Make the token request
+	    TCO.requestToken(successCallback, errorCallback, args);
+	}
+	else{
+		$('#2checkout_btn_wallet').html("<?php echo($wo['lang']['pay']) ?>");
+		$('#2checkout_btn_wallet').removeAttr('disabled');
+		$('#2checkout_alert_wallet').html("<div class='alert alert-danger'><?php echo($wo['lang']['please_check_details']) ?></div>");
+		setTimeout(function () {
+			$('#2checkout_alert_wallet').html("");
+		},3000);
+
+	}
+};
+
+<?php if ($wo['config']['checkout_payment'] == 'yes') { ?>
+$(function() {
+    // Pull in the public encryption key for our environment
+    TCO.loadPubKey("<?php echo($wo['config']['checkout_mode']) ?>");
+});
+<?php } ?>
+</script>
+
+<div class="modal fade" id="2checkout_wallet_modal" role="dialog" data-keyboard="false">
+	<div class="modal-dialog wow_mat_mdl modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title"><?php echo $wo['lang']['2checkout'] ?></h4>
+			</div>
+			<form class="form form-horizontal" method="post" id="2checkout_form_wallet" action="#">
+				<div class="modal-body">
+					<div id="2checkout_alert_wallet"></div>
+					<div class="clear"></div>
+					<div class="row">
+						<div class="col-lg-6">
+							<label class="tag_field">
+								<input id="card_name" type="text" autocomplete="off" placeholder=" " value="<?php echo($wo['user']['name']) ?>">
+								<span><?php echo $wo['lang']['name']; ?></span>
+							</label>
+							<label class="tag_field">
+								<input id="card_email" type="email" autocomplete="off" placeholder=" " value="<?php echo($wo['user']['email']) ?>">
+								<span><?php echo $wo['lang']['email']; ?></span>
+							</label>
+							<label class="tag_field">
+								<input id="card_phone" type="tel" autocomplete="off" placeholder=" " value="<?php echo($wo['user']['phone_number']) ?>">
+								<span><?php echo $wo['lang']['phone_number']; ?></span>
+							</label>
+							<label class="tag_field">
+								<input id="card_address" type="text" autocomplete="off" placeholder=" " value="<?php echo($wo['user']['address']) ?>">
+								<span><?php echo $wo['lang']['address']; ?></span>
+							</label>
+							<div class="row">
+								<div class="col-md-6">
+									<label class="tag_field">
+										<input id="card_city" type="text" autocomplete="off" placeholder=" " value="<?php echo($wo['user']['city']) ?>">
+										<span><?php echo $wo['lang']['city']; ?></span>
+									</label>
+								</div>
+								<div class="col-md-6">
+									<label class="tag_field">
+										<input id="card_zip" type="text" autocomplete="off" placeholder=" " value="<?php echo($wo['user']['zip']) ?>">
+										<span><?php echo $wo['lang']['zip']; ?></span>
+									</label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<label class="tag_field">
+										<input id="card_state" type="text" autocomplete="off" placeholder=" " value="<?php echo($wo['user']['state']) ?>">
+										<span><?php echo $wo['lang']['state']; ?></span>
+									</label>
+								</div>
+								<div class="col-md-6">
+									<label class="tag_field">
+										<select id="card_country" name="card_country">
+											<?php 
+												foreach ($wo['countries_name'] as $country_ids => $country) { 
+													$country_id = $wo['user']['country_id'];
+													$selected_contry = ($country_ids == $country_id) ? ' selected' : '' ;
+											?>
+												<option value="<?php echo $country_ids;?>" <?php echo $selected_contry;?> ><?php echo $country;?></option>
+											<?php } ?>
+										</select>
+										<span><?php echo $wo['lang']['country']; ?></span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-6">
+							<div class="two_check_card">
+								<label class="tag_field">
+									<input id="_number_" type="text" autocomplete="off" placeholder=" ">
+									<span><?php echo $wo['lang']['card_number']; ?></span>
+									<input id="card_number" name="card_number" type="hidden" autocomplete="off">
+								</label>
+								<label class="tag_field">
+									<select id="card_month" name="card_month">
+										<option value="01">01</option>
+										<option value="02">02</option>
+										<option value="03">03</option>
+										<option value="04">04</option>
+										<option value="05">05</option>
+										<option value="06">06</option>
+										<option value="07">07</option>
+										<option value="08">08</option>
+										<option value="09">09</option>
+										<option value="10">10</option>
+										<option value="11">11</option>
+										<option value="12">12</option>
+									</select>
+									<span><?php echo $wo['lang']['month']; ?></span>
+								</label>
+								<label class="tag_field">
+									<select id="card_year" name="card_year">
+										<?php for ($i=date('Y'); $i <= date('Y')+15; $i++) {  ?>
+											<option value="<?php echo($i) ?>"><?php echo($i) ?></option>
+										<?php } ?>
+									</select>
+									<span><?php echo $wo['lang']['year']; ?></span>
+								</label>
+								<label class="tag_field">
+									<input id="card_cvc" name="card_cvc" type="text" autocomplete="off" placeholder=" " maxlength="3" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+									<span>CVC</span>
+								</label>
+							</div>
+						</div>
+					</div>
+					<div class="clear"></div>
+					<input id="card_token" name="token" type="hidden" value="">
+				</div>
+				<div class="clear"></div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-mat btn-default disable_btn" data-dismiss="modal" aria-label="Close"><?php echo $wo['lang']['cancel']; ?></button>
+					<button type="button" class="btn btn-main btn-mat disable_btn" onclick="tokenRequest()" id="2checkout_btn_wallet"><?php echo $wo['lang']['pay']; ?></button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="bank_transfer_modal" role="dialog" data-keyboard="false">
+	<div class="modal-dialog wow_mat_mdl">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title"><?php echo $wo['lang']['bank_transfer'] ?></h4>
+			</div>
+			<form class="form form-horizontal" method="post" id="bank_transfer_form_wallet" action="#">
+				<div class="modal-body dt_bank_trans_modal">
+					<div id="blog-alert"></div>
+					
+					<?php echo $wo['config']['bank_description'];?>
+					
+					<?php if (!empty($wo['config']['bank_transfer_note'])) { ?>
+						<div class="dt_user_profile hide_alert_info_bank_trans">
+							<ul class="dt_prof_vrfy">
+								<li><?php echo $wo['config']['bank_transfer_note'];?></li>
+							</ul>
+						</div>
+					<?php } ?>
+					<div class="upload_bank_receipts">
+						<div onclick="document.getElementById('upload').click(); return false">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M13.5,16V19H10.5V16H8L12,12L16,16H13.5M13,9V3.5L18.5,9H13Z"></path></svg>
+							<p><?php echo $wo['lang']['browse_to_upload']; ?></p>
+							<img id="receipt_img_preview" src="">
+						</div>
+					</div>
+					<input name="price" type="hidden" id="bank_transfer_price" class="hidden">
+					<input type="hidden" name="hash_id" value="<?php echo Wo_CreateSession();?>">
+					<input name="thumbnail" type="file" id="upload" class="hidden" accept="image/*">
+					<input name="type" type="hidden" id="bank_transfer_type" class="hidden">
+					<input name="description" type="hidden" id="bank_transfer_des" class="hidden">
+					<input type="reset" id="configreset" value="Reset" class="hidden">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-mat btn-default disable_btn" data-dismiss="modal" aria-label="Close"><?php echo $wo['lang']['cancel']; ?></button>
+					<button type="submit" class="btn btn-main btn-mat disable_btn"><?php echo $wo['lang']['send']; ?></button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

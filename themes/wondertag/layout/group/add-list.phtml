@@ -1,0 +1,13 @@
+<div class="col-6 col-md-4 col-lg-3 nearby_user_wrapper user-data" id="add-<?php echo $wo['UsersList']['user_id']?>" data-user-id="<?php echo $wo['UsersList']['user_id'];?>">
+	<div class="nearby_user_wrapper_innr text-center">
+		<div class="avatar">
+			<a href="<?php echo $wo['UsersList']['url'];?>" data-ajax="?link1=timeline&u=<?php echo $wo['UsersList']['username'];?>"><img src="<?php echo $wo['UsersList']['avatar'];?>" alt="<?php echo $wo['UsersList']['name']; ?>" /></a>
+		</div>
+		<span class="user-popover" data-id="<?php echo $wo['UsersList']['id'];?>" data-type="<?php echo $wo['UsersList']['type'];?>">
+			<a href="<?php echo $wo['UsersList']['url'];?>" data-ajax="?link1=timeline&u=<?php echo $wo['UsersList']['username'];?>" class="truncate user_wrapper_link"><?php echo $wo['UsersList']['name']; ?></a>
+		</span>
+		<div class="user-follow-button">
+			<button type="button" onclick="Wo_RegisterAddGroup(<?php echo $wo['UsersList']['user_id'];?>, <?php echo $wo['group_profile']['id'];?>)" class="btn btn-default btn-mat"><?php echo $wo['lang']['add'];?></button>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,190 @@
+<?php 
+$wondertage_settings = array();
+if (mysqli_query($wo['sqlConnect'], "DESCRIBE `wondertage_settings`" )) {
+	$settings = $db->get('wondertage_settings');
+	foreach ($settings as $key => $value) {
+		$wondertage_settings[$value->name] = $value->value;
+	}
+}
+?>
+
+<div class="valign stats tag_post_actions" <?php if ($wo['loggedin'] != true) { ?>onclick="location.href= '<?php echo $wo['config']['site_url'];?>'"<?php } ?>>
+	<div class="valign">
+		<?php echo Wo_LoadPage('buttons/like-wonder');?>
+		<div class="valign stat-item commnt" onclick="Wo_ShowComments(<?php echo $wo['story']['id']; ?>);">
+			<span class="icoo"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"><path fill="currentColor" d="M20,2H4C2.897,2,2,2.897,2,4v18l4-4h14c1.103,0,2-0.897,2-2V4C22,2.897,21.103,2,20,2z M9,12c-1.104,0-2-0.896-2-2 s0.896-2,2-2s2,0.896,2,2S10.104,12,9,12z M15,12c-1.104,0-2-0.896-2-2s0.896-2,2-2s2,0.896,2,2S16.104,12,15,12z"/></svg></span><span class="like-btn-mobile"><?php echo $wo['lang']['comment_post_label'] ?></span> 
+		</div>
+	</div>
+	<div>
+		<?php if($wo['config']['social_share_twitter'] == 0 && $wo['config']['social_share_facebook'] == 0 && $wo['config']['social_share_whatsup'] == 0 && $wo['config']['social_share_pinterest'] == 0 && $wo['config']['social_share_linkedin'] == 0 && $wo['config']['social_share_telegram'] == 0) { ?>
+			<?php if (empty($wo['story']['parent_id']) && $wo['story']['post_is_promoted'] != 1) { ?>
+				<div class="valign stat-item" onclick="Wo_SharePostOn(<?php echo $wo['story']['id']; ?>,<?php echo $wo['story']['user_id']; ?>,'timeline')" title="<?php echo $wo['lang']['share'];?>" data-toggle="tooltip">
+					<span class="icoo"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"><path fill="currentColor" d="M3,12c0,1.654,1.346,3,3,3c0.794,0,1.512-0.315,2.049-0.82l5.991,3.424C14.022,17.734,14,17.864,14,18c0,1.654,1.346,3,3,3 s3-1.346,3-3s-1.346-3-3-3c-0.794,0-1.512,0.315-2.049,0.82L8.96,12.397C8.978,12.266,9,12.136,9,12s-0.022-0.266-0.04-0.397 l5.991-3.423C15.488,8.685,16.206,9,17,9c1.654,0,3-1.346,3-3s-1.346-3-3-3s-3,1.346-3,3c0,0.136,0.022,0.266,0.04,0.397 L8.049,9.82C7.512,9.315,6.794,9,6,9C4.346,9,3,10.346,3,12z"/></svg></span>
+				</div>
+			<?php } ?>
+		<?php } else { ?>
+			<?php if (empty($wo['story']['parent_id']) && $wo['story']['post_is_promoted'] != 1) { ?>
+				<div class="valign stat-item" onclick="Wo_SharePostOn(<?php echo $wo['story']['id']; ?>,<?php echo $wo['story']['user_id']; ?>,'timeline')" title="<?php echo $wo['lang']['share'];?>" data-toggle="tooltip">
+					<span class="icoo"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"><path fill="currentColor" d="M3,12c0,1.654,1.346,3,3,3c0.794,0,1.512-0.315,2.049-0.82l5.991,3.424C14.022,17.734,14,17.864,14,18c0,1.654,1.346,3,3,3 s3-1.346,3-3s-1.346-3-3-3c-0.794,0-1.512,0.315-2.049,0.82L8.96,12.397C8.978,12.266,9,12.136,9,12s-0.022-0.266-0.04-0.397 l5.991-3.423C15.488,8.685,16.206,9,17,9c1.654,0,3-1.346,3-3s-1.346-3-3-3s-3,1.346-3,3c0,0.136,0.022,0.266,0.04,0.397 L8.049,9.82C7.512,9.315,6.794,9,6,9C4.346,9,3,10.346,3,12z"/></svg></span>
+				</div>
+			<?php } ?>
+		<?php } ?>
+	</div>
+</div>
+<?php if ($wo['loggedin'] == true) { ?>
+	<div class="valign tag_post_foot_stats">
+	<?php if ($wo['config']['second_post_button'] == 'reaction') { ?>
+		<div class="valign post-actions">
+			<div class="valign like-stat stat-item">
+				<span class="valign like-emo post-reactions-icons-<?php echo $wo['story']['id']; ?>"><?php echo Wo_GetPostReactions($wo['story']['id']);?></span>
+			</div>
+		</div>
+	<?php } else { ?>
+		<div class="valign post-actions">
+			<div class="pointer stat-item tag_hid_e_lik<?php if (Wo_CountLikes($wo['story']['id']) == 0) { ?> d-none<?php } ?>" onclick="Wo_OpenPostLikedUsers(<?php echo $wo['story']['id'] ?>,'post');">
+				<span id="likes"><?php echo $wo['story']['post_likes'];?></span> <?php echo $wo['lang']['likes'];?>
+			</div>
+			<?php if ($wo['config']['second_post_button'] != 'disabled') { ?>
+				<div class="pointer stat-item tag_hid_e_wnd<?php if (Wo_CountWonders($wo['story']['id']) == 0) { ?> d-none<?php } ?>" onclick="Wo_OpenPostWonderedUsers(<?php echo $wo['story']['id'] ?>,'post');">
+					<span class="middot"></span><span id="wonders"><?php echo $wo['story']['post_wonders'];?></span> <?php echo ($wo['config']['second_post_button'] == 'wonder') ? $wo['lang']['wonders']: $wo['lang']['dislikes'];?>
+				</div>
+			<?php } ?>
+		</div>
+	<?php } ?>
+	<div class="valign post-actions">
+		<?php if ($wo['story']['comments_status'] == 1) { ?> 
+			<div class="pointer stat-item tag_hid_e_com<?php if (Wo_CountPostComment($wo['story']['id']) == 0) { ?> d-none<?php } ?>" onclick="Wo_ShowComments(<?php echo $wo['story']['id'] ?>);">
+				<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"><path fill="currentColor" d="M20,2H4C2.897,2,2,2.897,2,4v18l4-4h14c1.103,0,2-0.897,2-2V4C22,2.897,21.103,2,20,2z M9,12c-1.104,0-2-0.896-2-2 s0.896-2,2-2s2,0.896,2,2S10.104,12,9,12z M15,12c-1.104,0-2-0.896-2-2s0.896-2,2-2s2,0.896,2,2S16.104,12,15,12z"></path></svg> <span id="comments"><?php echo $wo['story']['post_comments'];?></span> <span class="hide-word-stat"><?php echo $wo['lang']['comments'];?></span>
+			</div>
+		<?php } ?>
+		<?php if (!empty($wo['story']['postFile']) && strpos($wo['story']['postFile'], '_video') !== false): ?>
+			<span class="middot"></span><div class="stat-item">
+				<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"><path fill="currentColor" d="M12 4C7 4 2.73 7.11 1 11.5 2.73 15.89 7 19 12 19s9.27-3.11 11-7.5C21.27 7.11 17 4 12 4zm0 12.5c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path></svg> <span data-post-video-views="<?php echo $wo['story']['id']; ?>"><?php echo $wo['story']['videoViews'];?></span> <span class="hide-word-stat"><?php echo $wo['lang']['views'];?></span>
+			</div>
+		<?php endif; ?>
+		<?php if (Wo_CountPostShare($wo['story']['id']) == 0) { ?>
+		<?php } else { ?>
+			<span class="middot"></span><div class="pointer stat-item" onclick="Wo_OpenPostSharedUsers(<?php echo $wo['story']['id'] ?>);">
+				<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"><path fill="currentColor" d="M3,12c0,1.654,1.346,3,3,3c0.794,0,1.512-0.315,2.049-0.82l5.991,3.424C14.022,17.734,14,17.864,14,18c0,1.654,1.346,3,3,3 s3-1.346,3-3s-1.346-3-3-3c-0.794,0-1.512,0.315-2.049,0.82L8.96,12.397C8.978,12.266,9,12.136,9,12s-0.022-0.266-0.04-0.397 l5.991-3.423C15.488,8.685,16.206,9,17,9c1.654,0,3-1.346,3-3s-1.346-3-3-3s-3,1.346-3,3c0,0.136,0.022,0.266,0.04,0.397 L8.049,9.82C7.512,9.315,6.794,9,6,9C4.346,9,3,10.346,3,12z"></path></svg> <span id="post_share"><?php echo $wo['story']['post_share'];?></span> <span class="hide-word-stat"><?php echo $wo['lang']['share'];?></span>
+			</div>
+		<?php } ?>
+	</div>
+	</div>
+<?php } ?>
+<div class="clear"></div>
+</div>
+<div class="clear"></div>
+<div class="post-footer post-comments <?php echo ($wo['page'] != 'story') ? 'hidden' : ''; ?> <?php if (!empty($wo['story']['product_id'])) { ?>hidden<?php } ?><?php if (!empty($wondertage_settings) && $wondertage_settings['tag_show_comments'] == 1) { ?><?php if (Wo_CountPostComment($wo['story']['id']) > 0) { ?> d-block<?php } } ?>" id="post-comments-<?php echo $wo['story']['id']; ?>">
+	<div class="msg_progress"><div class="indeterminate"></div></div>
+	<div id="hidden_inputbox_comment"></div>
+	<?php if($wo['story']['post_comments'] > 3 && $wo['story']['comments_status'] == 1) { ?>
+		<div class="valign view-more-wrapper load-more-comments">
+			<?php if ($wo['story']['limited_comments'] === true) { ?>
+				<span class="pointer" onclick="Wo_loadAllComments(<?php echo $wo['story']['id']; ?>,this);"><?php echo $wo['lang']['view_more_comments'];?></span>
+			<?php } ?>
+			<div class="order-by"> 
+				<div class="dropdown">
+					<a class="dropdown-toggle pointer" data-toggle="dropdown"><?php echo $wo['lang']['sort_by'] ?>: <span class="order-text order-text-<?php echo $wo['story']['id']; ?>"><?php echo $wo['lang']['latest']; ?></span><span class="caret"></span></a>
+					<ul class="dropdown-menu tag_create_menu <?php if ($wo['story']['limited_comments'] === true) { ?>dropdown-menu-right<?php } ?>">
+						<li><a href="javascript:void(0)" onclick="Wo_SortComments('top',<?php echo $wo['story']['id']; ?>);"><?php echo $wo['lang']['top'] ?></a></li>
+						<li><a href="javascript:void(0)" onclick="Wo_SortComments('latest',<?php echo $wo['story']['id']; ?>);"><?php echo $wo['lang']['latest'] ?></a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	<?php } ?>
+	
+	<?php if ($wo['config']['live_video'] != 1 || ($wo['config']['live_video'] == 1 && !$wo['story']['is_still_live']) ) { ?>
+		<div class="comments-list">
+			<span class="comment-container"></span>
+			<?php 
+				foreach($wo['story']['get_post_comments'] as $wo['comment']) {
+					echo Wo_LoadPage('comment/content');
+				}
+			?>
+		</div>
+		<?php if (count($wo['story']['get_post_comments']) <  $wo['story']['post_comments'] && $wo['story']['comments_status'] == 1) { ?>
+			<div class="tag_post_load_more_comms">
+				<span onclick="Wo_loadPostMoreComments(<?php echo $wo['story']['id']; ?>,this);" class="btn btn-default btn-mat"><?php echo $wo['lang']['view_more_comments'];?></span>
+			</div>
+			<div class="clear"></div>
+		<?php } ?>
+	<?php } ?>
+	
+	<?php if ($wo['story']['comments_status'] == 1) { ?> 
+		<div class="<?php echo ($wo['page'] != 'story') ? '' : 'tag_sticky_coms'; ?>">
+			<div class="post-commet-textarea" <?php if ($wo['loggedin'] != true) { ?>onclick="location.href= '<?php echo $wo['config']['site_url'];?>'"<?php } ?> >
+				<div class="valign wo_comment_combo">
+					<?php if ($wo['loggedin'] == true) { ?>
+						<img class="avatar" src="<?php echo $wo['user']['avatar'];?>"/>
+						<div class="charsLeft-post"><span id="charsLeft_<?php echo $wo['story']['id']; ?>" data_num="<?php if ($wo['config']['maxCharacters'] != 10000) { echo $wo['config']['maxCharacters']; } ?>"><?php if ($wo['config']['maxCharacters'] != 10000) { echo $wo['config']['maxCharacters']; } ?></span></div>
+					<?php } ?>
+					<div class="valign remove_combo_on_click wo_comment_combo_<?php echo $wo['story']['id']; ?>" onclick="Wo_ShowCommentCombo(<?php echo $wo['story']['id']; ?>);">
+						<textarea class="auto-resize_<?php echo $wo['story']['id']; ?> form-control comment-textarea textarea tag_com_write_tarea<?php echo $wo['story']['id']; ?>" placeholder="<?php echo $wo['lang']['write_comment'];?>" type="text" onkeyup="Wo_LiveComment(this.value,event,<?php echo $wo['story']['id']; ?>);Wo_RegisterComment(this.value,<?php echo $wo['story']['id']; ?>,<?php echo $wo['story']['publisher']['user_id']; ?>, event, <?php echo (!empty($wo['story']['publisher']['page_id'])) ? $wo['story']['publisher']['page_id'] : '0'; ?>);" onkeydown="textAreaAdjustTag(this,'comm');" dir="auto" rows="1" oninput="count_char(this,<?php echo $wo['story']['id']; ?>)"></textarea>
+						<?php if ($wo['loggedin'] == true) { ?>
+							<div class="valign comment_combo_footer">
+								<?php if ($wo['config']['stickers'] == 1){ ?>
+									<div class="dropdown">
+										<span class="chat-gif-toggle" data-toggle="dropdown" role="button" class="btn" onclick="$('.gif_post_comment_gif').html('');">
+											<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"><path fill="<?php echo $wo['config']['btn_background_color'];?>" d="M13.177 12.013l-.001-.125v-.541-.512c0-.464 0-.827-.002-1.178a.723.723 0 0 0-.557-.7.715.715 0 0 0-.826.4c-.05.115-.072.253-.073.403-.003 1.065-.003 1.917-.002 3.834v.653c0 .074.003.136.009.195a.72.72 0 0 0 .57.619c.477.091.878-.242.881-.734.002-.454.003-.817.002-1.633l-.001-.681zm-3.21-.536a35.751 35.751 0 0 0-1.651-.003c-.263.005-.498.215-.565.48a.622.622 0 0 0 .276.7.833.833 0 0 0 .372.104c.179.007.32.008.649.005l.137-.001v.102c-.001.28-.001.396.003.546.001.044-.006.055-.047.081-.242.15-.518.235-.857.275-.767.091-1.466-.311-1.745-1.006a2.083 2.083 0 0 1-.117-1.08 1.64 1.64 0 0 1 1.847-1.41c.319.044.616.169.917.376.196.135.401.184.615.131a.692.692 0 0 0 .541-.562c.063-.315-.057-.579-.331-.766-.789-.542-1.701-.694-2.684-.482-2.009.433-2.978 2.537-2.173 4.378.483 1.105 1.389 1.685 2.658 1.771.803.054 1.561-.143 2.279-.579.318-.193.498-.461.508-.803.014-.52.015-1.046.001-1.578-.009-.362-.29-.669-.633-.679zM18 4.25H6A4.75 4.75 0 0 0 1.25 9v6A4.75 4.75 0 0 0 6 19.75h12A4.75 4.75 0 0 0 22.75 15V9A4.75 4.75 0 0 0 18 4.25zM21.25 15A3.25 3.25 0 0 1 18 18.25H6A3.25 3.25 0 0 1 2.75 15V9A3.25 3.25 0 0 1 6 5.75h12A3.25 3.25 0 0 1 21.25 9v6zm-2.869-6.018H15.3c-.544 0-.837.294-.837.839V14.309c0 .293.124.525.368.669.496.292 1.076-.059 1.086-.651.005-.285.006-.532.004-1.013v-.045l-.001-.46v-.052h1.096l1.053-.001a.667.667 0 0 0 .655-.478c.09-.298-.012-.607-.271-.757a.985.985 0 0 0-.468-.122 82.064 82.064 0 0 0-1.436-.006h-.05l-.523.001h-.047v-1.051h1.267l1.22-.001c.458-.001.768-.353.702-.799-.053-.338-.35-.56-.737-.561z"></path></svg>
+										</span>
+										<ul class="dropdown-menu dropdown-menu-right tag_scroll tag_comm_gifs" role="menu" onclick="event.stopPropagation()">
+											<div class="tag_chat_GIF">
+												<input type="text" class="form-control" placeholder="<?php echo $wo['lang']['search'] ?> GIFs" onkeyup="SearchForGif(this.value,<?php echo $wo['story']['id']; ?>,'story')">
+												<div id="publisher-box-stickers-cont-<?php echo $wo['story']['id']; ?>" class="gif_post_comment_gif tag_chat_GIF_cont tag_scroll"></div>
+											</div>
+										</ul>
+									</div>
+								<?php } ?>
+								<?php if ($wo['config']['stickers_system'] == 1) { ?>
+								<?php $stickers_system = Wo_GetAllStickers(50000);
+								if( count( $stickers_system ) > 0 ){ ?>
+									<div class="dropdown">
+										<span data-toggle="dropdown" role="button" class="btn sticker-form-<?php echo $wo['story']['id']; ?>" onclick="ShowCommentStickers(<?php echo $wo['story']['id']; ?>,'story')">
+											<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"><path d="M3 12C3 16.9706 7.02944 21 12 21C16.8604 21 20.8209 17.1473 20.9941 12.3292L11.6708 3.00592C6.85275 3.17914 3 7.13965 3 12Z" fill="<?php echo $wo['config']['btn_background_color'];?>" fill-opacity="0.16"/><path fill-rule="evenodd" clip-rule="evenodd" d="M11.6439 2.25641C11.852 2.24892 12.0539 2.32832 12.2012 2.47559L21.5244 11.7989C21.6717 11.9461 21.7511 12.148 21.7436 12.3561C21.5559 17.5762 17.2656 21.75 12 21.75C6.61522 21.75 2.25 17.3848 2.25 12C2.25 6.73446 6.4238 2.44408 11.6439 2.25641ZM10.5443 3.87797C6.68242 4.56539 3.75 7.94038 3.75 12C3.75 16.5564 7.44365 20.25 12 20.25C16.0596 20.25 19.4346 17.3176 20.122 13.4557C19.4471 13.6475 18.7351 13.75 18 13.75C13.7198 13.75 10.25 10.2802 10.25 6.00001C10.25 5.26486 10.3526 4.55286 10.5443 3.87797ZM11.9666 4.36232C11.8254 4.88381 11.75 5.43274 11.75 6.00001C11.75 9.45179 14.5482 12.25 18 12.25C18.5673 12.25 19.1162 12.1746 19.6377 12.0334L11.9666 4.36232Z" fill="<?php echo $wo['config']['btn_background_color'];?>"/></svg>
+										</span>
+										<ul class="dropdown-menu dropdown-menu-right tag_scroll tag_comm_gifs" role="menu">
+											<div class="tag_chat_GIF tag_chat_stickers chat-box-stickers-cont tag_scroll" id="publisher-box-sticker-cont-<?php echo $wo['story']['id']; ?>"></div>
+										</ul>
+									</div>
+								<?php }} ?>
+								<div class="dropup">
+									<div data-toggle="dropdown" role="button" aria-expanded="false" onclick="load_ajax_emojii('<?php echo $wo["story"]["id"];?>','<?php echo $wo['config']['theme_url'];?>/emoji/');"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22"><rect x="3" y="3" width="18" height="18" rx="9" fill="<?php echo $wo['config']['btn_background_color'];?>" fill-opacity="0.16"></rect><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2.25C6.61522 2.25 2.25 6.61522 2.25 12C2.25 17.3848 6.61522 21.75 12 21.75C17.3848 21.75 21.75 17.3848 21.75 12C21.75 6.61522 17.3848 2.25 12 2.25ZM3.75 12C3.75 7.44365 7.44365 3.75 12 3.75C16.5563 3.75 20.25 7.44365 20.25 12C20.25 16.5563 16.5563 20.25 12 20.25C7.44365 20.25 3.75 16.5563 3.75 12ZM8.59918 14.5496C8.35041 14.2184 7.88026 14.1516 7.54907 14.4003C7.21788 14.6491 7.15106 15.1192 7.39983 15.4504C8.4476 16.8454 10.1182 17.75 11.9999 17.75C13.8815 17.75 15.5521 16.8454 16.5999 15.4504C16.8487 15.1192 16.7819 14.6491 16.4507 14.4003C16.1195 14.1516 15.6493 14.2184 15.4006 14.5496C14.6239 15.5835 13.3898 16.25 11.9999 16.25C10.6099 16.25 9.37582 15.5835 8.59918 14.5496ZM9.99999 10C9.99999 10.5523 9.55228 11 8.99999 11C8.44771 11 7.99999 10.5523 7.99999 10C7.99999 9.44771 8.44771 9 8.99999 9C9.55228 9 9.99999 9.44771 9.99999 10ZM15 11C15.5523 11 16 10.5523 16 10C16 9.44771 15.5523 9 15 9C14.4477 9 14 9.44771 14 10C14 10.5523 14.4477 11 15 11Z" fill="<?php echo $wo['config']['btn_background_color'];?>"></path></svg></div>
+									<ul class="dropdown-menu dropdown-menu-right emo-comment-container-<?php echo $wo["story"]["id"];?> tag_scroll wo_comm_emojis"></ul>
+								</div>
+								<?php if (!$wo['story']['is_still_live']) { ?>
+									<svg class="btn" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" onclick="document.getElementById('comment_image_<?php echo $wo['story']['id'];?>').click(); return false"><path fill-rule="evenodd" clip-rule="evenodd" d="M14 11C15.1046 11 16 10.1046 16 9C16 7.89543 15.1046 7 14 7C12.8954 7 12 7.89543 12 9C12 10.1046 12.8954 11 14 11ZM4.5 16.5L6.67158 14.3284C8.00491 12.9951 8.67157 12.3284 9.5 12.3284C10.3284 12.3284 10.9951 12.9951 12.3284 14.3284L14 16L14.1716 15.8284C15.5049 14.4951 16.1716 13.8284 17 13.8284C17.8284 13.8284 18.4951 14.4951 19.8284 15.8284L20 16C20 16 18 21 12 21C6 21 4.5 16.5 4.5 16.5Z" fill="<?php echo $wo['config']['btn_background_color'];?>" fill-opacity="0.16"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M12 3.75C7.44365 3.75 3.75 7.44365 3.75 12C3.75 13.2278 4.01821 14.393 4.49925 15.4401L6.14124 13.7981L6.17801 13.7613C6.81331 13.126 7.34307 12.5962 7.82019 12.2322C8.32379 11.8479 8.85587 11.5784 9.5 11.5784C10.1441 11.5784 10.6762 11.8479 11.1798 12.2322C11.6569 12.5962 12.1867 13.126 12.822 13.7613L12.822 13.7613L12.8588 13.7981L14.0003 14.9396C14.496 14.4467 14.9261 14.0329 15.3202 13.7322C15.8238 13.3479 16.3559 13.0784 17 13.0784C17.6441 13.0784 18.1762 13.3479 18.6798 13.7322C19.0166 13.9892 19.3797 14.3288 19.7877 14.7298C20.0872 13.8754 20.25 12.9567 20.25 12C20.25 7.44365 16.5563 3.75 12 3.75ZM12 20.25C9.22676 20.25 6.77311 18.8816 5.27739 16.7833L5.53033 16.5303L7.2019 14.8588C7.88356 14.1771 8.34258 13.7203 8.73006 13.4247C9.10023 13.1423 9.3157 13.0784 9.5 13.0784C9.6843 13.0784 9.89977 13.1423 10.2699 13.4247C10.6574 13.7203 11.1164 14.1771 11.7981 14.8588L13.4697 16.5303L16.1 19.1607C14.8922 19.8537 13.4924 20.25 12 20.25ZM19.1161 16.1768C18.6465 16.9751 18.0464 17.6875 17.3451 18.2845L15.0611 16.0004C15.5523 15.5123 15.9149 15.1652 16.2301 14.9247C16.6002 14.6423 16.8157 14.5784 17 14.5784C17.1843 14.5784 17.3998 14.6423 17.7699 14.9247C18.1219 15.1932 18.5329 15.5947 19.1161 16.1768ZM2.25 12C2.25 6.61522 6.61522 2.25 12 2.25C17.3848 2.25 21.75 6.61522 21.75 12C21.75 17.3848 17.3848 21.75 12 21.75C6.61522 21.75 2.25 17.3848 2.25 12ZM12.75 9C12.75 8.30964 13.3096 7.75 14 7.75C14.6904 7.75 15.25 8.30964 15.25 9C15.25 9.69036 14.6904 10.25 14 10.25C13.3096 10.25 12.75 9.69036 12.75 9ZM14 6.25C12.4812 6.25 11.25 7.48122 11.25 9C11.25 10.5188 12.4812 11.75 14 11.75C15.5188 11.75 16.75 10.5188 16.75 9C16.75 7.48122 15.5188 6.25 14 6.25Z" fill="<?php echo $wo['config']['btn_background_color'];?>"></path></svg>
+									<form action="#" method="post" class="hidden">
+										<input accept="image/x-png, image/jpeg" type="file" name="comment_image" id="comment_image_<?php echo $wo['story']['id']; ?>" onchange="Wo_UploadCommentImage(<?php echo $wo['story']['id']; ?>);">
+										<input type="hidden" value="" id="comment_src_image">
+									</form>
+									<?php if ($wo['config']['audio_upload'] == 1) { ?>
+										<div class="tag_post_com_rec tag_cht_rec<?php echo $wo['story']['id']; ?>">
+											<span data-record="0" class="btn record-comment-audio" id="<?php echo $wo['story']['id']; ?>"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22"><rect x="9" y="2" width="6" height="13" rx="3" fill="currentColor" fill-opacity="0.16"/><path fill-rule="evenodd" clip-rule="evenodd" d="M12 1.25C9.92893 1.25 8.25 2.92893 8.25 5V12C8.25 14.0711 9.92893 15.75 12 15.75C14.0711 15.75 15.75 14.0711 15.75 12V5C15.75 2.92893 14.0711 1.25 12 1.25ZM9.75 5C9.75 3.75736 10.7574 2.75 12 2.75C13.2426 2.75 14.25 3.75736 14.25 5V12C14.25 13.2426 13.2426 14.25 12 14.25C10.7574 14.25 9.75 13.2426 9.75 12V5ZM5.75 12C5.75 11.5858 5.41421 11.25 5 11.25C4.58579 11.25 4.25 11.5858 4.25 12C4.25 14.7248 5.35083 16.6879 6.90007 17.9555C8.19962 19.0187 9.78803 19.5726 11.25 19.7135V22C11.25 22.4142 11.5858 22.75 12 22.75C12.4142 22.75 12.75 22.4142 12.75 22V19.7135C14.212 19.5726 15.8004 19.0187 17.0999 17.9555C18.6492 16.6879 19.75 14.7248 19.75 12C19.75 11.5858 19.4142 11.25 19 11.25C18.5858 11.25 18.25 11.5858 18.25 12C18.25 14.2752 17.3508 15.8121 16.1501 16.7945C14.9259 17.7961 13.3499 18.25 12 18.25C10.6501 18.25 9.07409 17.7961 7.84993 16.7945C6.64917 15.8121 5.75 14.2752 5.75 12Z" fill="currentColor"/></svg></span>
+											<span class="tag_cht_rec_time hidden" data-comment-rtime="<?php echo $wo['story']['id']; ?>">00:00</span>
+										</div>
+									<?php } ?>
+								<?php } ?>
+								<svg class="btn btn-reg-comm-mobi<?php if (!empty($wondertage_settings) && $wondertage_settings['tag_send_comment'] == 1) { ?> d-block<?php } ?>" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" onclick="Wo_LiveComment(this.value,event,<?php echo $wo['story']['id']; ?>,1);Wo_RegisterComment2(<?php echo $wo['story']['id']; ?>,<?php echo $wo['story']['publisher']['user_id']; ?>, <?php echo (!empty($wo['story']['publisher']['page_id'])) ? $wo['story']['publisher']['page_id'] : '0'; ?>)"><path fill="<?php echo $wo['config']['btn_background_color'];?>" d="M20.34,9.32007l-13.99-7A3.00087,3.00087,0,0,0,2.27,6.22L4.41,11l.26.59a1.05944,1.05944,0,0,1,0,.81994L4.41,13,2.27,17.78a2.95353,2.95353,0,0,0,.67,3.37988A2.96553,2.96553,0,0,0,5,22a3.14129,3.14129,0,0,0,1.35-.32007l13.99-7a2.99328,2.99328,0,0,0,0-5.35986Z"></path><path fill="<?php echo $wo['config']['btn_color'];?>" d="M14.46,12a.9965.9965,0,0,1-1,1H4.41l.26-.59009a1.05944,1.05944,0,0,0,0-.81994L4.41,11h9.05A.9965.9965,0,0,1,14.46,12Z"></path></svg>
+							</div>
+						<?php } ?>
+					</div>
+				</div>
+			</div>
+			<div id="comment-image" class="hidden comment-image-con"></div>
+		</div>
+	<?php } else { ?>
+		<div class="comments_disabled"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"><path fill="currentColor" d="M20,2H4C2.897,2,2,2.897,2,4v18l4-4h14c1.103,0,2-0.897,2-2V4C22,2.897,21.103,2,20,2z M16.706,13.543l-1.414,1.414 l-3.293-3.292l-3.292,3.292l-1.414-1.414l3.292-3.292L7.293,6.958l1.414-1.414l3.292,3.292l3.293-3.292l1.414,1.414l-3.292,3.293 L16.706,13.543z"/></svg> <?php echo str_replace('%d', $wo['story']['publisher']['name'],$wo['lang']['comments_disabled']);?></div>
+	<?php } ?>
+</div>
+
+<script type="text/javascript">
+	function Wo_PostCommentGif_<?php echo $wo['story']['id']; ?>(self,id) {
+		Wo_RegisterComment2(<?php echo $wo['story']['id']; ?>,<?php echo $wo['story']['publisher']['user_id']; ?>, <?php echo (!empty($wo['story']['publisher']['page_id'])) ? $wo['story']['publisher']['page_id'] : '0'; ?>,'',$(self).attr('src'));
+		$('.chat-gif-toggle').dropdown('hide');
+		$('#publisher-box-stickers-cont-'+id).empty();
+	}
+	function Wo_PostCommentSticker_<?php echo $wo['story']['id']; ?>(self,id) {
+		Wo_RegisterComment2(<?php echo $wo['story']['id']; ?>,<?php echo $wo['story']['publisher']['user_id']; ?>, <?php echo (!empty($wo['story']['publisher']['page_id'])) ? $wo['story']['publisher']['page_id'] : '0'; ?>,'',$(self).attr('src'));
+	}
+</script>

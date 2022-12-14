@@ -1,0 +1,10 @@
+<li class="valign forum-mbr-list" id="<?php echo $wo['member']['id']; ?>">
+	<div class="lchk">
+		<a href="<?php echo $wo['config']['site_url'];?>/<?php echo $wo['member']['username'] ?>" data-ajax="?link1=timeline&u=<?php echo $wo['member']['username'] ?>"><img src="<?php echo $wo['member']['avatar']?>" width="30" height="30" alt=""></a>
+	</div>
+	<div class="llnk">
+		<a href="<?php echo $wo['config']['site_url'];?>/<?php echo $wo['member']['username'] ?>" data-ajax="?link1=timeline&u=<?php echo $wo['member']['username'] ?>"><?php echo $wo['member']['name'] ?></a>
+	</div>
+	<div class="lcrt"><?php echo Wo_Time_Elapsed_String($wo['member']['joined']) ?></div>
+	<div class="lclk"><?php echo($wo['member']['forum_posts']) ?></div>
+</li>

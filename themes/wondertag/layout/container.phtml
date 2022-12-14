@@ -1,0 +1,1263 @@
+<?php
+	function Tag_version () {
+		echo '2.3.6';
+	}
+?>
+<?php 
+$wondertage_settings = array();
+if (mysqli_query($wo['sqlConnect'], "DESCRIBE `wondertage_settings`" )) {
+	$settings = $db->get('wondertage_settings');
+	foreach ($settings as $key => $value) {
+		$wondertage_settings[$value->name] = $value->value;
+	}
+}
+?>
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<title><?php echo $wo['title'];?></title>
+		<meta http-equiv="Content-type" content="text/html; charset=UTF-8">
+		<meta name="title" content="<?php echo $wo['title'];?>">
+		<meta name="description" content="<?php echo $wo['description'];?>">
+		<meta name="keywords" content="<?php echo $wo['keywords'];?>">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		
+		<link rel="apple-touch-icon" href="<?php echo $wo['config']['theme_url'];?>/img/icon.png">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-title" content="<?php echo $wo['config']['siteName'];?>">
+		
+		<?php if ($_COOKIE['mode'] == 'night') { ?>
+			<meta name="theme-color" content="#212121" id="night-mode-meta">
+		<?php } ?>
+		<meta name="pinterest-rich-pin" content="false" />
+		<?php if ($wo['page'] == 'maintenance') { ?>
+			<meta name="robots" content="noindex">
+			<meta name="googlebot" content="noindex">
+		<?php } ?>
+		<?php if ($wo['page'] == 'watch_movie') { ?>
+			<meta property="og:title" content="<?php echo $wo['movie']['name']; ?>" />
+			<meta property="og:type" content="article" />
+			<meta property="og:url" content="<?php echo $wo['movie']['url']; ?>" />
+			<meta property="og:image" content="<?php echo $wo['movie']['cover']; ?>" />
+			<meta property="og:image:secure_url" content="<?php echo $wo['movie']['cover']; ?>" />
+			<meta property="og:description" content="<?php echo $wo['movie']['description']; ?>" />
+			<meta name="twitter:card" content="summary">
+			<meta name="twitter:title" content="<?php echo $wo['movie']['name']; ?>" />
+			<meta name="twitter:description" content="<?php echo $wo['movie']['description']; ?>" />
+			<meta name="twitter:image" content="<?php echo $wo['movie']['cover']; ?>" />
+		<?php } ?>
+		<?php if ($wo['page'] == 'page' && !empty($wo['page_profile'])) { ?>
+			<meta property="og:title" content="<?php echo $wo['page_profile']['page_name']; ?>" />
+			<meta property="og:type" content="article" />
+			<meta property="og:url" content="<?php echo $wo['page_profile']['url']; ?>" />
+			<meta property="og:image" content="<?php echo $wo['page_profile']['avatar']; ?>" />
+			<meta property="og:image:secure_url" content="<?php echo $wo['page_profile']['avatar']; ?>" />
+			<meta property="og:description" content="<?php echo $wo['page_profile']['page_description']; ?>" />
+			<meta name="twitter:card" content="summary">
+			<meta name="twitter:title" content="<?php echo $wo['page_profile']['page_name']; ?>" />
+			<meta name="twitter:description" content="<?php echo $wo['page_profile']['page_description']; ?>" />
+			<meta name="twitter:image" content="<?php echo $wo['page_profile']['avatar']; ?>" />
+		<?php } ?>
+		<?php if ($wo['page'] == 'group' && !empty($wo['group_profile'])) { ?>
+			<meta property="og:title" content="<?php echo $wo['group_profile']['group_name']; ?>" />
+			<meta property="og:type" content="article" />
+			<meta property="og:url" content="<?php echo $wo['group_profile']['url']; ?>" />
+			<meta property="og:image" content="<?php echo $wo['group_profile']['avatar']; ?>" />
+			<meta property="og:image:secure_url" content="<?php echo $wo['group_profile']['avatar']; ?>" />
+			<meta property="og:description" content="<?php echo $wo['group_profile']['about']; ?>" />
+			<meta name="twitter:card" content="summary">
+			<meta name="twitter:title" content="<?php echo $wo['group_profile']['group_name']; ?>" />
+			<meta name="twitter:description" content="<?php echo $wo['group_profile']['about']; ?>" />
+			<meta name="twitter:image" content="<?php echo $wo['group_profile']['avatar']; ?>" />
+		<?php } ?>
+		<?php if ($wo['page'] == 'game' && !empty($wo['game'])) { ?>
+			<meta property="og:title" content="<?php echo $wo['game']['game_name']; ?>" />
+			<meta property="og:type" content="game" />
+			<meta property="og:url" content="<?php echo $wo['game']['game_link']; ?>" />
+			<meta property="og:image" content="<?php echo $wo['game']['game_avatar']; ?>" />
+			<meta property="og:image:secure_url" content="<?php echo $wo['game']['game_avatar']; ?>" />
+			<meta property="og:description" content="<?php echo $wo['game']['game_name']; ?>" />
+			<meta name="twitter:card" content="summary">
+			<meta name="twitter:title" content="<?php echo $wo['game']['game_name']; ?>" />
+			<meta name="twitter:description" content="<?php echo $wo['game']['game_name']; ?>" />
+			<meta name="twitter:image" content="<?php echo $wo['game']['game_avatar']; ?>" />
+		<?php } ?>
+		<?php if ($wo['page'] == 'welcome') { ?>
+			<meta property="og:title" content="<?php echo $wo['title'];?>" />
+			<meta property="og:type" content="article" />
+			<meta property="og:url" content="<?php echo $wo['config']['site_url'];?>" />
+			<meta property="og:image" content="<?php echo $wo['config']['theme_url'];?>/img/og.jpg" />
+			<meta property="og:image:secure_url" content="<?php echo $wo['config']['theme_url'];?>/img/og.jpg" />
+			<meta property="og:description" content="<?php echo $wo['description'];?>" />
+			<meta name="twitter:card" content="summary">
+			<meta name="twitter:title" content="<?php echo $wo['title'];?>" />
+			<meta name="twitter:description" content="<?php echo $wo['description'];?>" />
+			<meta name="twitter:image" content="<?php echo $wo['config']['theme_url'];?>/img/og.jpg" />
+		<?php } ?>
+		<?php 
+			if (!empty($wo['story']['postFile'])) { 
+				echo Wo_LoadPage('header/og-meta');
+			} 
+			if (!empty($wo['story']['postSticker'])) { 
+				echo Wo_LoadPage('header/og-meta-5');
+			} 
+			if (!empty($wo['story']['postLink'])) { 
+				echo Wo_LoadPage('header/og-meta-2');
+			}
+			if (!empty($wo['story']['product_id'])) { 
+				echo Wo_LoadPage('header/og-meta-4');
+				// print_r($wo['story']['product']);
+				// exit();
+			} 
+			if ($wo['page'] == 'timeline') {
+		?>
+			<meta property="og:type" content="article" />
+			<meta property="og:image" content="<?php echo $wo['user_profile']['avatar']?>" />
+			<meta property="og:image:secure_url" content="<?php echo $wo['user_profile']['avatar'];?>" />
+			<meta property="og:description" content="<?php echo $wo['description'];?>" />
+			<meta property="og:title" content="<?php echo $wo['title'];?>" />
+			<meta name="twitter:card" content="summary">
+			<meta name="twitter:title" content="<?php echo $wo['title'];?>" />
+			<meta name="twitter:description" content="<?php echo $wo['description'];?>" />
+			<meta name="twitter:image" content="<?php echo $wo['user_profile']['avatar']; ?>" />
+			<?php if ($wo['user_profile']['share_my_data'] == 0) { ?>
+				<meta name="robots" content="noindex,nofollow">
+				<meta name="googlebot" content="noindex">
+			<?php } ?>
+		<?php } ?>
+		<?php if (!empty($wo['story']['fund'])) {  ?>
+			<meta property="og:title" content="<?php echo $wo['story']['fund']['fund']['title'];?>" />
+			<meta property="og:type" content="funding" />
+			<meta property="og:image" content="<?php echo $wo['story']['fund']['fund']['image'];?>" />
+			<meta property="og:description" content="<?php echo $wo['story']['fund']['fund']['description'];?>" />    
+			<meta name="twitter:title" content="<?php echo $wo['story']['fund']['fund']['title'];?>" />
+			<meta name="twitter:description" content="<?php echo $wo['story']['fund']['fund']['description'];?>" />
+			<meta name="twitter:image" content="<?php echo $wo['story']['fund']['fund']['image'];?>" />
+		<?php } ?>
+		<?php if (!empty($wo['story']['fund_data'])) {  ?>
+			<meta property="og:title" content="<?php echo $wo['story']['fund_data']['title'];?>" />
+			<meta property="og:type" content="funding" />
+			<meta property="og:image" content="<?php echo $wo['story']['fund_data']['image'];?>" />
+			<meta property="og:description" content="<?php echo $wo['story']['fund_data']['description'];?>" />    
+			<meta name="twitter:title" content="<?php echo $wo['story']['fund_data']['title'];?>" />
+			<meta name="twitter:description" content="<?php echo $wo['story']['fund_data']['description'];?>" />
+			<meta name="twitter:image" content="<?php echo $wo['story']['fund_data']['image'];?>" />
+		<?php } ?>
+		<?php if (!empty($wo['fund'])) {  ?>
+			<meta property="og:title" content="<?php echo $wo['fund']['title'];?>" />
+			<meta property="og:type" content="funding" />
+			<meta property="og:image" content="<?php echo $wo['fund']['image'];?>" />
+			<meta property="og:description" content="<?php echo $wo['fund']['description'];?>" />    
+			<meta name="twitter:title" content="<?php echo $wo['fund']['title'];?>" />
+			<meta name="twitter:description" content="<?php echo $wo['fund']['description'];?>" />
+			<meta name="twitter:image" content="<?php echo $wo['fund']['image'];?>" />
+		<?php } ?>
+		<?php if (!empty($wo['story']['job'])) {  ?>
+			<meta property="og:title" content="<?php echo $wo['story']['job']['title'];?>" />
+			<meta property="og:type" content="job" />
+			<meta property="og:image" content="<?php echo Wo_GetMedia($wo['story']['job']['image']);?>" />
+			<meta property="og:description" content="<?php echo $wo['story']['job']['description'];?>" />    
+			<meta name="twitter:title" content="<?php echo $wo['story']['job']['title'];?>" />
+			<meta name="twitter:description" content="<?php echo $wo['story']['job']['description'];?>" />
+			<meta name="twitter:image" content="<?php echo Wo_GetMedia($wo['story']['job']['image']);?>" />
+		<?php } ?>
+		<?php if ($wo['page'] == 'read-blog') { ?>
+			<meta property="og:type" content="article" />
+			<meta property="og:image" content="<?php echo $wo['article']['thumbnail']?>" />
+			<meta property="og:image:secure_url" content="<?php echo $wo['article']['thumbnail']?>" />
+			<meta property="og:description" content="<?php echo $wo['article']['description'];?>" />
+			<meta property="og:title" content="<?php echo $wo['article']['title'];?>" />
+			<meta property="og:url" content="<?php echo $wo['article']['url'];?>" />
+			<meta name="twitter:card" content="summary">
+			<meta name="twitter:title" content="<?php echo $wo['article']['title'];?>" />
+			<meta name="twitter:description" content="<?php echo $wo['article']['description'];?>" />
+			<meta name="twitter:image" content="<?php echo $wo['article']['thumbnail']; ?>" />
+		<?php } ?>
+		<?php if (!empty($_SERVER) && !empty($_SERVER['REQUEST_URI'])) {
+			$link_text = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+		?>
+			<link rel="canonical" href="<?php echo($link_text) ?>" />
+		<?php } ?>
+		
+		<link rel="preconnect" href="https://fonts.gstatic.com">
+		<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+
+		<link rel="shortcut icon" type="image/png" href="<?php echo $wo['config']['theme_url'];?>/img/icon.png"/>
+		<link rel="stylesheet" href="<?php echo $wo['config']['theme_url'];?>/stylesheet/general-style-plugins.css<?php echo $wo['update_cache']; ?>?version=<?php echo Tag_version(); ?>">
+		
+		<?php if ($wo['page'] == 'create_blog' || $wo['page'] == 'edit-blog') { ?>
+			<script src="<?php echo $wo['config']['theme_url'];?>/javascript/tinymce/js/tinymce/tinymce.min.js"></script>
+		<?php } ?>
+    
+		<?php if ($wo['page'] == 'welcome') { ?>
+			<link rel="stylesheet" href="<?php echo $wo['config']['theme_url'];?>/stylesheet/welcome.css<?php echo $wo['update_cache']; ?>?version=<?php echo Tag_version(); ?>">
+			<?php if (!empty($wondertage_settings) && $wondertage_settings['tag_welcome_layout'] == 1) { ?>
+				<link rel="stylesheet" href="<?php echo $wo['config']['theme_url'];?>/stylesheet/welcome-startup.css<?php echo $wo['update_cache']; ?>?version=<?php echo Tag_version(); ?>">
+			<?php } ?>
+		<?php } else { ?>
+			<script src="//media.twiliocdn.com/sdk/js/video/releases/2.8.0/twilio-video.min.js"></script>
+			<link rel="stylesheet" href="<?php echo $wo['config']['theme_url'];?>/stylesheet/style.css<?php echo $wo['update_cache']; ?>?version=<?php echo Tag_version(); ?>">
+			<?php if (!empty($wondertage_settings) && $wondertage_settings['tag_header_layout'] == 1) { ?>
+			<link rel="stylesheet" href="<?php echo $wo['config']['theme_url'];?>/stylesheet/style.header.css<?php echo $wo['update_cache']; ?>?version=<?php echo Tag_version(); ?>">
+			<?php } ?>
+		<?php } ?>
+		
+		<link rel="stylesheet" href="<?php echo $wo['config']['theme_url'];?>/stylesheet/font-awesome-4.7.0/css/font-awesome.min.css<?php echo $wo['update_cache']; ?>">
+	  
+		<?php if($wo['language_type'] == 'rtl' && $wo['page'] != 'welcome') { ?>
+			<link rel="stylesheet" href="<?php echo $wo['config']['theme_url'];?>/stylesheet/bootsrap-rtl.min.css<?php echo $wo['update_cache']; ?>">
+			<link rel="stylesheet" href="<?php echo $wo['config']['theme_url'];?>/stylesheet/style_rtl.css<?php echo $wo['update_cache']; ?>?version=<?php echo Tag_version(); ?>">
+		<?php } ?>
+    
+		<?php if ($wo['page'] == 'welcome' && $wo['language_type'] == 'rtl') { ?>
+			<link rel="stylesheet" href="<?php echo $wo['config']['theme_url'];?>/stylesheet/welcome_rtl.css<?php echo $wo['update_cache']; ?>?version=<?php echo Tag_version(); ?>">
+		<?php } ?>
+
+		<script src="<?php echo $wo['config']['theme_url'];?>/javascript/jquery-3.1.1.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/jquery-ui-touch-punch@0.2.3/jquery.ui.touch-punch.min.js"></script>
+
+		<?php //if ($wo['page'] == 'ads'): ?>
+			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/css/bootstrap-select.min.css">
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"></script>
+		<?php //endif; ?>
+
+		<?php if ($wo['page'] == 'forum') { ?>
+			<script src="<?php echo $wo['config']['theme_url'];?>/javascript/forum/script.master.js"></script>
+			<script src="<?php echo $wo['config']['theme_url'];?>/javascript/forum/forum.ajax.js"></script>
+		<?php } ?>
+
+		<?php if ($wo['page'] == 'movies' || $wo['page'] == 'watch_movie') { ?>
+			<link rel="stylesheet" href="<?php echo $wo['config']['theme_url'];?>/stylesheet/movies/style.movies.css<?php echo $wo['update_cache']; ?>?version=<?php echo Tag_version(); ?>" />
+		<?php } ?>
+      
+		<?php if ($wo['config']['checkout_payment'] == 'yes') { ?>
+			<script type="text/javascript" src="https://www.2checkout.com/checkout/api/2co.min.js"></script>
+		<?php } ?>
+	  
+		<?php if (!empty($wondertage_settings) && $wondertage_settings['tag_artplayer'] == 1) { ?>
+			<script src="<?php echo $wo['config']['theme_url'];?>/player/artplayer.js"></script>
+		<?php } else { ?>
+			<script src="<?php echo $wo['config']['theme_url'];?>/player/plyr.js"></script>
+		<?php } ?>
+		
+		<script src="<?php echo $wo['config']['theme_url'];?>/player/wavesurfer.min.js"></script>
+		<script src="<?php echo $wo['config']['theme_url'];?>/player/wavesurfer.cursor.min.js"></script>
+	  
+		<?php if ($wo['loggedin'] == true && $wo['page'] == 'home' && $wo['config']['web_push'] == 1) { ?>
+			<link rel="manifest" href="<?php echo $wo['config']['theme_url'];?>/javascript/OneSignalSDKFiles/manifest.json">
+			<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async='async'></script>
+			<script>
+				var push_user_id = '';
+				var my_id = '<?php echo $wo['user']['web_device_id'] ?>';
+				var OneSignal = window.OneSignal || [];
+				OneSignal.push(["init", {
+					appId: "<?php echo $wo['config']['web_push_id'] ?>",
+					autoRegister: true, /* Set to true to automatically prompt visitors */
+					notifyButton: {
+						enable: true /* Set to false to hide */
+					},
+					persistNotification: false,
+				}]);
+				OneSignal.push(function () {
+					OneSignal.getUserId(function(userId) {
+						push_user_id = userId;
+						if (userId != my_id) {
+							$.get("<?php echo $wo['config']['site_url'].'/requests.php';?>", {f: 'update_user_device_id', id:push_user_id});
+						}
+					});
+					OneSignal.on('subscriptionChange', function (isSubscribed) {
+						if (isSubscribed == false) {
+							$.get("<?php echo $wo['config']['site_url'].'/requests.php';?>", {f: 'remove_user_device_id'});
+						} else {
+							$.get("<?php echo $wo['config']['site_url'].'/requests.php';?>", {f: 'update_user_device_id', id:push_user_id});
+						}
+					});
+				});
+			</script>
+		<?php } ?>
+		
+		<style><?php echo $wo['config']['styles_cc']; ?></style>
+
+		<script type="text/javascript">
+			<?php echo $wo['config']['header_cc']; ?>
+			function Wo_Ajax_Requests_File(){
+				return "<?php echo $wo['config']['site_url'].'/requests.php';?>"
+			}
+			<?php if ($wo['config']['smooth_loading'] == 1 && $wo['loggedin'] == true) { ?>
+				function Wo_Ajax_Requests_Filee(){
+					return "<?php echo $wo['config']['site_url'].'/ajax_loading.php';?>"
+				}
+         
+				var websiteUrl = "<?php echo $wo['config']['site_url'];?>";
+				$(function() {
+					<?php if ($wo['loggedin'] == true && $wo['config']['find_friends'] == 1) {?>
+					<?php if ($wo['user']['last_location_update'] < time()): ?>
+						if (navigator.geolocation) {
+							var location = navigator.geolocation.getCurrentPosition(Wo_UpdateLocation);
+						}
+					<?php endif; ?>
+					<?php } ?>
+					var box = $('#contnet');
+					var ISAPI = $('#ISAPI').val();
+					$(document).on('click', 'a[data-ajax]', function(e) {
+						$('body').removeClass('side_open');
+						if ($('#live_post_id').length > 0) {
+							DeleteLive();
+							window.location = $(this).attr('href');
+							return false;
+						}
+						Wo_CloseLightbox();
+						$('body').removeAttr('no-more-posts');
+						if ($('.postText').length) {
+							if ($('.postText').val().length > 0) {
+								if (!confirm("<?php echo html_entity_decode($wo['lang']['havent_finished_post'], ENT_QUOTES)?>")) {
+									return false;
+								} else {
+									$('.postText').val("");
+								}
+							}
+						}
+						Wo_StartBar();
+						$('#ajax_loading').addClass('opacity_start');
+						window.post = 0;
+						var url = $(this).attr('data-ajax');
+						e.preventDefault();
+						if (!ISAPI) {
+							if (url == '?index.php?link1=home') {
+								$get_value = $('#json-data').val();
+								if ($get_value) {
+									$('#load-more-posts').hide();
+									json_data = JSON.parse($('#json-data').val());
+									if (json_data.page == 'home') {
+										document.getElementById('posts').innerHTML = '<div class="posts_load"><div class="wow_content p15 tag_post_skel"><div class="valign"><div class="skel skel_50 skel_avatar"></div><div><div class="skel skel_2 skel_noti_name"></div><div class="skel skel_2 skel_noti_time"></div></div></div><div class="valign tag_post_skel_foot"><div class="valign"><div class="skel skel_action"></div><div class="skel skel_action"></div></div><div><div class="skel skel_action"></div></div></div></div><div class="wow_content p15 tag_post_skel"><div class="valign"><div class="skel skel_50 skel_avatar"></div><div><div class="skel skel_2 skel_noti_name"></div><div class="skel skel_2 skel_noti_time"></div></div></div><div class="valign tag_post_skel_foot"><div class="valign"><div class="skel skel_action"></div><div class="skel skel_action"></div></div><div><div class="skel skel_action"></div></div></div></div></div>';
+										loadposts();
+										window.history.pushState({state:'new'},'', websiteUrl);
+										$("html, body").animate({ scrollTop: 0 }, 100);
+										$('.user-details, .pac-container, .lightbox-container').remove();
+										Wo_clearPRecording();
+										Wo_CleanRecordNodes();
+										Wo_stopRecording();
+										Wo_StopLocalStream();
+										$('#ajax_loading').removeClass('opacity_start');
+										return false;
+									}
+								}
+							}
+							$.post(Wo_Ajax_Requests_Filee() + url, {url:url}, function (data) {
+								$('.user-details').remove();
+								json_data = JSON.parse($(data).filter('#json-data').val());
+								if (json_data.welcome_page == 1 || json_data.redirect == 1) {
+									window.location.href = websiteUrl;
+									return false;
+								}
+								if ($('.message-option-btns').length > 0) {
+									if (json_data.url == 'index.php?index.php?link1=home') {
+										window.location.href = websiteUrl;
+									} else {
+										window.location.href = json_data.url;
+									}
+									return false;
+								}
+								//document.getElementById('#contnet').innerHTML = data;
+								box.html(data);
+								if (json_data.is_css_file == 1) {
+									$('.styled-profile').remove();
+									$('body').append(json_data.css_file);
+								} else {
+									$('.styled-profile').attr('href', '');
+									$('.extra-css').empty();
+								}
+								Wo_clearPRecording();
+								Wo_CleanRecordNodes();
+								Wo_stopRecording();
+								Wo_StopLocalStream();
+								if (json_data.page == 'home') {
+									$('.filterby li.filter-by-li').on('click', function (e) {
+										$('.filterby li.filter-by-li').each(function(){
+											$(this).removeClass('avtive');
+										});
+										$(this).addClass('avtive');
+									});
+									$('#home_nav_sec').addClass('active');
+									window.history.pushState({state:'new'},'', websiteUrl);
+									//window.history.pushState({}, "<?php echo $wo['config']['site_url']?>", websiteUrl);
+								} else {
+									$('#home_nav_sec').removeClass('active');
+									window.history.pushState({state:'new'},'', json_data.url);
+									//window.history.pushState({}, "<?php echo $wo['config']['site_url']?>", json_data.url);
+								}
+								$('.postText').autogrow({vertical: true, horizontal: false, height: 200});
+								window.onpopstate = function(event) {
+									$(window).unbind('popstate');
+									window.location.href = document.location;
+								};
+								if (json_data.page == 'timeline' || json_data.page == 'page' || json_data.page == 'group') {
+									$('.ad-placement-header-footer').find('.contnet').css('margin-top', '20px');
+								} else {
+									$('.ad-placement-header-footer').find('.contnet').css('margin-top', '0');
+								}
+								document.title = decodeHtml(json_data.title);
+								document_title = decodeHtml(json_data.title);
+								$("html, body").animate({ scrollTop: 0 }, 150);
+								$('#ajax_loading').removeClass('opacity_start');
+								Wo_FinishBar();
+								$('#hidden-content').empty();
+								$('#users-reacted-modal').modal("hide");
+							});
+							$('.user-details, .pac-container, .lightbox-container').remove();
+						}
+					});
+				}); 
+			<?php } ?>
+			function RunLiveAgora(channelName,DIV_ID,token) {
+				var agoraAppId = '<?php echo($wo['config']['agora_app_id']) ?>'; 
+				var token = token;
+
+				var client = AgoraRTC.createClient({mode: 'live', codec: 'vp8'}); 
+				client.init(agoraAppId, function () {
+
+				client.setClientRole('audience', function() {
+				}, function(e) {
+				});
+    
+				client.join(token, channelName, <?php echo rand(100,999999); ?>, function(uid) {
+				}, function(err) {
+				});
+				}, function (err) {
+				});
+
+				client.on('stream-added', function (evt) {
+					var stream = evt.stream;
+					var streamId = stream.getId();
+		
+					client.subscribe(stream, function (err) {
+					});
+				});
+				client.on('stream-subscribed', function (evt) {
+					var remoteStream = evt.stream;
+					remoteStream.play(DIV_ID);
+					$('#player_'+remoteStream.getId()).addClass('embed-responsive-item');
+				});
+			}
+		</script>
+		<?php echo (!empty($wo['config']['googleAnalytics'])) ? $wo['config']['googleAnalytics'] : ''; ?>
+      
+		<?php echo Wo_LoadPage('style') ?>
+
+		<?php if ($_COOKIE['mode'] == 'night') { ?>
+			<link rel="stylesheet" href="<?php echo $wo['config']['theme_url'];?>/stylesheet/dark.css<?php echo $wo['update_cache']; ?>?version=<?php echo Tag_version(); ?>" id="night-mode-css">
+		<?php } ?>
+		
+		<?php if($wo['config']['googleLogin'] != 0): ?>
+			<meta name="google-signin-scope" content="profile email">
+			<meta name="google-signin-client_id" content="<?php echo $wo['config']['googleAppId']?>">
+			<script src="https://apis.google.com/js/platform.js" async defer></script>
+		<?php endif; ?>
+		
+		<?php if ($wo['config']['agora_live_video'] == 1 || $wo['config']['agora_chat_video'] == 1) { ?>
+			<script src="<?php echo $wo['config']['theme_url'];?>/javascript/agora.js"></script>
+		<?php } ?>
+		
+		<?php if ($wo['config']['agora_live_video'] == 1 && !empty($wo['config']['agora_app_id']) && !empty($wo['config']['agora_customer_id']) && !empty($wo['config']['agora_customer_certificate'])) { ?>
+			<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+		<?php } ?>
+		
+		<script crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+		
+		<script src="<?php echo $wo['config']['theme_url'];?>/javascript/socket.io.js"></script>
+	
+		<script src="<?php echo $wo['config']['theme_url'];?>/javascript/jquery.adaptive-backgrounds.js"></script>
+		
+		<script>
+		let nodejs_system = "<?php echo $wo['config']['node_socket_flow']; ?>";
+      let socket = null
+      let groupChatListener = {}
+      $(()=>{
+        <?php if ($wo['config']['node_socket_flow'] == "1"){ $parse = parse_url($wo['config']['site_url']);?>
+        var main_hash_id = $('.main_session').val();
+        <?php if ($wo['config']['nodejs_ssl'] == "1") {?>
+          socket = io("https://<?php echo $parse['host'];?>:<?php echo $wo['config']['nodejs_ssl_port'];?>/?hash=" + main_hash_id)
+        <?php } else {?>
+         socket = io("http://<?php echo $parse['host'];?>:<?php echo $wo['config']['nodejs_port'];?>/?hash=" + main_hash_id)
+        <?php } ?>
+        let recipient_ids = []
+        let recipient_group_ids = []
+        setTimeout(function(){ 
+          var inputs = $("input.chat-user-id");
+          $(".chat-wrapper").each(function(){
+            let id = $(this).attr("class").substr("chat-wrapper".length);
+            let isGroup = $(this).attr("class").substr("chat-wrapper".length).split("_").includes("group")
+            if(isGroup) {
+              id = id.substr(' chat_group_'.length)
+              recipient_group_ids.push(id)
+            } else{
+              id = id.substr(' chat_'.length)
+              recipient_ids.push(id)
+            }
+          });
+          socket.emit('join', {username: "<?php echo $wo['user']['username'];?>", user_id: _getCookie('user_id'), recipient_ids, recipient_group_ids }, ()=>{
+              setInterval(() => {
+                socket.emit("ping_for_lastseen", {user_id: _getCookie("user_id")})
+              }, 2000);
+          });
+         }, 3000);
+
+        socket.on("reconnect", ()=>{
+          let recipient_ids = []
+          let recipient_group_ids = []
+          setTimeout(function(){ 
+            var inputs = $("input.chat-user-id");
+            $(".chat-wrapper").each(function(){
+              let id = $(this).attr("class").substr("chat-wrapper".length);
+              let isGroup = $(this).attr("class").substr("chat-wrapper".length).split("_").includes("group")
+              if(isGroup) {
+                id = id.substr(' chat_group_'.length)
+                recipient_group_ids.push(id)
+              } else{
+                id = id.substr(' chat_'.length)
+                recipient_ids.push(id)
+              }
+            });
+            socket.emit('join', {username: "<?php echo $wo['user']['username'];?>", user_id: _getCookie('user_id'), recipient_ids, recipient_group_ids }, ()=>{
+                setInterval(() => {
+                  socket.emit("ping_for_lastseen", {user_id: _getCookie("user_id")})
+                }, 2000);
+            });
+          }, 3000);
+        })
+		socket.on("lastseen", (data) => {
+            //$('.messages-text[data-message-id='+data.message_id+']').length > 0
+            if (data.message_id && data.user_id) {
+                  var chat_container = $('.chat-tab').find('#chat_' + data.user_id);
+                  if ($('#messageId_'+data.message_id).length > 0) {
+                        if (chat_container.length > 0) {
+                              chat_container.find('.message-seen').hide();
+                        }
+                        else{
+                              $('.message-seen').hide();
+                        }
+                        $('#messageId_'+data.message_id).find('.message-seen').hide().html('<span class="select-color" title="<?php echo $wo["lang"]["seen"];?> ' + data.seen + '"><svg xmlns="http://www.w3.org/2000/svg" height="14" viewBox="0 0 24 24" width="14"><path fill="currentColor" d="M17.3 6.3c-.39-.39-1.02-.39-1.41 0l-5.64 5.64 1.41 1.41L17.3 7.7c.38-.38.38-1.02 0-1.4zm4.24-.01l-9.88 9.88-3.48-3.47c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41l4.18 4.18c.39.39 1.02.39 1.41 0L22.95 7.71c.39-.39.39-1.02 0-1.41h-.01c-.38-.4-1.01-.4-1.4-.01zM1.12 14.12L5.3 18.3c.39.39 1.02.39 1.41 0l.7-.7-4.88-4.9c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.03 0 1.42z"/></svg></span>').fadeIn(300);
+                        if (chat_container.length > 0) {
+                              //chat_container.find('.online-toggle-hdr').attr('style', '');
+                              setTimeout(function(){
+                                 chat_container.find('.chat-messages-wrapper').scrollTop(chat_container.find('.chat-messages-wrapper')[0].scrollHeight);
+                              }, 100);
+                        }
+                        else{
+                           $(".messages-container").animate({
+                               scrollTop: $('.messages-container')[0].scrollHeight
+                           }, 200);
+                        }
+                  }
+            }
+        })
+         socket.on("register_reaction", (data) => {
+            if(data.status == 200) {
+                $('.post-reactions-icons-m-'+data.id).html(data.reactions);
+            }
+        });
+		socket.on("on_user_loggedin", (data) => {
+            $('#chat_' + data.user_id).find('.chat-tab-status').addClass('active');
+            $("#online_" + data.user_id).find('svg path').attr('fill', '#60d465');
+            $("#messages-recipient-" + data.user_id).find('.dot').css({"background-color": "#63c666"});
+		});
+		socket.on("on_user_loggedoff", (data) => {
+            $('#chat_' + data.user_id).find('.chat-tab-status').removeClass('active');
+            $("#online_" + data.user_id).find('svg path').attr('fill', '#dddddd');
+            $("#messages-recipient-" + data.user_id).find('.dot').css({"background-color": "lightgray"});
+		});
+		socket.on("update_new_posts", (data) => {
+			Wo_intervalUpdates(1);
+		});
+		socket.on("on_avatar_changed", (data) => {
+            $("#online_" + data.user_id).find('img').attr('src', data.name);
+            $("#messages-recipient-" + data.user_id).find('img').attr('src', data.name);
+		});
+		socket.on("on_name_changed", (data) => {
+            $("#online_" + data.user_id).find('#chat-tab-id').html(data.name);
+            $("#messages-recipient-" + data.user_id).find('.messages-user-name').html(data.name);
+		});
+		socket.on("new_notification", (data) => {
+             <?php if ($wo['config']['nodejs_live_notification'] == "1") {?>
+            Wo_GetLastNotification();
+             <?php } ?>
+            current_notifications = $('.notification-container').find('.new-update-alert').text();
+            $('.notification-container').find('.new-update-alert').removeClass('hidden');
+            $('.notification-container').find('.sixteen-font-size').addClass('unread-update');
+            $('.notification-container').find('.new-update-alert').text(Number(current_notifications) + 1).show();
+            document.getElementById('notification-sound').play();
+          });
+          socket.on("new_notification_removed", (data) => {
+            current_notifications = $('.notification-container').find('.new-update-alert').text();
+            $('.notification-container').find('.new-update-alert').removeClass('hidden');
+            if (Number(current_notifications) > 0) {
+               if ((Number(current_notifications) - 1) == 0) {
+                  $('.notification-container').find('.new-update-alert').addClass('hidden');
+                  $('.notification-container').find('.new-update-alert').addClass('hidden').text('0').hide();
+               } else {
+                  $('.notification-container').find('.sixteen-font-size').addClass('unread-update');
+                  $('.notification-container').find('.new-update-alert').text(Number(current_notifications) - 1).show();
+               }
+            } else if (Number(current_notifications) == 0) {
+               $('.notification-container').find('.new-update-alert').addClass('hidden');
+               $('.notification-container').find('.new-update-alert').addClass('hidden').text('0').hide();
+            } 
+          });
+
+          socket.on("new_request", (data) => {
+            current_requests= $('.requests-container').find('.new-update-alert').text();
+            $('.requests-container').find('.new-update-alert').removeClass('hidden');
+            $('.requests-container').find('.sixteen-font-size').addClass('unread-update');
+            $('.requests-container').find('.new-update-alert').text(Number(current_requests) + 1).show();
+            document.getElementById('notification-sound').play();
+          });
+          socket.on("new_request_removed", (data) => {
+            current_requests = $('.requests-container').find('.new-update-alert').text();
+            $('.requests-container').find('.new-update-alert').removeClass('hidden');
+            if (Number(current_requests) > 0) {
+               if ((Number(current_requests) - 1) == 0) {
+                  $('.requests-container').find('.new-update-alert').addClass('hidden');
+                  $('.requests-container').find('.new-update-alert').addClass('hidden').text('0').hide();
+               } else {
+                  $('.requests-container').find('.sixteen-font-size').addClass('unread-update');
+                  $('.requests-container').find('.new-update-alert').text(Number(current_requests) - 1).show();
+               }
+            } else if (Number(current_requests) == 0) {
+               $('.requests-container').find('.new-update-alert').addClass('hidden');
+               $('.requests-container').find('.new-update-alert').addClass('hidden').text('0').hide();
+            } 
+          });
+
+          socket.on("messages_count", (data) => {
+             current_messages_number = data.count;
+             if (current_messages_number > 0) {
+               $("[data_messsages_count]").text(current_messages_number).removeClass("hidden");
+               $("[data_messsages_count]").attr('data_messsages_count', current_messages_number);
+             } else {
+               $("[data_messsages_count]").text(current_messages_number).addClass("hidden");
+               $("[data_messsages_count]").attr('data_messsages_count', "0");
+             }
+          });
+          socket.on("new_video_call", (data) => {
+             Wo_intervalUpdates(1);
+          });
+          socket.on("load_comment_replies", (data) => {
+             Wo_ViewMoreReplies(data.comment_id);
+          });
+        socket.on("color-change", (data)=>{
+          if (data.sender == <?php echo $wo['user']['user_id'];?>) {
+            $(".chat_" + data.id).find('.outgoing .message-text, .outgoing .message-media').css('background', data.color);
+            $(".chat_" + data.id).find('.outgoing .message-text').css('color', '#fff');
+            $(".chat_" + data.id).find('.select-color rect, .select-color path').css('fill', data.color);
+            $(".chat_" + data.id).find('#color').val(data.color);
+          }
+          let user_id = $('#user-id').val();
+          if(""+user_id === ""+data.id) {
+            if(data.sender == <?php echo $wo['user']['user_id']; ?>){
+                  $('.send-button').css('background-color', data.color);
+                  $('.send-button').css('border-color', data.color);
+                  $('#wo_msg_right_prt .message-option-btns .btn svg').css('color', data.color);
+                  $(".messages-container").find(".pull-right").find(".message").css('background-color', data.color);
+                  $(".messages-container").find(".pull-right").find(".message-text").css('background-color', data.color)
+              }
+          }
+        })
+		var new_current_messages = 0;
+        socket.on("private_message", (data)=>{
+          var chat_container = $('.chat-tab').find('.chat_main_' + data.id);
+         if (chat_container.length > 0) {
+          chat_container.find('.chat-messages-wrapper').find("div[class*='message-seen']").empty();
+          chat_container.find('.chat-messages-wrapper').find("div[class*='message-typing']").empty();
+          chat_container.find('.chat-messages-wrapper').append(data.messages_html);
+          setTimeout(function(){
+               chat_container.find('.chat-messages-wrapper').scrollTop(chat_container.find('.chat-messages-wrapper')[0].scrollHeight);
+            }, 100);
+          if (data.sender == <?php echo $wo['user']['user_id'];?>) {
+			  
+            $(".chat_" + data.id).find('.outgoing .message-text, .outgoing .message-media').css('background', data.color);
+            $(".chat_" + data.id).find('.outgoing .message-text').css('color', '#fff');
+            $(".chat_" + data.id).find('.select-color rect, .select-color path').css('fill', data.color);
+            $(".chat_" + data.id).find('#color').val(data.color);
+            $(".text-sender-container .red-list").css('background', data.color);
+            $(".text-sender-container .btn-file").css('background', data.color);
+            $(".text-sender-container .btn-file").css('border-color', data.color);
+          }
+		  }else {
+            current_number = $('#online_' + data.id).find('.new-message-alert').text();
+            $('#online_' + data.id).find('.new-message-alert').html(Number(current_number) + 1).show();
+          }
+          if (!chat_container.find("#sendMessage").is(":focus")) {
+            if(data.sender != <?php echo $wo['user']['user_id'];?>){
+                document.getElementById('message-sound').play();
+            }
+          }
+          if (!chat_container.find('#sendMessage').is(':focus') && chat_container.length == 0) {
+             new_current_messages = new_current_messages + 1;
+             current_messages_number = Number($("[data_messsages_count]").attr('data_messsages_count')) + 1;
+             $("[data_messsages_count]").text(current_messages_number).removeClass("hidden");
+             $("[data_messsages_count]").attr('data_messsages_count', current_messages_number);
+             document.title = 'New Message | ' + document_title;
+          }
+        })
+
+        socket.on("group_message", (data)=>{
+              var chat_messages_wrapper = $('.group-messages-wrapper-'+data.id);
+              if (data.status == 200) {
+              if ($(".group-messages-wrapper-"+data.id).find('.no_message').length > 0) {
+                $(".group-messages-wrapper-"+data.id).find('.chat-messages').html(data.html);
+              }else{
+                $(".group-messages-wrapper-"+data.id).find('.chat-messages').append(data.html);
+              }
+              
+              chat_messages_wrapper.scrollTop(chat_messages_wrapper[0].scrollHeight);
+            }
+          })
+
+        <?php } ?>
+      });
+      </script>
+	</head>
+   
+	<body <?php if (!empty($wondertage_settings) && $wondertage_settings['tag_header_layout'] == 1) { ?> class="tag_header_top_p"<?php } ?><?php if ($wo['config']['chatSystem'] == 0) { ?> chat-off="true" <?php } ?>>
+		<input type="hidden" id="get_no_posts_name" value="<?php echo($wo['lang']['no_more_posts']); ?>">
+		<?php $loadPage = Wo_LoadPage('thirdparty/theme-changer'); echo (!empty($loadPage)) ? $loadPage : '';?>
+		
+		<input type="hidden" class="seen_stories_users_ids" value="">
+		<input type="hidden" class="main_session" value="<?php echo Wo_CreateMainSession();?>">
+		
+		<?php if($wo['page'] != 'welcome' && $wo['page'] != 'get_news_feed' && $wo['page'] != 'maintenance' && $wo['page'] != 'video-api' && $wo['page'] != 'sharer' && $wo['page'] != 'start_up' && $wo['page'] != 'status' && $wo['page'] != 'messages'): ?>
+			<div class="barloading"></div>
+			<header>
+				<?php echo Wo_LoadPage('header/content'); ?>
+			</header>
+			
+			<?php if (!empty($wondertage_settings) && $wondertage_settings['tag_header_layout'] == 1) { ?>
+				<?php echo Wo_LoadPage('sidebar/left-sidebar-top'); ?>
+			<?php } else { ?>
+				<?php echo Wo_LoadPage('sidebar/left-sidebar'); ?>
+			<?php } ?>
+			
+			<?php if ($wo['loggedin'] == true) { ?>
+			<?php if (Wo_IsMobile() == false) { ?>
+			<?php if($wo['page'] != 'live' && $wo['page'] != 'messages' && $wo['page'] != 'video') { ?>
+				<div class="dropup tag_create_dropup<?php if ($wo['loggedin'] == true && $wo['page'] != 'maintenance') { ?><?php if ($wo['config']['chatSystem'] == 1 && $wo['page'] != 'get_news_feed' && $wo['page'] != 'sharer' && $wo['page'] != 'video-api' && $wo['page'] != 'messages') { ?> tag_chat_header<?php } ?><?php } ?>">
+					<a href="#" class="btn btn-mat btn-main" data-toggle="dropdown" data-display="static" role="button" aria-expanded="false" title="<?php echo $wo['lang']['create'] ?> <?php echo $wo['lang']['new'] ?>">
+						<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path fill="currentColor" d="M18 13h-5v5c0 .55-.45 1-1 1s-1-.45-1-1v-5H6c-.55 0-1-.45-1-1s.45-1 1-1h5V6c0-.55.45-1 1-1s1 .45 1 1v5h5c.55 0 1 .45 1 1s-.45 1-1 1z"/></svg>
+					</a>
+					<ul class="dropdown-menu dropdown-menu-right tag_create_menu" role="menu">
+						<li>
+							<a href="<?php echo Wo_SeoLink('index.php?link1=create-album');?>" data-ajax="?link1=create-album"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" class="hover_path" d="M5 11.1l2-2 5.5 5.5 3.5-3.5 3 3V5H5v6.1zM4 3h16a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm11.5 7a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/><path fill="currentColor" d="M5 11.1l2-2 5.5 5.5 3.5-3.5 3 3V5H5v6.1zm0 2.829V19h3.1l2.986-2.985L7 11.929l-2 2zM10.929 19H19v-2.071l-3-3L10.929 19zM4 3h16a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm11.5 7a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg> <?php echo $wo['lang']['create_album'] ?></a>
+						</li>
+						<?php if ($wo['config']['user_ads'] == 1) { ?>
+							<li>
+								<a href="<?php echo Wo_SeoLink('index.php?link1=create-ads'); ?>"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" class="hover_path" d="M21 3a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h18zM9.399 8h-2l-3.2 8h2.154l.4-1h3.29l.4 1h2.155L9.399 8zM19 8h-2v2h-1a3 3 0 0 0-.176 5.995L16 16h3V8zm-2 4v2h-1l-.117-.007a1 1 0 0 1 0-1.986L16 12h1zm-8.601-1.115L9.244 13H7.552l.847-2.115z"/><path fill="currentColor" d="M21 3a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h18zm-1 2H4v14h16V5zM9.399 8l3.199 8h-2.155l-.4-1h-3.29l-.4 1H4.199l3.2-8h2zM19 8v8h-3a3 3 0 0 1 0-6h.999L17 8h2zm-2 4h-1a1 1 0 0 0-.117 1.993L16 14h1v-2zm-8.601-1.115L7.552 13h1.692l-.845-2.115z"/></svg> <?php echo $wo['lang']['create_ads'] ?></a>
+							</li>
+						<?php } ?>
+						<?php if (Wo_CanBlog() == true) { ?>
+							<li>
+								<a href="<?php echo Wo_SeoLink('index.php?link1=create-blog');?>"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" class="hover_path" d="M20 22H4a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1zM7 6v4h4V6H7zm0 6v2h10v-2H7zm0 4v2h10v-2H7zm6-9v2h4V7h-4z"/><path fill="currentColor" d="M20 22H4a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1zm-1-2V4H5v16h14zM7 6h4v4H7V6zm0 6h10v2H7v-2zm0 4h10v2H7v-2zm6-9h4v2h-4V7z"/></svg> <?php echo $wo['lang']['create_new_article'] ?></a>
+							</li>
+						<?php } ?>
+						<?php if ($wo['config']['events'] == 1) { ?>
+							<li>
+								<a href="<?php echo Wo_SeoLink('index.php?link1=create-event');?>"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" class="hover_path" d="M17 3h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h4V1h2v2h6V1h2v2zM4 9v10h16V9H4zm2 4h5v4H6v-4z"/><path fill="currentColor" d="M17 3h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h4V1h2v2h6V1h2v2zm3 6V5h-3v2h-2V5H9v2H7V5H4v4h16zm0 2H4v8h16v-8zM6 13h5v4H6v-4z"/></svg> <?php echo $wo['lang']['create_events'] ?></a>
+							</li>
+						<?php } ?>
+						<?php if ($wo['config']['funding_system'] == 1) { ?>
+						<?php if ($wo['config']['funding_request'] == 'all' || ($wo['config']['funding_request'] == 'verified' && $wo['user']['verified'])) { ?>
+							<li>
+								<a href="<?php echo Wo_SeoLink('index.php?link1=create_funding');?>" data-ajax="?link1=create_funding"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" class="hover_path" d="M9.33 11.5h2.17A4.5 4.5 0 0 1 16 16H8.999L9 17h8v-1a5.578 5.578 0 0 0-.886-3H19a5 5 0 0 1 4.516 2.851C21.151 18.972 17.322 21 13 21c-2.761 0-5.1-.59-7-1.625L6 10.071A6.967 6.967 0 0 1 9.33 11.5zM4 9a1 1 0 0 1 .993.883L5 10V19a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h2zm9.646-5.425L14 3.93l.354-.354a2.5 2.5 0 1 1 3.535 3.536L14 11l-3.89-3.89a2.5 2.5 0 1 1 3.536-3.535z"/><path fill="currentColor" d="M5 9a1 1 0 0 1 1 1 6.97 6.97 0 0 1 4.33 1.5h2.17c1.332 0 2.53.579 3.353 1.499L19 13a5 5 0 0 1 4.516 2.851C21.151 18.972 17.322 21 13 21c-2.79 0-5.15-.603-7.06-1.658A.998.998 0 0 1 5 20H2a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h3zm1.001 3L6 17.021l.045.033C7.84 18.314 10.178 19 13 19c3.004 0 5.799-1.156 7.835-3.13l.133-.133-.12-.1a2.994 2.994 0 0 0-1.643-.63L19 15l-2.112-.001c.073.322.112.657.112 1.001v1H8v-2l6.79-.001-.034-.078a2.501 2.501 0 0 0-2.092-1.416L12.5 13.5H9.57A4.985 4.985 0 0 0 6.002 12zM4 11H3v7h1v-7zm9.646-7.425L14 3.93l.354-.354a2.5 2.5 0 1 1 3.535 3.536L14 11l-3.89-3.89a2.5 2.5 0 1 1 3.536-3.535zm-2.12 1.415a.5.5 0 0 0-.06.637l.058.069L14 8.17l2.476-2.474a.5.5 0 0 0 .058-.638l-.058-.07a.5.5 0 0 0-.638-.057l-.07.058-1.769 1.768-1.767-1.77-.068-.056a.5.5 0 0 0-.638.058z"/></svg> <?php echo $wo['lang']['create_new_funding'] ?></a>
+							</li>
+						<?php } ?>
+						<?php } ?>
+						<?php if ($wo['config']['groups'] == 1) { ?>
+							<li>
+								<a href="<?php echo Wo_SeoLink('index.php?link1=create-group'); ?>" data-ajax="?link1=create-group"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" class="hover_path" d="M10 19.748V16.4c0-1.283.995-2.292 2.467-2.868A8.482 8.482 0 0 0 9.5 13c-1.89 0-3.636.617-5.047 1.66A8.017 8.017 0 0 0 10 19.748zm8.88-3.662C18.485 15.553 17.17 15 15.5 15c-2.006 0-3.5.797-3.5 1.4V20a7.996 7.996 0 0 0 6.88-3.914zM9.55 11.5a2.25 2.25 0 1 0 0-4.5 2.25 2.25 0 0 0 0 4.5zm5.95 1a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/><path fill="currentColor" d="M9.55 11.5a2.25 2.25 0 1 1 0-4.5 2.25 2.25 0 0 1 0 4.5zm.45 8.248V16.4c0-.488.144-.937.404-1.338a6.473 6.473 0 0 0-5.033 1.417A8.012 8.012 0 0 0 10 19.749zM4.453 14.66A8.462 8.462 0 0 1 9.5 13c1.043 0 2.043.188 2.967.532.878-.343 1.925-.532 3.033-.532 1.66 0 3.185.424 4.206 1.156a8 8 0 1 0-15.253.504zm14.426 1.426C18.486 15.553 17.171 15 15.5 15c-2.006 0-3.5.797-3.5 1.4V20a7.996 7.996 0 0 0 6.88-3.914zM12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm3.5-9.5a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/></svg> <?php echo $wo['lang']['create_new_group'] ?></a>
+							</li>
+						<?php } ?>
+						<?php if ($wo['config']['pages'] == 1) { ?>
+							<li>
+								<a href="<?php echo Wo_SeoLink('index.php?link1=create-page'); ?>" data-ajax="?link1=create-page"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" class="hover_path" d="M3 3h9.382a1 1 0 0 1 .894.553L14 5h6a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1h-6.382a1 1 0 0 1-.894-.553L12 16H5v6H3V3z"/><path fill="currentColor" d="M5 16v6H3V3h9.382a1 1 0 0 1 .894.553L14 5h6a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1h-6.382a1 1 0 0 1-.894-.553L12 16H5zM5 5v9h8.236l1 2H19V7h-6.236l-1-2H5z"/></svg> <?php echo $wo['lang']['create_new_page'] ?></a>
+							</li>
+						<?php } ?>
+					</ul>
+				</div>
+			<?php } ?>
+			<?php } ?>
+			<?php } ?>
+		<?php endif; ?>
+		
+		<div id="ajax_loading" class="tag_content<?php if (!empty($wondertage_settings) && $wondertage_settings['tag_header_layout'] == 1) { ?> tag_header_top_m<?php } ?><?php if ($wo['page'] == 'get_news_feed') { ?> tag_content_n_margin<?php } ?><?php if ($wo['page'] == 'messages') { ?> tag_content_n_margin<?php } ?><?php if ($wo['page'] == 'status') { ?> tag_content_n_margin<?php } ?><?php if ($wo['page'] == 'start_up') { ?> tag_content_n_margin<?php } ?><?php if ($wo['page'] == 'maintenance') { ?> tag_content_n_margin<?php } ?><?php if ($wo['page'] == 'sharer') { ?> tag_content_n_margin<?php } ?><?php if ($wo['loggedin'] == true && $wo['page'] != 'maintenance' && $wo['config']['chatSystem'] == 1 && $wo['page'] != 'get_news_feed' && $wo['page'] != 'sharer' && $wo['page'] != 'video-api' && $wo['page'] != 'messages' && $wo['page'] != 'live' && $wo['page'] != 'start_up' && $wo['page'] != 'status' && $wo['page'] != 'video') { ?> tag_chat_content<?php } ?>">
+			<div class="ad-placement-header-footer">
+				<?php 
+					$header_ad = Wo_GetAd('header', false);
+					if($wo['page'] != 'admin' && $wo['page'] != 'welcome' && $wo['page'] != 'messages' && !empty($header_ad) && $wo['page'] != 'video-api' && $wo['page'] != '404' && $wo['page'] != 'sharer' && $wo['page'] != 'live' && $wo['page'] != 'maintenance' && $wo['page'] != 'watch_movie') {
+						echo '<div class="contnet">' . $header_ad . '</div>';
+					} 
+				?>
+			</div>
+			<div id="contnet"><?php echo $wo['content'];?></div>
+			<div class="ad-placement-header-footer">
+				<?php 
+					$footer_ad = Wo_GetAd('footer', false);
+					if($wo['page'] != 'admin' && $wo['page'] != 'welcome' && $wo['page'] != 'messages' && !empty($footer_ad) && $wo['page'] != 'video-api' && $wo['page'] != '404' && $wo['page'] != 'sharer' && $wo['page'] != 'live' && $wo['page'] != 'maintenance' && $wo['page'] != 'watch_movie') {
+						echo '<div class="contnet">' . $footer_ad . '</div>';
+					} 
+				?>
+			</div>
+		</div>
+		
+		<?php 
+			if ($wo['loggedin'] == true && $wo['page'] != 'maintenance') {
+			if ($wo['config']['chatSystem'] == 1 && $wo['page'] != 'get_news_feed' && $wo['page'] != 'sharer' && $wo['page'] != 'video-api' && $wo['page'] != 'messages' && $wo['page'] != 'live' && $wo['page'] != 'start_up' && $wo['page'] != 'status' && $wo['page'] != 'video') {
+				echo Wo_LoadPage('chat/content');
+			}
+			echo Wo_LoadPage('modals/logged-out');
+		?>
+		<?php } ?>
+		
+		<?php if ($wo['page'] != 'welcome' && $wo['page'] != 'get_news_feed' && $wo['page'] != 'maintenance' && $wo['page'] != 'video-api' && $wo['page'] != 'sharer' && $wo['page'] != 'start_up' && $wo['page'] != 'status' && $wo['page'] != 'messages') { ?>
+			<div class="tag_sec_toolbar">
+				<div class="valign">
+					<div <?php if ($wo['page'] == 'home') { ?>class="active"<?php } ?> id="home_nav_sec">
+						<a href="<?php echo $wo['config']['site_url']; ?>" data-ajax="?index.php?link1=home" onclick="$('.tag_hdr_reqtog, .tag_hdr_notitog, .tag_hdr_msgtog, .tag_hdr_user_droptoggle').dropdown('hide');">
+							<?php if (!empty($wondertage_settings) && $wondertage_settings['tag_anron_ico_head'] == 1) { ?>
+								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M1.46967 11.4696L4.46914 8.47014L4.4702 8.46908L9.20693 3.73235L9.22845 3.71083L9.22846 3.71082L9.22851 3.71077C9.60618 3.33309 9.92142 3.01784 10.2 2.78134C10.4906 2.53467 10.7902 2.32993 11.1502 2.21296C11.7025 2.0335 12.2975 2.0335 12.8498 2.21296C13.2098 2.32993 13.5094 2.53467 13.8 2.78134C14.0786 3.01785 14.3939 3.33312 14.7715 3.71083L14.7931 3.73235L22.5303 11.4696C22.8232 11.7625 22.8232 12.2374 22.5303 12.5303C22.2374 12.8232 21.7626 12.8232 21.4697 12.5303L19.75 10.8106V16.1999V16.2321C19.75 17.0449 19.75 17.7005 19.7066 18.2314C19.662 18.778 19.5676 19.2582 19.3413 19.7024C18.9818 20.408 18.4081 20.9817 17.7025 21.3412C17.2582 21.5676 16.7781 21.6619 16.2315 21.7066C15.7006 21.75 15.045 21.75 14.2321 21.7499H14.2H9.8H9.76788C8.95505 21.75 8.29944 21.75 7.76853 21.7066C7.2219 21.6619 6.74175 21.5676 6.29754 21.3412C5.59193 20.9817 5.01825 20.408 4.65873 19.7024C4.43238 19.2582 4.33803 18.778 4.29336 18.2314C4.24999 17.7005 4.24999 17.0449 4.25 16.232L4.25 16.1999V10.8106L2.53033 12.5303C2.23744 12.8232 1.76256 12.8232 1.46967 12.5303C1.17678 12.2374 1.17678 11.7625 1.46967 11.4696Z" fill="currentColor"/></svg>
+							<?php } else { ?>
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" opacity=".5" d="M18,22H6a3.00328,3.00328,0,0,1-3-3V10.25A3.0002,3.0002,0,0,1,4.02344,7.99316l6.001-5.251a3.0124,3.0124,0,0,1,3.95118,0l6,5.25.001.001A3.0002,3.0002,0,0,1,21,10.25V19A3.00328,3.00328,0,0,1,18,22Z"></path><path fill="currentColor" d="M16,22H8V15a3,3,0,0,1,3-3h2a3,3,0,0,1,3,3Z"></path></svg>
+							<?php } ?>
+						</a>
+					</div>
+				</div>
+			</div>
+		<?php } ?>
+
+		<?php echo Wo_LoadPage('modals/site-alerts'); ?>
+		
+		<?php if (($wo['page'] == 'home' || $wo['page'] == 'timeline' || $wo['page'] == 'products') && $wo['config']['classified'] == 1) { ?>
+			<?php echo Wo_LoadPage('products/create'); ?>
+		<?php } ?>
+    
+		<?php if ($wo['config']['reCaptcha'] == 1) { ?>
+			<script type="text/javascript" src='https://www.google.com/recaptcha/api.js'></script>
+		<?php } ?>
+		
+		<?php if ($wo['loggedin'] == false) { ?>
+			<script type="text/javascript" src="<?php echo $wo['config']['theme_url'];?>/javascript/welcome.js<?php echo $wo['update_cache']; ?>"></script>
+		<?php } ?>
+		
+		<?php if ($wo['config']['node_socket_flow'] == "1") { ?>
+			<script type="text/javascript">const node_socket_flow = "1"</script>
+		<?php } if ($wo['config']['node_socket_flow'] == "0") { ?>
+			<script type="text/javascript">const node_socket_flow = "0"</script>
+		<?php } ?>
+		
+		<script type="text/javascript" src="<?php echo $wo['config']['theme_url'];?>/javascript/script.js<?php echo $wo['update_cache']; ?>?version=<?php echo Tag_version(); ?>"></script>
+		
+		<?php if ($wo['loggedin'] == true) {?>
+			<?php if ($wo['config']['google_map'] == 1) { ?>
+				<script src="https://maps.googleapis.com/maps/api/js?key=<?php echo $wo['config']['google_map_api'];?>&libraries=places"></script>
+			<?php } ?>
+			<script src="<?php echo $wo['config']['theme_url'];?>/javascript/audioRecord/recorder.js"></script>
+			<script src="<?php echo $wo['config']['theme_url'];?>/javascript/audioRecord/record.js?version=<?php echo Tag_version(); ?>"></script>
+		<?php } ?>
+		
+		<?php if ($wo['page'] == 'timeline' && $wo['loggedin'] == true && $wo['config']['css_upload'] == 1) { ?>
+		<?php if (!empty($wo['user_profile']['css_file']) && file_exists($wo['user_profile']['css_file'])) {?>
+			<link class="styled-profile" rel="stylesheet" href="<?php echo Wo_GetMedia($wo['user_profile']['css_file']);?>">
+		<?php } } ?>
+		
+		<div class="extra-css"></div>
+		
+		<?php if ($wo['page'] != 'welcome') { ?>
+			<script type="text/javascript">jQuery(document).ready(function() {jQuery('.custom-fixed-element').theiaStickySidebar({additionalMarginTop: 65});});</script>
+		<?php }?>
+		
+		<?php echo Wo_LoadPage('timeago/content'); ?>
+      
+		<?php if($wo['loggedin'] == true) { echo Wo_LoadPage('extra_js/content'); }?>
+		
+		<?php if ($wo['loggedin'] == true) { ?>
+			<audio id="notification-sound" class="sound-controls" preload="auto"><source src="<?php echo $wo['config']['theme_url']; ?>/mp3/New-notification.mp3" type="audio/mpeg"></audio>
+			<audio id="message-sound" class="sound-controls" preload="auto"><source src="<?php echo $wo['config']['theme_url']; ?>/mp3/New-message.mp3" type="audio/mpeg"></audio>
+			<audio id="calling-sound" class="sound-controls" preload="auto"><source src="<?php echo $wo['config']['theme_url']; ?>/mp3/calling.mp3" type="audio/mpeg"></audio>
+			<audio id="video-calling-sound" class="sound-controls" preload="auto"><source src="<?php echo $wo['config']['theme_url']; ?>/mp3/video_call.mp3" type="audio/mpeg"></audio>
+		<?php } ?>
+		
+		<script>
+			<?php if ($wo['loggedin'] == true) {
+            $havevideo = $db->where('user_id',$wo['user']['id'])->where('processing',1)->getValue(T_POSTS,'COUNT(*)');
+            if ($havevideo > 0) { ?>
+				intervalUpdates = setTimeout(function(){ Wo_intervalUpdates(1); }, 6000);
+			<?php } } ?>
+			let f = navigator.userAgent.search("Firefox");
+			if (f > -1) {
+				$('.header-brand').attr('href', "<?php echo $wo['config']['site_url']."/?cache=".time(); ?>");
+			}
+			
+			<?php if ($wo['config']['stickers'] == 1){ ?>
+			function SearchForGif(keyword,id = 0,type = '') {
+				var chat_gif_loading =  '<div class="skel skel_chat_gif"></div><div class="skel skel_chat_gif"></div><div class="skel skel_chat_gif"></div><div class="skel skel_chat_gif"></div><div class="skel skel_chat_gif"></div><div class="skel skel_chat_gif"></div>';
+				$('#publisher-box-stickers-cont-'+id).html(chat_gif_loading);
+				Wo_Delay(function(){
+					$.ajax({
+					  url: 'https://api.giphy.com/v1/gifs/search?',
+					  type: 'GET',
+					  dataType: 'json',
+					  data: {q:keyword,api_key:'<?php echo $wo['config']['giphy_api'];?>', limit: 16},
+					})
+					.done(function(data) {
+						if (data.meta.status == 200 && data.data.length > 0) {
+							$('#publisher-box-stickers-cont-'+id).empty();
+							var appended = false;
+							for (var i = 0; i < data.data.length; i++) {
+								appended = true;
+								if (appended == true) {
+									appended = false;
+									if (type == 'story') {
+										$('#publisher-box-stickers-cont-'+id).append($('<img alt="gif" src="'+data.data[i].images.fixed_height_small.url+'" data-gif="' + data.data[i].images.fixed_height.url + '" onclick="Wo_PostCommentGif_'+id+'(this,'+id+')" autoplay loop>'));
+									}
+									else{
+										$('#publisher-box-stickers-cont-'+id).append($('<img alt="gif" src="'+data.data[i].images.fixed_height_small.url+'" data-gif="' + data.data[i].images.fixed_height.url + '" onclick="Wo_PostReplyCommentGif_'+id+'(this,'+id+')" autoplay loop>'));
+									}
+									appended = true;
+								}
+							}
+							var images = 0;
+							Wo_ElementLoad($('img[alt=gif]'), function(){
+								images++;
+							});
+							if (data.data.length == images || images >= 5) {
+							}
+						} else {
+							$('#publisher-box-stickers-cont-'+id).html('<div class="empty_state"><svg height="512pt" viewBox="0 0 512 512" width="512pt" xmlns="http://www.w3.org/2000/svg"><path d="m416 512h-320c-53.023438 0-96-42.976562-96-96v-320c0-53.023438 42.976562-96 96-96h320c53.023438 0 96 42.976562 96 96v320c0 53.023438-42.976562 96-96 96zm0 0" fill="#f5e6fe"/><path d="m229.425781 303.902344c0-39.359375 30.652344-71.644532 69.328125-74.398438v-69.601562c0-17.644532-14.355468-32-32-32h-106.675781c-17.644531 0-32 14.355468-32 32v149.328125c0 17.648437 14.355469 32 32 32h79.441406c-6.382812-10.992188-10.09375-23.710938-10.09375-37.328125zm-50.769531-46.078125c-7.039062-7.039063-19.425781-7.039063-26.464844 0l-2.765625 2.769531v-100.691406c0-5.886719 4.78125-10.671875 10.671875-10.671875h106.671875c5.886719 0 10.671875 4.785156 10.671875 10.671875v68.691406l-8.113281-8.113281c-7.296875-7.296875-19.167969-7.296875-26.464844 0l-50.765625 50.765625zm0 0" fill="#be63f9"/><path d="m381.328125 365.34375-28.625-28.625c6.351563-9.375 10.050781-20.65625 10.050781-32.796875 0-32.335937-26.320312-58.675781-58.675781-58.675781-32.351563 0-58.671875 26.320312-58.671875 58.675781 0 32.351563 26.320312 58.671875 58.671875 58.671875 12.515625 0 24.097656-3.96875 33.632813-10.671875l28.511718 28.511719c2.082032 2.078125 4.816406 3.117187 7.539063 3.117187 2.71875 0 5.453125-1.039062 7.535156-3.117187 4.191406-4.175782 4.191406-10.929688.03125-15.089844zm-77.230469-24.097656c-20.578125 0-37.328125-16.75-37.328125-37.324219 0-20.578125 16.75-37.328125 37.328125-37.328125 20.574219 0 37.328125 16.75 37.328125 37.328125 0 20.574219-16.753906 37.324219-37.328125 37.324219zm0 0" fill="#d9a4fc"/><path d="m202.753906 202.574219c0 11.78125-9.550781 21.328125-21.328125 21.328125-11.78125 0-21.328125-9.546875-21.328125-21.328125 0-11.777344 9.546875-21.328125 21.328125-21.328125 11.777344 0 21.328125 9.550781 21.328125 21.328125zm0 0" fill="#be63f9"/></svg><?php echo $wo['lang']['no_result']; ?></div>');
+						}
+					})
+					.fail(function() {
+						console.log("error");
+					})
+				},100);
+			}
+			<?php } ?>
+			
+			<?php if ($wo['config']['stickers_system'] == 1) { ?>
+			function ShowCommentStickers(id,type) {
+				$('.chat-box-stickers-cont').empty();
+				functionName = "Wo_PostReplyCommentSticker_"+id+"(this,"+id+");";
+				if (type == 'story') {
+					functionName = "Wo_PostCommentSticker_"+id+"(this,"+id+");";
+				}
+				<?php 
+					$html = "";
+					$stickers_system = Wo_GetAllStickers(50000);
+					if( count( $stickers_system ) > 0 ){
+						foreach ($stickers_system as $wo['stickerlist']) {
+							$html .= '<img alt="gif" src="'. Wo_GetMedia( $wo['stickerlist']['media_file'] ).'" data-gif="'.Wo_GetMedia( $wo['stickerlist']['media_file'] ).'" onclick="\'+functionName+\'" autoplay loop>';
+						}
+					} else {
+						$html .= '<div class="empty_state" style="margin: 15px 0 0;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M5.5,2C3.56,2 2,3.56 2,5.5V18.5C2,20.44 3.56,22 5.5,22H16L22,16V5.5C22,3.56 20.44,2 18.5,2H5.5M5.75,4H18.25A1.75,1.75 0 0,1 20,5.75V15H18.5C16.56,15 15,16.56 15,18.5V20H5.75A1.75,1.75 0 0,1 4,18.25V5.75A1.75,1.75 0 0,1 5.75,4M14.44,6.77C14.28,6.77 14.12,6.79 13.97,6.83C13.03,7.09 12.5,8.05 12.74,9C12.79,9.15 12.86,9.3 12.95,9.44L16.18,8.56C16.18,8.39 16.16,8.22 16.12,8.05C15.91,7.3 15.22,6.77 14.44,6.77M8.17,8.5C8,8.5 7.85,8.5 7.7,8.55C6.77,8.81 6.22,9.77 6.47,10.7C6.5,10.86 6.59,11 6.68,11.16L9.91,10.28C9.91,10.11 9.89,9.94 9.85,9.78C9.64,9 8.95,8.5 8.17,8.5M16.72,11.26L7.59,13.77C8.91,15.3 11,15.94 12.95,15.41C14.9,14.87 16.36,13.25 16.72,11.26Z"></path></svg> '. $wo['lang']['no_result'] .'</div>';
+					}
+				?>
+				sticker = '<?php echo($html); ?>';
+				$('#publisher-box-sticker-cont-'+id).html(sticker);
+			}
+			<?php } ?>
+	  
+			<?php if (!empty($wondertage_settings) && $wondertage_settings['tag_auto_dark'] == 1) { ?>
+			if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+				$('head').append('<link rel="stylesheet" href="<?php echo $wo['config']['theme_url'];?>/stylesheet/dark.css<?php echo $wo['update_cache']; ?>" id="night-mode-css">');
+				$('head').append('<meta name="theme-color" content="#212121" id="night-mode-meta">');
+				$('#night_mode_toggle').addClass('d-none');
+				$('#night_mode_auto').removeClass('d-none');
+			};
+
+			window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+				if (e.matches) {
+					$('head').append('<link rel="stylesheet" href="<?php echo $wo['config']['theme_url'];?>/stylesheet/dark.css<?php echo $wo['update_cache']; ?>" id="night-mode-css">');
+					$('head').append('<meta name="theme-color" content="#212121" id="night-mode-meta">');
+					$('#night_mode_toggle').addClass('d-none');
+					$('#night_mode_auto').removeClass('d-none');
+				} else {
+					$('#night_mode_toggle').removeClass('d-none');
+					$('#night-mode-css').remove();
+					$('#night-mode-meta').remove();
+					$('#night_mode_auto').addClass('d-none');
+				}
+			});
+			<?php } ?>
+			$(document).ready(function(){
+				$('body').on('contextmenu', 'video', function() { return false; });
+			});
+			$(window).on("popstate", function (e) {
+				location.reload();
+			});
+			jQuery(document).click(function(event){
+				if (!(jQuery(event.target).closest(".remove_combo_on_click").length)) {
+					jQuery('.remove_combo_on_click').removeClass('comment-toggle');
+				}
+			});
+			<?php echo $wo['config']['footer_cc']; ?>
+		</script>
+		
+		<?php if ($wo['page'] != 'get_news_feed' && $wo['page'] != 'maintenance') { ?>
+			<script>
+				window.addEventListener("load", function(){
+					window.cookieconsent.initialise({
+						"theme": "classic",
+						"content": {
+							"message": "<?php echo $wo['lang']['cookie_message']?>",
+							"dismiss": "<?php echo $wo['lang']['cookie_dismiss']?>",
+							"link": "<?php echo $wo['lang']['cookie_link']?>",
+							"href": "<?php echo Wo_SeoLink('index.php?link1=terms&type=privacy-policy');?>"
+						}
+					})
+				});
+			</script>
+		<?php } ?>
+	  
+		<?php if ($wo['config']['user_status'] == 1 && $wo['loggedin'] == true) { ?>
+			<script type="text/javascript">
+				$(document).on('mouseover', '.story_lightbox .tag_lbox_img_innr', function(event) {
+					$('.width_').css('width', $('.width_').css('width'));
+					value = $('.story_lightbox').attr('data-post-id');
+					$('.story_lightbox').addClass('dont_close_story_'+value);
+				});
+				
+				$(document).on('mouseleave', '.story_lightbox .tag_lbox_img_innr', function(event) {
+					Wo_Delay(function(){
+						if ($('#users-reacted-modal').is(':hidden')) {
+							value = $('.story_lightbox').attr('data-post-id');
+							$('.story_lightbox').removeClass('dont_close_story_'+value);
+							setTimeout(function(){
+								$('.width_').css('width', '100%');
+							}, 700);
+							Wo_Delay(function(){
+								if ($('.dont_close_story_'+value).length == 0) {
+									$('.story_lightbox').find('.next-btn').click();
+								}
+							}, 10000);
+						}
+					}, 500);
+				});
+		  
+				$(document).on('click', '.story-image-wrapper', function(event) {
+					event.preventDefault();
+					$('#contnet').append('<div class="lightbox-container"><div class="tag_lboxside_skel story_lightbox"><div class="valign tag_lbox_toolbar"><div class="btn btn-mat close-lightbox" onclick="Wo_CloseLightbox();"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M7.828 11H20v2H7.828l5.364 5.364-1.414 1.414L4 12l7.778-7.778 1.414 1.414z"></path></svg></div></div><div class="tag_story_side tag_vw_story_skel"><h2 class="tag_page_title"><?php echo $wo['lang']['stories'] ?></h2><div class="tag_lbox_stories tag_lbox_story_skel"><ul class="list-unstyled valign status-list"><li><a></a></li><li><a></a></li><li><a></a></li></ul></div></div></div></div>');
+					$value = $(this).parents(".story-container").attr('data-status-id');
+					$.post(Wo_Ajax_Requests_File() + '?f=story_view', {id: $value}, function(data, textStatus, xhr) {
+						if (data.status == 200) {
+							$('body').addClass('no_scroll');
+							$('.lightbox-container').html(data.html);
+							$('.width_').addClass('load');
+							setTimeout(function(){
+								$('.width_').css('width', '100%');
+							}, 200);
+							Wo_Delay(function(){
+								if ($('.dont_close_story_'+$value).length == 0) {
+									Get_NextStory(data.story_id);
+								}
+							}, 10000);
+						} else {
+							Wo_CloseLightbox();
+						}
+					});
+				});
+				
+				function Wo_GetMoreStoryViews(story_id,self) {
+					last_view = $('.story_views_').last().attr('id');
+					$(self).addClass('dont_close_story_'+story_id);
+					$(self).find('span').html('<?php echo $wo["lang"]["please_wait"]?>');
+					$.post(Wo_Ajax_Requests_File() + '?f=story_views_', {last_view:last_view,story_id:story_id}, function(data, textStatus, xhr) {
+						if (data.status == 200) {
+							$(self).find('button').html('<span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"></path></svg></span> <?php echo($wo['lang']['load_more']) ?>');
+							$('.views_container_').append(data.html);
+						}
+						else{
+							$(self).find('button').html('<?php echo $wo["lang"]["no_more_views"]?>');
+						}
+					});
+				}
+				$(document).on('click', '.see_all_stories', function(event) {
+					event.preventDefault();
+					$('#contnet').append('<div class="lightbox-container"><div class="tag_lboxside_skel story_lightbox"><div class="valign tag_lbox_toolbar"><div class="btn btn-mat close-lightbox" onclick="Wo_CloseLightbox();"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M7.828 11H20v2H7.828l5.364 5.364-1.414 1.414L4 12l7.778-7.778 1.414 1.414z"></path></svg></div></div><div class="tag_story_side tag_vw_story_skel"><h2 class="tag_page_title"><?php echo $wo['lang']['stories'] ?></h2><div class="tag_lbox_stories tag_lbox_story_skel"><ul class="list-unstyled valign status-list"><li><a></a></li><li><a></a></li><li><a></a></li></ul></div></div></div></div>');
+					user_id = $(this).attr('data_story_user_id');
+					type = $(this).attr('data_story_type');
+					$('body').addClass('no_scroll');
+					$.post(Wo_Ajax_Requests_File() + '?f=view_all_stories', {user_id: user_id,type:type}, function(data, textStatus, xhr) {
+						if (node_socket_flow == "1") {
+							socket.emit("user_notification", { to_id: user_id, user_id: _getCookie("user_id"), type: "added" });
+						}
+						$('.lightbox-container').html(data.html);
+						setTimeout(function(){
+							video_story = $('#video_story').attr('data-story-video');
+							if ($('[data-story-video='+video_story+']').length == 0) {
+								$('.width_').addClass('load');
+								setTimeout(function(){
+									$('.width_').css('width', '100%');
+								}, 200);
+								Wo_Delay(function(){
+									value = $('.user_story_').attr('id');
+									if ($('.dont_close_story_'+value).length == 0) {
+										if (type == 'user') {
+											Get_NextStory(data.story_id);
+										} else{
+											Get_NextStory(data.story_id,'friends');
+										}
+									}
+								}, 10000);
+							}
+						}, 200);
+					});
+				});
+				function Get_PreviousStory(story_id,story_type = '') {
+					if ($('.lightbox-container').is(":visible")) {
+						Wo_CloseLightbox();
+						$('#contnet').append('<div class="lightbox-container"><div class="tag_lboxside_skel story_lightbox"><div class="valign tag_lbox_toolbar"><div class="btn btn-mat close-lightbox" onclick="Wo_CloseLightbox();"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M7.828 11H20v2H7.828l5.364 5.364-1.414 1.414L4 12l7.778-7.778 1.414 1.414z"></path></svg></div></div><div class="tag_story_side tag_vw_story_skel"><h2 class="tag_page_title"><?php echo $wo['lang']['stories'] ?></h2><div class="tag_lbox_stories tag_lbox_story_skel"><ul class="list-unstyled valign status-list"><li><a></a></li><li><a></a></li><li><a></a></li></ul></div></div></div></div>');
+						$('body').addClass('no_scroll');
+						$.post(Wo_Ajax_Requests_File() + '?f=view_story_by_id', {story_id: story_id,type:'previous',story_type:story_type}, function(data, textStatus, xhr) {
+							user_id = $(this).attr('data_story_user_id');
+							if (node_socket_flow == "1") {
+								socket.emit("user_notification", { to_id: user_id, user_id: _getCookie("user_id"), type: "added" });
+							}
+							if (data.status == 200) {
+								$('body').addClass('no_scroll');
+								$('.lightbox-container').html(data.html);
+								video_story = $('#video_story').attr('data-story-video');
+								if ($('[data-story-video='+video_story+']').length == 0) {
+									$('.width_').addClass('load');
+									setTimeout(function(){
+										$('.width_').css('width', '100%');
+									}, 200);
+									Wo_Delay(function(){
+										value = $('.user_story_').attr('id');
+										if ($('.dont_close_story_'+value).length == 0) {
+											if (story_type == 'user') {
+												if ($('.lightpost-'+data.story_id).length > 0) {
+													Get_NextStory(data.story_id);
+												}
+											} else {
+												if ($('.lightpost-'+data.story_id).length > 0) {
+													Get_NextStory(data.story_id,'friends');
+												}
+											}
+										}
+									}, 10000);
+								}
+							} else {
+								Wo_CloseLightbox();
+							}
+						});
+					}
+				}
+				function Get_NextStory(story_id,story_type = '') {
+					if ($('.lightbox-container').is(":visible")) {
+						Wo_CloseLightbox();
+						$('#contnet').append('<div class="lightbox-container"><div class="tag_lboxside_skel story_lightbox"><div class="valign tag_lbox_toolbar"><div class="btn btn-mat close-lightbox" onclick="Wo_CloseLightbox();"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M7.828 11H20v2H7.828l5.364 5.364-1.414 1.414L4 12l7.778-7.778 1.414 1.414z"></path></svg></div></div><div class="tag_story_side tag_vw_story_skel"><h2 class="tag_page_title"><?php echo $wo['lang']['stories'] ?></h2><div class="tag_lbox_stories tag_lbox_story_skel"><ul class="list-unstyled valign status-list"><li><a></a></li><li><a></a></li><li><a></a></li></ul></div></div></div></div>');
+						$('body').addClass('no_scroll');
+						$.post(Wo_Ajax_Requests_File() + '?f=view_story_by_id', {story_id: story_id,type:'next',story_type:story_type}, function(data, textStatus, xhr) {
+							if (data.status == 200) {
+								user_id = $(this).attr('data_story_user_id');
+								if (node_socket_flow == "1") {
+									socket.emit("user_notification", { to_id: user_id, user_id: _getCookie("user_id"), type: "added" });
+								}
+								$('body').addClass('no_scroll');
+								$('.lightbox-container').html(data.html);
+								video_story = $('#video_story').attr('data-story-video');
+								if ($('[data-story-video='+video_story+']').length == 0) {
+									$('.width_').addClass('load');
+									setTimeout(function(){
+										$('.width_').css('width', '100%');
+									}, 200);
+									Wo_Delay(function(){
+										value = $('.user_story_').attr('id');
+										if ($('.dont_close_story_'+value).length == 0) {
+											if (story_type == 'user') {
+												if ($('.lightpost-'+data.story_id).length > 0) {
+													Get_NextStory(data.story_id);
+												}
+											} else {
+												if ($('.lightpost-'+data.story_id).length > 0) {
+													Get_NextStory(data.story_id,'friends');
+												}
+											}
+										}
+									}, 10000);
+								}
+							} else {
+								if (story_type == 'user') {
+									if($('.unseen_story').length > 0){
+										$('.unseen_story').addClass('seen_story');
+										$('.unseen_story').removeClass('unseen_story');
+									}
+								}
+								Wo_CloseLightbox();
+							}
+						});
+					}
+				}
+				
+				function Get_CurrentStory(story_id,story_type = '') {
+					Wo_CloseLightbox();
+					$('#contnet').append('<div class="lightbox-container"><div class="tag_lboxside_skel story_lightbox"><div class="valign tag_lbox_toolbar"><div class="btn btn-mat close-lightbox" onclick="Wo_CloseLightbox();"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M7.828 11H20v2H7.828l5.364 5.364-1.414 1.414L4 12l7.778-7.778 1.414 1.414z"></path></svg></div></div><div class="tag_story_side tag_vw_story_skel"><h2 class="tag_page_title"><?php echo $wo['lang']['stories'] ?></h2><div class="tag_lbox_stories tag_lbox_story_skel"><ul class="list-unstyled valign status-list"><li><a></a></li><li><a></a></li><li><a></a></li></ul></div></div></div></div>');
+					$('body').addClass('no_scroll');
+					$.post(Wo_Ajax_Requests_File() + '?f=view_story_by_id', {story_id: story_id,type:'current',story_type:story_type}, function(data, textStatus, xhr) {
+						if (data.status == 200) {
+							user_id = $(this).attr('data_story_user_id');
+							if (node_socket_flow == "1") {
+								socket.emit("user_notification", { to_id: user_id, user_id: _getCookie("user_id"), type: "added" });
+							}
+							$('body').addClass('no_scroll');
+							$('.lightbox-container').html(data.html);
+							video_story = $('#video_story').attr('data-story-video');
+							if ($('[data-story-video='+video_story+']').length == 0) {
+								$('.width_').addClass('load');
+								setTimeout(function(){
+									$('.width_').css('width', '100%');
+								}, 200);
+								Wo_Delay(function(){
+									value = $('.user_story_').attr('id');
+									if ($('.dont_close_story_'+value).length == 0) {
+										if (story_type == 'user') {
+											if ($('.lightpost-'+data.story_id).length > 0) {
+												Get_NextStory(data.story_id);
+											}
+										} else {
+											if ($('.lightpost-'+data.story_id).length > 0) {
+												Get_NextStory(data.story_id,'friends');
+											}
+										}
+									}
+								}, 10000);
+							}
+						} else {
+							if (story_type == 'user') {
+								if($('.unseen_story').length > 0){
+									$('.unseen_story').addClass('seen_story');
+									$('.unseen_story').removeClass('unseen_story');
+								}
+							}
+							Wo_CloseLightbox();
+						}
+					});
+				}
+			</script>
+		<?php } ?>
+		
+		<?php
+		if ($wo['loggedin'] == true) {
+		$wo['user']['notification_settings'] = (Array) json_decode(html_entity_decode($wo['user']['notification_settings']));
+		if ($wo['loggedin'] == true && $wo['config']['memories_system'] != 0 && $wo['user']['notification_settings']['e_memory'] == 1 && empty($_COOKIE['memory'])) { ?>
+			<script type="text/javascript">$.post(Wo_Ajax_Requests_File() + '?f=notify_memories', function(data, textStatus, xhr) {});</script>
+		<?php } } ?>
+		
+		<?php if ($wo['page'] == 'welcome') { ?>
+		<?php } else { ?>
+			<div class="modal fade" id="apply-job-modal" role="dialog"></div>
+			<div class="tag_side_backdrop" onclick="javascript:$('body').toggleClass('side_open');"></div>
+			<!-- HTML NOTIFICATION POPUP -->
+			<div id="notification-popup" class="wow_content tag_pop_noti"></div>
+			<!-- HTML NOTIFICATION POPUP -->
+		<?php } ?>
+	</body>
+</html>

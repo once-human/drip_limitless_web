@@ -1,0 +1,503 @@
+<div class="page-margin">
+	<div class="container">
+		<?php 
+			if (Wo_IsThereAnnouncement() === true) { 
+			$announcement = Wo_GetHomeAnnouncements();
+		?>
+			<div class="home-announcement wow_content p15 tag_announce">
+				<svg viewBox="0 -14 512.00001 512" xmlns="http://www.w3.org/2000/svg"><path d="m126.605469 210.292969 60 103.921875c-27.238281 15.726562-58.890625 34-86.601563 50-28.699218 16.570312-65.390625 6.742187-81.960937-21.960938-16.46875-28.503906-6.917969-65.292968 21.960937-81.960937zm0 0" fill="#2bbdc4"/><path d="m409.457031 243.816406c7.589844 13.136719-1.660156 29.617188-16.832031 29.988282l-11.25 2.210937-.25-1.269531-128.730469-222.972656-.839843-.660157 7.199218-9.171875c7.910156-12.957031 26.800782-12.738281 34.390625.410156 199.792969 346.03125-52.261719-90.527343 116.3125 201.464844zm0 0" fill="#2bbdc4"/><path d="m206.964844 429.488281c8.289062 14.339844 3.371094 32.6875-10.980469 40.976563-14.328125 8.289062-32.710937 3.355468-40.980469-10.976563l-55-95.273437 51.960938-30c.476562.828125 54.917968 95.128906 55 95.273437zm0 0" fill="#495d85"/><path d="m377.777344 108.933594 20 34.640625-24.640625 37.320312-40-69.28125zm0 0" fill="#e9eef0"/><path d="m381.125 274.746094.25 1.269531-194.769531 38.199219-60-103.921875 124.949219-159.179688.839843.660157zm0 0" fill="#adf3ff"/><path d="m136.964844 308.234375c4.78125-2.757813 6.417968-8.878906 3.660156-13.660156-2.761719-4.777344-8.878906-6.417969-13.660156-3.660157-4.78125 2.761719-6.421875 8.882813-3.660156 13.660157 2.757812 4.78125 8.878906 6.421875 13.660156 3.660156zm0 0"/><path d="m95.984375 377.253906 50.359375 87.230469c10.867188 18.84375 35.3125 25.820313 54.644531 14.644531 19.128907-11.054687 25.703125-35.496094 14.636719-54.640625l-30-51.96875 25.980469-15c4.78125-2.765625 6.421875-8.878906 3.660156-13.660156l-13.003906-22.523437c1.550781-.300782 11.746093-2.300782 191.539062-37.570313 22.226563-1.207031 35.542969-25.515625 24.316407-44.949219l-33.234376-57.5625 21.238282-32.167968c2.085937-3.164063 2.210937-7.230469.316406-10.511719l-20-34.640625c-1.894531-3.28125-5.492188-5.203125-9.261719-4.980469l-38.472656 2.308594-36.894531-63.90625c-5.34375-9.257813-14.917969-14.863281-25.605469-14.996094-.128906-.003906-.253906-.003906-.382813-.003906-10.328124 0-19.703124 5.140625-25.257812 13.832031l-130.632812 166.414062-84.925782 49.03125c-33.402344 19.277344-44.972656 62.128907-25.621094 95.621094 17.679688 30.625 54.953126 42.671875 86.601563 30zm102.324219 57.238282c5.523437 9.554687 2.253906 21.78125-7.328125 27.316406-9.613281 5.558594-21.855469 2.144531-27.316407-7.320313l-50-86.613281 34.640626-20c57.867187 100.242188 49.074218 85.011719 50.003906 86.617188zm-22.683594-79.296876-10-17.320312 17.320312-10 10 17.320312zm196.582031-235.910156 13.820313 23.9375-12.324219 18.664063-23.820313-41.261719zm-104.917969-72.132812c2.683594-4.390625 6.941407-4.84375 8.667969-4.796875 1.707031.019531 5.960938.550781 8.527344 4.996093l116.3125 201.464844c3.789063 6.558594-.816406 14.804688-8.414063 14.992188-1.363281.03125-1.992187.277344-5.484374.929687l-123.035157-213.105469c2.582031-3.320312 2.914063-3.640624 3.425781-4.480468zm-16.734374 21.433594 115.597656 200.222656-174.460938 34.21875-53.046875-91.878906zm-223.851563 268.667968c-4.390625-7.597656-6.710937-16.222656-6.710937-24.949218 0-17.835938 9.585937-34.445313 25.011718-43.351563l77.941406-45 50 86.601563-77.941406 45.003906c-23.878906 13.78125-54.515625 5.570312-68.300781-18.304688zm0 0"/><path d="m105.984375 314.574219c-2.761719-4.78125-8.878906-6.421875-13.660156-3.660157l-17.320313 10c-4.773437 2.757813-10.902344 1.113282-13.660156-3.660156-2.761719-4.78125-8.878906-6.421875-13.660156-3.660156s-6.421875 8.878906-3.660156 13.660156c8.230468 14.257813 26.589843 19.285156 40.980468 10.980469l17.320313-10c4.78125-2.761719 6.421875-8.875 3.660156-13.660156zm0 0"/><path d="m497.136719 43.746094-55.722657 31.007812c-4.824218 2.6875-6.5625 8.777344-3.875 13.601563 2.679688 4.820312 8.765626 6.566406 13.601563 3.875l55.71875-31.007813c4.828125-2.6875 6.5625-8.777344 3.875-13.601562-2.683594-4.828125-8.773437-6.5625-13.597656-3.875zm0 0"/><path d="m491.292969 147.316406-38.636719-10.351562c-5.335938-1.429688-10.820312 1.734375-12.25 7.070312-1.429688 5.335938 1.738281 10.816406 7.074219 12.246094l38.640625 10.351562c5.367187 1.441407 10.824218-1.773437 12.246094-7.070312 1.429687-5.335938-1.738282-10.820312-7.074219-12.246094zm0 0"/><path d="m394.199219 7.414062-10.363281 38.640626c-1.429688 5.335937 1.734374 10.816406 7.070312 12.25 5.332031 1.425781 10.816406-1.730469 12.25-7.070313l10.359375-38.640625c1.429687-5.335938-1.734375-10.820312-7.070313-12.25-5.332031-1.429688-10.816406 1.734375-12.246093 7.070312zm0 0"/></svg>
+				<?php echo $announcement['text']; ?>
+				<div class="announce_footer">
+					<button class="btn btn-main-rev btn-mat" onclick="Wo_ViewAnnouncement(<?php echo $announcement['id']; ?>);"><?php echo $wo['lang']['close'];?></button>
+				</div>
+			</div>
+		<?php } ?>
+		<?php if ($wo['config']['afternoon_system'] == 1) { ?>
+			<div class="alert alert-dismissible p15 greetalert" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close" title="<?php echo $wo['lang']['hide'];?>" onclick="setCookie('day_status', '1', 3);"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path fill="currentColor" opacity=".45" d="M18.3 5.71c-.39-.39-1.02-.39-1.41 0L12 10.59 7.11 5.7c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41L10.59 12 5.7 16.89c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0L12 13.41l4.89 4.89c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4z"/></svg></button>
+				<?php if (Wo_IsMobile() == false) { ?>
+				<?php if ($wo['config']['weather_widget'] == 1 && !empty($wo['config']['weather_key']) && !empty($wo['user']['lat']) && !empty($wo['user']['lng'])) { ?>
+					<button type="button" class="btn" data-toggle="modal" data-target="#weatherBox"><svg xmlns="http://www.w3.org/2000/svg" height="16" viewBox="0 0 24 24" width="16"><path fill="currentColor" d="M11.1,12.08c-2-3.88-0.92-7.36,0.07-9.27c0.19-0.36-0.12-0.77-0.53-0.72C5.62,2.77,1.78,7.16,1.99,12.41 c0.01,0,0.01,0,0.01,0.01C2.62,12.15,3.29,12,4,12c1.66,0,3.18,0.83,4.1,2.15C9.77,14.63,11,16.17,11,18 c0,1.52-0.87,2.83-2.12,3.51c0.98,0.32,2.03,0.5,3.11,0.5c3.13,0,5.92-1.44,7.76-3.69c0.26-0.32,0.04-0.79-0.37-0.82 C16.89,17.37,13.1,15.97,11.1,12.08z"/></g><path d="M7,16l-0.18,0C6.4,14.84,5.3,14,4,14c-1.66,0-3,1.34-3,3s1.34,3,3,3c0.62,0,2.49,0,3,0c1.1,0,2-0.9,2-2 C9,16.9,8.1,16,7,16z"/></svg> <?php echo $wo['lang']['home_weather'];?></button>
+				<?php } ?>
+				<?php } ?>
+				<div id="daynightmsg"><div class="skel skel_2 skel_home_greet"></div></div>
+			</div>
+		<?php } ?>
+		
+		<?php if ($wo['page'] == 'home') { ?>
+		<?php if ($wo['config']['user_status'] == 1) { ?>
+			<div class="tag_stories_on_home">
+				<div class="tag_lbox_stories tag_stories_mobi">
+					<ul class="list-unstyled valign tag_scroll status-list">
+						<li class="create_new">
+							<a href="<?php echo Wo_SeoLink('index.php?link1=create-status'); ?>">
+								<img src="<?php echo $wo['user']['avatar'];?>" alt="<?php echo $wo['user']['name'];?>">
+								<span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" /></svg></span>
+							</a>
+							<p class="truncate pointer" onclick="window.location = '<?php echo Wo_SeoLink('index.php?link1=create-status'); ?>';"><?php echo $wo['lang']['create_story'] ?></p>
+						</li>
+						<?php if (Wo_IsMobile() == false) { ?>
+							<?php
+								$get_user_status = Wo_GetFriendsStatus(array('limit' => 6));
+								if (!empty($get_user_status)) {
+							?>
+								<?php
+									foreach ($get_user_status as $key => $wo['user_status']) {
+										echo Wo_LoadPage('home/lightbox-user-status');
+									}
+								?>
+								<?php if (count($get_user_status) == 1) { ?>
+									<li class="story_empty"><a><span><b></b></span></a><p></p></li><li class="story_empty"><a><span><b></b></span></a><p></p></li><li class="story_empty"><a><span><b></b></span></a><p></p></li><li class="story_empty"><a><span><b></b></span></a><p></p></li><li class="story_empty"><a><span><b></b></span></a><p></p></li>
+								<?php } else if (count($get_user_status) == 2) { ?>
+									<li class="story_empty"><a><span><b></b></span></a><p></p></li><li class="story_empty"><a><span><b></b></span></a><p></p></li><li class="story_empty"><a><span><b></b></span></a><p></p></li><li class="story_empty"><a><span><b></b></span></a><p></p></li>
+								<?php } else if (count($get_user_status) == 3) { ?>
+									<li class="story_empty"><a><span><b></b></span></a><p></p></li><li class="story_empty"><a><span><b></b></span></a><p></p></li><li class="story_empty"><a><span><b></b></span></a><p></p></li>
+								<?php } else if (count($get_user_status) == 4) { ?>
+									<li class="story_empty"><a><span><b></b></span></a><p></p></li><li class="story_empty"><a><span><b></b></span></a><p></p></li>
+								<?php } else if (count($get_user_status) == 5) { ?>
+									<li class="story_empty"><a><span><b></b></span></a><p></p></li>
+								<?php } ?>
+							<?php } else { ?>
+								<li class="story_empty"><a><span><b></b></span></a><p></p></li><li class="story_empty"><a><span><b></b></span></a><p></p></li><li class="story_empty"><a><span><b></b></span></a><p></p></li><li class="story_empty"><a><span><b></b></span></a><p></p></li><li class="story_empty"><a><span><b></b></span></a><p></p></li><li class="story_empty"><a><span><b></b></span></a><p></p></li>
+							<?php } ?>
+						<?php } else { ?>
+							<?php
+								$get_user_status = Wo_GetFriendsStatus(array('limit' => 60));
+								if (!empty($get_user_status)) {
+							?>
+								<?php
+									foreach ($get_user_status as $key => $wo['user_status']) {
+										echo Wo_LoadPage('home/lightbox-user-status');
+									}
+								?>
+								<?php if (count($get_user_status) == 1) { ?>
+									<li class="story_empty"><a><span><b></b></span></a><p></p></li><li class="story_empty"><a><span><b></b></span></a><p></p></li>
+								<?php } else if (count($get_user_status) == 2) { ?>
+									<li class="story_empty"><a><span><b></b></span></a><p></p></li>
+								<?php } ?>
+							<?php } else { ?>
+								<li class="story_empty"><a><span><b></b></span></a><p></p></li><li class="story_empty"><a><span><b></b></span></a><p></p></li><li class="story_empty"><a><span><b></b></span></a><p></p></li>
+							<?php } ?>
+						<?php } ?>
+					</ul>
+					<?php if (Wo_IsMobile() == false) { ?>
+					<?php if (count($get_user_status) > 3) { ?>
+						<a href="<?php echo Wo_SeoLink('index.php?link1=more-status'); ?>" class="btn btn-mat btn-mat-raised view-more-stories" title="<?php echo $wo['lang']['see_all'] ?>">
+							<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" fill="currentColor"><path d="M14,9h7c0.55,0,1-0.45,1-1c0-0.55-0.45-1-1-1h-7c-0.55,0-1,0.45-1,1C13,8.55,13.45,9,14,9z"/><path d="M21,15h-7c-0.55,0-1,0.45-1,1c0,0.55,0.45,1,1,1h7c0.55,0,1-0.45,1-1C22,15.45,21.55,15,21,15z"/><path d="M21,11h-4c-0.55,0-1,0.45-1,1c0,0.55,0.45,1,1,1h4c0.55,0,1-0.45,1-1C22,11.45,21.55,11,21,11z"/><path d="M8.85,7.85C8.54,7.54,8,7.76,8,8.21V11H3c-0.55,0-1,0.45-1,1c0,0.55,0.45,1,1,1h5v2.79c0,0.45,0.54,0.67,0.85,0.35 l3.79-3.79c0.2-0.2,0.2-0.51,0-0.71L8.85,7.85z"/></svg>
+						</a>
+					<?php } }?>
+				</div>
+			</div>
+			<hr class="style-two">
+		<?php } } ?>
+		
+		<?php if ($wo['page'] == 'home') { ?>
+			<div id="scroll_filter_click"></div>
+			<div class="valign tag_home_filters home">
+				<?php if ($wo['config']['order_posts_by'] == 0) { ?>
+					<div class="dropdown tag_home_post_order" dir="auto">
+						<a href="#" class="btn-mat" data-toggle="dropdown" role="button" aria-expanded="false"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path fill="currentColor" d="M9.12601749,6 C9.57006028,4.27477279 11.1361606,3 13,3 C15.209139,3 17,4.790861 17,7 C17,9.209139 15.209139,11 13,11 C11.1361606,11 9.57006028,9.72522721 9.12601749,8 L2,8 L2,6 L9.12601749,6 Z M4.12601749,16 C4.57006028,14.2747728 6.13616057,13 8,13 C10.209139,13 12,14.790861 12,17 C12,19.209139 10.209139,21 8,21 C6.13616057,21 4.57006028,19.7252272 4.12601749,18 L2,18 L2,16 L4.12601749,16 Z M14,18 L14,16 L22,16 L22,18 L14,18 Z M8,19 C9.1045695,19 10,18.1045695 10,17 C10,15.8954305 9.1045695,15 8,15 C6.8954305,15 6,15.8954305 6,17 C6,18.1045695 6.8954305,19 8,19 Z M19,8 L19,6 L22,6 L22,8 L19,8 Z M13,9 C14.1045695,9 15,8.1045695 15,7 C15,5.8954305 14.1045695,5 13,5 C11.8954305,5 11,5.8954305 11,7 C11,8.1045695 11.8954305,9 13,9 Z"></path></svg></a>
+						<ul class="dropdown-menu tag_create_menu order_by">
+							<li class="order_all <?php echo ($wo['user']['order_posts_by'] == 0) ? 'active' : ''; ?>">
+								<a href="javascript:void(0);" onclick="Wo_StorePosts(0);"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" class="hover_path" d="M20 22H4a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1zM7 6v4h4V6H7zm0 6v2h10v-2H7zm0 4v2h10v-2H7zm6-9v2h4V7h-4z"></path><path fill="currentColor" d="M20 22H4a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1zm-1-2V4H5v16h14zM7 6h4v4H7V6zm0 6h10v2H7v-2zm0 4h10v2H7v-2zm6-9h4v2h-4V7z"></path></svg> <?php echo $wo['lang']['all'] ?> <?php echo $wo['lang']['posts'] ?></a>
+							</li>
+							<li class="order_people <?php echo ($wo['user']['order_posts_by'] == 1) ? 'active' : ''; ?>">
+								<a href="javascript:void(0);" onclick="Wo_StorePosts(1);"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" class="hover_path" d="M10 19.748V16.4c0-1.283.995-2.292 2.467-2.868A8.482 8.482 0 0 0 9.5 13c-1.89 0-3.636.617-5.047 1.66A8.017 8.017 0 0 0 10 19.748zm8.88-3.662C18.485 15.553 17.17 15 15.5 15c-2.006 0-3.5.797-3.5 1.4V20a7.996 7.996 0 0 0 6.88-3.914zM9.55 11.5a2.25 2.25 0 1 0 0-4.5 2.25 2.25 0 0 0 0 4.5zm5.95 1a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"></path><path fill="currentColor" d="M9.55 11.5a2.25 2.25 0 1 1 0-4.5 2.25 2.25 0 0 1 0 4.5zm.45 8.248V16.4c0-.488.144-.937.404-1.338a6.473 6.473 0 0 0-5.033 1.417A8.012 8.012 0 0 0 10 19.749zM4.453 14.66A8.462 8.462 0 0 1 9.5 13c1.043 0 2.043.188 2.967.532.878-.343 1.925-.532 3.033-.532 1.66 0 3.185.424 4.206 1.156a8 8 0 1 0-15.253.504zm14.426 1.426C18.486 15.553 17.171 15 15.5 15c-2.006 0-3.5.797-3.5 1.4V20a7.996 7.996 0 0 0 6.88-3.914zM12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm3.5-9.5a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"></path></svg> <?php echo $wo['lang']['people_i_follow'] ?></a>
+							</li>
+						</ul>
+					</div>
+				<?php } ?>
+				<ul class="list-unstyled tag_page_nav valign filterby" id="filterby-post">
+					<li class="active filter-by-li" dir="auto">
+						<a href="javascript:void(0);" class="btn-mat" onclick="Wo_FilterPostBy('all');"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M19 22H5a3 3 0 0 1-3-3V3a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v12h4v4a3 3 0 0 1-3 3zm-1-5v2a1 1 0 0 0 2 0v-2h-2zm-2 3V4H4v15a1 1 0 0 0 1 1h11zM6 7h8v2H6V7zm0 4h8v2H6v-2zm0 4h5v2H6v-2z" fill="currentColor"/></svg> <?php echo $wo['lang']['all'];?></a>
+					</li>
+					<li class="filter-by-li" dir="auto">
+						<a href="javascript:void(0);" class="btn-mat" onclick="Wo_FilterPostBy('text');"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M16,17 L16,19 L2,19 L2,17 L16,17 Z M22,13 L22,15 L2,15 L2,13 L22,13 Z M16,9 L16,11 L2,11 L2,9 L16,9 Z M22,5 L22,7 L2,7 L2,5 L22,5 Z" fill="currentColor"/></svg> <?php echo $wo['lang']['text'];?></a>
+					</li>
+					<li class="filter-by-li" dir="auto">
+						<a href="javascript:void(0);" class="btn-mat" onclick="Wo_FilterPostBy('photos');"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M6.93701993,5.84537513 C7.00786835,5.74688122 7.08655624,5.62630565 7.18689485,5.46372088 C7.24312147,5.37261346 7.44826977,5.03326382 7.48180254,4.97841195 C8.31078564,3.62238725 8.91339481,3 10,3 L14,3 C15.0866052,3 15.6892144,3.62238725 16.5181975,4.97841195 C16.5517302,5.03326382 16.7568785,5.37261346 16.8131052,5.46372088 C16.9134438,5.62630565 16.9921316,5.74688122 17.0629801,5.84537513 C17.1097019,5.91032811 17.1505105,5.96193936 17.1838035,6 L20,6 C21.6568542,6 23,7.34314575 23,9 L23,18 C23,19.6568542 21.6568542,21 20,21 L4,21 C2.34314575,21 1,19.6568542 1,18 L1,9 C1,7.34314575 2.34314575,6 4,6 L6.81619653,6 C6.84948947,5.96193936 6.8902981,5.91032811 6.93701993,5.84537513 Z M4,8 C3.44771525,8 3,8.44771525 3,9 L3,18 C3,18.5522847 3.44771525,19 4,19 L20,19 C20.5522847,19 21,18.5522847 21,18 L21,9 C21,8.44771525 20.5522847,8 20,8 L17,8 C16.3356579,8 15.8876309,7.6364073 15.4393863,7.01325501 C15.3362526,6.86987789 15.2340812,6.71331789 15.1111283,6.51408981 C15.0490387,6.41348225 14.8408368,6.06908144 14.8118025,6.02158805 C14.359498,5.28172234 14.0867281,5 14,5 L10,5 C9.91327186,5 9.64050203,5.28172234 9.18819746,6.02158805 C9.15916317,6.06908144 8.95096127,6.41348225 8.88887167,6.51408981 C8.76591877,6.71331789 8.66374737,6.86987789 8.56061366,7.01325501 C8.11236912,7.6364073 7.66434214,8 7,8 L4,8 Z M19,11 C19.5522847,11 20,10.5522847 20,10 C20,9.44771525 19.5522847,9 19,9 C18.4477153,9 18,9.44771525 18,10 C18,10.5522847 18.4477153,11 19,11 Z M12,18 C9.23857625,18 7,15.7614237 7,13 C7,10.2385763 9.23857625,8 12,8 C14.7614237,8 17,10.2385763 17,13 C17,15.7614237 14.7614237,18 12,18 Z M12,16 C13.6568542,16 15,14.6568542 15,13 C15,11.3431458 13.6568542,10 12,10 C10.3431458,10 9,11.3431458 9,13 C9,14.6568542 10.3431458,16 12,16 Z" fill="currentColor"/></svg> <?php echo $wo['lang']['photos'];?></a>
+					</li>
+					<li class="filter-by-li" dir="auto">
+						<a href="javascript:void(0);" class="btn-mat" onclick="Wo_FilterPostBy('video');"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M17,8.38196601 L23,5.38196601 L23,18.618034 L17,15.618034 L17,17 C17,18.1045695 16.1045695,19 15,19 L3,19 C1.8954305,19 1,18.1045695 1,17 L1,7 C1,5.8954305 1.8954305,5 3,5 L15,5 C16.1045695,5 17,5.8954305 17,7 L17,8.38196601 Z M17,10.618034 L17,13.381966 L21,15.381966 L21,8.61803399 L17,10.618034 Z M3,7 L3,17 L15,17 L15,7 L3,7 Z" fill="currentColor"/></svg> <?php echo $wo['lang']['videos'];?></a>
+					</li>
+					<li class="filter-by-li" dir="auto">
+						<a href="javascript:void(0);" class="btn-mat" onclick="Wo_FilterPostBy('music');"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M20 3v14a4 4 0 1 1-2-3.465V5H9v12a4 4 0 1 1-2-3.465V3h13zM5 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm11 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" fill="currentColor"/></svg> <?php echo $wo['lang']['sounds'];?></a>
+					</li>
+					<?php if ($wo['config']['fileSharing'] == 1) { ?>
+						<li class="filter-by-li" dir="auto">
+							<a href="javascript:void(0);" class="btn-mat" onclick="Wo_FilterPostBy('files');"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M21 16l-6.003 6H4a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v13zm-2-1V4H5v16h9v-5h5z" fill="currentColor"/></svg> <?php echo $wo['lang']['files'];?></a>
+						</li>
+					<?php } ?>
+					<?php if ($wo['config']['google_map']) { ?>
+						<li class="filter-by-li" dir="auto">
+							<a href="javascript:void(0);" class="btn-mat" onclick="Wo_FilterPostBy('maps');"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M2 5l7-3 6 3 6.303-2.701a.5.5 0 0 1 .697.46V19l-7 3-6-3-6.303 2.701a.5.5 0 0 1-.697-.46V5zm14 14.395l4-1.714V5.033l-4 1.714v12.648zm-2-.131V6.736l-4-2v12.528l4 2zm-6-2.011V4.605L4 6.319v12.648l4-1.714z" fill="currentColor"/></svg> <?php echo $wo['lang']['maps'];?></a>
+						</li>
+					<?php } ?>
+				</ul>
+				<button type="button" class="btn btn-mat tag_home_goup" onclick="$('html, body').animate({scrollTop});"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M12 8l6 6H6z"/></svg> <?php echo $wo['lang']['top'];?></button>
+			</div>
+		<?php } ?>
+		
+		<div class="row">
+			<div class="col-lg-7 middlecol">
+				<?php
+					$birth = Wo_CheckBirthdays();
+					if (count($birth) > 0) { 
+				?>
+					<div class="wow_content tag_bdays">
+						<button type="button" class="btn btn-mat" data-toggle="modal" data-target="#bdayBox">
+							<img src="<?php echo $wo['config']['theme_url'];?>/img/gift.png">
+							<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path fill="currentColor" d="M12.68 5.88c.7-.24 1.22-.9 1.3-1.64.05-.47-.05-.91-.28-1.27L12.42.75c-.19-.33-.67-.33-.87 0l-1.28 2.22c-.17.3-.27.65-.27 1.03 0 1.32 1.3 2.35 2.68 1.88zm3.85 10.04l-1-1-1.08 1.07c-1.3 1.3-3.58 1.31-4.89 0l-1.07-1.07-1.09 1.07C6.75 16.64 5.88 17 4.96 17c-.73 0-1.4-.23-1.96-.61V20c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-3.61c-.75.51-1.71.75-2.74.52-.66-.14-1.25-.51-1.73-.99zM18 9h-5V8c0-.55-.45-1-1-1s-1 .45-1 1v1H6c-1.66 0-3 1.34-3 3v1.46c0 .85.5 1.67 1.31 1.94.73.24 1.52.06 2.03-.46l2.14-2.13 2.13 2.13c.76.76 2.01.76 2.77 0l2.14-2.13 2.13 2.13c.43.43 1.03.63 1.65.55.99-.13 1.69-1.06 1.69-2.06v-1.42C21 10.34 19.66 9 18 9z"/></svg> <?php echo $wo['lang']['today'];?> <?php echo count($birth);?> <?php echo $wo['lang']['friends_birthdays'];?>
+						</button>
+					</div>
+				<?php } ?>
+				
+				<?php
+					if($wo['loggedin'] == true) {
+						echo Wo_LoadPage('story/publisher-box');
+					} 
+				?>
+				<div class="btn btn-main btn-mat btn-mat-raised posts-count" onclick="Wo_GetNewPosts();"></div>
+				<div class="posts_load">
+					<div id="posts-laoded">
+						<div class="wow_content p15 tag_post_skel"><div class="valign"><div class="skel skel_50 skel_avatar"></div><div><div class="skel skel_2 skel_noti_name"></div><div class="skel skel_2 skel_noti_time"></div></div></div><div class="valign tag_post_skel_foot"><div class="valign"><div class="skel skel_action"></div><div class="skel skel_action"></div></div><div><div class="skel skel_action"></div></div></div></div>
+						<div class="wow_content p15 tag_post_skel"><div class="valign"><div class="skel skel_50 skel_avatar"></div><div><div class="skel skel_2 skel_noti_name"></div><div class="skel skel_2 skel_noti_time"></div></div></div><div class="valign tag_post_skel_foot"><div class="valign"><div class="skel skel_action"></div><div class="skel skel_action"></div></div><div><div class="skel skel_action"></div></div></div></div>
+					</div>
+				</div>
+			</div>
+			<?php echo Wo_LoadPage('sidebar/content');?>
+		</div>
+	</div>
+</div>
+
+<?php 
+if ($wo['user']['social_login'] == 1) { 
+  echo Wo_LoadPage('modals/create-password');
+} 
+?>
+
+<?php
+	$birth = Wo_CheckBirthdays();
+	if (count($birth) > 0) { 
+?>
+	<div class="modal fade" id="bdayBox" tabindex="-1" role="dialog" aria-labelledby="bdayBox" aria-hidden="true">
+		<div class="modal-dialog wow_mat_mdl" role="document">
+			<div class="modal-content tag_bday_box">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path fill="currentColor" d="M18.3 5.71c-.39-.39-1.02-.39-1.41 0L12 10.59 7.11 5.7c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41L10.59 12 5.7 16.89c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0L12 13.41l4.89 4.89c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4z"></path></svg></button>
+				<div class="empty_state">
+					<img src="<?php echo $wo['config']['theme_url'];?>/img/cake.png"> <?php echo $wo['lang']['friends_birthdays'];?>
+				</div>
+				<div class="row">
+					<?php 
+						foreach ($birth as $wo['UsersList']) {
+							$wo['UsersList']['user_name'] = mb_substr($wo['UsersList']['name'],0,10, "utf-8");
+							echo Wo_LoadPage('sidebar/sidebar-birthday-list');
+						} 
+					?>
+				</div>
+			</div>
+		</div>
+	</div>
+<?php } ?>
+
+<?php if (Wo_IsMobile() == false) { ?>
+<?php if ($wo['loggedin'] && $wo['config']['weather_widget'] == 1 && !empty($wo['config']['weather_key']) && !empty($wo['user']['lat']) && !empty($wo['user']['lng'])) {
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, "https://api.openweathermap.org/data/2.5/onecall?lat=".$wo['user']['lat']."&lon=".$wo['user']['lng']."&exclude=minutely,hourly&appid=".$wo['config']['weather_key']."&units=".($wo['user']['weather_unit'] == 'us' ? 'imperial' : 'metric')."");
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	$response  = curl_exec($ch);
+	$data = json_decode($response);
+	curl_close($ch);
+?>
+	<div class="modal fade" id="weatherBox" tabindex="-1" role="dialog" aria-labelledby="weatherBox" aria-hidden="true">
+		<div class="modal-dialog wow_mat_mdl tag_weather_box" role="document">
+			<div class="modal-content">
+				<div class="tag_weather">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path fill="currentColor" d="M18.3 5.71c-.39-.39-1.02-.39-1.41 0L12 10.59 7.11 5.7c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41L10.59 12 5.7 16.89c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0L12 13.41l4.89 4.89c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4z"/></svg></button>
+					<div class="tag_weather_shadow">
+						<div class="valign tag_weather_hdr">
+							<div>
+								<p><?php echo $wo['lang']['today'];?></p>
+								<div class="tag_weather_timezone"><?php echo $data->timezone; ?></div>
+								<div class="tag_weather_currentTemp"><?php echo (number_format($data->current->temp)); ?><sup>&#176;<?php echo ($wo['user']['weather_unit'] == 'us' ? 'F' : 'C'); ?></sup></div>
+								<div class="tag_weather_condition"><?php echo $data->current->weather[0]->main; ?></div>
+								<div class="tag_weather_condition_sub"><?php echo $data->current->weather[0]->description; ?></div>
+							</div>
+							<div class="tag_weather_icon">
+								<?php if ($data->current->weather[0]->icon == '01d') { ?>
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><g><path fill="#f59e0b" d="M32 23.36A8.64 8.64 0 1123.36 32 8.66 8.66 0 0132 23.36m0-3A11.64 11.64 0 1043.64 32 11.64 11.64 0 0032 20.36z"/><path fill="none" stroke="#f59e0b" stroke-linecap="round" stroke-miterlimit="10" stroke-width="3" d="M32 15.71V9.5"><animate attributeName="stroke-dasharray" calcMode="spline" dur="5s" keySplines="0.5 0 0.5 1; 0.5 0 0.5 1" keyTimes="0; .5; 1" repeatCount="indefinite" values="3 6; 6 6; 3 6"/></path><path fill="none" stroke="#f59e0b" stroke-linecap="round" stroke-miterlimit="10" stroke-width="3" d="M32 48.29v6.21"><animate attributeName="stroke-dasharray" calcMode="spline" dur="5s" keySplines="0.5 0 0.5 1; 0.5 0 0.5 1" keyTimes="0; .5; 1" repeatCount="indefinite" values="3 6; 6 6; 3 6"/></path><path fill="none" stroke="#f59e0b" stroke-linecap="round" stroke-miterlimit="10" stroke-width="3" d="M43.52 20.48l4.39-4.39"><animate attributeName="stroke-dasharray" calcMode="spline" dur="5s" keySplines="0.5 0 0.5 1; 0.5 0 0.5 1" keyTimes="0; .5; 1" repeatCount="indefinite" values="3 6; 6 6; 3 6"/></path><path fill="none" stroke="#f59e0b" stroke-linecap="round" stroke-miterlimit="10" stroke-width="3" d="M20.48 43.52l-4.39 4.39"><animate attributeName="stroke-dasharray" calcMode="spline" dur="5s" keySplines="0.5 0 0.5 1; 0.5 0 0.5 1" keyTimes="0; .5; 1" repeatCount="indefinite" values="3 6; 6 6; 3 6"/></path><path fill="none" stroke="#f59e0b" stroke-linecap="round" stroke-miterlimit="10" stroke-width="3" d="M20.48 20.48l-4.39-4.39"><animate attributeName="stroke-dasharray" calcMode="spline" dur="5s" keySplines="0.5 0 0.5 1; 0.5 0 0.5 1" keyTimes="0; .5; 1" repeatCount="indefinite" values="3 6; 6 6; 3 6"/></path><path fill="none" stroke="#f59e0b" stroke-linecap="round" stroke-miterlimit="10" stroke-width="3" d="M43.52 43.52l4.39 4.39"><animate attributeName="stroke-dasharray" calcMode="spline" dur="5s" keySplines="0.5 0 0.5 1; 0.5 0 0.5 1" keyTimes="0; .5; 1" repeatCount="indefinite" values="3 6; 6 6; 3 6"/></path><path fill="none" stroke="#f59e0b" stroke-linecap="round" stroke-miterlimit="10" stroke-width="3" d="M15.71 32H9.5"><animate attributeName="stroke-dasharray" calcMode="spline" dur="5s" keySplines="0.5 0 0.5 1; 0.5 0 0.5 1" keyTimes="0; .5; 1" repeatCount="indefinite" values="3 6; 6 6; 3 6"/></path><path fill="none" stroke="#f59e0b" stroke-linecap="round" stroke-miterlimit="10" stroke-width="3" d="M48.29 32h6.21"><animate attributeName="stroke-dasharray" calcMode="spline" dur="5s" keySplines="0.5 0 0.5 1; 0.5 0 0.5 1" keyTimes="0; .5; 1" repeatCount="indefinite" values="3 6; 6 6; 3 6"/></path><animateTransform attributeName="transform" dur="45s" from="0 32 32" repeatCount="indefinite" to="360 32 32" type="rotate"/></g></svg>
+								<?php } elseif ($data->current->weather[0]->icon == '01n') { ?>
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><g><path fill="none" stroke="#72b9d5" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M46.66 36.2a16.66 16.66 0 01-16.78-16.55 16.29 16.29 0 01.55-4.15A16.56 16.56 0 1048.5 36.1c-.61.06-1.22.1-1.84.1z"/><animateTransform attributeName="transform" dur="10s" repeatCount="indefinite" type="rotate" values="-5 32 32;15 32 32;-5 32 32"/></g></svg>
+								<?php } elseif ($data->current->weather[0]->icon == '02d') { ?>
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><clipPath id="a"><path fill="none" d="M12 35l-5.28-4.21-2-6 1-7 4-5 5-3h6l5 1 3 3L33 20l-6 4h-6l-3 3v4l-4 2-2 2z"/></clipPath></defs><g clip-path="url(#a)"><g><path fill="#f59e0b" d="M19 20.05A3.95 3.95 0 1115.05 24 4 4 0 0119 20.05m0-2A5.95 5.95 0 1025 24a5.95 5.95 0 00-6-5.95z"/><path fill="none" stroke="#f59e0b" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M19 15.67V12.5M19 35.5v-3.17M24.89 18.11l2.24-2.24M10.87 32.13l2.24-2.24M13.11 18.11l-2.24-2.24M27.13 32.13l-2.24-2.24M10.67 24H7.5M30.5 24h-3.17"/><animateTransform attributeName="transform" dur="45s" from="0 19.22 24.293" repeatCount="indefinite" to="360 19.22 24.293" type="rotate"/></g></g><path fill="none" stroke="#e5e7eb" stroke-linejoin="round" stroke-width="3" d="M46.5 31.5h-.32a10.49 10.49 0 00-19.11-8 7 7 0 00-10.57 6 7.21 7.21 0 00.1 1.14A7.5 7.5 0 0018 45.5a4.19 4.19 0 00.5 0v0h28a7 7 0 000-14z"/></svg>
+								<?php } elseif ($data->current->weather[0]->icon == '02n') { ?>
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><clipPath id="a"><path fill="none" d="M12 35l-5.28-4.21-2-6 1-7 4-5 5-3h6l5 1 3 3L33 20l-6 4h-6l-3 3v4l-4 2-2 2z"/></clipPath></defs><g clip-path="url(#a)"><g><path fill="none" stroke="#72b9d5" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M29.33 26.68a10.61 10.61 0 01-10.68-10.54A10.5 10.5 0 0119 13.5a10.54 10.54 0 1011.5 13.11 11.48 11.48 0 01-1.17.07z"/><animateTransform attributeName="transform" dur="10s" repeatCount="indefinite" type="rotate" values="-10 19.22 24.293;10 19.22 24.293;-10 19.22 24.293"/></g></g><path fill="none" stroke="#e5e7eb" stroke-linejoin="round" stroke-width="3" d="M46.5 31.5h-.32a10.49 10.49 0 00-19.11-8 7 7 0 00-10.57 6 7.21 7.21 0 00.1 1.14A7.5 7.5 0 0018 45.5a4.19 4.19 0 00.5 0v0h28a7 7 0 000-14z"/></svg>
+								<?php } elseif ($data->current->weather[0]->icon == '03d' || $data->current->weather[0]->icon == '03n') { ?>
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><g><path fill="none" stroke="#e5e7eb" stroke-linejoin="round" stroke-width="3" d="M46.5 31.5h-.32a10.49 10.49 0 00-19.11-8 7 7 0 00-10.57 6 7.21 7.21 0 00.1 1.14A7.5 7.5 0 0018 45.5a4.19 4.19 0 00.5 0v0h28a7 7 0 000-14z"/><animateTransform attributeName="transform" dur="7s" repeatCount="indefinite" type="translate" values="-3 0; 3 0; -3 0"/></g></svg>
+								<?php } elseif ($data->current->weather[0]->icon == '04d') { ?>
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><clipPath id="a"><path fill="none" d="M12 35l-8-1-1-10 2-8 5-4 4.72-2.21h6L29 10l4 3v7l-6 4h-6l-3 3v4l-4 2-2 2z"/></clipPath><clipPath id="b"><path fill="none" d="M41.8 20.25l4.48 6.61.22 4.64 5.31 2.45 1.69 5.97h8.08L61 27l-9.31-8.5-9.89 1.75z"/></clipPath></defs><g clip-path="url(#a)"><g><g><path fill="#f59e0b" d="M19 20.05A3.95 3.95 0 1115.05 24 4 4 0 0119 20.05m0-2A5.95 5.95 0 1025 24a5.95 5.95 0 00-6-5.95z"/><path fill="none" stroke="#f59e0b" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M19 15.67V12.5M19 35.5v-3.17M24.89 18.11l2.24-2.24M10.87 32.13l2.24-2.24M13.11 18.11l-2.24-2.24M27.13 32.13l-2.24-2.24M10.67 24H7.5M30.5 24h-3.17"/><animateTransform attributeName="transform" dur="45s" from="0 19.22 24.293" repeatCount="indefinite" to="360 19.22 24.293" type="rotate"/></g><animateTransform attributeName="transform" dur="7s" repeatCount="indefinite" type="translate" values="3 0; -3 0; 3 0"/></g><animateTransform attributeName="transform" dur="7s" repeatCount="indefinite" type="translate" values="-3 0; 3 0; -3 0"/></g><g clip-path="url(#b)"><path fill="none" stroke="#9ca3af" stroke-linejoin="round" stroke-width="2" d="M34.23 33.45a4.05 4.05 0 004.05 4h16.51a4.34 4.34 0 00.81-8.61 3.52 3.52 0 00.06-.66 4.06 4.06 0 00-6.13-3.48 6.08 6.08 0 00-11.25 3.19 6.34 6.34 0 00.18 1.46h-.18a4.05 4.05 0 00-4.05 4.1z"/><animateTransform attributeName="transform" dur="7s" repeatCount="indefinite" type="translate" values="-2.1 0; 2.1 0; -2.1 0"/></g><g><path fill="none" stroke="#e5e7eb" stroke-linejoin="round" stroke-width="3" d="M46.5 31.5h-.32a10.49 10.49 0 00-19.11-8 7 7 0 00-10.57 6 7.21 7.21 0 00.1 1.14A7.5 7.5 0 0018 45.5a4.19 4.19 0 00.5 0v0h28a7 7 0 000-14z"/><animateTransform attributeName="transform" dur="7s" repeatCount="indefinite" type="translate" values="-3 0; 3 0; -3 0"/></g></svg>
+								<?php } elseif ($data->current->weather[0]->icon == '04n') { ?>
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><clipPath id="a"><path fill="none" d="M12 35l-5.28-4.21-2-6 1-7 4-5 5-3h6l5 1 3 3L33 20l-6 4h-6l-3 3v4l-4 2-2 2z"/></clipPath><clipPath id="b"><path fill="none" d="M41.8 20.25l4.48 6.61.22 4.64 5.31 2.45 1.69 5.97h8.08L61 27l-9.31-8.5-9.89 1.75z"/></clipPath></defs><g clip-path="url(#a)"><g><g><path fill="none" stroke="#72b9d5" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M29.33 26.68a10.61 10.61 0 01-10.68-10.54A10.5 10.5 0 0119 13.5a10.54 10.54 0 1011.5 13.11 11.48 11.48 0 01-1.17.07z"/><animateTransform attributeName="transform" dur="10s" repeatCount="indefinite" type="rotate" values="-10 19.22 24.293;10 19.22 24.293;-10 19.22 24.293"/></g><animateTransform attributeName="transform" dur="7s" repeatCount="indefinite" type="translate" values="3 0; -3 0; 3 0"/></g><animateTransform attributeName="transform" dur="7s" repeatCount="indefinite" type="translate" values="-3 0; 3 0; -3 0"/></g><g clip-path="url(#b)"><path fill="none" stroke="#9ca3af" stroke-linejoin="round" stroke-width="2" d="M34.23 33.45a4.05 4.05 0 004.05 4h16.51a4.34 4.34 0 00.81-8.61 3.52 3.52 0 00.06-.66 4.06 4.06 0 00-6.13-3.48 6.08 6.08 0 00-11.25 3.19 6.34 6.34 0 00.18 1.46h-.18a4.05 4.05 0 00-4.05 4.1z"/><animateTransform attributeName="transform" dur="7s" repeatCount="indefinite" type="translate" values="-2.1 0; 2.1 0; -2.1 0"/></g><g><path fill="none" stroke="#e5e7eb" stroke-linejoin="round" stroke-width="3" d="M46.5 31.5h-.32a10.49 10.49 0 00-19.11-8 7 7 0 00-10.57 6 7.21 7.21 0 00.1 1.14A7.5 7.5 0 0018 45.5a4.19 4.19 0 00.5 0v0h28a7 7 0 000-14z"/><animateTransform attributeName="transform" dur="7s" repeatCount="indefinite" type="translate" values="-3 0; 3 0; -3 0"/></g></svg>
+								<?php } elseif ($data->current->weather[0]->icon == '09d' || $data->current->weather[0]->icon == '09n') { ?>
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path fill="none" stroke="#e5e7eb" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M43.67 45.5h2.83a7 7 0 000-14h-.32a10.49 10.49 0 00-19.11-8 7 7 0 00-10.57 6 7.21 7.21 0 00.1 1.14A7.5 7.5 0 0018 45.5a4.19 4.19 0 00.5 0v0"/><g><path fill="none" stroke="#2885c7" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M24.39 43.03l-.78 4.94"/><animateTransform attributeName="transform" dur="0.7s" repeatCount="indefinite" type="translate" values="1 -5; -2 10"/><animate attributeName="opacity" dur="0.7s" repeatCount="indefinite" values="0;1;1;0"/></g><g><path fill="none" stroke="#2885c7" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M31.39 43.03l-.78 4.94"/><animateTransform attributeName="transform" begin="-0.4s" dur="0.7s" repeatCount="indefinite" type="translate" values="1 -5; -2 10"/><animate attributeName="opacity" begin="-0.4s" dur="0.7s" repeatCount="indefinite" values="0;1;1;0"/></g><g><path fill="none" stroke="#2885c7" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M38.39 43.03l-.78 4.94"/><animateTransform attributeName="transform" begin="-0.2s" dur="0.7s" repeatCount="indefinite" type="translate" values="1 -5; -2 10"/><animate attributeName="opacity" begin="-0.2s" dur="0.7s" repeatCount="indefinite" values="0;1;1;0"/></g></svg>
+								<?php } elseif ($data->current->weather[0]->icon == '10d') { ?>
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><clipPath id="a"><path fill="none" d="M12 35l-5.28-4.21-2-6 1-7 4-5 5-3h6l5 1 3 3L33 20l-6 4h-6l-3 3v4l-4 2-2 2z"/></clipPath></defs><g clip-path="url(#a)"><g><path fill="#f59e0b" d="M19 20.05A3.95 3.95 0 1115.05 24 4 4 0 0119 20.05m0-2A5.95 5.95 0 1025 24a5.95 5.95 0 00-6-5.95z"/><path fill="none" stroke="#f59e0b" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M19 15.67V12.5M19 35.5v-3.17M24.89 18.11l2.24-2.24M10.87 32.13l2.24-2.24M13.11 18.11l-2.24-2.24M27.13 32.13l-2.24-2.24M10.67 24H7.5M30.5 24h-3.17"/><animateTransform attributeName="transform" dur="45s" from="0 19.22 24.293" repeatCount="indefinite" to="360 19.22 24.293" type="rotate"/></g></g><path fill="none" stroke="#e5e7eb" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M43.67 45.5h2.83a7 7 0 000-14h-.32a10.49 10.49 0 00-19.11-8 7 7 0 00-10.57 6 7.21 7.21 0 00.1 1.14A7.5 7.5 0 0018 45.5a4.19 4.19 0 00.5 0v0"/><g><path fill="none" stroke="#2885c7" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M24.39 43.03l-.78 4.94"/><animateTransform attributeName="transform" dur="0.7s" repeatCount="indefinite" type="translate" values="1 -5; -2 10"/><animate attributeName="opacity" dur="0.7s" repeatCount="indefinite" values="0;1;1;0"/></g><g><path fill="none" stroke="#2885c7" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M31.39 43.03l-.78 4.94"/><animateTransform attributeName="transform" begin="-0.4s" dur="0.7s" repeatCount="indefinite" type="translate" values="1 -5; -2 10"/><animate attributeName="opacity" begin="-0.4s" dur="0.7s" repeatCount="indefinite" values="0;1;1;0"/></g><g><path fill="none" stroke="#2885c7" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M38.39 43.03l-.78 4.94"/><animateTransform attributeName="transform" begin="-0.2s" dur="0.7s" repeatCount="indefinite" type="translate" values="1 -5; -2 10"/><animate attributeName="opacity" begin="-0.2s" dur="0.7s" repeatCount="indefinite" values="0;1;1;0"/></g></svg>
+								<?php } elseif ($data->current->weather[0]->icon == '10n') { ?>
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><clipPath id="a"><path fill="none" d="M12 35l-5.28-4.21-2-6 1-7 4-5 5-3h6l5 1 3 3L33 20l-6 4h-6l-3 3v4l-4 2-2 2z"/></clipPath></defs><g clip-path="url(#a)"><g><path fill="none" stroke="#72b9d5" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M29.33 26.68a10.61 10.61 0 01-10.68-10.54A10.5 10.5 0 0119 13.5a10.54 10.54 0 1011.5 13.11 11.48 11.48 0 01-1.17.07z"/><animateTransform attributeName="transform" dur="10s" repeatCount="indefinite" type="rotate" values="-10 19.22 24.293;10 19.22 24.293;-10 19.22 24.293"/></g></g><path fill="none" stroke="#e5e7eb" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M43.67 45.5h2.83a7 7 0 000-14h-.32a10.49 10.49 0 00-19.11-8 7 7 0 00-10.57 6 7.21 7.21 0 00.1 1.14A7.5 7.5 0 0018 45.5a4.19 4.19 0 00.5 0v0"/><g><path fill="none" stroke="#2885c7" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M24.39 43.03l-.78 4.94"/><animateTransform attributeName="transform" dur="0.7s" repeatCount="indefinite" type="translate" values="1 -5; -2 10"/><animate attributeName="opacity" dur="0.7s" repeatCount="indefinite" values="0;1;1;0"/></g><g><path fill="none" stroke="#2885c7" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M31.39 43.03l-.78 4.94"/><animateTransform attributeName="transform" begin="-0.4s" dur="0.7s" repeatCount="indefinite" type="translate" values="1 -5; -2 10"/><animate attributeName="opacity" begin="-0.4s" dur="0.7s" repeatCount="indefinite" values="0;1;1;0"/></g><g><path fill="none" stroke="#2885c7" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M38.39 43.03l-.78 4.94"/><animateTransform attributeName="transform" begin="-0.2s" dur="0.7s" repeatCount="indefinite" type="translate" values="1 -5; -2 10"/><animate attributeName="opacity" begin="-0.2s" dur="0.7s" repeatCount="indefinite" values="0;1;1;0"/></g></svg>
+								<?php } elseif ($data->current->weather[0]->icon == '11d' || $data->current->weather[0]->icon == '11n') { ?>
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path fill="none" stroke="#e5e7eb" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M43.67 45.5h2.83a7 7 0 000-14h-.32a10.49 10.49 0 00-19.11-8 7 7 0 00-10.57 6 7.21 7.21 0 00.1 1.14A7.5 7.5 0 0018 45.5a4.19 4.19 0 00.5 0v0"/><g><path fill="#f59e0b" d="M30 36l-4 12h4l-2 10 10-14h-6l4-8h-6z"/><animate attributeName="opacity" dur="2s" repeatCount="indefinite" values="1;1;1;1;1;1;0.1;1;0.1;1;1;0.1;1;0.1;1"/></g></svg>
+								<?php } elseif ($data->current->weather[0]->icon == '13d' || $data->current->weather[0]->icon == '13n') { ?>
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path fill="none" stroke="#e5e7eb" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M43.67 45.5h2.83a7 7 0 000-14h-.32a10.49 10.49 0 00-19.11-8 7 7 0 00-10.57 6 7.21 7.21 0 00.1 1.14A7.5 7.5 0 0018 45.5a4.19 4.19 0 00.5 0v0"/><g><g><g><path fill="#72b8d4" d="M24.24 42.67l.24.68a.25.25 0 00.35.14l.65-.31a.26.26 0 01.34.34l-.31.65a.25.25 0 00.14.35l.68.24a.25.25 0 010 .48l-.68.24a.25.25 0 00-.14.35l.31.65a.26.26 0 01-.34.34l-.65-.31a.25.25 0 00-.35.14l-.24.68a.25.25 0 01-.48 0l-.24-.68a.25.25 0 00-.35-.14l-.65.31a.26.26 0 01-.34-.34l.31-.65a.25.25 0 00-.14-.35l-.68-.24a.25.25 0 010-.48l.68-.24a.25.25 0 00.14-.35l-.31-.65a.26.26 0 01.34-.34l.65.31a.25.25 0 00.35-.14l.24-.68a.25.25 0 01.48 0z"/><animateTransform attributeName="transform" dur="9s" repeatCount="indefinite" type="rotate" values="0 24 45; 360 24 45"/></g><animateTransform attributeName="transform" dur="4s" repeatCount="indefinite" type="translate" values="-3 0; 3 0"/></g><animateTransform attributeName="transform" dur="4s" repeatCount="indefinite" type="translate" values="2 -6; -2 12"/><animate attributeName="opacity" dur="4s" repeatCount="indefinite" values="0;1;1;1;0"/></g><g><g><g><path fill="#72b8d4" d="M31.24 42.67l.24.68a.25.25 0 00.35.14l.65-.31a.26.26 0 01.34.34l-.31.65a.25.25 0 00.14.35l.68.24a.25.25 0 010 .48l-.68.24a.25.25 0 00-.14.35l.31.65a.26.26 0 01-.34.34l-.65-.31a.25.25 0 00-.35.14l-.24.68a.25.25 0 01-.48 0l-.24-.68a.25.25 0 00-.35-.14l-.65.31a.26.26 0 01-.34-.34l.31-.65a.25.25 0 00-.14-.35l-.68-.24a.25.25 0 010-.48l.68-.24a.25.25 0 00.14-.35l-.31-.65a.26.26 0 01.34-.34l.65.31a.25.25 0 00.35-.14l.24-.68a.25.25 0 01.48 0z"/><animateTransform attributeName="transform" dur="9s" repeatCount="indefinite" type="rotate" values="0 31 45; 360 31 45"/></g><animateTransform attributeName="transform" begin="-2s" dur="4s" repeatCount="indefinite" type="translate" values="-3 0; 3 0"/></g><animateTransform attributeName="transform" begin="-2s" dur="4s" repeatCount="indefinite" type="translate" values="2 -6; -2 12"/><animate attributeName="opacity" begin="-2s" dur="4s" repeatCount="indefinite" values="0;1;1;1;0"/></g><g><g><g><path fill="#72b8d4" d="M38.24 42.67l.24.68a.25.25 0 00.35.14l.65-.31a.26.26 0 01.34.34l-.31.65a.25.25 0 00.14.35l.68.24a.25.25 0 010 .48l-.68.24a.25.25 0 00-.14.35l.31.65a.26.26 0 01-.34.34l-.65-.31a.25.25 0 00-.35.14l-.24.68a.25.25 0 01-.48 0l-.24-.68a.25.25 0 00-.35-.14l-.65.31a.26.26 0 01-.34-.34l.31-.65a.25.25 0 00-.14-.35l-.68-.24a.25.25 0 010-.48l.68-.24a.25.25 0 00.14-.35l-.31-.65a.26.26 0 01.34-.34l.65.31a.25.25 0 00.35-.14l.24-.68a.25.25 0 01.48 0z"/><animateTransform attributeName="transform" dur="9s" repeatCount="indefinite" type="rotate" values="0 38 45; 360 38 45"/></g><animateTransform attributeName="transform" begin="-1s" dur="4s" repeatCount="indefinite" type="translate" values="-3 0; 3 0"/></g><animateTransform attributeName="transform" begin="-1s" dur="4s" repeatCount="indefinite" type="translate" values="2 -6; -2 12"/><animate attributeName="opacity" begin="-1s" dur="4s" repeatCount="indefinite" values="0;1;1;1;0"/></g></svg>
+								<?php } elseif ($data->current->weather[0]->icon == '50d' || $data->current->weather[0]->icon == '50d') { ?>
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><g><path fill="none" stroke="#e5e7eb" stroke-linecap="round" stroke-miterlimit="10" stroke-width="3" d="M17 32h30"/><animateTransform attributeName="transform" begin="0s" dur="5s" repeatCount="indefinite" type="translate" values="-4 0; 4 0; -4 0"/></g><g><path fill="none" stroke="#e5e7eb" stroke-linecap="round" stroke-miterlimit="10" stroke-width="3" d="M17 39h30"/><animateTransform attributeName="transform" begin="-2s" dur="5s" repeatCount="indefinite" type="translate" values="-3 0; 3 0; -3 0"/></g><g><path fill="none" stroke="#e5e7eb" stroke-linecap="round" stroke-miterlimit="10" stroke-width="3" d="M17 25h30"/><animateTransform attributeName="transform" begin="-4s" dur="5s" repeatCount="indefinite" type="translate" values="-4 0; 4 0; -4 0"/></g></svg>
+								<?php } ?>
+							</div>
+						</div>
+						<div class="valign tag_weather_mdl">
+							<div>
+								<div>
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M8 5a4 4 0 1 1 8 0v5.255a7 7 0 1 1-8 0V5zm1.144 6.895a5 5 0 1 0 5.712 0L14 11.298V5a2 2 0 1 0-4 0v6.298l-.856.597zm1.856.231V5h2v7.126A4.002 4.002 0 0 1 12 20a4 4 0 0 1-1-7.874zM12 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg>
+									<p><?php echo $wo['lang']['feels_like_temp'];?></p>
+									<div class="tag_weather_visibility"><?php echo (number_format($data->current->feels_like)); ?>&#176;<?php echo ($wo['user']['weather_unit'] == 'us' ? 'F' : 'C'); ?></div>
+								</div>
+							</div>
+							<div>
+								<div>
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M10.5 17H4v-2h6.5a3.5 3.5 0 1 1-3.278 4.73l1.873-.703A1.5 1.5 0 1 0 10.5 17zM5 11h13.5a3.5 3.5 0 1 1-3.278 4.73l1.873-.703A1.5 1.5 0 1 0 18.5 13H5a3 3 0 0 1 0-6h8.5a1.5 1.5 0 1 0-1.405-2.027l-1.873-.702A3.501 3.501 0 0 1 17 5.5 3.5 3.5 0 0 1 13.5 9H5a1 1 0 1 0 0 2z"/></svg>
+									<p><?php echo $wo['lang']['weather_wind'];?></p>
+									<div class="tag_weather_wind"><?php echo $data->current->wind_speed; ?><?php echo ($wo['user']['weather_unit'] == 'us' ? 'mph' : 'm/s'); ?></div>
+								</div>
+							</div>
+							<div>
+								<div>
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,3.25C12,3.25 6,10 6,14C6,17.32 8.69,20 12,20A6,6 0 0,0 18,14C18,10 12,3.25 12,3.25M14.47,9.97L15.53,11.03L9.53,17.03L8.47,15.97M9.75,10A1.25,1.25 0 0,1 11,11.25A1.25,1.25 0 0,1 9.75,12.5A1.25,1.25 0 0,1 8.5,11.25A1.25,1.25 0 0,1 9.75,10M14.25,14.5A1.25,1.25 0 0,1 15.5,15.75A1.25,1.25 0 0,1 14.25,17A1.25,1.25 0 0,1 13,15.75A1.25,1.25 0 0,1 14.25,14.5Z" /></svg>
+									<p><?php echo $wo['lang']['weather_humidity'];?></p>
+									<div class="tag_weather_atmosphere"><?php echo $data->current->humidity; ?>%</div>
+								</div>
+							</div>
+						</div>
+						<div class="valign tag_weather_mdl">
+							<div>
+								<div>
+									<svg xmlns="http://www.w3.org/2000/svg" width="20" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z" /></svg>
+									<p><?php echo $wo['lang']['weather_visibility'];?></p>
+									<div class="tag_weather_visibility">
+										<?php
+											$dist = $data->current->visibility;
+											$visb = ($dist / 1000);
+										?><?php echo $visb; ?>km
+									</div>
+								</div>
+							</div>
+							<div>
+								<div>
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="24" height="24" fill="currentColor"> <g> <g> <path d="M496,416H326.624l-59.328-59.328c-6.24-6.24-16.384-6.24-22.624,0L185.376,416H16c-8.832,0-16,7.168-16,16 c0,8.832,7.168,16,16,16h176c4.256,0,8.32-1.696,11.328-4.672L256,390.624l52.672,52.672C311.68,446.304,315.744,448,320,448h176 c8.832,0,16-7.168,16-16C512,423.168,504.832,416,496,416z"/> </g> </g> <g> <g> <path d="M256,160c-88.32,0-160,71.68-160,160c0,22.752,4.928,44.352,13.472,64h62.656l49.952-49.952 c18.72-18.752,49.152-18.752,67.872,0L339.872,384h62.656C411.072,364.352,416,342.752,416,320C416,231.68,344.32,160,256,160z"/> </g> </g> <g> <g> <path d="M256,64c-8.832,0-16,7.168-16,16v32c0,8.832,7.168,16,16,16c8.832,0,16-7.168,16-16V80C272,71.168,264.832,64,256,64z"/> </g> </g> <g> <g> <path d="M48,304H16c-8.832,0-16,7.168-16,16c0,8.832,7.168,16,16,16h32c8.832,0,16-7.168,16-16C64,311.168,56.832,304,48,304z"/> </g> </g> <g> <g> <path d="M496,304h-32c-8.832,0-16,7.168-16,16c0,8.832,7.168,16,16,16h32c8.832,0,16-7.168,16-16C512,311.168,504.832,304,496,304 z"/> </g> </g> <g> <g> <path d="M120.224,161.6L97.6,139.008c-6.24-6.24-16.384-6.24-22.624,0s-6.24,16.384,0,22.624L97.6,184.224 c3.136,3.136,7.232,4.672,11.328,4.672c4.096,0,8.192-1.536,11.296-4.672C126.464,177.984,126.464,167.84,120.224,161.6z"/> </g> </g> <g> <g> <path d="M437.024,139.008c-6.24-6.24-16.384-6.24-22.624,0L391.776,161.6c-6.24,6.24-6.24,16.384,0,22.624 c3.136,3.136,7.232,4.704,11.328,4.704s8.192-1.568,11.328-4.672l22.592-22.624C443.264,155.392,443.264,145.248,437.024,139.008z "/> </g> </g></svg>
+									<p><?php echo $wo['lang']['weather_sunrise'];?></p>
+									<div class="tag_weather_sunrise">
+										<?php
+											$epoch = $data->current->sunrise;
+											$simp_date = date('r', $epoch);
+											$TimeZoneNameFrom = "UTC";
+											$TimeZoneNameTo = "$data->timezone";
+											echo date_create($simp_date, new DateTimeZone($TimeZoneNameFrom))	->setTimezone(new DateTimeZone($TimeZoneNameTo))->format("h:i a");
+										?>
+									</div>
+								</div>
+							</div>
+							<div>
+								<div>
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="24" height="24" fill="currentColor"> <g> <g> <path d="M496,384H320c-4.256,0-8.32,1.696-11.328,4.672L256,441.376l-52.672-52.672C200.32,385.696,196.256,384,192,384H16 c-8.832,0-16,7.168-16,16c0,8.832,7.168,16,16,16h169.376l59.328,59.328c3.104,3.104,7.2,4.672,11.296,4.672 s8.192-1.568,11.328-4.672L326.624,416H496c8.832,0,16-7.168,16-16C512,391.168,504.832,384,496,384z"/> </g> </g> <g> <g> <path d="M256,128c-88.32,0-160,71.68-160,160c0,22.752,4.928,44.352,13.472,64H192c12.8,0,24.864,4.992,33.952,14.048L256,396.128 l30.048-30.048C295.136,356.992,307.2,352,320,352h82.528C411.072,332.352,416,310.752,416,288C416,199.68,344.32,128,256,128z"/> </g> </g> <g> <g> <path d="M256,32c-8.832,0-16,7.168-16,16v32c0,8.832,7.168,16,16,16c8.832,0,16-7.168,16-16V48C272,39.168,264.832,32,256,32z"/> </g> </g> <g> <g> <path d="M48,272H16c-8.832,0-16,7.168-16,16c0,8.832,7.168,16,16,16h32c8.832,0,16-7.168,16-16C64,279.168,56.832,272,48,272z"/> </g> </g> <g> <g> <path d="M496,272h-32c-8.832,0-16,7.168-16,16c0,8.832,7.168,16,16,16h32c8.832,0,16-7.168,16-16C512,279.168,504.832,272,496,272 z"/> </g> </g> <g> <g> <path d="M120.224,129.6L97.6,107.008c-6.24-6.24-16.384-6.24-22.624,0s-6.24,16.384,0,22.624L97.6,152.224 c3.136,3.136,7.232,4.672,11.328,4.672c4.096,0,8.192-1.536,11.296-4.672C126.464,145.984,126.464,135.84,120.224,129.6z"/> </g> </g> <g> <g> <path d="M437.024,107.008c-6.24-6.24-16.384-6.24-22.624,0L391.776,129.6c-6.24,6.24-6.24,16.384,0,22.624 c3.136,3.136,7.232,4.704,11.328,4.704s8.192-1.568,11.328-4.672l22.592-22.624C443.264,123.392,443.264,113.248,437.024,107.008z "/> </g> </g></svg>
+									<p><?php echo $wo['lang']['weather_sunset'];?></p>
+									<div class="tag_weather_sunset">
+										<?php
+											$epoch = $data->current->sunset;
+											$simp_date = date('r', $epoch);
+											$TimeZoneNameFrom = "UTC";
+											$TimeZoneNameTo = "$data->timezone";
+											echo date_create($simp_date, new DateTimeZone($TimeZoneNameFrom))	->setTimezone(new DateTimeZone($TimeZoneNameTo))->format("h:i a");
+										?>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="tag_weather_forecast">
+						<div class="valign fivedays">
+							<span class="bold"><?php echo(date('l',$data->daily[1]->dt)); ?></span>
+							<span><?php echo (number_format($data->daily[1]->temp->min)); ?>&#176;<?php echo ($wo['user']['weather_unit'] == "us" ? "F" : "C"); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo (number_format($data->daily[1]->temp->max)); ?>&#176;<?php echo ($wo['user']['weather_unit'] == "us" ? "F" : "C"); ?></span>
+						</div>
+						<div class="valign fivedays">
+							<span class="bold"><?php echo(date('l',$data->daily[2]->dt)); ?></span>
+							<span><?php echo (number_format($data->daily[2]->temp->min)); ?>&#176;<?php echo ($wo['user']['weather_unit'] == "us" ? "F" : "C"); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo (number_format($data->daily[2]->temp->max)); ?>&#176;<?php echo ($wo['user']['weather_unit'] == "us" ? "F" : "C"); ?></span>
+						</div>
+						<div class="valign fivedays">
+							<span class="bold"><?php echo(date('l',$data->daily[3]->dt)); ?></span>
+							<span><?php echo (number_format($data->daily[3]->temp->min)); ?>&#176;<?php echo ($wo['user']['weather_unit'] == "us" ? "F" : "C"); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo (number_format($data->daily[3]->temp->max)); ?>&#176;<?php echo ($wo['user']['weather_unit'] == "us" ? "F" : "C"); ?></span>
+						</div>
+						<div class="valign fivedays">
+							<span class="bold"><?php echo(date('l',$data->daily[4]->dt)); ?></span>
+							<span><?php echo (number_format($data->daily[4]->temp->min)); ?>&#176;<?php echo ($wo['user']['weather_unit'] == "us" ? "F" : "C"); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo (number_format($data->daily[4]->temp->max)); ?>&#176;<?php echo ($wo['user']['weather_unit'] == "us" ? "F" : "C"); ?></span>
+						</div>
+						<div class="valign fivedays">
+							<span class="bold"><?php echo(date('l',$data->daily[5]->dt)); ?></span>
+							<span><?php echo (number_format($data->daily[5]->temp->min)); ?>&#176;<?php echo ($wo['user']['weather_unit'] == "us" ? "F" : "C"); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo (number_format($data->daily[5]->temp->max)); ?>&#176;<?php echo ($wo['user']['weather_unit'] == "us" ? "F" : "C"); ?></span>
+						</div>
+						<div class="valign fivedays">
+							<span class="bold"><?php echo(date('l',$data->daily[6]->dt)); ?></span>
+							<span><?php echo (number_format($data->daily[6]->temp->min)); ?>&#176;<?php echo ($wo['user']['weather_unit'] == "us" ? "F" : "C"); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo (number_format($data->daily[6]->temp->max)); ?>&#176;<?php echo ($wo['user']['weather_unit'] == "us" ? "F" : "C"); ?></span>
+						</div>
+					</div>
+					<div class="valign no_weather_loc hidden"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+<?php } ?>
+<?php } ?>
+
+<?php if ($wo['config']['order_posts_by'] == 0) { ?>
+<script>
+function Wo_StorePosts(type) {
+  if (type > 1) {
+     return false;
+  }
+  if (type == 0) {
+	$('.order_all').addClass('active');
+	$('.order_people').removeClass('active');
+  } else {
+	$('.order_all').removeClass('active');
+	$('.order_people').addClass('active');
+  }
+  $('#posts-laoded').html('<div class="wow_content p15 tag_post_skel"><div class="valign"><div class="skel skel_50 skel_avatar"></div><div><div class="skel skel_2 skel_noti_name"></div><div class="skel skel_2 skel_noti_time"></div></div></div><div class="valign tag_post_skel_foot"><div class="valign"><div class="skel skel_action"></div><div class="skel skel_action"></div></div><div><div class="skel skel_action"></div></div></div></div><div class="wow_content p15 tag_post_skel"><div class="valign"><div class="skel skel_50 skel_avatar"></div><div><div class="skel skel_2 skel_noti_name"></div><div class="skel skel_2 skel_noti_time"></div></div></div><div class="valign tag_post_skel_foot"><div class="valign"><div class="skel skel_action"></div><div class="skel skel_action"></div></div><div><div class="skel skel_action"></div></div></div></div>');
+  $.get(Wo_Ajax_Requests_File() + '?f=update_order_by', {type:type}, function (data) {
+    if (data.status == 200) {
+      loadposts();
+    }
+  });
+}
+</script>
+<?php } ?>
+
+<script type="text/javascript">
+$(document).on("scroll", function() {
+    $('.tag_home_goup').toggleClass('btn-home-go-up', $(this).scrollTop() > 500);
+});
+
+$(function() {
+    loadposts();
+});
+
+function loadposts() {
+	$("#posts-laoded").load(Wo_Ajax_Requests_File() + '?f=load_posts', function enter() {
+		Wo_FinishBar();
+		window.fbAsyncInit = function() {
+		  FB.init({
+			appId      : '374255706379985',
+			xfbml      : true,
+			version    : 'v3.2'
+		  });
+		};
+	  	$(".post-description p, .product-description").each(function(index, el) {
+	  		$(this).readmore({
+		      speed: 75,
+		      moreLink: '<a href="#" class="hash"><?php echo $wo["lang"]["read_more"];?></a>',
+		      lessLink: '<a href="#" class="hash"><?php echo $wo["lang"]["read_less"];?></a>',
+			  <?php if (Wo_IsMobile() == false) { ?>
+				collapsedHeight: 207
+			  <?php } ?>
+		    });
+	  	});
+	  	$(".post-commet-textarea .textarea").triggeredAutocomplete({
+	       hidden: '#hidden_inputbox_comment',
+	       source: Wo_Ajax_Requests_File() + "?f=mention",
+	       trigger: "@" 
+	    });
+	  	$(".comment-reply textarea").triggeredAutocomplete({
+	       hidden: '#hidden_inputbox_comment_reply',
+	       source: Wo_Ajax_Requests_File() + "?f=mention",
+	       trigger: "@"
+	    });
+	    $('#load-more-posts').show();
+
+	});
+}
+  <?php if ($wo['user']['social_login'] == 1) { ?>
+  $(window).on("load", function (e) {
+       $('#create-password').modal('show');
+    });
+  $(function() {
+    var create_password_container = $('#create-password');
+    $('form.create-password').ajaxForm({
+      url: Wo_Ajax_Requests_File() + '?f=update_new_logged_user_details',
+      beforeSend: function() {
+        Wo_progressIconLoader($('form.create-password').find('button'));
+      },
+      success: function(data) {
+        if (data.status == 200) {
+          create_password_container.find('.error-container').html("<div class='alert alert-success'>" + data.message + "</div>");
+           $('#update-username').attr('href', data.url);
+           setTimeout(function() {
+            $('#create-password').modal('hide');
+           }, 1500);
+        } else {
+          var errors = data.errors.join("<br>");
+          create_password_container.find('.error-container').html("<div class='alert alert-danger'>" + errors + "</div>");
+        }
+        Wo_progressIconLoader($('form.create-password').find('button'));
+      }
+    });
+  });
+
+<?php } ?>
+
+function Wo_ViewAnnouncement(id) {
+	var announcement_container = $('.home-announcement');
+	$.get(Wo_Ajax_Requests_File() + '?f=update_announcement_views', {id:id}, function (data) {
+		if (data.status == 200) {
+			announcement_container.remove();
+		}
+	});
+}
+
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*60*60*1000));
+    var expires = "expires="+ d;
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookieValue(a) {
+    var b = document.cookie.match('(^|;)\\s*' + a + '\\s*=\\s*([^;]+)');
+    return b ? b.pop() : '';
+}
+
+$(function () {
+    var is_day_enabled = getCookieValue('day_status');
+    var myDate = new Date();
+    var hrs = myDate.getHours();
+    var greet;
+    var color;
+	var quote;
+    if (hrs < 12) {
+        greet = '<?php echo $wo['lang']['good_morning']?>, <?php if (!empty($wo['user']['first_name'])) { ?><?php echo $wo['user']['first_name']?><?php } else {?><?php echo $wo['user']['name']?><?php } ?>';
+        color = 'morning';
+		quote = '<?php echo $wo['lang']['good_morning_quote']?>';
+    } else if (hrs >= 12 && hrs <= 18) {
+        greet = '<?php echo $wo['lang']['good_afternoon']?>, <?php if (!empty($wo['user']['first_name'])) { ?><?php echo $wo['user']['first_name']?><?php } else {?><?php echo $wo['user']['name']?><?php } ?>';
+        color = 'noon';
+		quote = '<?php echo $wo['lang']['good_afternoon_quote']?>';
+    } else if (hrs >= 18 && hrs <= 24) {
+        greet = '<?php echo $wo['lang']['good_evening']?>, <?php if (!empty($wo['user']['first_name'])) { ?><?php echo $wo['user']['first_name']?><?php } else {?><?php echo $wo['user']['name']?><?php } ?>';
+        color = 'evening';
+		quote = '<?php echo $wo['lang']['good_evening_quote']?>';
+    }
+    if (is_day_enabled != 1) {
+		$('.greetalert').addClass(color);
+		$('#daynightmsg').html('<div class="small-texts">' + greet + '</div><p>' + quote + '</p>');
+	} else {
+		$('.greetalert').addClass('hidden');
+	}
+});
+</script>

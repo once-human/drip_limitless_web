@@ -1,0 +1,17 @@
+<div class="modal fade tag_call_rec_box" id="re-calling-modal" role="dialog" data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog modal-md">
+		<div class="modal-content">
+			<p class="bold"><?php echo $wo['lang']['new_video_call'];?></p>
+			<div class="valign">
+				<img src="<?php echo $wo['incall']['in_call_user']['avatar'];?>" alt="">
+				<div class="full_width">
+					<h4><?php echo $wo['incall']['in_call_user']['name'];?></h4>
+				</div>
+				<div class="btns_cont">
+					<button type="button" class="btn btn-danger btn-mat decline-call" onclick="Wo_DeclineCall('<?php echo $wo['incall']['id'];?>');" title="<?php echo $wo['lang']['decline'];?>"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path fill="currentColor" d="M4.51 15.48l2-1.59c.48-.38.76-.96.76-1.57v-2.6c3.02-.98 6.29-.99 9.32 0v2.61c0 .61.28 1.19.76 1.57l1.99 1.58c.8.63 1.94.57 2.66-.15l1.22-1.22c.8-.8.8-2.13-.05-2.88-6.41-5.66-16.07-5.66-22.48 0-.85.75-.85 2.08-.05 2.88l1.22 1.22c.71.72 1.85.78 2.65.15z"/></svg></button>
+					<button data-href="<?php echo $wo['incall']['url'];?>" type="button" class="btn btn-success btn-mat answer-call" onclick="Wo_AnswerCall('<?php echo $wo['incall']['id'];?>', '<?php echo $wo['incall']['url'];?>');" title="<?php echo $wo['lang']['accept_and_start'];?>"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path fill="currentColor" d="M19.23 15.26l-2.54-.29c-.61-.07-1.21.14-1.64.57l-1.84 1.84c-2.83-1.44-5.15-3.75-6.59-6.59l1.85-1.85c.43-.43.64-1.03.57-1.64l-.29-2.52c-.12-1.01-.97-1.77-1.99-1.77H5.03c-1.13 0-2.07.94-2 2.07.53 8.54 7.36 15.36 15.89 15.89 1.13.07 2.07-.87 2.07-2v-1.73c.01-1.01-.75-1.86-1.76-1.98z"/></svg></button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

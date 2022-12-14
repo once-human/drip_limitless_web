@@ -1,0 +1,36 @@
+<style>
+@font-face {
+    font-family: TT Commons;font-display: swap;src: url("<?php echo $wo['config']['theme_url'];?>/fonts/TTCommons-DemiBold.woff") format("woff");font-weight: 600;font-style: normal;
+}
+@font-face {
+    font-family: TT Commons;font-display: swap;src: url("<?php echo $wo['config']['theme_url'];?>/fonts/TTCommons-Medium.woff") format("woff");font-weight: 500;font-style: normal;
+}
+@font-face {
+    font-family: TT Commons;font-display: swap;src: url("<?php echo $wo['config']['theme_url'];?>/fonts/TTCommons-Regular.woff") format("woff");font-weight: normal;font-style: normal;
+}
+
+:root {
+	--body-bg: <?php echo $wo['config']['body_background'];?>;
+	--header-background: <?php echo $wo['config']['header_background'];?>;
+	--header-color: <?php echo $wo['config']['header_color'];?>;
+	--header-hover-color: <?php echo $wo['config']['header_hover_border'];?>;
+	--header-search-color: <?php echo $wo['config']['header_search_color'];?>;
+	--main: <?php echo $wo['config']['btn_background_color'];?>;
+	--main-hover: <?php echo $wo['config']['btn_hover_background_color'];?>;
+	--main-color: <?php echo $wo['config']['btn_color'];?>;
+	--main-hover-color: <?php echo $wo['config']['btn_hover_color'];?>;
+	--chat-outgoing: <?php echo $wo['config']['chat_outgoing_background'];?>;
+	--plyr-color-main: <?php echo $wo['config']['btn_background_color'];?>;
+	--plyr-control-toggle-checked-background: transparent;
+	--plyr-video-control-background-hover: rgba(255, 255, 255, 0.2);
+	--plyr-range-fill-background: #fff;
+	--plyr-range-track-height: 3px;
+}
+
+<?php
+	if (!empty($wo['reactions_types'])) {
+    foreach ($wo['reactions_types'] as $key => $value) {
+?>
+.reaction-<?php echo $value['id'];?>::after {content: "<?php echo $value['name'];?>";}
+<?php } } ?>
+</style>

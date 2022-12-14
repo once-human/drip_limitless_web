@@ -1,0 +1,49 @@
+<div class="col-md-12">
+	<div class="page-margin wow_content wow_sett_content">
+		<div class="valign wo_page_hdng">
+			<span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M7,5H21V7H7V5M7,13V11H21V13H7M4,4.5A1.5,1.5 0 0,1 5.5,6A1.5,1.5 0 0,1 4,7.5A1.5,1.5 0 0,1 2.5,6A1.5,1.5 0 0,1 4,4.5M4,10.5A1.5,1.5 0 0,1 5.5,12A1.5,1.5 0 0,1 4,13.5A1.5,1.5 0 0,1 2.5,12A1.5,1.5 0 0,1 4,10.5M7,19V17H21V19H7M4,16.5A1.5,1.5 0 0,1 5.5,18A1.5,1.5 0 0,1 4,19.5A1.5,1.5 0 0,1 2.5,18A1.5,1.5 0 0,1 4,16.5Z"></path></svg></span> <?php echo $wo['lang']['activities'];?>
+		</div>
+        <?php $activities = Wo_GetActivities(array('me' => true, 'limit' => 20));?>
+        <ul class="list-unstyled activity-container">
+            <li class="activities-wrapper tag_prof_activits">
+                <?php
+                    if (count($activities) == 0) {
+                        echo '<div class="empty_state"><svg height="512" viewBox="0 0 32 32" width="512" xmlns="http://www.w3.org/2000/svg"><path d="m26 32h-20c-3.314 0-6-2.686-6-6v-20c0-3.314 2.686-6 6-6h20c3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6z" fill="#ffe6e2"/><path d="m14 19.333c-.735 0-1.333-.598-1.333-1.333s.598-1.333 1.333-1.333 1.333.598 1.333 1.333-.598 1.333-1.333 1.333z" fill="#fc573b"/><path d="m14 24c-.735 0-1.333-.598-1.333-1.333s.598-1.333 1.333-1.333 1.333.598 1.333 1.333-.598 1.333-1.333 1.333z" fill="#fc573b"/><g fill="#fd907e"><path d="m23.334 18.667h-5.334c-.369 0-.667-.299-.667-.667s.298-.667.667-.667h5.334c.368 0 .666.299.666.667s-.298.667-.666.667z"/><path d="m23.334 21.333h-5.334c-.369 0-.667-.299-.667-.667s.299-.666.667-.666h5.334c.368 0 .666.299.666.667s-.298.666-.666.666z"/><path d="m23.334 11.333h-5.334c-.369 0-.667-.299-.667-.667s.299-.666.667-.666h5.334c.368 0 .666.298.666.667s-.298.666-.666.666z"/><path d="m23.334 14h-5.334c-.369 0-.667-.299-.667-.667s.298-.667.667-.667h5.334c.369 0 .667.299.667.667s-.299.667-.667.667z"/><path d="m23.334 24h-5.334c-.369 0-.667-.299-.667-.667s.298-.667.667-.667h5.334c.369 0 .667.299.667.667s-.299.667-.667.667z"/></g><path d="m11.666 15.333c-2.021 0-3.666-1.644-3.666-3.666s1.645-3.667 3.666-3.667 3.667 1.644 3.667 3.667-1.645 3.666-3.667 3.666z" fill="#fc573b"/></svg>' . $wo['lang']['no_activities'] . '</div>';
+                    } else {
+                        foreach ($activities as $wo['activity']) {
+                            echo Wo_LoadPage('header/activities-list');
+                        }
+                    }
+				?>
+            </li>
+            <div class="no-activities text-center"></div>
+        </ul>
+		<div class="clear"></div>
+	</div>
+	<?php if (count($activities) > 19) { ?>
+		<div class="load-more">
+    		<button class="btn btn-default text-center pointer" onclick="Wo_GetMoreActivities(<?php echo $wo['user_profile']['user_id'];?>);"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"></path></svg></span> <?php echo $wo['lang']['load_more_activities']; ?></button>
+		</div>
+	<?php } ?>
+</div>
+
+<script>
+function Wo_GetMoreActivities(user_id) {
+	var after_activity_id = $('.activity-container .activity:last').attr('data-activity-id');
+	$.post(Wo_Ajax_Requests_File() + '?f=activities&s=get_more_activities', {
+        after_activity_id: after_activity_id,
+        user_id: user_id
+	}, function (data) {
+        if(data.status == 200) {
+			if(data.html.length == 0) {
+				$('.load-more').hide();
+			} else {
+				$('.activity-container').append(data.html);
+			}
+			$(".activity-container").animate({
+				scrollTop: $('.activity-container')[0].scrollHeight
+			}, 100);
+		}
+	});
+}
+</script>

@@ -1,0 +1,78 @@
+<?php
+	if (!empty($wo['story']['product_id']) && !empty($wo['story']['product']) && !empty($wo['story']['product']['images'])) {
+		if ($wo['page']  == 'story') { ?>
+			<style>.col-lg-7.middlecol {-ms-flex: 0 0 100%;flex: 0 0 100%;max-width: 100%;}.col-lg-3.sidebar.rightcol {display:none;}</style>
+		<?php }
+		$symbol = (!empty($wo['currencies'][$wo['story']['product']['currency']]['symbol'])) ? $wo['currencies'][$wo['story']['product']['currency']]['symbol'] : $wo['config']['classified_currency_s'];
+		$text = (!empty($wo['currencies'][$wo['story']['product']['currency']]['text'])) ? $wo['currencies'][$wo['story']['product']['currency']]['text'] : $wo['config']['classified_currency'];
+		$status = ($wo['story']['product']['status'] == 0) ? '' . $wo['lang']['in_stock'] . '' : '<span class="product-status-sold">' . $wo['lang']['sold'] . '</span>';
+		$type = ($wo['story']['product']['type'] == 0) ? '<span class="product-description">' . $wo['lang']['new'] . '</span>' : '<span class="product-description">' . $wo['lang']['used'] . '</span>';
+		
+		echo '<div class="valign tag_post_prods">';
+		
+		echo '<div class="prod_full_size_slide">';
+		echo '<div id="tpc_' . $wo['story']['product_id'] . '" class="carousel slide" data-ride="carousel">';
+		echo '<div class="carousel-inner">';
+		foreach ($wo['story']['product']['images'] as $photo) {
+			echo '<div class="carousel-item tag_post_prods_slide">';
+			echo '<div class="tag_lbox_blur_img">';
+			echo '<div class="tag_lbox_blur_img_innr">';
+			echo "<img src='" . ($photo['image_org']) ."'>";
+			echo '</div>';
+			echo '</div>';
+			echo '<div class="tag_post_prods_thumb">';
+			echo "<img src='" . ($photo['image_org']) ."' class='pointer' onclick='Wo_OpenAlbumLightBox(" . $photo['id'] . ", \"product\");'>";
+			echo '</div>';
+			echo '</div>';
+		}
+		echo '</div>';
+		if (count($wo['story']['product']['images']) > 1) {
+			echo '<a class="carousel-control-prev carousel-control" href="#tpc_' . $wo['story']['product_id'] . '" role="button" data-slide="prev">';
+			echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M10.828 12l4.95 4.95-1.414 1.414L8 12l6.364-6.364 1.414 1.414z"></path></svg>';
+			echo '</a>';
+			echo '<a class="carousel-control-next carousel-control" href="#tpc_' . $wo['story']['product_id'] . '" role="button" data-slide="next">';
+			echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M13.172 12l-4.95-4.95 1.414-1.414L16 12l-6.364 6.364-1.414-1.414z"></path></svg>';
+			echo '</a>';
+		}
+		echo '</div>';
+		echo '</div>';
+		
+		echo '<div class="full_width wow_post_prod">';
+		echo '<h4 class="wow_post_prod_name">' . $wo['story']['product']['name'] . '</h4>';
+		echo '<p class="wow_post_prod_price">' . $symbol . $wo['story']['product']['price'] . ' (' . $text . ')</p>';
+		echo '<div class="wow_post_prod_shead">';
+		if (!empty($wo['story']['product']['location'])) {
+			echo '<span> ' . $wo['story']['product']['location'] . '</span><span class="middot">·</span>';
+		}
+		echo '<span class="product-status"> ' . $status . '</span><span class="middot">·</span>';
+		echo '<span> ' . $type . '</span>';
+		echo '</div>';
+
+		if ($wo['loggedin']) { if ($wo['story']['product']['user_id'] != $wo['user']['user_id']) { ?>
+			<div class="valign tag_post_prods_btns">
+				<button class="save-product btn btn-mat<?php if($wo['story']['is_post_saved'] === true) { ?> active<?php } ?>" onclick="Wo_SavePost(<?php echo $wo['story']['id']; ?>);"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></button>
+				<button class="contact btn btn-success btn-mat" onclick="Wo_OpenChatTab(<?php echo $wo['story']['product']['user_id']?>,0,<?php echo $wo['story']['product']['id']?>)"><?php echo $wo['lang']['contact_seller'] ?></button>
+			</div>
+		<?php }}
+		echo '<hr>';
+		echo '<div class="wow_post_prod_infos"><p class="product-description product-description-'.$wo['story']['product']['id'].'">' . $wo['story']['product']['description'] . '</p></div>';
+		$fields = Wo_GetCustomFields('product'); 
+		if (!empty($fields)) {
+			foreach ($fields as $key => $wo['field']) { 
+				if (!empty($wo['story']['product']['fid_'.$wo['field']['id']])) {
+					if ($wo['field']['type'] == 'selectbox') {
+						$options = @explode(',', $wo['field']['options']);
+						foreach ($options as $key => $value) {
+							if (($key + 1) == $wo['story']['product']['fid_'.$wo['field']['id']]) {
+								$wo['story']['product']['fid_'.$wo['field']['id']] = $value;
+							}
+						}
+					}
+					echo '<div class="wow_post_prod_infos"><p class="product-description">' . $wo['story']['product']['fid_'.$wo['field']['id']] . '</p></div>';
+		        } 
+		    } 
+	    }
+		echo '</div>';
+		echo '</div>';
+	} 
+?>

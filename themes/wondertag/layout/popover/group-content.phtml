@@ -1,0 +1,24 @@
+<div class="user-fetch">
+	<div class="user-cover" style="background-image: url(<?php echo $wo['popover']['cover']?>);"></div>
+	<div class="valign tag_profile_popover">
+		<div class="user-avatar">
+			<img src="<?php echo $wo['popover']['avatar']; ?>" alt="<?php echo $wo['popover']['name']; ?>">
+		</div>
+		<div class="full_width">
+			<div class="user-name">
+				<a href="<?php echo $wo['popover']['url']; ?>" data-ajax="?link1=timeline&u=<?php echo $wo['popover']['username']?>"><?php echo $wo['popover']['name']; ?></a>
+			</div>
+			<div class="event_info_blocks">
+				<div>
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M9.55 11.5a2.25 2.25 0 1 1 0-4.5 2.25 2.25 0 0 1 0 4.5zm.45 8.248V16.4c0-.488.144-.937.404-1.338a6.473 6.473 0 0 0-5.033 1.417A8.012 8.012 0 0 0 10 19.749zM4.453 14.66A8.462 8.462 0 0 1 9.5 13c1.043 0 2.043.188 2.967.532.878-.343 1.925-.532 3.033-.532 1.66 0 3.185.424 4.206 1.156a8 8 0 1 0-15.253.504zm14.426 1.426C18.486 15.553 17.171 15 15.5 15c-2.006 0-3.5.797-3.5 1.4V20a7.996 7.996 0 0 0 6.88-3.914zM12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm3.5-9.5a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"></path></svg> <?php echo Wo_CountGroupMembers($wo['popover']['id']);?> <?php echo $wo['lang']['members'];?>
+				</div>
+				<div>
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M10.9 2.1l9.899 1.415 1.414 9.9-9.192 9.192a1 1 0 0 1-1.414 0l-9.9-9.9a1 1 0 0 1 0-1.414L10.9 2.1zm.707 2.122L3.828 12l8.486 8.485 7.778-7.778-1.06-7.425-7.425-1.06zm2.12 6.364a2 2 0 1 1 2.83-2.829 2 2 0 0 1-2.83 2.829z"></path></svg> <?php echo $wo['popover']['category'];?>
+				</div>
+			</div>
+			<div class="valign user-buttons">
+				<div class="user-button user-follow-button"><?php echo Wo_GetJoinButton($wo['popover']['id']); ?></div>
+			</div>
+		</div>
+	</div>
+</div>

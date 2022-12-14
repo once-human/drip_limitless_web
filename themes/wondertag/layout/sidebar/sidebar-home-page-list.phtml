@@ -1,0 +1,20 @@
+<div class="sidebar-page-data wo_sidebar_pages" data-page-id="<?php echo $wo['PageList']['page_id']?>">
+	<div class="cardheader">
+		<img src="<?php echo $wo['PageList']['cover']?>" alt="<?php echo $wo['PageList']['name']?>">
+	</div>
+	<div class="valign page_middle">
+        <div class="avatar">
+            <img alt="<?php echo $wo['PageList']['name']?>" src="<?php echo $wo['PageList']['avatar']?>">
+        </div>
+        <div class="full_width info">
+            <div class="title">
+                <span class="user-popover" data-id="<?php echo $wo['PageList']['id'];?>" data-type="<?php echo $wo['PageList']['type'];?>">
+					<a href="<?php echo $wo['PageList']['url'];?>" data-ajax="?link1=timeline&u=<?php echo $wo['PageList']['username']?>" class="truncate bold"><?php echo $wo['PageList']['user_name'];?><?php if ($wo['PageList']['verified'] == 1) { ?>&nbsp;<span class="verified-color" data-toggle="tooltip" title="<?php echo $wo['lang']['verified_page'];?>"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 512 512"><path d="m256 0c-141.164062 0-256 114.835938-256 256s114.835938 256 256 256 256-114.835938 256-256-114.835938-256-256-256zm0 0" fill="#2196f3"></path><path d="m385.75 201.75-138.667969 138.664062c-4.160156 4.160157-9.621093 6.253907-15.082031 6.253907s-10.921875-2.09375-15.082031-6.253907l-69.332031-69.332031c-8.34375-8.339843-8.34375-21.824219 0-30.164062 8.339843-8.34375 21.820312-8.34375 30.164062 0l54.25 54.25 123.585938-123.582031c8.339843-8.34375 21.820312-8.34375 30.164062 0 8.339844 8.339843 8.339844 21.820312 0 30.164062zm0 0" fill="#fff"></path></svg></span><?php } ?></a>
+				</span>
+            </div>
+			<div class="user-follow-button">
+				<?php echo Wo_GetLikeButton($wo['PageList']['page_id']);?>
+			</div>
+        </div>
+	</div>
+</div>

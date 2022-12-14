@@ -1,0 +1,13 @@
+<div class="valign invitation-users-cont" data-hide-invited-user="<?php echo $wo['user']['id']; ?>">
+    <div class="avatar">
+        <img src="<?php echo $wo['user']['avatar'];?>" alt="<?php echo $wo['user']['name']; ?>" />
+    </div>
+	<div>
+		<span class="user-popover bold" data-id="<?php echo $wo['user']['id'];?>" data-type="<?php echo $wo['user']['type'];?>">
+			<a href="<?php echo $wo['user']['url'];?>" data-ajax="?link1=timeline&u=<?php echo $wo['user']['username']?>">
+				<span class="user-name"><?php echo $wo['user']['name']; ?></span>
+			</a>
+		</span>
+	</div>
+	<button class="btn btn-default btn-mat" onclick="Wo_SendEventInvation($(this).attr('data-invited-user'))" data-invited-user="<?php echo $wo['user']['id']; ?>"><?php echo $wo['lang']['invite']; ?></button>
+</div>

@@ -1,0 +1,22 @@
+<div class="col-lg-4 col-md-6" data-fund-id="<?php echo $wo['fund']['id']; ?>">
+	<div class="wow_content fundings">
+		<div class="avatar">
+			<a href="<?php echo $wo['config']['site_url'].'/show_fund/'. $wo['fund']['hashed_id']; ?>" data-ajax="?link1=show_fund&id=<?php echo $wo['fund']['hashed_id']; ?>"><img src="<?php echo $wo['fund']['image']; ?>" alt="<?php echo $wo['fund']['title']; ?>"></a>
+		</div>
+		<div class="fundings_desc">
+			<time><?php echo date("d M Y",$wo['fund']['time']); ?></time>
+			<h3 class="truncate"><a title="<?php echo $wo['fund']['title']; ?>" href="<?php echo $wo['config']['site_url'].'/show_fund/'. $wo['fund']['hashed_id']; ?>" data-ajax="?link1=show_fund&id=<?php echo($wo['fund']['hashed_id']) ?>"><?php echo $wo['fund']['title']; ?></a></h3>
+			<p class="desc">
+				<?php 
+				$desc = str_replace('<br>', '', $wo['fund']['description']);
+				echo $desc = mb_substr($desc, 0, 80, "UTF-8") . "..."; ?>
+			</p>
+		</div>
+		<div class="fundings_footer">
+			<div class="progress">
+				<div class="progress-bar" role="progressbar" style="width: <?php echo $wo['fund']['bar']; ?>%" aria-valuenow="<?php echo $wo['fund']['bar']; ?>" aria-valuemin="0" aria-valuemax="<?php echo($wo['fund']['amount']) ?>"></div>
+			</div>
+			<p><span class="bold"><?php echo $wo['config']['currency_symbol_array'][$wo['config']['currency']].$wo['fund']['raised']; ?></span> <?php echo $wo['lang']['raised_of']; ?> <?php echo $wo['config']['currency_symbol_array'][$wo['config']['currency']].$wo['fund']['amount']; ?></p>
+		</div>
+	</div>
+</div>

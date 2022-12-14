@@ -1,0 +1,55 @@
+<div class="page-margin wow_content p15 profile-completion-bar" data-profile-completion="<?php echo array_sum($wo['pr_complition']); ?>">
+	<div class="percentage-bar">
+		<h4 class="valign"><?php echo $wo['lang']['pr_completion']; ?><b class="completion-bar-percentage"><?php echo array_sum($wo['pr_complition']); ?>%</b></h4>
+		<div class="completion-bar">
+			<div class="completion-bar-wrapper">
+				<div class="completion-bar-status" style="width: <?php echo array_sum($wo['pr_complition']); ?>%;"></div>
+			</div>
+		</div>
+    </div>
+    <?php if (empty($wo['pr_complition'][1])): ?>
+        <div class="completion-step" id="add-profile-avatar">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"><path opacity=".8" fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" /></svg> <?php echo $wo['lang']['ad_pr_picture']; ?>   
+        </div>
+    <?php else: ?>
+        <div class="completion-step">
+           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"><path fill="<?php echo $wo['config']['btn_background_color'];?>" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM9.29 16.29L5.7 12.7c-.39-.39-.39-1.02 0-1.41.39-.39 1.02-.39 1.41 0L10 14.17l6.88-6.88c.39-.39 1.02-.39 1.41 0 .39.39.39 1.02 0 1.41l-7.59 7.59c-.38.39-1.02.39-1.41 0z" /></svg> <span> <?php echo $wo['lang']['ad_pr_picture']; ?>  </span>  
+        </div>
+    <?php endif; ?>
+    <div class="completion-step">
+        <?php if (!empty($wo['pr_complition'][2])): ?>
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"><path fill="<?php echo $wo['config']['btn_background_color'];?>" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM9.29 16.29L5.7 12.7c-.39-.39-.39-1.02 0-1.41.39-.39 1.02-.39 1.41 0L10 14.17l6.88-6.88c.39-.39 1.02-.39 1.41 0 .39.39.39 1.02 0 1.41l-7.59 7.59c-.38.39-1.02.39-1.41 0z" /></svg> <span> <?php echo $wo['lang']['add_ur_name']; ?> </span>
+        <?php else: ?>
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"><path opacity=".8" fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" /></svg> <a href="<?php echo Wo_SeoLink('index.php?link1=setting&page=profile-setting');?>" data-ajax="?link1=setting&page=profile-setting"> <?php echo $wo['lang']['add_ur_name']; ?>  </a>
+        <?php endif; ?>
+    </div>
+    <div class="completion-step">
+        <?php if (!empty($wo['pr_complition'][3])): ?>
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"><path fill="<?php echo $wo['config']['btn_background_color'];?>" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM9.29 16.29L5.7 12.7c-.39-.39-.39-1.02 0-1.41.39-.39 1.02-.39 1.41 0L10 14.17l6.88-6.88c.39-.39 1.02-.39 1.41 0 .39.39.39 1.02 0 1.41l-7.59 7.59c-.38.39-1.02.39-1.41 0z" /></svg> <span> <?php echo $wo['lang']['ad_ur_workplace']; ?> </span>
+        <?php else: ?>
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"><path opacity=".8" fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" /></svg> <a href="<?php echo Wo_SeoLink('index.php?link1=setting&page=profile-setting');?>" data-ajax="?link1=setting&page=profile-setting"> <?php echo $wo['lang']['ad_ur_workplace']; ?> </a> 
+        <?php endif; ?>
+    </div>
+    <div class="completion-step">
+        <?php if (!empty($wo['pr_complition'][4])): ?>
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"><path fill="<?php echo $wo['config']['btn_background_color'];?>" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM9.29 16.29L5.7 12.7c-.39-.39-.39-1.02 0-1.41.39-.39 1.02-.39 1.41 0L10 14.17l6.88-6.88c.39-.39 1.02-.39 1.41 0 .39.39.39 1.02 0 1.41l-7.59 7.59c-.38.39-1.02.39-1.41 0z" /></svg> <span><?php echo $wo['lang']['ad_ur_country']; ?></span>
+        <?php else: ?>
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"><path opacity=".8" fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" /></svg> <a href="<?php echo Wo_SeoLink('index.php?link1=setting&page=general-setting');?>" data-ajax="?link1=setting&page=general-setting"><?php echo $wo['lang']['ad_ur_country']; ?></a>
+        <?php endif; ?>
+    </div>
+    <div class="completion-step">
+        <?php if (!empty($wo['pr_complition'][5])): ?>
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"><path fill="<?php echo $wo['config']['btn_background_color'];?>" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM9.29 16.29L5.7 12.7c-.39-.39-.39-1.02 0-1.41.39-.39 1.02-.39 1.41 0L10 14.17l6.88-6.88c.39-.39 1.02-.39 1.41 0 .39.39.39 1.02 0 1.41l-7.59 7.59c-.38.39-1.02.39-1.41 0z" /></svg> <span><?php echo $wo['lang']['ad_ur_address']; ?></span>
+        <?php else: ?>
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"><path opacity=".8" fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" /></svg> <a href="<?php echo Wo_SeoLink('index.php?link1=setting&page=profile-setting');?>" data-ajax="?link1=setting&page=profile-setting"><?php echo $wo['lang']['ad_ur_address']; ?></a>
+        <?php endif; ?>
+    </div>
+</div>
+
+<script>
+jQuery(document).ready(function($) {
+	$("#add-profile-avatar").click(function(event) {
+		$('.profile-avatar-changer').find('input').trigger('click');
+	});
+});
+</script>

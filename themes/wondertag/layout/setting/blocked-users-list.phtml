@@ -1,0 +1,11 @@
+<div class="col-6 col-sm-6 col-md-4 col-lg-3 nearby_user_wrapper user-data" id="member-<?php echo $wo['member']['user_id'] ?>">
+	<div class="nearby_user_wrapper_innr text-center">
+		<div class="avatar">
+			<a href="<?php echo $wo['member']['url'];?>" data-ajax="?link1=timeline&u=<?php echo $wo['member']['username'] ?>"><img src="<?php echo $wo['member']['avatar'];?>" alt="<?php echo $wo['member']['name']; ?>"></a>
+		</div>
+		<a href="<?php echo $wo['member']['url'];?>" data-ajax="?link1=timeline&u=<?php echo $wo['member']['username'] ?>" class="truncate user_wrapper_link"><?php echo $wo['member']['name']; ?></a>
+		<div class="user-follow-button">
+			<a class="btn btn-default btn-mat" href="<?php echo $wo['member']['url'] . $wo['marker'] . 'block_user=un-block';?>"><?php echo $wo['lang']['un_block'];?></a>
+		</div>
+	</div>
+</div>

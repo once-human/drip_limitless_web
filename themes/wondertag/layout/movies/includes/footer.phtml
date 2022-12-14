@@ -1,0 +1,101 @@
+<script>
+	jQuery(document).ready(function($) {
+		$('.movies-subheadnav').click(function(event) {
+			var _self   = $(this);
+			var _movies = $(this).attr('data-movies');
+			$(".movies-subheadnav").removeClass('active');
+			_self.addClass('active');
+			$.ajax({
+				url: Wo_Ajax_Requests_File(),
+				type: 'GET',
+				dataType: 'json',
+				data: {f: 'movies', s:_movies},
+			})
+			.done(function(data) {
+				if (data.status == 200) {
+					$(".movies .movies-inner").html(data.html);
+				}
+				else{
+					$(".movies").html('<div class="empty_state"><svg height="512" viewBox="0 0 32 32" width="512" xmlns="http://www.w3.org/2000/svg"><path d="m26 32h-20c-3.314 0-6-2.686-6-6v-20c0-3.314 2.686-6 6-6h20c3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6z" fill="#f5e6fe"/><path d="m9.833 21.042c-.368 0-.667-.299-.667-.667v-1.167c0-.368.299-.667.667-.667s.667.299.667.667v1.167c0 .368-.299.667-.667.667z" fill="#d9a4fc"/><path d="m22.167 21.042c-.368 0-.667-.299-.667-.667v-1.167c0-.368.299-.667.667-.667s.667.299.667.667v1.167c-.001.368-.299.667-.667.667z" fill="#d9a4fc"/><path d="m12.74 12.875h-3.573c-.644 0-1.167.523-1.167 1.167v4.333c0 .643.523 1.167 1.167 1.167h3.574c-.867-.848-1.407-2.028-1.407-3.333-.001-1.306.539-2.486 1.406-3.334zm-2.407 3h-1c-.276 0-.5-.224-.5-.5s.224-.5.5-.5h1c.276 0 .5.224.5.5s-.224.5-.5.5z" fill="#be63f9"/><path d="m22.833 12.875h-3.573c.867.848 1.407 2.028 1.407 3.333s-.54 2.486-1.407 3.333h3.574c.643 0 1.167-.523 1.167-1.167v-4.333c-.001-.643-.524-1.166-1.168-1.166zm-.166 3h-1c-.276 0-.5-.224-.5-.5s.224-.5.5-.5h1c.276 0 .5.224.5.5s-.224.5-.5.5z" fill="#be63f9"/><path d="m16 12.208c-2.206 0-4 1.794-4 4s1.794 4 4 4 4-1.794 4-4-1.794-4-4-4zm2.167 4c-.276 0-.5-.224-.5-.5 0-.643-.523-1.167-1.167-1.167-.276 0-.5-.224-.5-.5s.224-.5.5-.5c1.195 0 2.167.972 2.167 2.167 0 .276-.224.5-.5.5z" fill="#d9a4fc"/></svg>' + data.html + ' </div>');
+				}
+			})
+			.fail(function() {
+				console.log("Something went wrong. Try again later");
+			})
+			
+		});
+
+		$('.load-more-movies').click(function(event) {
+			var _self   = $(this);
+			var _lastId = ($('.movies-film-wrapper-lmore').length > 0) ? $('.movies-film-wrapper-lmore').last().attr('data-film-id') : 0;
+
+			//Load All
+			if (_self.attr('data-movies-type') == 'all') {
+				var dataObj = {f: 'movies',s:'load',offset:_lastId,t:'a'};
+			}
+
+			//Load by Genre
+			else if (_self.attr('data-movies-type') == 'genre') {
+				var dataObj = {f: 'movies',s:'load',offset:_lastId,t:'g',g:_self.attr('data-genre')};
+			}
+
+			//Load by Country
+			else if (_self.attr('data-movies-type') == 'country') {
+				var dataObj = {f: 'movies',s:'load',offset:_lastId,t:'c',c:_self.attr('data-country')};
+			}
+			else{
+				alert(false);
+			}
+			$.ajax({
+					url: Wo_Ajax_Requests_File(),
+					type: 'GET',
+					dataType: 'json',
+					data: dataObj,
+				})
+				.done(function(data) {
+					if (data.status == 200) {
+						$('.movies .movies-inner').append(data.html)
+					}
+					else{
+						_self.text(data.html)
+					}
+				})
+				.fail(function() {
+					console.log("Something went wrong. Try again later");
+			})
+		});
+	});
+	
+	$(document).on('keyup', '#search-movies', function(event) {
+		var _self = $(this);
+		_self.focus(function(event) {
+			$('ul#search-movies-result').addClass('visible');
+		});
+		_self.blur(function(event) {
+			//$('ul#search-movies-result').removeClass('visible');
+		});
+
+		if (_self.val().length >=2) {
+			Wo_Delay(function(){
+				$.ajax({
+					url:Wo_Ajax_Requests_File(),
+					type: 'GET',
+					dataType: 'json',
+					data: {f: 'movies',s:'search',key:_self.val()},
+				})
+				.done(function(data) {
+					if (data.status == 200) {
+						$('ul#search-movies-result').html(data.html);
+						$('ul#search-movies-result').addClass('visible');
+					}
+					else{
+						$('ul#search-movies-result').html('<span class="text-center full_width">'+data.html+'</span>');
+					}
+				})
+				.fail(function() {
+					console.log("Something went wrong. Try again later");
+				})
+			},1)
+		}
+	});
+</script>

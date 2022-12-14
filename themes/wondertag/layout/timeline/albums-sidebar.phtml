@@ -1,0 +1,6 @@
+<?php 
+	foreach (Wo_GetUserAlbums($wo['user_profile']['user_id'], 'sidebar', 12) as $wo['album']) {
+		$wo['album']['album_name'] = mb_substr($wo['album']['album_name'], 0, 10);
+		echo Wo_LoadPage('sidebar/sidebar-album-list');
+	}
+?>

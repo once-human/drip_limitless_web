@@ -1,0 +1,11 @@
+<?php 
+$wo['trans'] = Wo_GetMytransactions(array('user_id' => $wo['setting']['user_id']));
+?>
+<h2 class="tag_page_title"><button type="button" class="btn setting_navigation" onclick="$('.tag_sett_sidebar').fadeIn(50);$('#tag_sett_right_prt').fadeOut(50);"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" fill="currentColor"></path></svg></button> <?php echo $wo['lang']['transaction_log']; ?></h2>
+<div class="wow_sett_content wow_content p20">
+	<div class="wallet_transactions">
+		<div class="tabbable">
+			<?php echo Wo_LoadPage('setting/includes/latest_activities');?>
+		</div>
+	</div>
+</div>

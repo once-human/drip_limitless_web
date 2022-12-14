@@ -1,0 +1,174 @@
+<?php 
+$wondertage_settings = array();
+if (mysqli_query($wo['sqlConnect'], "DESCRIBE `wondertage_settings`" )) {
+	$settings = $db->get('wondertage_settings');
+	foreach ($settings as $key => $value) {
+		$wondertage_settings[$value->name] = $value->value;
+	}
+}
+?>
+
+<?php if (!empty($wondertage_settings) && $wondertage_settings['tag_artplayer'] == 1) { ?>
+	<div class="embed-responsive embed-responsive-16by9">
+		<?php if ($wo['story']['processing'] > 0 && (Wo_IsModerator() || Wo_IsAdmin() || $wo['story']['user_id'] == $wo['user']['id'])) { ?>
+			<div class="alert alert-warning vid_procss_alrt processing_alert_<?php echo $wo['media']['storyId'];?>"><span class="pointer" onclick="ProcessingVideo('<?php echo $wo['media']['storyId'];?>')"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span><?php echo $wo['lang']['processing_video']; ?></div>
+		<?php } ?>
+		<div class="artplayer-app" id="video--<?php echo $wo['media']['storyId'];?>"></div>
+	</div>
+
+	<script>
+	var art = new Artplayer({
+		container: '#video--<?php echo $wo['media']['storyId'];?>',
+		url: '<?php echo $wo['media']['filename'];?>',
+		poster: '<?php  echo $wo['media']['video_thumb'];?>',
+		volume: 1,
+		pip: true,
+		fullscreen: true,
+		miniProgressBar: true,
+		theme: '<?php echo $wo['config']['btn_background_color'];?>',
+		icons: {
+			state: '<svg class="playback-icons" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 13.5v-7c0-.41.47-.65.8-.4l4.67 3.5c.27.2.27.6 0 .8l-4.67 3.5c-.33.25-.8.01-.8-.4z"/></svg>',
+		},
+		whitelist: ['*'],
+		moreVideoAttr: {
+			'webkit-playsinline': true,
+			playsInline: true,
+			preload: 'auto',
+		},
+		<?php if (empty($wo['story']['240p_video']) && empty($wo['story']['360p_video'])  && empty($wo['story']['480p_video'])  && empty($wo['story']['720p_video'])  && empty($wo['story']['1080p_video'])  && empty($wo['story']['2048p_video'])  && empty($wo['story']['4096p_video'])) { ?>
+		<?php }else{ ?>
+			quality: [
+				<?php if (!empty($wo['story']['240p_video'])) { ?>
+		    		{
+						name: '240p',
+						url: '<?php echo($wo['story']['240p_video']) ?>',
+					},
+		    	<?php } ?>
+				<?php if (!empty($wo['story']['360p_video'])) { ?>
+		    		{
+						name: '360p',
+						url: '<?php echo($wo['story']['360p_video']) ?>',
+					},
+		    	<?php } ?>
+				<?php if (!empty($wo['story']['480p_video'])) { ?>
+		    		{
+						name: '480p',
+						url: '<?php echo($wo['story']['480p_video']) ?>',
+					},
+		    	<?php } ?>
+				<?php if (!empty($wo['story']['720p_video'])) { ?>
+		    		{
+						name: '720p',
+						url: '<?php echo($wo['story']['720p_video']) ?>',
+					},
+		    	<?php } ?>
+				<?php if (!empty($wo['story']['1080p_video'])) { ?>
+		    		{
+						name: '1080p',
+						url: '<?php echo($wo['story']['1080p_video']) ?>',
+					},
+		    	<?php } ?>
+				<?php if (!empty($wo['story']['2048p_video'])) { ?>
+		    		{
+						name: '2048p',
+						url: '<?php echo($wo['story']['2048p_video']) ?>',
+					},
+		    	<?php } ?>
+				<?php if (!empty($wo['story']['4096p_video'])) { ?>
+		    		{
+						name: '4096p',
+						url: '<?php echo($wo['story']['4096p_video']) ?>',
+					},
+		    	<?php } ?>
+			],
+		<?php } ?>
+	});
+
+	art.on('ready', () => {
+		$('#video--<?php echo $wo['media']['storyId'];?>').addClass('hide_control');
+		$('.art-notice, .art-contextmenus').remove();
+	});
+	art.on('play', () => {
+		Wo_AddVideoViews(<?php echo $wo['media']['storyId'];?>);
+		$('#video--<?php echo $wo['media']['storyId'];?> .art-mask').remove();
+		$('#video--<?php echo $wo['media']['storyId'];?>').removeClass('hide_control');
+		art.events.proxy(window, 'scroll', function (e) {
+			if (!document.pictureInPictureElement) {
+				$('#video--<?php echo $wo['media']['storyId'];?> video').each(function(){
+					if ($(this).is(":in-viewport")) {
+						
+					} else {
+						$(this)[0].pause();
+					}
+				});
+			}
+		});
+	});
+	art.on('pause', () => {
+		$('#video--<?php echo $wo['media']['storyId'];?>').addClass('show_control');
+	});
+	</script>
+<?php } else { ?>
+	<div class="tag_vid_plyr">
+		<?php if ($wo['story']['processing'] > 0 && (Wo_IsModerator() || Wo_IsAdmin() || $wo['story']['user_id'] == $wo['user']['id'])) { ?>
+			<div class="alert alert-warning vid_procss_alrt processing_alert_<?php echo $wo['media']['storyId'];?>"><span class="pointer" onclick="ProcessingVideo('<?php echo $wo['media']['storyId'];?>')"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span><?php echo $wo['lang']['processing_video']; ?></div>
+		<?php } ?>
+		<video id="video--<?php echo $wo['media']['storyId'];?>" onplay="Wo_AddVideoViews($(this).attr('data-post-video'))" class="plyrr-<?php echo $wo['media']['storyId'];?> <?php echo($wo['rvad_con']); ?>" playsinline preload="metadata" poster="<?php  echo $wo['media']['video_thumb'];?>" data-setup="{}" data-post-video="<?php echo $wo['media']['storyId'];?>">
+			<?php if (empty($wo['story']['240p_video']) && empty($wo['story']['360p_video'])  && empty($wo['story']['480p_video'])  && empty($wo['story']['720p_video'])  && empty($wo['story']['1080p_video'])  && empty($wo['story']['2048p_video'])  && empty($wo['story']['4096p_video'])) { ?>
+	    		<source src="<?php echo $wo['media']['filename'];?>" type='video/mp4'>
+			    <source src="<?php echo $wo['media']['filename'];?>" type='video/webm'>
+	    	<?php }else{ ?>
+		    	<?php if (!empty($wo['story']['4096p_video'])) { ?>
+		    		<source src="<?php echo($wo['story']['4096p_video']) ?>" type="video/mp4" data-quality="4096p" size='4096' label='4096p' res='4096'>
+		    	<?php } ?>
+		    	<?php if (!empty($wo['story']['2048p_video'])) { ?>
+		    		<source src="<?php echo($wo['story']['2048p_video']) ?>" type="video/mp4" data-quality="2048p" size='2048' label='2048p' res='2048'>
+		    	<?php } ?>
+		    	<?php if (!empty($wo['story']['1080p_video'])) { ?>
+		    		<source src="<?php echo($wo['story']['1080p_video']) ?>" type="video/mp4" data-quality="1080p" size='1080' label='1080p' res='1080'>
+		    	<?php } ?>
+		    	<?php if (!empty($wo['story']['720p_video'])) { ?>
+		    		<source src="<?php echo($wo['story']['720p_video']) ?>" type="video/mp4" data-quality="720p" size='720' label='720p' res='720'>
+		    	<?php } ?>
+		    	<?php if (!empty($wo['story']['480p_video'])) { ?>
+		    		<source src="<?php echo($wo['story']['480p_video']) ?>" type="video/mp4" data-quality="480p" size='480' label='480p' res='480'>
+		    	<?php } ?>
+		    	<?php if (!empty($wo['story']['360p_video'])) { ?>
+		    		<source src="<?php echo($wo['story']['360p_video']) ?>" type="video/mp4" data-quality="360p" size='360' label='360p' res='360'>
+		    	<?php } ?>
+		    	<?php if (!empty($wo['story']['240p_video'])) { ?>
+		    		<source src="<?php echo($wo['story']['240p_video']) ?>" type="video/mp4" data-quality="240p" size='240' label='240p' res='240'>
+		    	<?php } ?>
+		    <?php } ?>
+		</video>
+	</div>
+
+	<script>
+	var tagvideo = '.plyrr-<?php echo $wo['story']['id'];?>';
+	var players = Plyr.setup(tagvideo, {
+		controls: ['play-large', 'progress', 'play', 'mute', 'volume', 'current-time', 'settings', 'pip', 'airplay', 'fullscreen'],
+		<?php if (Wo_IsMobile() == false) { ?>
+		ratio: '16:9',
+		<?php } ?>
+		fullscreen: {
+			iosNative: true
+		},
+		ads: {
+			enabled: false,
+			tagUrl: ''
+		}
+	});
+
+	$(window).scroll(function(e){
+		if (!document.pictureInPictureElement) {
+			$('.plyrr-<?php echo $wo['story']['id'];?>').each(function(){
+				if ($(this).is(":in-viewport")) {
+					
+				} else {
+					$(this)[0].pause();
+				}
+			});
+		}
+	});
+	</script>
+<?php } ?>

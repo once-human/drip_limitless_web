@@ -1,0 +1,10 @@
+<div class="valign ref" id="<?php echo $wo['ref']['user_id'];?>">
+	<div class="ref-image">
+		<a href="<?php echo $wo['ref']['url'];?>"><img src="<?php echo $wo['ref']['avatar'];?>" alt="<?php echo $wo['ref']['name'];?>"></a>
+	</div>
+	<div class="name">
+		<p class="bold"><a href="<?php echo $wo['ref']['url'];?>"><?php echo $wo['ref']['name'];?></a></p>
+		<div class="joined"><?php echo $wo['lang']['joined'] ?> <?php echo Wo_Time_Elapsed_String($wo['ref']['joined']);?></div>
+	</div>
+	<div class="clear"></div>
+</div>

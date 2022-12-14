@@ -1,0 +1,36 @@
+<div class="col-6 col-md-4 col-lg-3 nearby_user_wrapper user-data" id="member-<?php echo $wo['member']['user_id'] ?>">
+	<div class="nearby_user_wrapper_innr text-center">
+		<?php if ($wo['setting']['user_id'] != $wo['member']['user_id']): ?>
+			<div class="dropdown tag_group_membr_opts">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"></path></svg></a>
+				<ul class="dropdown-menu dropdown-static-menu dropdown-menu-right clearfix" role="menu">
+					<li>
+						<a href="javascript:void(0);" onclick="Wo_AddGroupUserAdmin(<?php echo $wo['member']['user_id']?>, <?php echo $wo['setting']['id']?>,this);">
+							<?php if (Wo_IsGroupUserExists($wo['member']['user_id'],$wo['setting']['id'])): ?>
+								<span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="#bababa" d="M13.41406,12l3.293-3.293A.99989.99989,0,0,0,15.293,7.293L12,10.58594,8.707,7.293A.99989.99989,0,0,0,7.293,8.707L10.58594,12,7.293,15.293A.99989.99989,0,0,0,8.707,16.707L12,13.41406l3.293,3.293A.99989.99989,0,0,0,16.707,15.293Z"></path><path fill="#bababa" opacity="0.2" d="M19.0708,4.9292A9.99962,9.99962,0,1,0,4.9292,19.0708,9.99962,9.99962,0,1,0,19.0708,4.9292ZM16.707,15.293A.99989.99989,0,1,1,15.293,16.707L12,13.41406,8.707,16.707A.99989.99989,0,0,1,7.293,15.293L10.58594,12,7.293,8.707A.99989.99989,0,0,1,8.707,7.293L12,10.58594l3.293-3.293A.99989.99989,0,0,1,16.707,8.707L13.41406,12Z"></path></svg></span>
+							<?php else: ?>
+								<span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="#4CAF50" d="M10.3125,16.09375a.99676.99676,0,0,1-.707-.293L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328l-6.1875,6.1875A.99676.99676,0,0,1,10.3125,16.09375Z" opacity=".99"></path><path fill="#4CAF50" opacity="0.2" d="M12,2A10,10,0,1,0,22,12,10.01146,10.01146,0,0,0,12,2Zm5.207,7.61328-6.1875,6.1875a.99963.99963,0,0,1-1.41406,0L6.793,12.98828A.99989.99989,0,0,1,8.207,11.57422l2.10547,2.10547L15.793,8.19922A.99989.99989,0,0,1,17.207,9.61328Z"></path></svg></span>
+							<?php endif; ?> <?php echo $wo['lang']['admin']; ?>
+						</a>
+					</li>
+					<li id="privileges_admin_<?php echo($wo['member']['user_id']) ?>" style="<?php echo Wo_IsGroupUserExists($wo['member']['user_id'],$wo['setting']['id']) ? '' : 'display: none;'; ?>">
+						<a href="<?php echo Wo_SeoLink('index.php?link1=group-setting&group=' . $wo['setting']['group_name'] . '&link3=group-members');?>?name=<?php echo $wo['member']['username']?>" data-ajax="?link1=group-setting&group=<?php echo $wo['setting']['group_name'];?>&link3=group-members&name=<?php echo $wo['member']['username']?>"><?php echo $wo['lang']['privileges']; ?></a>
+					</li>
+				</ul>
+			</div>
+		<?php endif;?>
+		<div class="avatar">
+			<a href="<?php echo $wo['member']['url'];?>" data-ajax="?link1=timeline&u=<?php echo $wo['member']['username'];?>"><img src="<?php echo $wo['member']['avatar'];?>" alt="<?php echo $wo['member']['name']; ?>" /></a>
+		</div>
+		<span class="user-popover" data-id="<?php echo $wo['member']['id'];?>" data-type="<?php echo $wo['member']['type'];?>">
+			<a href="<?php echo $wo['member']['url'];?>" data-ajax="?link1=timeline&u=<?php echo $wo['member']['username'];?>" class="truncate user_wrapper_link"><?php echo $wo['member']['name']; ?></a>
+		</span>
+		<div class="user-follow-button">
+			<?php if ($wo['setting']['user_id'] == $wo['user']['user_id']): ?>
+				<span onclick="Wo_DeleteJoinedUser(<?php echo $wo['member']['user_id']?>, <?php echo $wo['setting']['id']?>);" class="btn btn-danger btn-sm"><?php echo $wo['lang']['remove']; ?></span>
+			<?php elseif($wo['setting']['user_id'] != $wo['member']['user_id']): ?>
+				<span onclick="Wo_DeleteJoinedUser(<?php echo $wo['member']['user_id']?>, <?php echo $wo['setting']['id']?>);" class="btn btn-danger btn-sm"><?php echo $wo['lang']['remove']; ?></span>
+			<?php endif; ?>
+		</div>
+	</div>
+</div>

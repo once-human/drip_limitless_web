@@ -1,0 +1,16 @@
+<div class="notification-list pointer messages-list messages-recipients-list mobileopenlist {{#if active}} active {{/if}}" id="messages-recipient-{{recipientUserId}}" onclick="Wo_GetUserMessages({{recipientUserId}},'{{recipientName}}');">
+	<div class="valign">
+		<div class="notification-user-avatar avatar">
+			<span class="new-message-alert {{#if message_count_is_zero}} hidden {{/if}}"></span>
+			<img alt="{{recipientName}}" src="{{recipientAvatar}}">
+			{{#if online}}
+				<div class="valign online_dot"><div class="dot"></div></div>
+			{{/if}}
+		</div>
+		<div class="notification-text">
+			<div class="ajax-time" title="{{time}}">{{elapased_time}}</div>
+            <span class="truncate">{{recipientName}}</span>
+			<div class="header-message truncate">{{{messageText}}}</div>
+		</div>
+	</div>
+</div>

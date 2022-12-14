@@ -1,0 +1,18 @@
+<div class="user-request-list user-group-request-<?php echo $wo['group_chat']['group_id'];?>">
+	<div class="valign">
+		<div class="avatar">
+			<a href="javascript:void(0)">
+				<img src="<?php echo $wo['group_chat']['avatar'];?>" alt="<?php echo $wo['group_chat']['group_name']; ?>" />
+			</a>
+		</div>
+		<div class="user-info">
+			<?php $user = Wo_UserData($wo['group_chat']['user_id']); ?>
+			<div class="user-lastseen"><?php echo $user['name']." " . $wo['lang']['invited_to_group']; ?></div>
+			<a href="javascript:void(0)"><?php echo $wo['group_chat']['group_name']; ?> (<?php echo $wo['lang']['group']; ?>)</a>
+			<div class="valign accept-btns">
+				<button type="button" id="accept-<?php echo $wo['group_chat']['group_id']?>" onclick="Wo_AcceptFollowGroupRequest(<?php echo $wo['group_chat']['group_id'];?>)" class="btn btn-mat btn-main"><?php echo $wo['lang']['accept']; ?></button>
+				<button type="button" id="delete-<?php echo $wo['group_chat']['group_id']?>" onclick="Wo_DeleteFollowGroupRequest(<?php echo $wo['group_chat']['group_id'];?>)" class="btn btn-mat btn-default"><?php echo $wo['lang']['delete']; ?></button>
+			</div>
+		</div>
+	</div>
+</div>

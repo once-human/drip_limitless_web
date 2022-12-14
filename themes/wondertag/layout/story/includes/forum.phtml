@@ -1,0 +1,11 @@
+<?php if(!empty($wo['story']['forum_id']) && !empty($wo['story']['forum'])) { ?>
+	<div class="post-fetched-url">
+		<a href="<?php echo $wo['config']['site_url'].'/forums/'.$wo['story']['forum']['id'];?>">
+			<div class="fetched-url-text">
+				<h4><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M16.8 19L14 22.5 11.2 19H6a1 1 0 0 1-1-1V7.103a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1V18a1 1 0 0 1-1 1h-5.2zM2 2h17v2H3v11H1V3a1 1 0 0 1 1-1z"></path></svg> <?php echo $wo['story']['forum']['name'];?></h4>
+				<div class="description"><?php echo $wo['story']['forum']['description'];?></div>
+			</div>
+			<div class="clear"></div>
+		</a>
+	</div>
+<?php } ?>

@@ -1,0 +1,25 @@
+<div class="page-margin">
+	<div class="container">
+		<h2 class="tag_page_title m5"><?php echo $wo['lang']['groups']; ?></h2>
+		<ul class="list-unstyled tag_page_nav">
+			<li class="active separate"><a class="btn-mat" href="<?php echo Wo_SeoLink('index.php?link1=groups'); ?>" data-ajax="?link1=groups"><?php echo $wo['lang']['my_groups'] ?></a></li>
+			<li><a class="btn-mat" href="<?php echo Wo_SeoLink('index.php?link1=suggested-groups'); ?>" data-ajax="?link1=suggested-groups"><?php echo $wo['lang']['suggested_groups'] ?></a></li>
+			<li><a class="btn-mat" href="<?php echo Wo_SeoLink('index.php?link1=joined_groups'); ?>" data-ajax="?link1=joined_groups"><?php echo $wo['lang']['joined_groups'] ?></a></li>
+		</ul>
+		<div class="row">
+			<?php
+				$pages = Wo_GetMyGroups();
+				if (count($pages) > 0) {
+					echo '<div class="col-xl-4 col-lg-6 col-md-6"><div class="tag_create_album tag_create_group"><a href="#create-group" data-toggle="modal" class="valign tag_create_box"><svg height="40" viewBox="0 0 512 512" width="40" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="m256 0c-141.164062 0-256 114.835938-256 256s114.835938 256 256 256 256-114.835938 256-256-114.835938-256-256-256zm112 277.332031h-90.667969v90.667969c0 11.777344-9.554687 21.332031-21.332031 21.332031s-21.332031-9.554687-21.332031-21.332031v-90.667969h-90.667969c-11.777344 0-21.332031-9.554687-21.332031-21.332031s9.554687-21.332031 21.332031-21.332031h90.667969v-90.667969c0-11.777344 9.554687-21.332031 21.332031-21.332031s21.332031 9.554687 21.332031 21.332031v90.667969h90.667969c11.777344 0 21.332031 9.554687 21.332031 21.332031s-9.554687 21.332031-21.332031 21.332031zm0 0"></path></svg>' . $wo['lang']['create_new_group'] .'</a></div></div>';
+					foreach ($pages as $wo['group']) {
+						echo Wo_LoadPage('group/group-list');
+					}
+				} else {
+					echo '<div class="empty_state"><svg height="512" viewBox="0 0 32 32" width="512" xmlns="http://www.w3.org/2000/svg"><path d="m26 32h-20c-3.314 0-6-2.686-6-6v-20c0-3.314 2.686-6 6-6h20c3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6z" fill="#f5e6fe"/><g fill="#be63f9"><circle cx="16" cy="9.667" r="1.667"/><circle cx="20.667" cy="19" r="1.667"/><circle cx="11.333" cy="19" r="1.667"/><path d="m18.833 14.667h-5.667c-.276 0-.5-.224-.5-.5v-.333c0-1.011.822-1.833 1.833-1.833h3c1.011 0 1.833.822 1.833 1.833v.333c.001.276-.223.5-.499.5z"/><path d="m23.5 24h-5.667c-.276 0-.5-.224-.5-.5v-.333c0-1.011.822-1.833 1.833-1.833h3c1.011 0 1.833.822 1.833 1.833v.333c.001.276-.223.5-.499.5z"/><path d="m14.167 24h-5.667c-.276 0-.5-.224-.5-.5v-.333c0-1.011.822-1.833 1.833-1.833h3c1.011 0 1.833.822 1.833 1.833v.333c.001.276-.223.5-.499.5z"/></g><path d="m9.833 16.508c-.276 0-.5-.224-.5-.5 0-2.584 1.515-4.958 3.858-6.048.251-.116.548-.008.664.243.116.25.008.548-.243.664-1.993.927-3.28 2.945-3.28 5.141.001.276-.223.5-.499.5z" fill="#d9a4fc"/><path d="m22.167 16.508c-.276 0-.5-.224-.5-.5 0-2.197-1.287-4.215-3.28-5.141-.25-.117-.359-.414-.243-.664.117-.25.413-.359.664-.243 2.344 1.09 3.858 3.464 3.858 6.048.001.276-.223.5-.499.5z" fill="#d9a4fc"/><path d="m16 22.675c-.236 0-.468-.012-.697-.036-.274-.029-.474-.275-.445-.549s.271-.47.549-.445c.401.042.822.04 1.225-.004.272-.031.521.168.552.442.03.275-.168.521-.442.552-.244.026-.491.04-.742.04z" fill="#d9a4fc"/></svg>' . $wo['lang']['no_groups_found'] . '<div><a href="#create-group" data-toggle="modal" class="btn btn-main btn-mat">' . $wo['lang']['create'] .'</a></div></div>';
+				}
+			?>
+			<div class="clear"></div>
+		</div>
+	</div>
+</div>
+<?php echo Wo_LoadPage('group/create-group-modal');?>

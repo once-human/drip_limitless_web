@@ -1,0 +1,19 @@
+<div class="wow_forum_sections topic-list" data-forum="<?php echo $wo['thread']['id']; ?>">
+	<div class="section-list">
+		<div class="titles">
+			<a href="<?php echo $wo['thread']['url'];?>" data-ajax="?link1=showthread&tid=<?php echo $wo['thread']['id'];?>" class="ftitle"><?php echo $wo['thread']['headline']; ?></a>
+		</div>
+		<div class="forum-meta-foot">
+			<div class="forum-meta-d">
+				<img src="<?php echo $wo['thread']['user_data']['avatar']?>" width="30" height="30" alt="">
+				<span><?php echo $wo['lang']['by']; ?> <a class="reply_user" href="<?php echo $wo['thread']['author_url']; ?>" data-ajax="?link1=timeline&u=<?php echo $wo['thread']['user_data']['username']; ?>"><?php echo $wo['thread']['user_data']['name']; ?></a><span class="middot">·</span><time><?php echo Wo_Time_Elapsed_String($wo['thread']['posted']); ?></time></span>
+			</div>
+			<div class="forum-meta-d posts">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M13,9V5L6,12L13,19V14.9C18,14.9 21.5,16.5 24,20C23,15 20,10 13,9M7,8V5L0,12L7,19V16L3,12L7,8Z"/></svg> <?php echo $wo['thread']['replies']; ?> <?php echo $wo['lang']['replies']; ?>
+			</div>
+			<div class="forum-meta-d posts">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z"/></svg> <?php echo $wo['thread']['views']; ?> <?php echo $wo['lang']['views']; ?>
+			</div>
+		</div>
+	</div>
+</div>

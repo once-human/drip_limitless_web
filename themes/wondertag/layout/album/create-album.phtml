@@ -1,0 +1,104 @@
+<div class="container">
+	<h2 class="tag_page_title"><?php echo $wo['lang']['my_albums']; ?></h2>
+	<div class="page-margin wow_content wow_sett_content">
+		<div class="valign wo_page_hdng">
+			<span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M5,3A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H14.09C14.03,20.67 14,20.34 14,20C14,19.32 14.12,18.64 14.35,18H5L8.5,13.5L11,16.5L14.5,12L16.73,14.97C17.7,14.34 18.84,14 20,14C20.34,14 20.67,14.03 21,14.09V5C21,3.89 20.1,3 19,3H5M19,16V19H16V21H19V24H21V21H24V19H21V16H19Z"></path></svg></span> <?php echo $wo['album']['title'];?>
+		</div>
+		<form class="create-album-form form-horizontal" method="post">
+			<div class="app-general-alert setting-update-alert"></div>
+			<label class="tag_field" id="company">
+				<input id="album_name" name="album_name" type="text" placeholder=" " value="<?php echo $wo['album']['album_name'];?>">
+				<span><?php echo $wo['lang']['album_name']; ?></span>
+			</label>
+			<span class="help-block"><?php echo $wo['lang']['album_name_help'] ?></span>
+			<div class="tag_alone_label">
+				<label><?php echo $wo['lang']['photos'];?></label>
+			</div>
+			<div id="productimage-holder" class="valign tag_slide_upload_img">
+				<div class="upload-product-image pointer" onclick="document.getElementById('publisher-photos').click(); return false">
+					<div class="valign">
+						<svg height="28" viewBox="0 0 512 512" width="28" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" opacity=".7" d="m149.332031 149.332031c0 23.566407-19.101562 42.667969-42.664062 42.667969-23.566407 0-42.667969-19.101562-42.667969-42.667969 0-23.5625 19.101562-42.664062 42.667969-42.664062 23.5625 0 42.664062 19.101562 42.664062 42.664062zm0 0"/><path fill="currentColor" opacity=".7" d="m202.667969 373.332031c0-83.15625 59.816406-152.511719 138.664062-167.550781v-141.78125c0-35.285156-28.714843-64-64-64h-213.332031c-35.285156 0-64 28.714844-64 64v298.667969c0 35.285156 28.714844 64 64 64h147.328125c-5.546875-16.8125-8.660156-34.6875-8.660156-53.335938zm-101.546875-113.492187c-14.082032-14.078125-38.828125-14.078125-52.90625 0l-5.546875 5.527344v-201.367188c0-11.777344 9.554687-21.332031 21.332031-21.332031h213.332031c11.777344 0 21.335938 9.554687 21.335938 21.332031v137.367188l-16.214844-16.214844c-14.589844-14.59375-38.335937-14.59375-52.90625 0l-101.546875 101.546875zm0 0"/><path fill="currentColor" opacity=".7" d="m373.332031 234.667969c-76.457031 0-138.664062 62.207031-138.664062 138.664062 0 76.460938 62.207031 138.667969 138.664062 138.667969 76.460938 0 138.667969-62.207031 138.667969-138.667969 0-76.457031-62.207031-138.664062-138.667969-138.664062zm58.667969 160h-37.332031v37.332031c0 11.796875-9.539063 21.332031-21.335938 21.332031s-21.332031-9.535156-21.332031-21.332031v-37.332031h-37.332031c-11.796875 0-21.335938-9.539063-21.335938-21.335938s9.539063-21.332031 21.335938-21.332031h37.332031v-37.332031c0-11.796875 9.535156-21.335938 21.332031-21.335938s21.335938 9.539063 21.335938 21.335938v37.332031h37.332031c11.796875 0 21.332031 9.535156 21.332031 21.332031s-9.535156 21.335938-21.332031 21.335938zm0 0"/></svg>
+					</div>
+				</div>
+			</div>
+			<div id="progress" class="tag_progress">
+				<div class="progress">
+					<div id="bar" class="progress-bar"></div> 
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="hidden">
+				<input type="file" id="publisher-photos" accept="image/x-png, image/gif, image/jpeg" name="postPhotos[]" multiple="multiple">
+			</div>
+			<input type="hidden" name="id" class="form-control input-md" value="<?php echo $wo['album']['id'];?>">
+			<input type="hidden" name="hash_id" value="<?php echo Wo_CreateSession();?>">
+			<div class="text-center">
+				<a class="btn btn-mat disable_btn" data-ajax="?link1=albums" href="<?php echo Wo_SeoLink('index.php?link1=albums');?>"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"></path></svg> <?php echo $wo['lang']['go_back'];?></a>
+				<button class="btn btn-main btn-mat btn-mat-raised disable_btn" type="submit"><?php echo $wo['lang']['publish']; ?></button>
+			</div>
+		</form>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+	$("#publisher-photos").on('change', function() {
+	//Get count of selected files
+	var product_countFiles = $(this)[0].files.length;
+	var product_imgPath = $(this)[0].value;
+	var extn = product_imgPath.substring(product_imgPath.lastIndexOf('.') + 1).toLowerCase();
+	var product_image_holder = $("#productimage-holder");
+	product_image_holder.find('img').remove();
+	if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
+		if (typeof(FileReader) != "undefined") {
+		//loop for each file selected for uploaded.
+		for (var i = 0; i < product_countFiles; i++) 
+		{
+			var product_reader = new FileReader();
+			product_reader.onload = function(e) {
+				$("<img />", {
+                    "src": e.target.result,
+                    "class": "thumb-image"
+                  }).appendTo(product_image_holder);
+                }
+                product_image_holder.show();
+                product_reader.readAsDataURL($(this)[0].files[i]);
+              }
+            } else {
+              product_image_holder.html("<p>This browser does not support FileReader.</p>");
+            }
+         }
+	});
+});
+
+   $(function() {
+    var bar = $('#bar');
+    var status = $('#status');
+    var publisher_button = $('#publisher-button');
+   
+     $('form.create-album-form').ajaxForm({
+       url: Wo_Ajax_Requests_File() + '?f=album&s=create_album',
+       beforeSend: function() {
+         var percentVal = '0%';
+         bar.width(percentVal);
+         $('form.create-album-form').find('.disable_btn').attr('disabled','disabled');
+       },
+       uploadProgress: function (event, position, total, percentComplete) {
+           var percentVal = percentComplete + '%';
+           bar.width(percentVal);
+           $('#progress').slideDown(200);
+      },
+       success: function(data) {
+         if (data.status == 200) {
+           window.location.href = data.href;
+         } else {
+             var errors = data.errors.join("<br>");
+             $('.app-general-alert').html('<div class="alert alert-danger">' + errors + '</div>');
+             $('.alert-danger').fadeIn(300);
+         }
+         $('form.create-album-form').find('.disable_btn').removeAttr("disabled");
+         $('#progress').slideUp(200);
+       }
+     });
+   });
+</script>

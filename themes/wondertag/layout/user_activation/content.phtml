@@ -1,0 +1,131 @@
+<div class="page-margin">
+	<div class="container-fluid tag_cont_fluid">
+		<div class="valign tag_app_request">
+			<div class="form-horizontal wow_content p30" method="post">
+				<h3 class="text-center"><?php echo $wo['lang']['activation_oops']; ?></h3>
+				<p class="text-center"><?php echo $wo['lang']['activation_method']?></p>
+				<div class="clear"></div>
+				<hr class="style-two">
+				<form action="#" method="post" class="activate-form">
+					<div id="activate-alerts" class="text-center"></div>
+					<h5 class="text-center"><?php echo $wo['lang']['activation_email'];?></h5>
+					<div class="row">
+						<div class="col-lg-2"></div>
+						<div class="col-lg-8">
+							<label class="tag_field">
+								<input name="email" type="email" placeholder=" ">
+								<span><?php echo $wo['lang']['email_address']; ?></span>
+							</label>
+						</div>
+						<div class="col-lg-2"></div>
+					</div>
+					<?php if ($wo['config']['sms_or_email'] == 'sms') { ?>
+						<p class="text-center"><?php echo $wo['lang']['activation_or'];?></p>
+						<h5 class="text-center"><?php echo $wo['lang']['activation_phone'];?></h5>
+						<div class="row">
+							<div class="col-lg-2"></div>
+							<div class="col-lg-8">
+								<label class="tag_field">
+									<input name="phone_number" type="tel" placeholder=" ">
+									<span><?php echo $wo['lang']['phone_num_ex']; ?></span>
+								</label>
+							</div>
+							<div class="col-lg-2"></div>
+						</div>
+					<?php } ?>
+					<div class="text-center">
+						<button type="submit" class="btn btn-mat btn-main disable_btn" id="activate-submit"><?php echo $wo['lang']['activation_send_code'];?></button>
+					</div>
+				</form>
+				<?php if ($wo['config']['sms_or_email'] == 'sms') { ?>
+					<form action="#" method="post" class="activate-code-form">
+						<div id="activate-code-alerts" class="text-center"></div>
+						<div class="row">
+							<div class="col-lg-2"></div>
+							<div class="col-lg-8">
+								<label class="tag_field">
+									<input name="confirm_code" type="text" placeholder=" ">
+									<span><?php echo $wo['lang']['confirmation_code']; ?></span>
+								</label>
+							</div>
+							<div class="col-lg-2"></div>
+						</div>
+						<input type="hidden" class="form-control" name="user_id" value="<?php echo $wo['user']['user_id'];?>">
+						<div class="form-group text-center" id="re-send" style="display:none">
+							<div class="text-center"><?php echo $wo['lang']['activation_get_code_again'];?> <a href="javascript:void(0);" onclick="Wo_ResendCodeAc();"><?php echo $wo['lang']['activation_resend'];?></a>
+							</div>
+						</div>
+						<div id="hideMsg" class="item text-center">
+							<?php echo $wo['lang']['activation_should_receive'];?> <h2><span></span></h2>
+						</div>
+						<div class="text-center">
+							<button type="submit" class="btn btn-mat btn-main disable_btn" id="activate-code-submit"><?php echo $wo['lang']['confirm'];?></button>
+						</div>
+					</form>
+				<?php } ?>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+$(function() {
+	$('.activate-form').ajaxForm({
+    url: Wo_Ajax_Requests_File() + '?f=resned_ac_email',
+    beforeSend: function() {
+      $('#activate-submit').attr('disabled',true);
+    },
+    success: function(data) {
+      $('#activate-submit').attr('disabled',false);
+      if (data.status == 200) {
+        $('#activate-alerts').html('<div class="alert alert-success">' + data.message + '</div>');
+        $('.alert').fadeIn(300);
+      } else if(data.status == 600) {
+        $('#activate-alerts').html('<div class="alert alert-info">' + data.message + '</div>');
+        $('.alert').fadeIn(300).delay(2000).fadeOut(300, function () {
+        	$('.activate-form').fadeOut(300, function () {
+        		$('.activate-code-form').fadeIn(300);
+        	});
+        });
+        Wo_SetTimer();
+      } else {
+        var errors = data.errors.join("<br>");
+        $('#activate-alerts').html('<div class="alert alert-warning">' + errors + '</div>');
+        $('.alert').fadeIn(300);
+      }
+    }
+  });
+
+$('.activate-code-form').ajaxForm({
+    url: Wo_Ajax_Requests_File() + '?f=confirm_user',
+    beforeSend: function() {
+      $('#activate-code-submit').attr('disabled',true);
+    },
+    success: function(data) {
+      if (data.status == 200) {
+          window.location.href = data.location;
+      } else {
+        $('#activate-code-submit').attr('disabled',false);
+        var errors = data.errors.join("<br>");
+        $('#activate-code-alerts').html('<div class="alert alert-warning">' + errors + '</div>');
+        $('.alert').fadeIn(300);
+      }
+    }
+  });
+});
+function Wo_ResendCodeAc() {
+  $('#re-send').hide();
+  Wo_SetTimer();
+  $.post(Wo_Ajax_Requests_File() + '?f=resned_code_ac', function(data) {
+       if (data.status == 200) {
+          $('#activate-code-alerts').html('<div class="alert alert-warning">' + data.message + '</div>');
+          $('.alert').fadeIn('fast');
+      } else {
+          $('#activate-code-submit').attr('disabled',false);
+          var errors = data.errors.join("<br>");
+          $('#activate-code-alerts').html('<div class="alert alert-warning">' + errors + '</div>');
+          $('.alert').fadeIn(300);
+      }
+  });
+}
+</script>

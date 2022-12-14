@@ -1,0 +1,23 @@
+<?php if(!empty($wo['story']['page_event_id'])) { ?>
+	<div class="post-fetched-url wo_post_fetch_event">
+		<?php if (!empty($wo['story']['event']['cover'])) {?>
+			<div class="post-fetched-url-con">
+				<a href="<?php echo $wo['story']['event']['url'];?>"><img src="<?php echo $wo['story']['event']['cover'];?>"/></a>
+			</div>
+		<?php } ?>
+		<div class="fetched-url-text">
+			<div class="short_start_dt">
+				<span><?php echo date('M',strtotime($wo['story']['event']['start_edit_date'])); ?></span>
+				<b><?php echo date('d',strtotime($wo['story']['event']['start_edit_date'])); ?></b>
+			</div>
+			<a href="<?php echo $wo['story']['event']['url'];?>">
+				<h4 class="truncate"><?php echo $wo['story']['event']['name'];?></h4>
+				<div class="description"><?php echo $wo['story']['event']['location']; ?></div>
+			</a>
+			<span id="small-going-<?php echo $wo['story']['event']['id']?>">
+				<?php echo Wo_GetGoingButton($wo['story']['event']['id']);?>
+			</span>
+		</div>
+		<div class="clear"></div>
+	</div>
+<?php } ?>

@@ -1,0 +1,122 @@
+<?php
+ if ($wo['config']['shout_box_system'] == 1 && Wo_CheckAnonymous($wo['reply']['id'],'reply')) {
+  $anonymous = true;
+   $wo['reply']['publisher']['username'] = 'anonymous';
+   $wo['reply']['publisher']['name'] = $wo['lang']['anonymous'];
+   $wo['reply']['publisher']['avatar'] = Wo_GetMedia('upload/photos/incognito.png');
+   $wo['reply']['publisher']['verified'] = 0;
+   $wo['reply']['publisher']['type'] = '';
+   $wo['comment']['publisher']['url'] = 'javascript:void(0)';
+}
+?>
+<div class="reply reply-container" id="comment_reply_<?php echo $wo['reply']['id'];?>" data-reply-id="<?php echo $wo['reply']['id'];?>">
+	<?php if (!isset($anonymous)) { ?>
+		<a class="<?php echo Wo_RightToLeft('pull-left'); ?>" href="<?php echo $wo['reply']['publisher']['url']?>" onclick="InjectAPI('{&quot;profile_id&quot; : &quot;<?php echo $wo['reply']['publisher']['id']?>&quot;, &quot;type&quot;:&quot;<?php echo $wo['reply']['publisher']['type']?>&quot;}', event);">
+			<img class="avatar" src="<?php echo $wo['reply']['publisher']['avatar']?>" alt="avatar">
+		</a>
+	<?php }else{ ?>
+		<img class="avatar <?php echo Wo_RightToLeft('pull-left'); ?>" src="<?php echo $wo['reply']['publisher']['avatar']?>" alt="avatar">
+	<?php } ?>
+	<div class="comment-body">
+		<div class="comment-heading reply-heading">
+			<div class="tag_comm_body">
+				<div class="tag_comm_body_top">
+					<?php if (!isset($anonymous)) { ?>
+						<span class="user-popover" data-id="<?php echo $wo['reply']['publisher']['id'];?>" data-type="<?php echo $wo['reply']['publisher']['type'];?>">
+							<a href="<?php echo $wo['reply']['publisher']['url']?>" data-ajax="?link1=timeline&u=<?php echo $wo['reply']['publisher']['username'];?>"  onclick="InjectAPI('{&quot;profile_id&quot; : &quot;<?php echo $wo['reply']['publisher']['id']?>&quot;, &quot;type&quot;:&quot;<?php echo $wo['reply']['publisher']['type']?>&quot;}', event);">
+								<h4 class="user"><?php echo $wo['reply']['publisher']['name']?></h4>
+							</a>
+						</span>
+					<?php }else{ ?>
+						<h4 class="user"><?php echo $wo['reply']['publisher']['name']?></h4>
+					<?php } ?>
+					<?php  if($wo['reply']['publisher']['verified'] == 1) {   ?>
+						<span class="verified-color fs-14" data-toggle="tooltip" title="<?php echo $wo['lang']['verified_user'];?>">&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 512 512"><path d="m256 0c-141.164062 0-256 114.835938-256 256s114.835938 256 256 256 256-114.835938 256-256-114.835938-256-256-256zm0 0" fill="#2196f3"></path><path d="m385.75 201.75-138.667969 138.664062c-4.160156 4.160157-9.621093 6.253907-15.082031 6.253907s-10.921875-2.09375-15.082031-6.253907l-69.332031-69.332031c-8.34375-8.339843-8.34375-21.824219 0-30.164062 8.339843-8.34375 21.820312-8.34375 30.164062 0l54.25 54.25 123.585938-123.582031c8.339843-8.34375 21.820312-8.34375 30.164062 0 8.339844 8.339843 8.339844 21.820312 0 30.164062zm0 0" fill="#fff"></path></svg></span>
+					<?php } ?>
+				</div>
+				<div class="valign">
+					<div class="reply-text comment-text <?php if (!empty($wo['reply']['c_file'])): ?>border_zero<?php endif ?>" data-post-comm-reply-text="<?php echo $wo['reply']['id']?>"><?php echo $wo['reply']['text']?></div>
+					<div class="comment_edele_options">
+						<?php if ($wo['reply']['post_onwer'] === true|| $wo['reply']['onwer'] === true || Wo_IsAdmin()) {?>
+							<?php if ($wo['reply']['post_onwer'] === true|| $wo['reply']['onwer'] === true): ?>
+								<span class="pointer" onclick="Wo_EditReplyComment(<?php echo $wo['reply']['id']?>);"><svg xmlns="http://www.w3.org/2000/svg" height="15" viewBox="0 0 24 24" width="15"><path fill="currentColor" opacity=".6" d="M9.243 19H21v2H3v-4.243l9.9-9.9 4.242 4.244L9.242 19zm5.07-13.556l2.122-2.122a1 1 0 0 1 1.414 0l2.829 2.829a1 1 0 0 1 0 1.414l-2.122 2.121-4.242-4.242z"/></svg></span>
+							<?php endif; ?>
+							<span class="pointer" id="deleteComment" onclick="Wo_DeleteReplyComment(<?php echo $wo['reply']['id']?>);" title="<?php echo $wo['lang']['delete_comment']; ?>"><svg xmlns="http://www.w3.org/2000/svg" height="15" viewBox="0 0 24 24" width="15"><path fill="currentColor" opacity=".6" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4 11H8c-.55 0-1-.45-1-1s.45-1 1-1h8c.55 0 1 .45 1 1s-.45 1-1 1z"/></svg></span>
+						<?php } ?>
+					</div>
+				</div>
+				<?php if (!empty($wo['reply']['c_file'])): ?>
+					<div class="comment-image">
+						<span data-href="<?php echo Wo_GetMedia($wo['reply']['c_file']);?>" onclick="Wo_OpenLighteBox(this,event);" class="pointer"><img src="<?php echo Wo_GetMedia($wo['reply']['c_file']);?>" alt="Comment image"></span>
+					</div>
+				<?php endif ?>
+			</div>
+			<div class="clear"></div>
+		</div>
+		
+        <?php if ($wo['config']['second_post_button'] == 'reaction') { ?>
+            <div class="like-stat stat-item <?php echo Wo_RightToLeft('pull-left'); ?> tag_post_comm_reacts">
+				<span class="like-emo replay-reactions-icons-<?php echo $wo['reply']['id']; ?>">
+					<?php echo Wo_GetPostReactions($wo['reply']['id'],"replay");?>
+				</span>
+            </div>
+        <?php } ?>
+
+		<span class="comment-options">
+			<?php if ($wo['config']['second_post_button'] == 'reaction') { ?>
+				<div class="wo-reaction wo-reaction-replay stat-item" data-id="<?php echo $wo['reply']['id']; ?>" id="comment_reactions">
+					<span class="like-btn like-btn-replay" data-id="<?php echo $wo['reply']['id']; ?>">
+						<?php
+						if (Wo_IsReacted($wo['reply']['id'], $wo['reply']['user_id'],"replay") === true) {
+							echo '<span class="bold replay-status-reaction-'.$wo['reply']['id'].' active-like">'.$wo['lang']['liked'].' <span class="r_likes-'.$wo['reply']['id'].'"></span></span>';
+						} else {   
+							echo '<span class="bold replay-status-reaction-'.$wo['reply']['id'].'">'.$wo['lang']['like'].' <span class="r_likes-'.$wo['reply']['id'].'"></span></span>';
+						}    
+						?>
+					</span>
+					<ul class="reactions-box reactions-box-comment-replay-container-<?php echo $wo['reply']['id']; ?>" data-id="<?php echo $wo['reply']['id']; ?>">
+						<?php if (!empty($wo['reactions_types'])) {
+							foreach ($wo['reactions_types'] as $key => $value) {
+							if ($value['status'] == 1) {
+						?>
+							<li class="valign reaction reaction-<?php echo $value['id'];?>" data-reaction="<?php echo $value['name'];?>" data-reaction-id="<?php echo $value['id'];?>" data-reaction-lang="<?php echo $value['name'];?>" data-post-id="<?php //echo $wo['story']['id']; ?>" onclick="Wo_RegisterReplyReaction(<?php echo $wo['reply']['user_id']; ?>,<?php echo $wo['reply']['id']; ?>,<?php echo $value['id'];?>);">
+								<?php if (preg_match("/<[^<]+>/",$value['wowonder_icon'],$m)) {
+									echo($value['wowonder_icon']);
+									}
+								else{ ?>
+									<img src="<?php echo($value['wowonder_icon']) ?>">
+								<?php } ?>
+							</li>
+						<?php } } } ?>
+					</ul>
+				</div>
+			<?php } else { ?>
+				<span class="comment-icons">
+					<span class="pointer" id="LikeReplyComment" onclick="Wo_RegisterCommentReplyLike(<?php echo $wo['reply']['id']; ?>);">
+						<?php if($wo['reply']['is_comment_liked'] !== true) { ?>
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-up"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
+						<?php } else { ?>
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-up active-like"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
+						<?php } ?>
+					</span> 
+					<span id="comment-reply-likes" class="pointer" onclick="Wo_OpenPostLikedUsers(<?php echo $wo['reply']['id']; ?>,'reply')"><?php echo $wo['reply']['comment_likes'];?></span>
+				</span>
+				<span class="middot">·</span>
+				<span class="pointer" id="WonderReplyComment" onclick="Wo_RegisterCommentReplyWonder(<?php echo $wo['reply']['id']; ?>);">
+					<?php if($wo['reply']['is_comment_wondered'] !== true) { ?>
+						<?php echo $wo['second_post_button_icon'];?>
+					<?php } else {  ?>
+						<span class="active-wonder"><?php echo $wo['second_post_button_icon'];?></span>
+					<?php } ?>
+				</span>
+				<span id="comment-reply-wonders" class="pointer" onclick="Wo_OpenPostWonderedUsers(<?php echo $wo['reply']['id']; ?>,'reply')"><?php echo $wo['reply']['comment_wonders'];?></span>
+			<?php } ?>
+			<span class="middot">·</span>
+			<span class="time ajax-time" title="<?php echo date('c',$wo['reply']['time']);?>"><?php echo $wo['reply']['time']?></span>
+		</span>
+		<div class="hidden" data-post-comm-reply-edit="<?php echo $wo['reply']['id']?>">
+            <textarea class="edit-box form-control" onkeydown="Wo_UpdatCommReply(<?php echo $wo['reply']['id']?>,event,this)"><?php echo $wo['reply']['Orginaltext']?></textarea>
+		</div>
+	</div>
+	<?php echo Wo_LoadPage('modals/delete-comment-reply');?>
+</div>

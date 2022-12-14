@@ -1,0 +1,26 @@
+<div class="page-margin">
+	<div class="container">
+		<h2 class="tag_page_title m5"><?php echo $wo['lang']['market']; ?></h2>
+		<ul class="list-unstyled tag_page_nav">
+			<li class="active separate"><a class="btn-mat" href="<?php echo Wo_SeoLink('index.php?link1=my-products'); ?>" data-ajax="?link1=my-products"><?php echo $wo['lang']['my_products'] ?></a></li>
+			<li><a class="btn-mat" href="<?php echo Wo_SeoLink('index.php?link1=products'); ?>"><?php echo $wo['lang']['explore'] ?> <?php echo $wo['lang']['market'] ?></a></li>
+		</ul>
+		<div class="wo_market">
+			<div class="row">
+				<?php
+					$products = Wo_GetProducts(array('user_id' => $wo['user']['user_id']));
+					if (count($products) > 0) {
+						echo '<div class="col-6 col-md-4 col-lg-4 col-xl-3 tag_prods_list"><div class="tag_create_album tag_create_product"><a href="#create-product-modal" data-toggle="modal" data-backdrop="static" class="valign tag_create_box"><svg height="40" viewBox="0 0 512 512" width="40" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="m256 0c-141.164062 0-256 114.835938-256 256s114.835938 256 256 256 256-114.835938 256-256-114.835938-256-256-256zm112 277.332031h-90.667969v90.667969c0 11.777344-9.554687 21.332031-21.332031 21.332031s-21.332031-9.554687-21.332031-21.332031v-90.667969h-90.667969c-11.777344 0-21.332031-9.554687-21.332031-21.332031s9.554687-21.332031 21.332031-21.332031h90.667969v-90.667969c0-11.777344 9.554687-21.332031 21.332031-21.332031s21.332031 9.554687 21.332031 21.332031v90.667969h90.667969c11.777344 0 21.332031 9.554687 21.332031 21.332031s-9.554687 21.332031-21.332031 21.332031zm0 0"></path></svg>' . $wo['lang']['sell_new_product'] .'</a></div></div>';
+						foreach ($products as $wo['product']) {
+							echo Wo_LoadPage('products/product-style');
+						}
+					} else {
+						echo '<div class="empty_state"><svg enable-background="new 0 0 32 32" height="512" viewBox="0 0 32 32" width="512" xmlns="http://www.w3.org/2000/svg"><path d="m26 32h-20c-3.314 0-6-2.686-6-6v-20c0-3.314 2.686-6 6-6h20c3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6z" fill="#ffe6e2"/><path d="m15.333 17.167c0-.275-.225-.5-.5-.5h-2.5v2c0 .368-.298.667-.667.667-.368 0-.667-.298-.667-.667v-2h-2.499c-.275 0-.5.225-.5.5v6.333c0 .275.225.5.5.5h6.333c.275 0 .5-.225.5-.5z" fill="#fc573b"/><path d="m24 17.167c0-.275-.225-.5-.5-.5h-2.5v2c0 .368-.298.667-.667.667-.368 0-.667-.298-.667-.667v-2h-2.5c-.275 0-.5.225-.5.5v6.333c0 .275.225.5.5.5h6.334c.275 0 .5-.225.5-.5z" fill="#fc573b"/><path d="m19.667 8.5c0-.275-.225-.5-.5-.5h-2.5v2c0 .368-.298.667-.667.667-.368 0-.667-.298-.667-.667v-2h-2.5c-.275 0-.5.225-.5.5v6.333c0 .275.225.5.5.5h6.333c.275 0 .5-.225.5-.5v-6.333z" fill="#fd907e"/></svg>' . $wo['lang']['no_available_products'] . '<div><a href="#create-product-modal" data-toggle="modal" data-backdrop="static" class="btn btn-mat btn-main">' . $wo['lang']['sell_new_product'] .'</a></div></div>';
+					}
+				?>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+</div>
+<?php echo Wo_LoadPage('products/create'); ?>

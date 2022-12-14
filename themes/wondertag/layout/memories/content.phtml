@@ -1,0 +1,54 @@
+<?php
+	$stories = Wo_GetMemoriesPosts($wo['user']['user_id']);
+	$friends = Wo_GetMemoriesFreinds($wo['user']['user_id']);
+?>
+<div class="page-margin">
+	<div class="container">
+		<h2 class="tag_page_title m5"><?php echo $wo['lang']['memories']; ?></h2>
+		<div class="row">
+			<div class="col-lg-7 middlecol">
+				<div class="margin-b30">
+					<ul class="list-unstyled tag_page_nav">
+						<li><a class="btn-mat tag_mem_link"><?php echo $wo['lang']['posts']; ?></a></li>
+					</ul>
+					<?php
+						if (count($stories) <= 0) {
+							echo Wo_LoadPage('memories/no-posts');
+						}
+					?>
+					<?php if (!empty($stories)) { ?>
+						<div class="post wow_memories wow_memories_posts">
+							<?php foreach ($stories as $wo['story']) { ?>
+								<div class="panel panel-white">
+									<p class="bold on_this_day"><?php echo $wo['lang']['on_this_day']; ?></p>
+									<h3 class="on_this_duration"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12h2c0 4.418 3.582 8 8 8s8-3.582 8-8-3.582-8-8-8C9.25 4 6.824 5.387 5.385 7.5H8v2H2v-6h2V6c1.824-2.43 4.729-4 8-4zm1 5v4.585l3.243 3.243-1.415 1.415L11 12.413V7h2z"/></svg> <?php echo Wo_Time_Elapsed_String($wo['story']['time']); ?></h3>
+									<?php echo Wo_LoadPage('story/content'); ?>
+								</div>
+							<?php } ?>
+						</div>
+					<?php } ?>
+				</div>
+			</div>
+			<div class="col-lg-3 sidebar rightcol">
+				<ul class="list-unstyled tag_page_nav">
+					<li><a class="btn-mat"><?php echo $wo['lang']['friendversaries']; ?></a></li>
+				</ul>
+				<?php
+					if (count($friends) <= 0) {
+						echo Wo_LoadPage('memories/no-friends');
+					}
+				?>
+				<?php if (!empty($friends)) { ?>
+					<div class="wow_memories_friends">
+						<?php foreach ($friends as $wo['friend']) { ?>
+							<div class="wow_content p15">
+								<p class="on_this_duration"><?php echo str_replace('{TIME}', Wo_Time_Elapsed_String($wo['friend']['time']), $wo['lang']['time_friends']); ?></p>
+								<?php echo Wo_LoadPage('memories/friends'); ?>
+							</div>
+						<?php } ?>
+					</div>
+				<?php } ?>
+			</div>
+		</div>
+	</div>
+</div>

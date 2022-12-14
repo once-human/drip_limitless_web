@@ -1,0 +1,129 @@
+<div class="modal fade" id="edit-post" role="dialog">
+	<div class="modal-dialog wow_mat_mdl">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title"><?php echo $wo['lang']['edit_post']; ?></h4>
+			</div>
+			<form id="edit-post-form-<?php echo $wo['story']['id'];?>" method="post">
+				<div class="modal-body edit-textarea-<?php echo $wo['story']['id'];?>">
+					<label class="tag_field">
+						<textarea placeholder=" " name="text" dir="auto" rows="6" onkeyup="Wo_Get_Mention(this)"><?php echo $wo['story']['Orginaltext']?></textarea>
+						<span><?php echo $wo['lang']['edit_post'] ?></span>
+					</label>
+					<?php 
+					$show_images = false;
+					if (!empty($wo['story']['postFile'])) {
+						$file_extension = pathinfo($wo['story']['postFile'], PATHINFO_EXTENSION);
+						if ($file_extension == 'jpg' || $file_extension == 'jpeg' || $file_extension == 'png' || $file_extension == 'gif') {
+							$show_images = true;
+						}
+					} 
+					if (!empty($wo['story']['photo_multi'])) {
+						$show_images = true;
+					}
+					if ($show_images) {
+					?>
+					<div class="tag_alone_label"><label><?php echo $wo['lang']['photos']; ?></label></div>
+					<input type="file" name="images[]" id="edit-post-post-photos-<?php echo $wo['story']['id']; ?>" class="hidden">
+					<div class="valign tag_slide_upload_img tag_scroll tag_edit_post_images">
+						<div class="upload-product-image pointer" onclick="document.getElementById('edit-post-post-photos-<?php echo $wo['story']['id']; ?>').click(); return false">
+							<div class="valign">
+								<svg height="28" viewBox="0 0 512 512" width="28" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" opacity=".7" d="m149.332031 149.332031c0 23.566407-19.101562 42.667969-42.664062 42.667969-23.566407 0-42.667969-19.101562-42.667969-42.667969 0-23.5625 19.101562-42.664062 42.667969-42.664062 23.5625 0 42.664062 19.101562 42.664062 42.664062zm0 0"></path><path fill="currentColor" opacity=".7" d="m202.667969 373.332031c0-83.15625 59.816406-152.511719 138.664062-167.550781v-141.78125c0-35.285156-28.714843-64-64-64h-213.332031c-35.285156 0-64 28.714844-64 64v298.667969c0 35.285156 28.714844 64 64 64h147.328125c-5.546875-16.8125-8.660156-34.6875-8.660156-53.335938zm-101.546875-113.492187c-14.082032-14.078125-38.828125-14.078125-52.90625 0l-5.546875 5.527344v-201.367188c0-11.777344 9.554687-21.332031 21.332031-21.332031h213.332031c11.777344 0 21.335938 9.554687 21.335938 21.332031v137.367188l-16.214844-16.214844c-14.589844-14.59375-38.335937-14.59375-52.90625 0l-101.546875 101.546875zm0 0"></path><path fill="currentColor" opacity=".7" d="m373.332031 234.667969c-76.457031 0-138.664062 62.207031-138.664062 138.664062 0 76.460938 62.207031 138.667969 138.664062 138.667969 76.460938 0 138.667969-62.207031 138.667969-138.667969 0-76.457031-62.207031-138.664062-138.667969-138.664062zm58.667969 160h-37.332031v37.332031c0 11.796875-9.539063 21.332031-21.335938 21.332031s-21.332031-9.535156-21.332031-21.332031v-37.332031h-37.332031c-11.796875 0-21.335938-9.539063-21.335938-21.335938s9.539063-21.332031 21.335938-21.332031h37.332031v-37.332031c0-11.796875 9.535156-21.335938 21.332031-21.335938s21.335938 9.539063 21.335938 21.335938v37.332031h37.332031c11.796875 0 21.332031 9.535156 21.332031 21.332031s-9.535156 21.335938-21.332031 21.335938zm0 0"></path></svg>
+							</div>
+						</div>
+						<div id="edit-post-productimage-holder-<?php echo $wo['story']['id']; ?>">
+						<?php if (!empty($wo['story']['postFile']) && empty($wo['story']['photo_multi'])) { 
+								$file_extension = pathinfo($wo['story']['postFile'], PATHINFO_EXTENSION);
+								if ($file_extension == 'jpg' || $file_extension == 'jpeg' || $file_extension == 'png' || $file_extension == 'gif') { ?>
+									<span class="thumb-image" id="delete_image_by_id">
+										<span onclick="DeletePostImage(<?php echo $wo['story']['id']; ?>)" class="btn btn-mat thumb-image-delete-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"></path></svg></span>
+										<div class="background_image_product" style="background-image: url('<?php echo Wo_GetMedia($wo['story']['postFile']); ?>');"></div>
+									</span>
+						<?php } } if (!empty($wo['story']['photo_multi'])) { foreach ($wo['story']['photo_multi'] as $key => $value) { ?>
+						    	<span class="thumb-image" id="delete_image_by_id_<?php echo $value['id']; ?>">
+									<span onclick="DeletePostImage(<?php echo $wo['story']['id']; ?>,<?php echo $value['id']; ?>)" class="btn btn-mat thumb-image-delete-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"></path></svg></span>
+									<div class="background_image_product" style="background-image: url('<?php echo $value['image']; ?>');"></div>
+								</span>
+						<?php } } ?>
+						</div>
+					</div>
+				    <?php } ?>
+				    <input type="hidden" name="post_id" value="<?php echo $wo['story']['id']; ?>">
+				</div>
+				<div class="modal-footer" style="border: none">
+					<button type="button" class="btn btn-default btn-mat disable_btn" data-dismiss="modal" aria-label="Close"><?php echo $wo['lang']['cancel'] ?></button>
+					<button type="submit" class="btn btn-main btn-mat disable_btn" id="edit-post-button"><?php echo $wo['lang']['update']; ?></button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	jQuery(document).ready(function($) {
+		post_id = <?php echo $wo['story']['id']; ?>;
+	        var post = $('#post-' + post_id);
+		  var edit_box = $('#post-' + post_id).find('#edit-post');
+		  var edit_textarea = post.find('.edit-textarea-' + post_id + ' textarea');
+		  var text = edit_textarea.val();
+		  var post_text = post.find('.post-description p');
+		  var type = post.attr('data-post-type');
+		$('#edit-post-form-<?php echo $wo['story']['id'];?>').ajaxForm({
+	      url: Wo_Ajax_Requests_File() + '?f=posts&s=edit_post',
+	      beforeSend: function() {
+	      	
+		  if (type == 'share') {
+		    var post_text = post.find('.post-description .edited_text');
+		  }
+		  else{
+		    var post_text = post.find('.post-description p');
+		  }
+		  $('#post-' + post_id).find('#edit-post .disable_btn').attr('disabled','disabled');
+
+	      },
+	      success: function(data) {
+	        if(data.status == 200) {
+	        	if (data.html != '') {
+	        		post_text.html(data.html);
+	        	}
+	        	if (data.reload == 'reload') {
+	        		location.reload();
+	        	}
+		      
+		      edit_box.modal('hide');
+		    }
+			$('#post-' + post_id).find('#edit-post .disable_btn').removeAttr("disabled");
+		    if (data.can_send == 1) {
+		        Wo_SendMessages();
+		    }
+		    edit_box.modal('hide');
+	      }});
+        <?php if ($show_images) { ?>
+		$("#edit-post-post-photos-<?php echo $wo['story']['id']; ?>").on('change', function() {
+			var product_countFiles = $(this)[0].files.length;
+			var product_imgPath = $(this)[0].value;
+			var extn = product_imgPath.substring(product_imgPath.lastIndexOf('.') + 1).toLowerCase();
+			var product_image_holder = $("#edit-post-productimage-holder-<?php echo $wo['story']['id']; ?>");
+			if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
+				if (typeof(FileReader) != "undefined") {
+					for (var i = 0; i < product_countFiles; i++) 
+					{
+						var product_reader = new FileReader();
+						var ii = 0;
+						product_reader.onload = function(e) {
+						name = "'"+$("#edit-post-post-photos-<?php echo $wo['story']['id']; ?>")[0].files[ii].name+"'";
+						src = "'"+e.target.result+"'";
+						$(product_image_holder).prepend('<span class="thumb-image" id="delete_uploaded_image_by_id_'+ii+'"><span class="btn btn-mat thumb-image-delete-btn" onclick="DeleteUploadedImageById('+name+','+ii+')"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"></path></svg></span><div class="background_image_product" style="background-image: url('+src+');"></div></span>');
+						ii = ii +1;
+		                };
+		                product_image_holder.show();
+		                product_reader.readAsDataURL($(this)[0].files[i]);
+					
+		             }
+	            } else {
+	              product_image_holder.html("<p>This browser does not support FileReader.</p>");
+	            }
+		    }
+		});
+	<?php } ?>
+	});
+</script>

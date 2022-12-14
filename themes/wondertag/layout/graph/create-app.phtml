@@ -1,0 +1,86 @@
+<div class="page-margin">
+	<div class="container">
+		<h2 class="tag_page_title m5">My Apps</h2>
+		<div class="page-margin wow_content wow_sett_content">
+			<div class="valign wo_page_hdng">
+				<span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M5,3H19A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5A2,2 0 0,1 5,3M7,7V9H9V7H7M11,7V9H13V7H11M15,7V9H17V7H15M7,11V13H9V11H7M11,11V13H13V11H11M15,11V13H17V11H15M7,15V17H9V15H7M11,15V17H13V15H11M15,15V17H17V15H15Z"></path></svg></span> Create new App
+			</div>
+			<form class="app-general-form form-horizontal" method="post">
+				<div class="row">
+					<div class="col-lg-4 pl15">
+						<div class="tag_alone_label">
+							<label><?php echo $wo['lang']['image'];?></label>
+						</div>
+						<div class="wow_fcov_image crt_eve_image">
+							<div id="wow_fcov_img_holder"></div>
+							<div class="valign upload_ad_image" onclick="document.getElementById('app_avatar').click(); return false">
+								<div class="btn btn-mat btn-default upload_ad_image_content">
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M8.5,13.5L11,16.5L14.5,12L19,18H5M21,19V5C21,3.89 20.1,3 19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19Z"></path></svg> <?php echo $wo['lang']['choose_image'] ?>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-8">
+						<label class="tag_field">
+							<input id="app_name" name="app_name" type="text" max="32" placeholder=" ">
+							<span><?php echo $wo['lang']['name']; ?></span>
+						</label>
+						<div class="help-block">Your application name. This is used to attribute the source user-facing authorization screens. 32 characters max.</div>
+						<label class="tag_field">
+							<input id="app_website_url" name="app_website_url" type="url" placeholder=" ">
+							<span>Domain</span>
+						</label>
+						<div class="help-block">Your application's publicly accessible home page.</div>
+						<label class="tag_field">
+							<input id="app_callback_url" name="app_callback_url" type="url" placeholder=" ">
+							<span>Redirect URL</span>
+						</label>
+						<div class="help-block">Where should we return after successfully authenticating?</div>
+						<label class="tag_field">
+							<textarea name="app_description" id="app_description" rows="4" placeholder=" " max="200"></textarea>
+							<span>Description</span>
+						</label>
+						<div class="help-block">Your application description, which will be shown in user-facing authorization screens. Between 10 and 200 characters max.</div>
+						<div class="app-general-alert setting-update-alert"></div>
+						<div class="text-center">
+							<a class="btn btn-mat disable_btn" data-ajax="?link1=apps" href="<?php echo Wo_SeoLink('index.php?link1=apps');?>">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"></path></svg> My Apps
+							</a>
+							<button class="btn btn-main btn-mat btn-mat-raised disable_btn" type="submit"><?php echo $wo['lang']['create']; ?></button>
+						</div>
+					</div>
+				</div>
+				<div class="hidden">
+					<input name="app_avatar" id="app_avatar" type="file" accept="image/x-png, image/gif, image/jpeg">
+				</div>
+				<input type="hidden" name="hash_id" value="<?php echo Wo_CreateSession();?>">
+			</form>
+		</div>
+	</div>
+</div>
+
+<script>
+$("#app_avatar").change(function(event) {
+	$("#wow_fcov_img_holder").html("<img src='" + window.URL.createObjectURL(this.files[0]) + "' alt='Picture'>")
+});
+	
+$(function() {
+  $('form.app-general-form').ajaxForm({
+    url: Wo_Ajax_Requests_File() + '?f=apps&s=create_app',
+    beforeSend: function() {
+      $('.app-general-form').find('.disable_btn').attr('disabled','disabled');
+    },
+    success: function(data) {
+      scrollToTop();
+      if (data.status == 200) {
+        window.location.href = data.location;
+      } else {
+          var errors = data.errors.join("<br>");
+          $('.app-general-alert').html('<div class="alert alert-danger">' + errors + '</div>');
+          $('.alert-danger').fadeIn(300);
+      }
+      $('.app-general-form').find('.disable_btn').removeAttr("disabled");
+    }
+  });
+});
+</script>

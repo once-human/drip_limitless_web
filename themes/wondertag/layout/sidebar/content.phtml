@@ -1,0 +1,187 @@
+<?php 
+$wo['have_stories'] = false;
+$user_stories = $db->where('user_id', $wo['user']['user_id'])->get(T_USER_STORY,null,array('id'));
+if (!empty($user_stories)) {
+    $wo['have_stories'] = true;
+    $wo['story_seen_class'] = 'seen_story';
+
+    foreach ($user_stories as $key => $value) {
+        $is_seen = $db->where('story_id',$value->id)->where('user_id',$wo['user']['user_id'])->getValue(T_STORY_SEEN,'COUNT(*)');
+
+        if ($is_seen == 0) {
+            $wo['story_seen_class'] = 'unseen_story';
+        }
+    }
+}
+?>
+<?php 
+$wondertage_settings = array();
+if (mysqli_query($wo['sqlConnect'], "DESCRIBE `wondertage_settings`" )) {
+	$settings = $db->get('wondertage_settings');
+	foreach ($settings as $key => $value) {
+		$wondertage_settings[$value->name] = $value->value;
+	}
+}
+?>
+
+<?php if (Wo_IsMobile() == false) { ?>
+<div class="col-lg-3 sidebar rightcol sidebar_fixed tag_main_right_side">
+	<?php if ($wo['config']['pro'] == 1) { ?>
+		<div class="wow_content mb-15 tag_sidebar_widget featured-users">
+			<div class="valign wo_page_hdng">
+				<span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M5 16L3 5L8.5 10L12 4L15.5 10L21 5L19 16H5M19 19C19 19.6 18.6 20 18 20H6C5.4 20 5 19.6 5 19V18H19V19Z"></path></svg></span> <?php echo $wo['lang']['pro_members']; ?>
+			</div>
+			<div class="featured-users-innr">
+				<?php if ($wo['user']['is_pro'] == 0) { ?>
+					<a class="tag_go_pro_user" href="<?php echo Wo_SeoLink('index.php?link1=go-pro');?>">
+						<img src="<?php echo $wo['config']['theme_url'];?>/img/pro-me.png">
+						<p><?php echo $wo['lang']['upgrade_to_pro'];?> & <?php echo $wo['lang']['put_me_here'];?></p>
+						<button type="button" class="btn btn-mat"><?php echo $wo['lang']['upgrade'];?></button>
+					</a>
+				<?php } ?>
+				<div class="valign tag_pro_users">
+					<?php $users = Wo_FeaturedUsers(6); ?>
+					<?php 
+						foreach ($users as $wo['user-list']) {
+						echo Wo_LoadPage('home/user-list');
+						}
+					?>
+				</div>
+			</div>
+		</div>
+	<?php } ?>
+	
+	<div class="wow_content mb-15 tag_sidebar_widget sidehashtag<?php if (!empty($wondertage_settings) && $wondertage_settings['tag_show_side_trend'] == 1) { ?> d-block<?php } ?>">
+		<div class="valign tag_sidebar_widget_title">
+			<b><?php echo $wo['lang']['trending'] ?></b>
+		</div>
+		<div class="wow_htag">
+			<?php 
+				$hashtags = Wa_GetTrendingHashs('popular');
+				if (count($hashtags) > 0) {
+					foreach ($hashtags as $wo['hashtag']) { 
+			?>
+				<div><a href="<?php echo $wo['hashtag']['url'];?>" data-ajax="?link1=hashtag&hash=<?php echo $wo['hashtag']['tag'];?>">#<?php echo $wo['hashtag']['tag'];?></a></div>
+			<?php } } ?>
+		</div>
+	</div>
+
+	<?php 
+        if ($wo['config']['pages'] == 1) {
+        $promoted_page = Wo_GetPromotedPage();
+        if (count($promoted_page) > 0) { 
+	?>
+		<div class="wow_content mb-15 tag_sidebar_widget">
+			<div class="valign tag_sidebar_widget_title">
+				<b><?php echo $wo['lang']['promoted'] ?></b>
+			</div>
+			<?php 
+				foreach ($promoted_page as $wo['PageList']) {
+					$wo['PageList']['user_name'] = $wo['PageList']['name'];
+					echo Wo_LoadPage('sidebar/sidebar-home-page-list');
+				}
+            ?>
+            <div class="clear"></div>
+		</div>
+	<?php } } ?>
+
+	<?php
+		if ($wo['config']['pages'] == 1) {
+		$pages = Wo_PageSug(1);
+		if (count($pages) != 0) {
+	?>
+		<div class="wow_content mb-15 tag_sidebar_widget">
+			<div class="valign tag_sidebar_widget_title">
+				<b><?php echo $wo['lang']['pages_you_may_like'] ?></b>
+				<span onclick="Wo_ReloadSideBarPages();" class="refresh"><?php echo $wo['lang']['home_refresh'] ?></span>
+			</div>
+			<div class="sidebar-pages-may-know-container">
+				<?php 
+					foreach ($pages as $wo['PageList']) {
+						$wo['PageList']['user_name'] = $wo['PageList']['name'];
+						echo Wo_LoadPage('sidebar/sidebar-home-page-list');
+					}
+				?>
+			</div>
+            <div class="clear"></div>
+		</div>
+	<?php } }  ?>
+	
+	<?php
+        if ($wo['config']['groups'] == 1) {
+		$groups = Wo_GroupSug(1);
+		if (count($groups) > 0) {
+	?>
+		<div class="wow_content mb-15 tag_sidebar_widget">
+			<div class="valign tag_sidebar_widget_title">
+				<b><?php echo $wo['lang']['suggested_groups'] ?></b>
+				<span onclick="Wo_ReloadSideBarGroups();" class="refresh"><?php echo $wo['lang']['home_refresh'] ?></span>
+			</div>
+			<div class="sidebar-group-may-know-container">
+				<?php 
+					foreach ($groups as $wo['GroupList']) {
+						$wo['GroupList']['name'] = mb_substr($wo['GroupList']['name'],0,20, "utf-8");
+						echo Wo_LoadPage('sidebar/sidebar-group-list');
+					}
+				?>
+			</div>
+            <div class="clear"></div>
+		</div>
+	<?php } } ?>
+
+	<?php
+		$sidebar_ad = Wo_GetAd('sidebar', false);
+		if (!empty($sidebar_ad)) {
+	?>
+        <div class="wow_content mb-15 tag_sidebar_widget sidebar-ad">
+            <?php echo $sidebar_ad; ?>
+        </div>
+	<?php } ?>
+	
+	<?php
+        if ($wo['config']['classified'] == 1) {
+		$get_latest_products = Wo_GetProducts(array('limit' => 6));
+		if (count($get_latest_products) > 0) {
+	?>
+		<div class="wow_content mb-15 tag_sidebar_widget">
+			<div class="valign tag_sidebar_widget_title">
+				<b><?php echo $wo['lang']['latest_products'] ?></b>
+				<a href="<?php echo Wo_SeoLink('index.php?link1=products') ?>" class="refresh"><?php echo $wo['lang']['see_all'] ?></a>
+			</div>
+			<div class="sidebar-product-slider">
+				<?php 
+                    foreach ($get_latest_products as $key => $wo['product']) {
+                         echo Wo_LoadPage('sidebar/product-style');
+                    }
+				?>
+			</div>
+            <div class="clear"></div>
+		</div>
+	<?php } } ?>
+		
+	<?php if ($wo['config']['user_ads'] == 1): ?>
+		<?php 
+			foreach (Wo_GetSideBarAds() as $wo['sidebar-ad']) {
+				echo Wo_LoadPage('ads/includes/sidebar-ad');
+			}
+		?>
+		<div class="clear"></div>
+	<?php endif; ?>
+</div>
+
+<script>
+$(document).ready(function() {
+	<?php if ($wo['page'] == 'home') { ?>
+	$('.sidebar_fixed').theiaStickySidebar({additionalMarginTop: 66});
+	<?php } else { ?>
+	$('.sidebar_fixed').theiaStickySidebar({additionalMarginTop: 30});
+	<?php } ?>
+});
+function addZero(i) {
+    if (i < 10) {
+        i = "0" + i;
+    }
+    return i;
+}
+</script>
+<?php } ?>

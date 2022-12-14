@@ -1,0 +1,304 @@
+<?php 
+	function Wo_GetRandProducts($limit) {
+		global $sqlConnect, $wo;
+		$data = array();
+		$query  = mysqli_query($sqlConnect, "SELECT * FROM  " . T_PRODUCTS . "  
+											 ORDER BY RAND() DESC LIMIT $limit");
+		while ($fetched_data = mysqli_fetch_assoc($query)) {
+			$products           = Wo_GetProduct($fetched_data['id']);
+			$data[]             = $products;
+		}
+		return $data;
+	}
+?>
+<?php 
+$wondertage_settings = array();
+if (mysqli_query($wo['sqlConnect'], "DESCRIBE `wondertage_settings`" )) {
+	$settings = $db->get('wondertage_settings');
+	foreach ($settings as $key => $value) {
+		$wondertage_settings[$value->name] = $value->value;
+	}
+}
+?>
+
+<div class="page-margin">
+	<div class="container">
+		<div class="valign tag_market_title">
+			<h2 class="tag_page_title m5"><?php echo $wo['lang']['market']; ?></h2>
+			<div class="search-bar">
+				<form action="">
+					<?php
+						$placeholder = $wo['lang']['search_for_products_main'];
+						if (!empty($category_name)) {
+							$placeholder = str_replace('{category_name}', $category_name, $wo['lang']['search_for_products']);
+						}
+					?>
+					<input type="text" onkeyup="Wo_SearchProducts(this.value)" placeholder="<?php echo $placeholder; ?>" id="product-text">
+					<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27c1.2-1.4 1.82-3.31 1.48-5.34-.47-2.78-2.79-5-5.59-5.34-4.23-.52-7.79 3.04-7.27 7.27.34 2.8 2.56 5.12 5.34 5.59 2.03.34 3.94-.28 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path></svg>
+				</form>
+			</div>
+		</div>
+	</div>
+	<?php if (!empty($wondertage_settings) && $wondertage_settings['tag_prods_slider'] == 1) { ?>
+	<div class="tag_products_slider">
+		<div class="tag_prods_slidr_prnt">
+			<div class="tag_prods_slidr">
+				<?php 
+					$products = Wo_GetRandProducts(5);
+					foreach ($products as $key => $wo['product']) {
+						echo Wo_LoadPage('products/random-list'); 
+					}
+				?>
+			</div>
+		</div>
+	</div>
+	<?php } ?>
+	<div class="container">
+		<?php if ($wo['loggedin'] == true) { ?>
+		<?php if ($wo['config']['nearby_shop_system'] == 1) { ?>
+			<div class="wow_content p15 tag_nearby_places tag_nearby_shops">
+				<img src="<?php echo $wo['config']['theme_url'];?>/img/nearby-shop.png"/>
+				<h2><?php echo $wo['lang']['nearby_shops'] ?></h2>
+				<p><?php echo $wo['lang']['find_nearby_shops'] ?></p>
+				<a href="<?php echo($wo['config']['site_url'].'/nearby_shops') ?>" data-ajax="?link1=nearby_shops" class="btn btn-info btn-mat"><?php echo $wo['lang']['explore'] ?></a>
+			</div>
+		<?php } ?>
+		<?php } ?>
+		<div class="page-margin">
+			<ul class="list-unstyled tag_page_nav product-category-slider tag_market_cats<?php if (!empty($wondertage_settings) && $wondertage_settings['tag_prods_cat_slider'] == 1) { ?><?php } else { ?> tag_market_cats_no_slide<?php } ?> tag_market_main_cats" <?php if($wo['language_type'] == 'rtl') { ?>dir="rtl"<?php } ?>>
+				<?php 
+					$category_id = (!empty($_GET['c_id'])) ? (int) $_GET['c_id'] : 0;
+					foreach ($wo['products_categories'] as $key => $category) {
+						$active = ($category_id == $key) ? 'active' : '';
+				?>
+					<li class="<?php echo $active?>" data_prodect_cat_id="<?php echo($key) ?>"><a href="<?php echo Wo_SeoLink('index.php?link1=products&c_id=' . $key);?>" class="btn-mat"><?php echo $category;?></a></li>
+				<?php } ?>
+			</ul>
+			<?php if ( !empty($_GET['c_id']) && !empty($wo['products_sub_categories'][$_GET['c_id']])) { ?>
+				<ul class="list-unstyled tag_page_nav product-category-slider-sub tag_market_cats<?php if (!empty($wondertage_settings) && $wondertage_settings['tag_prods_cat_slider'] == 1) { ?><?php } else { ?> tag_market_cats_no_slide<?php } ?> tag_market_sub_cats" role="menu" <?php if($wo['language_type'] == 'rtl') { ?>dir="rtl"<?php } ?>>
+					<?php 
+						$category_id = (!empty($_GET['sub_id'])) ? (int) $_GET['sub_id'] : 0;
+						foreach ($wo['products_sub_categories'][$_GET['c_id']] as $key => $category) {
+							$active = ($category_id == $category['id']) ? 'active' : '';
+					?>
+						<li class="<?php echo $active?>" data_prodect_cat_id="<?php echo($category['id']) ?>"><a href="<?php echo Wo_SeoLink('index.php?link1=products&c_id=' . $_GET['c_id'].'&sub_id='.$category['id']);?>" class="btn-mat"><?php echo $category['lang'];?></a></li>
+					<?php } ?>
+				</ul>
+			<?php } ?>
+		
+			<div class="wo_market">
+				<?php
+					$category_name = '';
+					$data = array();
+					if (!empty($_GET['c_id'])) {
+						if (is_numeric($_GET['c_id'])) {
+							if (array_key_exists($_GET['c_id'], $wo['products_categories'])) {
+								?>
+								<input type="hidden" value="<?php echo Wo_Secure($_GET['c_id']); ?>" id="c_id" />
+								<?php
+								$category_name = $wo['products_categories'][$_GET['c_id']];
+								$data['c_id'] = Wo_Secure($_GET['c_id']);
+							}
+						}
+						if (!empty($wo['products_sub_categories'][$_GET['c_id']]) && !empty($_GET['sub_id'])) {
+							foreach ($wo['products_sub_categories'][$_GET['c_id']] as $key => $value) {
+								if ($_GET['sub_id'] == $value['id']) { ?>
+									<input type="hidden" value="<?php echo Wo_Secure($_GET['sub_id']); ?>" id="sub_id" />
+									<?php
+									$data['sub_id'] = Wo_Secure($value['id']);
+									break;
+								}
+							}
+						}
+					} else {
+						echo '<input type="hidden" value="0" id="c_id" />';
+						echo '<input type="hidden" value="" id="sub_id" />';
+					}
+				?>
+				<?php
+					$data['limit'] = 10;
+					$products = Wo_GetProducts($data);
+					if (count($products) > 0) {
+				?>
+				<div class="valign tag_market_filters">
+					<h3><?php echo $wo['lang']['main_products'] ?></h3>
+					<div>
+						<div class="dropdown">
+							<div class="btn btn-mat" data-toggle="dropdown" data-display="static" role="button" aria-expanded="false"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path fill="currentColor" d="M18.364 17.364L12 23.728l-6.364-6.364a9 9 0 1 1 12.728 0zM12 13a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"></path></svg> <?php echo $wo['lang']['location'];?></div>
+							<ul class="dropdown-menu dropdown-menu-right dropdown-static-menu tag_create_menu" role="menu">
+								<li>
+									<p class="bold"><?php echo $wo['lang']['location_dist'];?> (km)</p>
+									<div class="select-nearby-users-distance">
+										<form class="valign">
+											<input type="range" class="cusrange" id="nearby-users-distance" name="amountRange" onchange="Wo_SearchProductsNearBy();" value="0" min="0" max="300" oninput="this.form.amountInput.value=this.value">
+											<input type="number" name="amountInput" min="0" max="300" value="0" oninput="this.form.amountRange.value=this.value" readonly id="cusrange-reader"/>
+										</form>
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="dropdown">
+							<div class="btn btn-mat dropdown-toggle" type="button" data-toggle="dropdown" data-display="static"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path fill="currentColor" d="M6,13H18V11H6M3,6V8H21V6M10,18H14V16H10V18Z"></path></svg> <span class="sort_latst_lang"><?php echo $wo['lang']['sort_by'] ?></span> <span class="order-text" id="PriceSortValue" data_PriceSortType="latest"><?php echo $wo['lang']['latest'] ?></span> <span class="caret"></span></div>
+							<ul class="dropdown-menu dropdown-menu-right tag_create_menu product-sort-slider" role="menu">
+								<li class="active" onclick="changePriceSortValue('latest');$(this).addClass('active');"><a href="javascript:void(0)"><?php echo $wo['lang']['latest'] ?></a></li>
+								<li onclick="changePriceSortValue('price_low');$(this).addClass('active');"><a href="javascript:void(0)"><?php echo $wo['lang']['price_low'] ?></a></li>
+								<li onclick="changePriceSortValue('price_high');$(this).addClass('active');"><a href="javascript:void(0)"><?php echo $wo['lang']['price_high'] ?></a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div id="products" class="row">
+					<?php
+					foreach ($products as $key => $wo['product']) {
+						echo Wo_LoadPage('products/products-list'); 
+					}
+					} else {
+						echo '<div class="empty_state"><svg enable-background="new 0 0 32 32" height="512" viewBox="0 0 32 32" width="512" xmlns="http://www.w3.org/2000/svg"><path d="m26 32h-20c-3.314 0-6-2.686-6-6v-20c0-3.314 2.686-6 6-6h20c3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6z" fill="#ffe6e2"/><path d="m15.333 17.167c0-.275-.225-.5-.5-.5h-2.5v2c0 .368-.298.667-.667.667-.368 0-.667-.298-.667-.667v-2h-2.499c-.275 0-.5.225-.5.5v6.333c0 .275.225.5.5.5h6.333c.275 0 .5-.225.5-.5z" fill="#fc573b"/><path d="m24 17.167c0-.275-.225-.5-.5-.5h-2.5v2c0 .368-.298.667-.667.667-.368 0-.667-.298-.667-.667v-2h-2.5c-.275 0-.5.225-.5.5v6.333c0 .275.225.5.5.5h6.334c.275 0 .5-.225.5-.5z" fill="#fc573b"/><path d="m19.667 8.5c0-.275-.225-.5-.5-.5h-2.5v2c0 .368-.298.667-.667.667-.368 0-.667-.298-.667-.667v-2h-2.5c-.275 0-.5.225-.5.5v6.333c0 .275.225.5.5.5h6.333c.275 0 .5-.225.5-.5v-6.333z" fill="#fd907e"/></svg>' . $wo['lang']['no_available_products'] . '</div>';
+					}
+					?>
+				</div>
+				<div class="posts_load load-produts">
+					<?php if (!empty($wondertage_settings) && $wondertage_settings['tag_prods_autoload'] == 1) { ?>
+					<?php } else { ?>
+						<?php if (count($products) > 0): ?>
+							<div class="load-more"><button class="btn btn-default text-center pointer" onclick="Wo_LoadProducts();"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"></path></svg></span> <?php echo $wo['lang']['load_more_products'] ?></button></div>
+						<?php endif ?>
+					<?php } ?>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="<?php echo $wo['config']['theme_url'];?>/javascript/jquery.adaptive-backgrounds.js"></script>
+<script src="<?php echo $wo['config']['theme_url'];?>/javascript/slick/slick.min.js" type="text/javascript"></script>
+<script>
+<?php if (!empty($wondertage_settings) && $wondertage_settings['tag_prods_slider'] == 1) { ?>
+$('.tag_prods_slidr').slick({
+	centerMode: true,
+	centerPadding: '0px',
+	infinite: false,
+	<?php if($wo['language_type'] == 'rtl') { ?>
+		rtl: true,
+	<?php } ?>
+	responsive: [
+		{
+		breakpoint: 769,
+			settings: {
+				centerPadding: '20px',
+				arrows: false,
+				autoplay: true,
+				swipeToSlide: true,
+				waitForAnimate: false,
+			}
+		}
+	]
+});
+<?php } ?>
+
+<?php if (!empty($wondertage_settings) && $wondertage_settings['tag_prods_cat_slider'] == 1) { ?>
+$('.tag_market_main_cats, .tag_market_sub_cats').slick({
+	infinite: false,
+	variableWidth: true,
+	slidesToScroll: 3,
+	<?php if($wo['language_type'] == 'rtl') { ?>
+		rtl: true,
+	<?php } ?>
+});
+<?php } ?>
+
+<?php if (!empty($wondertage_settings) && $wondertage_settings['tag_prods_autoload'] == 1) { ?>
+scrolled = 0;
+$(window).scroll(function () {
+	var nearToBottomm = 300;
+	if($('#products').length > 0) {
+		if ($(window).scrollTop() + $(window).height() > $(document).height() - nearToBottomm) {
+			if (scrolled == 0) {
+				scrolled = 1;
+				Wo_LoadProducts();
+			}
+		}
+	}
+});
+<?php } ?>
+
+function changePriceSortValue(price_sort) {
+	array = [];
+	array['latest'] = "<?php echo $wo['lang']['latest'] ?>";
+	array['price_low'] = "<?php echo $wo['lang']['price_low'] ?>";
+	array['price_high'] = "<?php echo $wo['lang']['price_high'] ?>";
+	cat_id = $('.product-category-slider').find('.active').attr('data_prodect_cat_id');
+	sub_id = $('.product-category-slider-sub').find('.active').attr('data_prodect_cat_id');
+	distance = $('#distance_val').text();
+	$('.product-sort-slider li').removeClass('active');
+	$(this).addClass('active');
+	$('#PriceSortValue').html(array[price_sort]);
+	$('#PriceSortValue').attr('data_PriceSortType',price_sort);
+	
+	$.post(Wo_Ajax_Requests_File() + '?f=get_prodects_by_filter', {price_sort: price_sort, cat_id:cat_id, sub_id:sub_id, distance: distance}, function (data) {
+		if (data.status == 200) {
+			if (data.html.length > 0) {
+				$('#products').html(data.html);
+			} else {
+				$('#products').html('<div class="empty_state"><svg enable-background="new 0 0 32 32" height="512" viewBox="0 0 32 32" width="512" xmlns="http://www.w3.org/2000/svg"><path d="m26 32h-20c-3.314 0-6-2.686-6-6v-20c0-3.314 2.686-6 6-6h20c3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6z" fill="#ffe6e2"/><path d="m15.333 17.167c0-.275-.225-.5-.5-.5h-2.5v2c0 .368-.298.667-.667.667-.368 0-.667-.298-.667-.667v-2h-2.499c-.275 0-.5.225-.5.5v6.333c0 .275.225.5.5.5h6.333c.275 0 .5-.225.5-.5z" fill="#fc573b"/><path d="m24 17.167c0-.275-.225-.5-.5-.5h-2.5v2c0 .368-.298.667-.667.667-.368 0-.667-.298-.667-.667v-2h-2.5c-.275 0-.5.225-.5.5v6.333c0 .275.225.5.5.5h6.334c.275 0 .5-.225.5-.5z" fill="#fc573b"/><path d="m19.667 8.5c0-.275-.225-.5-.5-.5h-2.5v2c0 .368-.298.667-.667.667-.368 0-.667-.298-.667-.667v-2h-2.5c-.275 0-.5.225-.5.5v6.333c0 .275.225.5.5.5h6.333c.275 0 .5-.225.5-.5v-6.333z" fill="#fd907e"/></svg> <?php echo $wo['lang']['no_available_products'] ?></div>');
+			}
+		}
+	});
+}
+
+function Wo_SearchProductsNearBy() {
+	length = $('#cusrange-reader').val();
+	text_value = $('#product-text').val();
+	var c_id = 0;
+	if ($('#c_id').length > 0) {
+		c_id = $('#c_id').val();
+	}
+	var sub_id = $('#sub_id').val();
+	$.post(Wo_Ajax_Requests_File() + '?f=search_products', {value: text_value, c_id:c_id, sub_id:sub_id, length: length}, function (data) {
+		if (data.status == 200) {
+			if (data.html.length > 0) {
+				$('#products').html(data.html);
+			} else {
+				$('#products').html('<div class="empty_state"><svg enable-background="new 0 0 32 32" height="512" viewBox="0 0 32 32" width="512" xmlns="http://www.w3.org/2000/svg"><path d="m26 32h-20c-3.314 0-6-2.686-6-6v-20c0-3.314 2.686-6 6-6h20c3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6z" fill="#ffe6e2"/><path d="m15.333 17.167c0-.275-.225-.5-.5-.5h-2.5v2c0 .368-.298.667-.667.667-.368 0-.667-.298-.667-.667v-2h-2.499c-.275 0-.5.225-.5.5v6.333c0 .275.225.5.5.5h6.333c.275 0 .5-.225.5-.5z" fill="#fc573b"/><path d="m24 17.167c0-.275-.225-.5-.5-.5h-2.5v2c0 .368-.298.667-.667.667-.368 0-.667-.298-.667-.667v-2h-2.5c-.275 0-.5.225-.5.5v6.333c0 .275.225.5.5.5h6.334c.275 0 .5-.225.5-.5z" fill="#fc573b"/><path d="m19.667 8.5c0-.275-.225-.5-.5-.5h-2.5v2c0 .368-.298.667-.667.667-.368 0-.667-.298-.667-.667v-2h-2.5c-.275 0-.5.225-.5.5v6.333c0 .275.225.5.5.5h6.333c.275 0 .5-.225.5-.5v-6.333z" fill="#fd907e"/></svg> <?php echo $wo['lang']['no_available_products'] ?></div>');
+			}
+		}
+	});
+}
+function Wo_LoadProducts() {
+	var $c_id = $('#c_id').val();
+	var sub_id = $('#sub_id').val();
+	var $last_id = $('.product:last').attr('data-id');
+	var length = $('#cusrange-reader').val();
+	$.post(Wo_Ajax_Requests_File() + '?f=load_more_products', {last_id: $last_id, c_id:$c_id, sub_id:sub_id, length: length}, function (data) {
+		if (data.status == 200) {
+			if (data.html.length > 0) {
+				<?php if (!empty($wondertage_settings) && $wondertage_settings['tag_prods_autoload'] == 1) { ?>
+				scrolled = 0;
+				<?php } else { ?>
+				$('.load-produts').html('<div class="load-more"><button class="btn btn-default text-center pointer" onclick="Wo_LoadProducts();"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"></path></svg></span> <?php echo $wo['lang']['load_more_products'] ?></button></div>');
+				<?php } ?>
+				$('#products').append(data.html);
+			} else {
+				$('.load-produts').html('<div class="load-more"><button class="btn btn-default text-center pointer" onclick="Wo_LoadProducts();"><?php echo $wo['lang']['no_available_products'] ?></button></div>');
+			}
+		}
+	});
+}
+function Wo_SearchProducts(value) {
+	length = $('#cusrange-reader').val();
+	var c_id = 0;
+	if ($('#c_id').length > 0) {
+		c_id = $('#c_id').val();
+	}
+	var sub_id = $('#sub_id').val();
+	$.post(Wo_Ajax_Requests_File() + '?f=search_products', {value: value, c_id:c_id, sub_id:sub_id, length: length}, function (data) {
+		if (data.status == 200) {
+			if (data.html.length > 0) {
+				$('#products').html(data.html);
+			} else {
+				$('#products').html('<div class="empty_state"><svg enable-background="new 0 0 32 32" height="512" viewBox="0 0 32 32" width="512" xmlns="http://www.w3.org/2000/svg"><path d="m26 32h-20c-3.314 0-6-2.686-6-6v-20c0-3.314 2.686-6 6-6h20c3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6z" fill="#ffe6e2"/><path d="m15.333 17.167c0-.275-.225-.5-.5-.5h-2.5v2c0 .368-.298.667-.667.667-.368 0-.667-.298-.667-.667v-2h-2.499c-.275 0-.5.225-.5.5v6.333c0 .275.225.5.5.5h6.333c.275 0 .5-.225.5-.5z" fill="#fc573b"/><path d="m24 17.167c0-.275-.225-.5-.5-.5h-2.5v2c0 .368-.298.667-.667.667-.368 0-.667-.298-.667-.667v-2h-2.5c-.275 0-.5.225-.5.5v6.333c0 .275.225.5.5.5h6.334c.275 0 .5-.225.5-.5z" fill="#fc573b"/><path d="m19.667 8.5c0-.275-.225-.5-.5-.5h-2.5v2c0 .368-.298.667-.667.667-.368 0-.667-.298-.667-.667v-2h-2.5c-.275 0-.5.225-.5.5v6.333c0 .275.225.5.5.5h6.333c.275 0 .5-.225.5-.5v-6.333z" fill="#fd907e"/></svg> <?php echo $wo['lang']['no_available_products'] ?></div>');
+			}
+		}
+	});
+}
+</script>

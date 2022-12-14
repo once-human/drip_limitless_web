@@ -1,0 +1,41 @@
+<div class="post-container user-ad-container" id="<?php echo $wo['story']['id']; ?>">
+	<div class="post-advertisement">
+		<div class="panel panel-white panel-shadow">
+			<div class="valign ads-heading">
+				<div class="image">
+					<a href="<?php echo $wo['story']['url']; ?>">
+						<img src="<?php echo $wo['story']['user_data']['avatar']; ?>" class="avatar">
+					</a>
+				</div>
+				<div class="meta">
+					<div class="title">
+						<a href="<?php echo $wo['story']['url']; ?>" class="name"><?php echo $wo['story']['name']; ?></a>
+					</div>
+					<div class="valign tag_post_hdr_sub">
+						<span class="time"><font color="gold"><?php echo $wo['lang']['sponsored']; ?></font></span><span class="middot">·</span>
+						<span class="time ajax-time" title="<?php echo date('c', $wo['story']['posted']); ?>"><?php echo Wo_Time_Elapsed_String($wo['story']['posted']); ?></span>
+						<?php if (strlen($wo['story']['location']) > 3): ?>
+							<span class="middot">·</span><span class="time"><?php echo $wo['story']['location']; ?></span>
+						<?php endif;?>
+					</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="ads-headline">
+				<p><?php echo ucfirst($wo['story']['description']); ?></p>
+			</div>
+			<div class="ads-cover rads-<?php echo $wo['story']['bidding']; ?>" id="<?php echo $wo['story']['id']; ?>">
+				<div class="post-fetched-url wo_post_fetch_blog">
+					<div class="post-fetched-url-con">
+						<a href="<?php echo $wo['story']['url']; ?>"><img src="<?php echo $wo['story']['ad_media']; ?>" alt="picture"/></a>
+					</div>
+					<div class="fetched-url-text">
+						<h4><a href="<?php echo $wo['story']['url']; ?>"><?php echo $wo['story']['headline']; ?></a></h4>
+						<div class="url"><a href="<?php echo $wo['story']['url']; ?>"><?php echo Wo_UrlDomain($wo['story']['url']); ?></a></div>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

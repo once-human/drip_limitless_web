@@ -1,0 +1,195 @@
+<?php 
+$wondertage_settings = array();
+if (mysqli_query($wo['sqlConnect'], "DESCRIBE `wondertage_settings`" )) {
+	$settings = $db->get('wondertage_settings');
+	foreach ($settings as $key => $value) {
+		$wondertage_settings[$value->name] = $value->value;
+	}
+}
+?>
+
+<div class="container">
+<nav class="navbar navbar-default">
+	<div class="container">
+		<div class="valign tag_header full_width<?php if (!empty($wondertage_settings) && $wondertage_settings['tag_expand_search'] == 1) { ?> tag_expand_search<?php } ?>">
+			<button type="button" class="tag_toggle_sidebar" onclick="javascript:$('body').toggleClass('side_open');"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path fill="currentColor" d="M4 18h16c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1s.45 1 1 1zm0-5h16c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1s.45 1 1 1zM3 7c0 .55.45 1 1 1h16c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1z"/></svg></button>
+			<a class="header-brand" href="<?php echo $wo['config']['site_url']; ?>">
+				<img class="tag_logo_pc" src="<?php echo $wo['config']['theme_url'];?>/img/logo.<?php echo $wo['config']['logo_extension'];?>" alt="<?php echo $wo['config']['siteName'];?>"/>
+				<img class="tag_logo_mobi" src="<?php echo $wo['config']['theme_url'];?>/img/icon.png" alt="<?php echo $wo['config']['siteName'];?>"/>
+			</a>
+			<div class="dropdown search-container">
+				<button type="button" class="tag_toggle_search"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path fill="currentColor" d="M19 11H7.83l4.88-4.88c.39-.39.39-1.03 0-1.42-.39-.39-1.02-.39-1.41 0l-6.59 6.59c-.39.39-.39 1.02 0 1.41l6.59 6.59c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L7.83 13H19c.55 0 1-.45 1-1s-.45-1-1-1z"/></svg></button>
+				<form data-toggle="dropdown" role="button" id="navbar-searchbox" role="search">
+					<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path fill="currentColor" d="M15.5 14h-.79l-.28-.27c1.2-1.4 1.82-3.31 1.48-5.34-.47-2.78-2.79-5-5.59-5.34-4.23-.52-7.79 3.04-7.27 7.27.34 2.8 2.56 5.12 5.34 5.59 2.03.34 3.94-.28 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+					<input type="search" class="search-input" onkeyup="Wo_DetectSearchType(this.value), document.getElementById('wo_repeat_search').innerHTML = escapeHtml(this.value)" placeholder="<?php echo $wo['lang']['search_header_label']; ?>" <?php if ($wo['loggedin'] == true) { echo 'onfocus="Wo_GetRecentSearchs()"';}?>>
+				</form>
+				<ul class="dropdown-menu search-dropdown-container" role="menu">
+					<div class="wow_htag"><?php 
+						$hashtags = Wa_GetTrendingHashs('popular');
+						if (count($hashtags) > 0) {
+							foreach ($hashtags as $wo['hashtag']) { 
+					?>
+						<a href="<?php echo $wo['hashtag']['url'];?>" data-ajax="?link1=hashtag&hash=<?php echo $wo['hashtag']['tag'];?>">#<?php echo $wo['hashtag']['tag'];?></a>
+					<?php } } ?></div>
+					<div class="search-dropdown-result tag_scroll">
+						<?php
+							if ($wo['loggedin'] == true) {
+								foreach (Wo_GetRecentSerachs() as $wo['result']) {
+									if (!empty($wo['result'])) {
+										echo Wo_LoadPage('header/search');
+									}
+								}
+							}
+						?>
+					</div>
+					<div class="search-advanced-container" style="display: none;">
+						<a href="<?php echo Wo_SeoLink('index.php?link1=search');?>" class="valign search-advanced-link" data-ajax="?link1=search">
+							<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path fill="currentColor" d="M15.5 14h-.79l-.28-.27c1.2-1.4 1.82-3.31 1.48-5.34-.47-2.78-2.79-5-5.59-5.34-4.23-.52-7.79 3.04-7.27 7.27.34 2.8 2.56 5.12 5.34 5.59 2.03.34 3.94-.28 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+							<span><?php echo $wo['lang']['advanced_search']; ?> <span id="wo_repeat_search"></span></span>
+						</a>
+					</div>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="tag_header_shadow"></div>
+</nav>
+<?php
+	if ($wo['loggedin'] == true) {
+		echo Wo_LoadPage('header/loggedin-header');
+	} else {
+		echo Wo_LoadPage('header/main-header');
+	}
+?>
+</div>
+
+<script type="text/javascript">
+$(document).on('click', '#requests-list a', function(event) {
+	$('.tag_hdr_reqtog').dropdown('toggle');
+});
+$(document).on('click', '#activities-wrapper a', function(event) {
+	$('.tag_hdr_notitog').dropdown('toggle');
+});
+$(document).on('click', '#hdr_notifi a', function(event) {
+	$('.tag_hdr_notitog').dropdown('toggle');
+});
+$(document).on('click', '.tag_hdr_user_dropdown a:not(.not_hide)', function(event) {
+	$('.tag_hdr_user_droptoggle').dropdown('toggle');
+});
+
+$('.tag_main_usr_ddmenu').on({
+    "hide.bs.dropdown": function() {
+        $('.tag_main_usr_ddmenu').removeClass('open-lang');
+    },
+});
+
+$('.search-container').on({
+    "show.bs.dropdown": function () {
+        $('.tag_hdr_right, .tag_show_fnd_bottom').addClass('low');
+    },
+    "hide.bs.dropdown": function() {
+        $('.tag_hdr_right, .tag_show_fnd_bottom').removeClass('low');
+    },
+});
+
+jQuery(document).ready(function($) {
+  $(".search-input").keydown(function(event) {
+    if (event.keyCode == 13 && event.shiftKey == 0) {
+      event.preventDefault();
+      window.location = '<?php echo Wo_SeoLink('index.php?link1=search?query=');?>' + $(this).val();
+    }
+  });
+});
+var Searchcontainer = $('.search-container');
+var SearchBox = $('.search-container .search-input');
+var SearchResult = $('.search-dropdown-result');
+  
+function Wo_DetectSearchType(query) {
+  var Hash = smokeTheHash(query);
+  if (Hash) {
+    $('.search-advanced-container').hide(200);
+    Wo_SearchhashResult(query);
+  } else {
+    $('.search-advanced-container').fadeIn(200);
+    Wo_SearchResult(query);
+  }
+}
+
+function Wo_ClearSearches() {
+  $('.clear-searches').html('<i class="fa fa-spinner fa-spin"></i>');
+   $.get(Wo_Ajax_Requests_File(), {f: 'clearChat'}, function(data) {
+        if (data.status == 200) {
+           location.reload();
+        }
+   });
+}
+
+function Wo_GetRecentSearchs() {
+  $.get(Wo_Ajax_Requests_File(), {f: 'search', s: 'recent'}, function(data) {
+      if (data.status == 200) {
+          if (data.html.length > 0) {
+            SearchResult.html('<div class="tag_srch_recent"><div class="valign recent"><div class="recent-searches"><?php echo $wo["lang"]["recent_searches"]?></div><button onclick="Wo_ClearSearches();" class="btn btn-mat"><?php echo $wo["lang"]["clear"]?></button></div>' + data.html + '</div>');
+          }
+        }
+  });
+}
+function Wo_SearchResult(query) {
+    if (SearchBox.val() != '') {
+      Searchcontainer.addClass('open');
+	  SearchResult.html('<div class="valign skel_search"><div class="skel skel_50 skel_avatar skel_search_avatar"></div><div><div class="skel skel_2 skel_noti_name"></div><div class="skel skel_2 skel_noti_time"></div></div></div><div class="valign skel_search"><div class="skel skel_50 skel_avatar skel_search_avatar"></div><div><div class="skel skel_2 skel_noti_name"></div><div class="skel skel_2 skel_noti_time"></div></div></div><div class="valign skel_search"><div class="skel skel_50 skel_avatar skel_search_avatar"></div><div><div class="skel skel_2 skel_noti_name"></div><div class="skel skel_2 skel_noti_time"></div></div></div><div class="valign skel_search"><div class="skel skel_50 skel_avatar skel_search_avatar"></div><div><div class="skel skel_2 skel_noti_name"></div><div class="skel skel_2 skel_noti_time"></div></div></div><div class="valign skel_search"><div class="skel skel_50 skel_avatar skel_search_avatar"></div><div><div class="skel skel_2 skel_noti_name"></div><div class="skel skel_2 skel_noti_time"></div></div></div>');
+      Searchcontainer.find('.search-advanced-link').attr('href','<?php echo Wo_SeoLink("index.php?link1=search&query=")?>' + query);
+      Searchcontainer.find('.search-advanced-link').attr('data-ajax','<?php echo Wo_SeoLink("?link1=search&query=")?>' + query);
+      $.get(Wo_Ajax_Requests_File(), {f: 'search', s: 'normal', query: query}, function(data) {
+        if (data.status == 200) {
+          if (data.html.length == 0) {
+            SearchResult.html('<div class="empty_state"><svg enable-background="new 0 0 32 32" height="512" viewBox="0 0 32 32" width="512" xmlns="http://www.w3.org/2000/svg"><path d="m26 32h-20c-3.314 0-6-2.686-6-6v-20c0-3.314 2.686-6 6-6h20c3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6z" fill="#ffe6e2"/><path d="m23.147 10.44c.12-.227.187-.493.187-.773 0-.92-.747-1.667-1.667-1.667s-1.667.747-1.667 1.667.747 1.667 1.667 1.667c.28 0 .546-.067.773-.187l.707.707c.097.097.225.146.353.146s.256-.049.354-.146c.195-.195.195-.512 0-.707zm-1.48-.107c-.367 0-.667-.3-.667-.667 0-.366.3-.666.667-.666s.667.3.667.667c-.001.366-.301.666-.667.666z" fill="#fc573b"/><path d="m9.167 12h8.333c.643 0 1.167-.523 1.167-1.167v-1.666c0-.644-.524-1.167-1.167-1.167h-8.333c-.644 0-1.167.523-1.167 1.167v1.667c0 .643.523 1.166 1.167 1.166z" fill="#fc573b"/><g fill="#fd907e"><path d="m23.5 14.667h-9.667c-.276 0-.5.224-.5.5s.224.5.5.5h9.667c.276 0 .5-.224.5-.5s-.224-.5-.5-.5z"/><path d="m23.5 16.667h-9.667c-.276 0-.5.224-.5.5s.224.5.5.5h9.667c.276 0 .5-.224.5-.5s-.224-.5-.5-.5z"/><path d="m23.5 20.667h-9.667c-.276 0-.5.224-.5.5s.224.5.5.5h9.667c.276 0 .5-.224.5-.5s-.224-.5-.5-.5z"/><path d="m23.5 22.667h-9.667c-.276 0-.5.224-.5.5s.224.5.5.5h9.667c.276 0 .5-.224.5-.5s-.224-.5-.5-.5z"/></g><g fill="#fc573b"><circle cx="10" cy="16" r="2"/><circle cx="10" cy="22" r="2"/></g></svg>' + " <?php echo $wo['lang']['no_result']; ?>" + '<div>');
+          } else {
+            SearchResult.html(data.html);
+          }
+        }
+      });
+      $(document).click(function() {
+        Searchcontainer.removeClass('open');
+      });
+    } else {
+      Searchcontainer.removeClass('open');
+    }
+}
+
+
+function Wo_SearchhashResult(query) {
+    var Searchcontainer = $('.search-container');
+    var SearchBox = $('.search-container .search-input');
+    var SearchResult = $('.search-dropdown-result');
+    if (SearchBox.val() != '') {
+      Searchcontainer.addClass('open');
+	  SearchResult.html('<div class="valign skel_search"><div><div class="skel skel_2 skel_noti_name"></div></div></div><div class="valign skel_search"><div><div class="skel skel_2 skel_noti_name"></div></div></div><div class="valign skel_search"><div><div class="skel skel_2 skel_noti_name"></div></div></div><div class="valign skel_search"><div><div class="skel skel_2 skel_noti_name"></div></div></div><div class="valign skel_search"><div><div class="skel skel_2 skel_noti_name"></div></div></div>');
+      Searchcontainer.find('.search-advanced-link').attr('href','<?php echo Wo_SeoLink("index.php?link1=search&query=")?>' + query);
+      Searchcontainer.find('.search-advanced-link').attr('data-ajax','<?php echo Wo_SeoLink("?link1=search&query=")?>' + query);
+      $.get(Wo_Ajax_Requests_File(), {f: 'search', s: 'hash', query: query}, function(data) {
+        if (data.status == 200) {
+          if (data.html.length == 0) {
+            SearchResult.html('<div class="empty_state"><svg enable-background="new 0 0 32 32" height="512" viewBox="0 0 32 32" width="512" xmlns="http://www.w3.org/2000/svg"><path d="m26 32h-20c-3.314 0-6-2.686-6-6v-20c0-3.314 2.686-6 6-6h20c3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6z" fill="#ffe6e2"/><path d="m23.147 10.44c.12-.227.187-.493.187-.773 0-.92-.747-1.667-1.667-1.667s-1.667.747-1.667 1.667.747 1.667 1.667 1.667c.28 0 .546-.067.773-.187l.707.707c.097.097.225.146.353.146s.256-.049.354-.146c.195-.195.195-.512 0-.707zm-1.48-.107c-.367 0-.667-.3-.667-.667 0-.366.3-.666.667-.666s.667.3.667.667c-.001.366-.301.666-.667.666z" fill="#fc573b"/><path d="m9.167 12h8.333c.643 0 1.167-.523 1.167-1.167v-1.666c0-.644-.524-1.167-1.167-1.167h-8.333c-.644 0-1.167.523-1.167 1.167v1.667c0 .643.523 1.166 1.167 1.166z" fill="#fc573b"/><g fill="#fd907e"><path d="m23.5 14.667h-9.667c-.276 0-.5.224-.5.5s.224.5.5.5h9.667c.276 0 .5-.224.5-.5s-.224-.5-.5-.5z"/><path d="m23.5 16.667h-9.667c-.276 0-.5.224-.5.5s.224.5.5.5h9.667c.276 0 .5-.224.5-.5s-.224-.5-.5-.5z"/><path d="m23.5 20.667h-9.667c-.276 0-.5.224-.5.5s.224.5.5.5h9.667c.276 0 .5-.224.5-.5s-.224-.5-.5-.5z"/><path d="m23.5 22.667h-9.667c-.276 0-.5.224-.5.5s.224.5.5.5h9.667c.276 0 .5-.224.5-.5s-.224-.5-.5-.5z"/></g><g fill="#fc573b"><circle cx="10" cy="16" r="2"/><circle cx="10" cy="22" r="2"/></g></svg>' + " <?php echo $wo['lang']['no_result']; ?>" + '<div>');
+          } else {
+            SearchResult.html(data.html);
+          }
+        }
+      });
+
+      $(document).click(function() {
+        Searchcontainer.removeClass('open');
+      });
+    } else {
+      Searchcontainer.removeClass('open');
+    }
+}
+
+function smokeTheHash(str) {
+  var n = str.search("#");
+  if(n != "-1"){
+    return true;
+  } else {
+    return false;
+  }
+}
+</script>

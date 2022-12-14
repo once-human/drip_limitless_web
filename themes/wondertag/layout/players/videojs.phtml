@@ -1,0 +1,98 @@
+<?php 
+$wondertage_settings = array();
+if (mysqli_query($wo['sqlConnect'], "DESCRIBE `wondertage_settings`" )) {
+	$settings = $db->get('wondertage_settings');
+	foreach ($settings as $key => $value) {
+		$wondertage_settings[$value->name] = $value->value;
+	}
+}
+?>
+
+<?php if (!empty($wondertage_settings) && $wondertage_settings['tag_artplayer'] == 1) { ?>
+	<div class="embed-responsive embed-responsive-16by9">
+		<div class="artplayer-app" id="video--<?php echo $wo['media']['storyId'];?>"></div>
+	</div>
+
+	<script>
+	var art = new Artplayer({
+		container: '#video--<?php echo $wo['media']['storyId'];?>',
+		url: '<?php echo $wo['media']['filename'];?>',
+		whitelist: ['*'],
+		customType: {
+			m3u8: function(video, url) {
+				var hls = new Hls();
+				hls.loadSource(url);
+				hls.attachMedia(video);
+				if (!video.src) {
+					video.src = url;
+				}
+			},
+		},
+		poster: '<?php  echo $wo['media']['video_thumb'];?>',
+		volume: 1,
+		isLive: true,
+		pip: true,
+		fullscreen: true,
+		theme: '<?php echo $wo['config']['btn_background_color'];?>',
+		icons: {
+			state: '<svg class="playback-icons" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 13.5v-7c0-.41.47-.65.8-.4l4.67 3.5c.27.2.27.6 0 .8l-4.67 3.5c-.33.25-.8.01-.8-.4z"/></svg>',
+		},
+	});
+
+	art.on('ready', function() {
+		$('#video--<?php echo $wo['media']['storyId'];?>').addClass('hide_control');
+		$('.art-notice, .art-contextmenus').remove();
+	});
+	art.on('play', function() {
+		Wo_AddVideoViews(<?php echo $wo['media']['storyId'];?>);
+		$('#video--<?php echo $wo['media']['storyId'];?> .art-mask').remove();
+		$('#video--<?php echo $wo['media']['storyId'];?>').removeClass('hide_control');
+	});
+	art.on('pause', function() {
+		$('#video--<?php echo $wo['media']['storyId'];?>').addClass('show_control');
+	});
+	</script>
+<?php } else { ?>
+	<div class="tag_vid_plyr">
+		<video id="video--<?php echo $wo['media']['storyId'];?>" class="plyrr-<?php echo $wo['media']['storyId'];?> <?php echo($wo['rvad_con']); ?>" playsinline preload="metadata" poster="<?php  echo $wo['media']['video_thumb'];?>" data-setup="{}" data-post-video="<?php echo $wo['media']['storyId'];?>"></video>
+	</div>
+
+	<script>
+	var source = '<?php echo $wo['media']['filename'];?>';
+	var tagvideo = '.plyrr-<?php echo $wo['story']['id'];?>';
+	var players = Plyr.setup(tagvideo, {
+		controls: ['play-large', 'progress', 'play', 'mute', 'volume', 'current-time', 'pip', 'airplay', 'fullscreen'],
+		<?php if (Wo_IsMobile() == false) { ?>
+		ratio: '16:9',
+		<?php } ?>
+		fullscreen: {
+			iosNative: true
+		},
+		ads: {
+			enabled: false,
+			tagUrl: ''
+		}
+	});
+
+	if (!Hls.isSupported()) {
+		tagvideo.src = source;
+	} else {
+		const hls = new Hls();
+		hls.loadSource(source);
+		hls.attachMedia(tagvideo);
+		window.hls = hls;
+	}
+
+	$(window).scroll(function(e){
+		if (!document.pictureInPictureElement) {
+			$('.plyrr-<?php echo $wo['story']['id'];?>').each(function(){
+				if ($(this).is(":in-viewport")) {
+					
+				} else {
+					$(this)[0].pause();
+				}
+			});
+		}
+	});
+	</script>
+<?php } ?>

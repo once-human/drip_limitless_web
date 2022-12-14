@@ -1,0 +1,27 @@
+<div class="user-fetch">
+	<div class="user-cover" style="background-image: url(<?php echo $wo['popover']['cover']?>);"></div>
+	<div class="valign tag_profile_popover">
+		<div class="user-avatar">
+			<img src="<?php echo $wo['popover']['avatar']; ?>" alt="<?php echo $wo['popover']['name']; ?>">
+		</div>
+		<div class="full_width">
+			<div class="user-name">
+				<a href="<?php echo $wo['popover']['url']; ?>" data-ajax="?link1=timeline&u=<?php echo $wo['popover']['username']?>"><?php echo $wo['popover']['name']; ?></a>
+				<?php if($wo['popover']['verified'] == 1) {   ?>
+					<span class="verified-color" title="<?php echo $wo['lang']['verified_user'];?>"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 512 512"><path d="m256 0c-141.164062 0-256 114.835938-256 256s114.835938 256 256 256 256-114.835938 256-256-114.835938-256-256-256zm0 0" fill="#2196f3"></path><path d="m385.75 201.75-138.667969 138.664062c-4.160156 4.160157-9.621093 6.253907-15.082031 6.253907s-10.921875-2.09375-15.082031-6.253907l-69.332031-69.332031c-8.34375-8.339843-8.34375-21.824219 0-30.164062 8.339843-8.34375 21.820312-8.34375 30.164062 0l54.25 54.25 123.585938-123.582031c8.339843-8.34375 21.820312-8.34375 30.164062 0 8.339844 8.339843 8.339844 21.820312 0 30.164062zm0 0" fill="#fff"></path></svg></span>
+				<?php } ?>
+			</div>
+			<div class="event_info_blocks">
+				<div>
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M14.6 8H21a2 2 0 0 1 2 2v2.104a2 2 0 0 1-.15.762l-3.095 7.515a1 1 0 0 1-.925.619H2a1 1 0 0 1-1-1V10a1 1 0 0 1 1-1h3.482a1 1 0 0 0 .817-.423L11.752.85a.5.5 0 0 1 .632-.159l1.814.907a2.5 2.5 0 0 1 1.305 2.853L14.6 8zM7 10.588V19h11.16L21 12.104V10h-6.4a2 2 0 0 1-1.938-2.493l.903-3.548a.5.5 0 0 0-.261-.571l-.661-.33-4.71 6.672c-.25.354-.57.644-.933.858zM5 11H3v8h2v-8z"></path></svg> <?php echo Wo_CountPageLikes($wo['popover']['page_id']);?> <?php echo $wo['lang']['people_likes_this']; ?>
+				</div>
+				<div>
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M10.9 2.1l9.899 1.415 1.414 9.9-9.192 9.192a1 1 0 0 1-1.414 0l-9.9-9.9a1 1 0 0 1 0-1.414L10.9 2.1zm.707 2.122L3.828 12l8.486 8.485 7.778-7.778-1.06-7.425-7.425-1.06zm2.12 6.364a2 2 0 1 1 2.83-2.829 2 2 0 0 1-2.83 2.829z"></path></svg> <?php echo $wo['popover']['category'];?>
+				</div>
+			</div>
+			<div class="valign user-buttons">
+				<div class="user-button user-follow-button"><?php echo Wo_GetLikeButton($wo['popover']['page_id']); ?></div>
+			</div>
+		</div>
+	</div>
+</div>

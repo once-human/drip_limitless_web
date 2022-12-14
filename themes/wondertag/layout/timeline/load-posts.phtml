@@ -1,0 +1,27 @@
+<div id="posts" data-story-user="<?php echo $wo['user_profile']['user_id'];?>">
+	<div class="pinned-post-container">
+		<?php
+			$pinedstory = Wo_GetPinnedPost($wo['user_profile']['user_id']);
+			if (count($pinedstory) == 1) {
+				foreach ($pinedstory  as $wo['story']) {
+					echo Wo_LoadPage('story/content');
+				}
+			}
+		?>
+	</div>
+	<?php
+		$stories = Wo_GetPosts(array('filter_by' => 'all','publisher_id' => $wo['user_profile']['user_id'],'placement' => 'multi_image_post')); 
+		if (count($stories) == 0 && count($pinedstory) == 0) {
+			echo Wo_LoadPage('story/profile-no-stories');
+		} else {
+			foreach ($stories as $wo['story']) {
+				echo Wo_LoadPage('story/content');
+			}
+		}
+	?>
+</div>
+<?php if ($wo['loggedin'] == true && count($stories) > 0) {  ?>
+	<div class="load-more pointer" id="load-more-posts" onclick="Wo_GetMorePosts();">
+		<span class="btn btn-default text-center pointer"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"></path></svg></span><?php echo $wo['lang']['load_more_posts']; ?><span>
+	</div>
+<?php } ?>

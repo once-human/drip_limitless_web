@@ -1,0 +1,158 @@
+<div class="wow_go_live_cont tag_hdr_top_sett">
+	<div id="remote-media">
+		<div class="liv_vid_cont" id="main_live_video"></div>
+		<div class="valign tag_live_skel"><div class="bold tag_live_skel_innr"><?php echo $wo['lang']['please_wait']?></div></div>
+		<div class="wow_liv_counter"><span id="live_word"><?php echo $wo['lang']['live']; ?></span> <span id="live_count"> 0</span></div>
+	</div>
+	<input type="hidden" id="live_post_id">
+</div>
+<div class="valign tag_live_sidebar">
+	<div id="live_post_comments" class="valign wow_liv_comments_feed">
+		<div class="text-center tag_live_no_comment"><svg height="512" viewBox="0 0 512 512" width="512" xmlns="http://www.w3.org/2000/svg"><linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="203.92" x2="234.948" y1="267.401" y2="213.658"><stop offset="0" stop-color="#c5baeb"/><stop offset="1" stop-color="#e9e5f6"/></linearGradient><linearGradient id="lg1"><stop offset="0" stop-color="#ab2c37"/><stop offset="1" stop-color="#ff7a85"/></linearGradient><linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="290.32" x2="301.603" xlink:href="#lg1" y1="326.087" y2="306.545"/><linearGradient id="SVGID_3_" gradientUnits="userSpaceOnUse" x1="287.726" x2="305.854" xlink:href="#lg1" y1="194.16" y2="162.76"/><g><path d="m415.562 29.182-45.277-26.141c-5.19-4.023-12.401-4.215-20.378.39l-235.1 136.293c-15.805 9.125-28.619 33.607-28.619 54.681v228.107c0 12.123 4.245 20.467 10.856 23.64l47.838 27.711 40.473-15.693v26.377l47.287 27.453z" fill="url(#SVGID_1_)"/><path d="m397.194 30.884-235.1 136.293c-15.805 9.125-28.618 33.607-28.618 54.681v228.107c0 21.074 12.813 30.761 28.618 21.636l70.548-40.731v81.13l98.475-137.985 66.077-38.708c15.805-9.125 28.618-33.607 28.618-54.681v-228.107c0-21.075-12.813-30.761-28.618-21.635z" fill="#d7d1eb"/><g><path d="m315.629 294.122.001-.003-16.399-9.452-.001.002c-4.755-2.52-10.863-2.161-17.527 1.687-15.162 8.754-27.453 32.238-27.453 52.454 0 11.114 3.72 18.916 9.585 22.243l-.004.009 15.359 8.871.011-.024c4.838 2.892 11.184 2.683 18.139-1.333 15.162-8.754 27.453-32.238 27.453-52.454.002-10.848-3.54-18.544-9.164-22z" fill="url(#SVGID_2_)"/><ellipse cx="297.342" cy="331.973" fill="#ff4757" rx="42.145" ry="23.843" transform="matrix(.392 -.92 .92 .392 -124.55 475.589)"/><path d="m320.9 141.59-14.778-8.206c-6.085-3.515-21.298-2.846-28.253 1.169-14.614 8.437-29.58 22.542-29.58 39.417l5.963 79.883c0 7.326 3.623 13.39 8.879 17.066l-.001.003.021.012c1.212.846 2.506 1.571 3.867 2.148l14.195 7.984.931-3.985c2.615-.343 5.24-1.195 7.751-2.645 14.614-8.438 23.616-24.03 23.616-40.905v-78.395c0-2.541-.438-4.93-1.226-7.123z" fill="url(#SVGID_3_)"/><path d="m293.506 143.221c13.906-8.029 36.779-3.848 36.779 12.209l-5.49 84.25c0 16.875-9.003 32.468-23.616 40.905-13.906 8.029-31.289-2.007-31.289-18.065l-6.716-80.977c0-16.874 15.718-29.885 30.332-38.322z" fill="#ff4757"/></g></g></svg> <?php echo $wo['lang']['no_comments_found']; ?></div>
+	</div>
+	<div class="valign tag_live_sidebar_foot">
+		<?php if ($wo['config']['agora_live_video'] == 1 && !empty($wo['config']['agora_app_id'])) { ?>
+			<div class="valign live_mic_cam_switch hidden">
+				<div class="dropup mic_drop">
+					<button class="btn btn-default btn-mat dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false" title="<?php echo $wo['lang']['mic_source']; ?>"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,2A3,3 0 0,1 15,5V11A3,3 0 0,1 12,14A3,3 0 0,1 9,11V5A3,3 0 0,1 12,2M19,11C19,14.53 16.39,17.44 13,17.93V21H11V17.93C7.61,17.44 5,14.53 5,11H7A5,5 0 0,0 12,16A5,5 0 0,0 17,11H19Z" /></svg></button>
+					<div class="dropdown-menu" role="menu" id="mic-list"></div>
+				</div>
+				<div class="dropup cam_drop">
+					<button class="btn btn-default btn-mat dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false" title="<?php echo $wo['lang']['cam_source']; ?>"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M17,10.5V7A1,1 0 0,0 16,6H4A1,1 0 0,0 3,7V17A1,1 0 0,0 4,18H16A1,1 0 0,0 17,17V13.5L21,17.5V6.5L17,10.5Z" /></svg></button>
+					<div class="dropdown-menu" role="menu" id="camera-list"></div>
+				</div>
+			</div>
+		<?php } ?>
+		<div class="full_width">
+			<a class="btn btn-mat btn-danger wow_end_live_btn hidden" href="<?php echo($wo['config']['site_url']) ?>" onclick="DeleteLive()"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12,2C17.53,2 22,6.47 22,12C22,17.53 17.53,22 12,22C6.47,22 2,17.53 2,12C2,6.47 6.47,2 12,2M15.59,7L12,10.59L8.41,7L7,8.41L10.59,12L7,15.59L8.41,17L12,13.41L15.59,17L17,15.59L13.41,12L17,8.41L15.59,7Z" /></svg> <?php echo $wo['lang']['end_live']; ?></a>
+			<button class="btn btn-mat btn-main wow_go_live_btn" id="publishBtn"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M16 4a1 1 0 0 1 1 1v4.2l5.213-3.65a.5.5 0 0 1 .787.41v12.08a.5.5 0 0 1-.787.41L17 14.8V19a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h14zM7.4 8.829a.4.4 0 0 0-.392.32L7 9.228v5.542a.4.4 0 0 0 .542.374l.073-.036 4.355-2.772a.4.4 0 0 0 .063-.624l-.063-.05L7.615 8.89A.4.4 0 0 0 7.4 8.83z"/></svg> <?php echo $wo['lang']['go_live']; ?></button>
+		</div>
+	</div>
+</div>
+
+<style>@media (max-width: 1150px){.tag_navbar_top_side {display: none;}.tag_header_top_m {margin: 0;}}</style>
+
+<?php if ($wo['config']['millicast_live_video'] == 1 && !empty($wo['config']['live_token']) && !empty($wo['config']['live_account_id'])) {
+  echo Wo_LoadPage('live/millicast');
+} elseif ($wo['config']['agora_live_video'] == 1 && !empty($wo['config']['agora_app_id'])) {
+  echo Wo_LoadPage('live/agora');
+} ?>
+
+<script>
+window.onbeforeunload = function() {
+	DeleteLive();
+}
+var main_live = setInterval(function(){ 
+	data = {};
+	for (var i = 0; i < $('.live_comments').length; i++) {
+		if ($($('.live_comments')[i]).attr('live_comment_id')) {
+			data[i] = $($('.live_comments')[i]).attr('live_comment_id');
+		}
+	}
+	post_id = $('#live_post_id').val();
+	if ($('#live_post_id').length == 0) {
+		clearInterval(main_live);
+	}
+	$.post(Wo_Ajax_Requests_File() + "?f=live&s=check_comments", {post_id: post_id,ids:data,page:'live'}, function(data, textStatus, xhr) {
+		if (data.status == 200) {
+			$('.tag_live_no_comment').remove();
+			$('#live_post_comments').append(data.html);
+			$('#live_count').html(data.count);
+			$('#live_word').html(data.word);
+			var comments = $('#live_post_comments .live_comments');
+			if (comments.length > 10) {
+				var i;
+				for (i = 0; i < comments.length; i++) {
+					if ($('#live_post_comments .live_comments').length > 10) {
+						comments[i].remove();
+					}
+				}
+			}
+		}
+		else if(data.removed == 'yes'){
+			clearInterval(main_live);
+			return false;
+		}
+	});
+}, 3000);
+
+function DeleteLive() {
+	post_id = $('#live_post_id').val();
+	$.post(Wo_Ajax_Requests_File() + "?f=live&s=delete", {post_id: post_id}, function(data, textStatus, xhr) {});
+}
+
+navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+if (!navigator.getUserMedia) {
+	$('.tag_live_skel_innr').text('Sorry, WebRTC is not available in your browser.');
+}
+
+function getMedia() {
+	return new Promise((resolve, reject) => {
+		let constraints = {audio: true, video: true};
+		navigator.mediaDevices.getUserMedia(constraints)
+		.then(str => {
+			resolve(str);
+			$('.tag_live_skel').addClass('hidden');
+			$('#remote-media .liv_vid_cont').html('<video id="basic-stream" class="hidden videostream" autoplay=""></video>');
+		}).catch(err => {
+			$('.tag_live_skel_innr').text('Could not get Media: '+err);
+			reject(err);
+		})
+	});
+}
+
+if (navigator.getUserMedia) {
+	ready();
+}
+
+function base64_2_blob(dataURI) {
+    var byteString;
+    if (dataURI.split(',')[0].indexOf('base64') >= 0)
+        byteString = atob(dataURI.split(',')[1]);
+    else
+        byteString = unescape(dataURI.split(',')[1]);
+
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+    var ia = new Uint8Array(byteString.length);
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+
+    return new Blob([ia], { type:mimeString });
+}
+function capture_video_frame(video, format) {
+    if (typeof video === 'string') {
+        video = document.getElementById(video);
+    }
+
+    format = format || 'jpeg';
+
+    if (!video || (format !== 'png' && format !== 'jpeg')) {
+        return false;
+    }
+
+    var canvas = document.createElement("canvas");
+
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    canvas.getContext('2d').drawImage(video, 0, 0);
+
+
+    var dataUri = canvas.toDataURL('image/' + format);
+    var data = dataUri.split(',')[1];
+    var mimeType = dataUri.split(';')[0].slice(5)
+
+    var bytes = window.atob(data);
+    var buf = new ArrayBuffer(bytes.length);
+    var arr = new Uint8Array(buf);
+
+    for (var i = 0; i < bytes.length; i++) {
+        arr[i] = bytes.charCodeAt(i);
+    }
+
+    var blob = new Blob([ arr ], { type: mimeType });
+    return { blob: blob, dataUri: dataUri, format: format };
+}
+$.getScript("<?php echo $wo['config']['theme_url'];?>/javascript/excanvas.js?version=<?php echo $wo['config']['version']; ?>", function(data, textStatus) {});
+</script>

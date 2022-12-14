@@ -1,0 +1,19 @@
+<div class="page-margin">
+	<div class="container">
+		<h2 class="tag_page_title m5">My Apps</h2>
+		<div class="row">
+			<?php
+				$apps = Wo_GetAppsData();
+				if (count($apps) > 0) {
+					echo '<div class="col-lg-6 col-md-6"><a href="' . Wo_SeoLink('index.php?link1=create-app') . '" data-ajax="?link1=create-app" class="valign tag_create_box tag_create_app"><svg height="40" viewBox="0 0 512 512" width="40" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="m256 0c-141.164062 0-256 114.835938-256 256s114.835938 256 256 256 256-114.835938 256-256-114.835938-256-256-256zm112 277.332031h-90.667969v90.667969c0 11.777344-9.554687 21.332031-21.332031 21.332031s-21.332031-9.554687-21.332031-21.332031v-90.667969h-90.667969c-11.777344 0-21.332031-9.554687-21.332031-21.332031s9.554687-21.332031 21.332031-21.332031h90.667969v-90.667969c0-11.777344 9.554687-21.332031 21.332031-21.332031s21.332031 9.554687 21.332031 21.332031v90.667969h90.667969c11.777344 0 21.332031 9.554687 21.332031 21.332031s-9.554687 21.332031-21.332031 21.332031zm0 0"></path></svg>' . $wo['lang']['create'] .' New App</a></div>';
+					foreach ($apps as $wo['app']) {
+						echo Wo_LoadPage('graph/app-list');
+					}
+				} else {
+					echo '<div class="empty_state"><svg height="512" viewBox="0 0 32 32" width="512" xmlns="http://www.w3.org/2000/svg"><path d="m26 32h-20c-3.314 0-6-2.686-6-6v-20c0-3.314 2.686-6 6-6h20c3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6z" fill="#f5e6fe"/><g fill="#d9a4fc"><path d="m14.833 16.667h-2.333c-.276 0-.5-.224-.5-.5v-2.333c0-.276.224-.5.5-.5h2.333c.276 0 .5.224.5.5v2.333c0 .276-.224.5-.5.5z"/><path d="m14.833 21.333h-2.333c-.276 0-.5-.224-.5-.5v-2.333c0-.276.224-.5.5-.5h2.333c.276 0 .5.224.5.5v2.333c0 .276-.224.5-.5.5z"/><path d="m19.5 16.667h-2.333c-.276 0-.5-.224-.5-.5v-2.333c0-.276.224-.5.5-.5h2.333c.276 0 .5.224.5.5v2.333c0 .276-.224.5-.5.5z"/><path d="m19.5 21.333h-2.333c-.276 0-.5-.224-.5-.5v-2.333c0-.276.224-.5.5-.5h2.333c.276 0 .5.224.5.5v2.333c0 .276-.224.5-.5.5z"/></g><path d="m22 8.667h-12c-1.103 0-2 .897-2 2v10.667c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-10.667c0-1.103-.897-2-2-2zm0 13.333h-12c-.368 0-.667-.299-.667-.667v-9.333h13.334v9.333c0 .368-.299.667-.667.667z" fill="#be63f9"/></svg> No applications found<div><a href="' . Wo_SeoLink('index.php?link1=create-app') . '" data-ajax="?link1=create-app" class="btn btn-main btn-mat">' . $wo['lang']['create'] .' App</a></div></div>';
+				}
+			?>
+			<div class="clear"></div>
+		</div>
+	</div>
+</div>

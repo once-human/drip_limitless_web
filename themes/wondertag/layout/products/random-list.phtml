@@ -1,0 +1,23 @@
+<div class="tag_randm_plist">
+	<div class="product_info" id="tag_hdr_rgb<?php echo $wo['product']['id']?>">
+		<a href="<?php echo $wo['product']['url']?>">
+			<div class="valign">
+				<div>
+					<h2><?php echo $wo['product']['name']?></h2>
+					<b><sup><?php echo (!empty($wo['currencies'][$wo['product']['currency']]['symbol'])) ? $wo['currencies'][$wo['product']['currency']]['symbol'] : $wo['config']['classified_currency_s'];?></sup><?php echo $wo['product']['price']?></b>
+				</div>
+				<img src="<?php echo $wo['product']['images'][0]['image_org'];?>" data-adaptive-background="<?php echo $wo['product']['id']?>">
+			</div>
+		</a>
+	</div>
+	<div class="clear"></div>
+	<script>
+	$(document).ready(function(){
+		var defaults = {
+			selector: '[data-adaptive-background="<?php echo $wo['product']['id']?>"]',
+			parent: '#tag_hdr_rgb<?php echo $wo['product']['id']?>',
+		};
+		$.adaptiveBackground.run(defaults)
+	});
+	</script>
+</div>

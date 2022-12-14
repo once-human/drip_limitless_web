@@ -1,0 +1,26 @@
+<div class="col-6 col-md-4 col-lg-3 nearby_user_wrapper tag_ps_nearby_user_wrapper user-data" id="member-<?php echo $wo['member']['user_id'] ?>">
+	<div class="nearby_user_wrapper_innr text-center">
+		<div class="dropdown tag_group_membr_opts" id="privileges_admin_page_<?php echo($wo['member']['user_id']) ?>" style="<?php echo Wo_IsPageAdminExists($wo['member']['user_id'],$wo['member']['page_id']) ? '' : 'display: none;'; ?>">
+			<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"></path></svg></a>
+			<ul class="dropdown-menu dropdown-static-menu dropdown-menu-right clearfix" role="menu">
+				<li>
+					<a href="<?php echo Wo_SeoLink('index.php?link1=page-setting&page=' . $wo['member']['page_name'] . '&link3=admins');?>?name=<?php echo $wo['member']['username']?>"  data-ajax="?link1=page-setting&page=<?php echo $wo['member']['page_name'];?>&link3=admins&name=<?php echo $wo['member']['username']?>"><?php echo $wo['lang']['privileges'];?></a>
+				</li>
+			</ul>
+		</div>
+		<div class="avatar">
+			<a href="<?php echo $wo['member']['url'];?>" data-ajax="?link1=timeline&u=<?php echo $wo['member']['username']?>"><img src="<?php echo $wo['member']['avatar'];?>" alt="<?php echo $wo['member']['name']; ?>" /></a>
+		</div>
+		<a href="<?php echo $wo['member']['url'];?>" data-ajax="?link1=timeline&u=<?php echo $wo['member']['username'];?>" class="truncate user_wrapper_link"><?php echo $wo['member']['name']; ?></a>
+		<div class="user-follow-button">
+			<button type="button" onclick="Wo_AddPageAdmin(<?php echo $wo['member']['user_id'];?>, <?php echo $wo['member']['page_id'];?>,this)" class="btn btn-default btn-sm">
+				<?php if (Wo_IsPageAdminExists($wo['member']['user_id'],$wo['member']['page_id'])): ?>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" /></svg>
+				<?php else: ?>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M17,13H13V17H11V13H7V11H11V7H13V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" /></svg>
+				<?php endif; ?>
+				<span class="button-text"> <?php echo $wo['lang']['admin'];?></span>
+			</button>
+		</div>
+	</div>
+</div>

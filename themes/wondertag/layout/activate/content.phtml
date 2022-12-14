@@ -1,0 +1,57 @@
+<?php
+	if ($wo['loggedin'] == true) {
+		header("Location: " . $wo['config']['site_url']);
+		exit();
+	} else {
+		if (isset($_GET['link2'])) {
+			if ($_GET['link2'] == 'success') {
+?>
+	<div class="valign tag_404">
+		<div class="text-center tag_404_innr">
+			<svg height="512" viewBox="0 0 32 32" width="512" xmlns="http://www.w3.org/2000/svg"><path d="m26 32h-20c-3.314 0-6-2.686-6-6v-20c0-3.314 2.686-6 6-6h20c3.314 0 6 2.686 6 6v20c0 3.314-2.686 6-6 6z" fill="#e3f8fa"/><path d="m19.667 15.333c-2.389 0-4.333 1.944-4.333 4.333s1.943 4.334 4.333 4.334 4.333-1.944 4.333-4.333-1.944-4.334-4.333-4.334zm2.054 3.482-2.167 2.667c-.089.11-.221.177-.362.184-.008 0-.017.001-.026.001-.132 0-.259-.052-.354-.146l-1.333-1.333c-.195-.195-.195-.512 0-.707s.512-.195.707 0l.941.941 1.817-2.237c.173-.214.489-.247.703-.073.216.174.249.489.074.703z" fill="#8ce1eb"/><path d="m19.667 14c1.102 0 2.129.321 3 .868v-5.201c0-.921-.746-1.667-1.667-1.667h-11.333c-.921 0-1.667.746-1.667 1.667v6c0 .92.746 1.667 1.667 1.667h4.842c.891-1.963 2.865-3.334 5.158-3.334zm-10.334-4.353 6 2.8 6-2.8v1.107l-5.647 2.633c-.113.053-.233.08-.353.08s-.24-.027-.353-.08l-5.647-2.633z" fill="#26c6da"/></svg>
+			<h2><?php echo $wo['lang']['your_account_activated']; ?></h2>
+			<p></p>
+			<div><a href="<?php echo Wo_SeoLink('index.php?link1=welcome');?>" class="btn btn-mat btn-main"><?php echo $wo['lang']['login']; ?></a></div>
+		</div>
+	</div>
+<?php
+			} else {
+				header("Location: " . Wo_SeoLink('index.php?link1=welcome'));
+				exit();
+			}
+		} else if (isset($_GET['email'], $_GET['code']) === true) {
+			$email = $_GET['email'];
+			$code  = $_GET['code'];
+			if (Wo_EmailExists($email) === false) {
+				header("Location: " . Wo_SeoLink('index.php?link1=welcome'));
+				exit();
+			} else if (Wo_ActivateUser($email, $code) === false) {   
+				header("Location: " . Wo_SeoLink('index.php?link1=welcome'));   
+				exit();   
+			} else {
+				$session = Wo_CreateLoginSession(Wo_UserIdFromEmail($email));
+				$_SESSION['user_id'] = $session;
+				setcookie(
+					"user_id",
+					$session,
+					time() + (10 * 365 * 24 * 60 * 60)
+				);
+				setcookie("user_id", $session, time() + (10 * 365 * 24 * 60 * 60));
+				if (!empty($wo['config']['auto_friend_users'])) {
+					$autoFollow = Wo_AutoFollow(Wo_UserIdFromEmail($email));
+				}
+				if (!empty($wo['config']['auto_page_like'])) {
+					Wo_AutoPageLike(Wo_UserIdFromEmail($email));
+				}
+				if (!empty($wo['config']['auto_group_join'])) {
+					Wo_AutoGroupJoin(Wo_UserIdFromEmail($email));
+				}
+				header("Location: " . Wo_SeoLink('index.php?link1=start-up'));
+				exit();
+			}
+		} else {
+			header("Location: " . Wo_SeoLink('index.php?link1=welcome'));
+			exit();
+		}
+	}
+?>

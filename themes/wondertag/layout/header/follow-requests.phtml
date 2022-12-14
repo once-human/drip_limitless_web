@@ -1,0 +1,16 @@
+<div class="user-request-list user-follow-request-<?php echo $wo['request']['user_id'];?>">
+	<div class="valign">
+		<div class="avatar">
+			<a href="<?php echo $wo['request']['url'];?>" data-ajax="?link1=timeline&u=<?php echo $wo['request']['username'];?>">
+				<img src="<?php echo $wo['request']['avatar'];?>" alt="<?php echo $wo['request']['name']; ?>" />
+			</a>
+		</div>
+		<div class="user-info">
+			<a href="<?php echo $wo['request']['url'];?>" data-ajax="?link1=timeline&u=<?php echo $wo['request']['username'];?>"><?php echo $wo['request']['name']; ?></a>
+			<div class="valign accept-btns">
+				<button type="button" id="accept-<?php echo $wo['request']['user_id']?>" onclick="Wo_AcceptFollowRequest(<?php echo $wo['request']['user_id'];?>)" class="btn btn-mat btn-main"><?php echo $wo['lang']['accept']; ?></button>
+				<button type="button" id="delete-<?php echo $wo['request']['user_id']?>" onclick="Wo_DeleteFollowRequest(<?php echo $wo['request']['user_id'];?>)" class="btn btn-mat btn-default"><?php echo $wo['lang']['delete']; ?></button>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,106 @@
+<?php
+$wo['activity']['type_text'] = '';
+$wo['activity']['icon']      = '';
+$post_publisher              = '<a class="second-user-color" data-ajax="?link1=timeline&u=' . $wo['activity']['postData']['publisher']['username'] . '" href="' . $wo['activity']['postData']['publisher']['url'] . '">' . $wo['activity']['postData']['publisher']['name'] . '</a>';
+$orginal_txt                 = array(
+    "{user}",
+    "{post}"
+);
+if ($wo['activity']['activity_type'] == 'following' || $wo['activity']['activity_type'] == 'friend') {
+   $wo['activity']['following']  = Wo_UserData($wo['activity']['follow_id']);
+   $post_publisher              = '<a class="second-user-color" data-ajax="?link1=timeline&u=' . $wo['activity']['following']['username'] . '" href="' . $wo['activity']['following']['url'] . '">' . $wo['activity']['following']['name'] . '</a>';
+}
+$replaced_txt                = array(
+    $post_publisher,
+    $wo['activity']['postData']['url']
+);
+if (!empty($wo['activity']['activity_type'])) {
+
+    if ( substr( $wo['activity']['activity_type'] , 0, 8) == "reaction") {
+        $txt = str_replace( "reaction|", "", $wo['activity']['activity_type'] );
+        $arr = explode( "|", $txt );
+
+        if( $arr[0] == "post" ){
+            $wo['activity']['type_text'] = str_replace($orginal_txt, $replaced_txt, $wo['lang']['activity_reacted_post']);
+        // }else if( $arr[0] == "comment" ){
+        //     $wo['activity']['type_text'] = str_replace($orginal_txt, $replaced_txt, $wo['lang']['activity_reacted_comment']);
+        // }else if( $arr[0] == "replay" ){
+        //     $wo['activity']['type_text'] = str_replace($orginal_txt, $replaced_txt, $wo['lang']['activity_reacted_replay']);
+        }
+        if( isset( $arr[1] ) ){
+
+          if ($wo['reactions_types'][$arr[1]]['is_html'] == 1) {
+
+              switch (strtolower($arr[1])) {
+                 case 1:
+                     $wo['activity']['icon'] .= "<div class='inline_post_count_emoji inline_act_emoji no_anim'><div class='emoji emoji--like'><div class='emoji__hand'><div class='emoji__thumb'></div></div></div></div></span>";
+                     break;
+                 case 2:
+                     $wo['activity']['icon'] .= "<div class='inline_post_count_emoji inline_act_emoji no_anim'><div class='emoji emoji--love'><div class='emoji__heart'></div></div></div></span>";
+                     break;
+                 case 3:
+                    $wo['activity']['icon'] .= "<div class='inline_post_count_emoji inline_act_emoji no_anim'><div class='emoji emoji--haha'><div class='emoji__face'><div class='emoji__eyes'></div><div class='emoji__mouth'><div class='emoji__tongue'></div></div></div></div></div></span>";
+                     break;
+                 case 4:
+                     $wo['activity']['icon'] .= "<div class='inline_post_count_emoji inline_act_emoji no_anim'><div class='emoji emoji--wow'><div class='emoji__face'><div class='emoji__eyebrows'></div><div class='emoji__eyes'></div><div class='emoji__mouth'></div></div></div></div></span>";
+                     break;
+                 case 5:
+                     $wo['activity']['icon'] .= "<div class='inline_post_count_emoji inline_act_emoji no_anim'><div class='emoji emoji--sad'><div class='emoji__face'><div class='emoji__eyebrows'></div><div class='emoji__eyes'></div><div class='emoji__mouth'></div></div></div></div></span>";
+                     break;
+                 case 6:
+                     $wo['activity']['icon'] .= "<div class='inline_post_count_emoji inline_act_emoji no_anim'><div class='emoji emoji--angry'><div class='emoji__face'><div class='emoji__eyebrows'></div><div class='emoji__eyes'></div><div class='emoji__mouth'></div></div></div></div></span>";
+                     break;
+             }
+          }
+          else{
+              if (!empty($wo['reactions_types'][$arr[1]]['wowonder_small_icon'])) {
+                  $wo['activity']['icon'] .= "<div class='inline_post_count_emoji reaction inline_act_emoji no_anim'><img style='width: 100%;' src='{$wo['reactions_types'][$arr[1]]['wowonder_small_icon']}' alt=\"" . $wo['reactions_types'][$arr[1]]['name'] . "\"></div></span>";
+              }
+          }
+
+        }else{
+            $wo['activity']['icon'] .= '';
+        }
+    }
+    if ($wo['activity']['activity_type'] == 'friend') {
+        $wo['activity']['type_text'] = str_replace($orginal_txt, $replaced_txt, $wo['lang']['activity_is_friend']);
+        $wo['activity']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M15,14C12.33,14 7,15.33 7,18V20H23V18C23,15.33 17.67,14 15,14M6,10V7H4V10H1V12H4V15H6V12H9V10M15,12A4,4 0 0,0 19,8A4,4 0 0,0 15,4A4,4 0 0,0 11,8A4,4 0 0,0 15,12Z" /></svg>';
+    }
+    if ($wo['activity']['activity_type'] == 'following') {
+        $wo['activity']['type_text'] = str_replace($orginal_txt, $replaced_txt, $wo['lang']['activity_is_following']);
+        $wo['activity']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M15,14C12.33,14 7,15.33 7,18V20H23V18C23,15.33 17.67,14 15,14M6,10V7H4V10H1V12H4V15H6V12H9V10M15,12A4,4 0 0,0 19,8A4,4 0 0,0 15,4A4,4 0 0,0 11,8A4,4 0 0,0 15,12Z" /></svg>';
+    }
+    if ($wo['activity']['activity_type'] == 'liked_post') {
+        $wo['activity']['type_text'] = str_replace($orginal_txt, $replaced_txt, $wo['lang']['activity_liked_post']);
+        $wo['activity']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M13.12 2.06L7.58 7.6c-.37.37-.58.88-.58 1.41V19c0 1.1.9 2 2 2h9c.8 0 1.52-.48 1.84-1.21l3.26-7.61C23.94 10.2 22.49 8 20.34 8h-5.65l.95-4.58c.1-.5-.05-1.01-.41-1.37-.59-.58-1.53-.58-2.11.01zM3 21c1.1 0 2-.9 2-2v-8c0-1.1-.9-2-2-2s-2 .9-2 2v8c0 1.1.9 2 2 2z" /></svg>';
+    }
+    if ($wo['activity']['activity_type'] == 'wondered_post') {
+        $lang_type = ($wo['config']['second_post_button'] == 'wonder') ? $wo['lang']['activity_wondered_post'] : $wo['lang']['activity_disliked_post'];
+        $wo['activity']['type_text'] = str_replace($orginal_txt, $replaced_txt, $lang_type);
+        $wo['activity']['icon'] .= $wo['second_post_button_icon'];
+    }
+    if ($wo['activity']['activity_type'] == 'shared_post') {
+        $wo['activity']['type_text'] = str_replace($orginal_txt, $replaced_txt, $wo['lang']['activity_share_post']);
+        $wo['activity']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z" /></svg>';
+    }
+    if ($wo['activity']['activity_type'] == 'commented_post') {
+        $wo['activity']['type_text'] = str_replace($orginal_txt, $replaced_txt, $wo['lang']['activity_commented_on_post']);
+        $wo['activity']['icon'] .= '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" /></svg>';
+    }
+}
+?>
+
+<div class="activity notification-list <?php echo (!empty($wo['activity']['unread'])) ? ' unread' : '' ;?>" data-activity-id="<?php echo $wo['activity']['id']; ?>">
+	<div class="valign">
+		<div class="notification-user-avatar">
+			<a href="<?php echo $wo['activity']['activator']['url']; ?>" data-ajax="?link1=timeline&u=<?php echo $wo['activity']['activator']['username']; ?>"><img src="<?php echo $wo['activity']['activator']['avatar']; ?>" alt="<?php echo $wo['user']['avatar']; ?>"></a>
+		</div>
+		<div class="notification-text">
+			<span>
+				<a class="main-color" href="<?php echo $wo['activity']['activator']['url'];?> " data-ajax="?link1=timeline&u=<?php echo $wo['activity']['activator']['username']; ?>"><?php echo $wo['activity']['activator']['name']; ?></a>
+			</span> <span class="sec_text"><?php echo $wo['activity']['type_text']; ?></span>
+			<div class="ajax-time" title="<?php echo date('c',$wo['activity']['time']); ?>"><?php echo Wo_Time_Elapsed_String($wo['activity']['time'])?></div>
+			<?php echo $wo['activity']['icon'];?>
+		</div>
+	</div>
+</div>

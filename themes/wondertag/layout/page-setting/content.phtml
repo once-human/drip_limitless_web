@@ -1,0 +1,185 @@
+<?php
+$wo['setting_page'] = 'general-setting';
+$pages_array = array(
+   'general-setting',
+   'profile-setting',
+   'social-links',
+   'delete-page',
+   'avatar-setting',
+   'design-setting',
+   'admins',
+   'analytics'
+   );
+if (!empty($_GET['link3'])) {
+   if (in_array($_GET['link3'], $pages_array)) {
+      $wo['setting_page'] = $_GET['link3'];
+   }
+}
+if ($wo['setting_page'] == 'analytics') {
+   $wo['type'] = 'today';
+   if (!empty($_GET['type']) && in_array($_GET['type'], array('today','week','month','year'))) {
+      $wo['type'] = $_GET['type'];
+   }
+
+   if ($wo['type'] == 'today') {
+      $array = array('00' => 0 ,'01' => 0 ,'02' => 0 ,'03' => 0 ,'04' => 0 ,'05' => 0 ,'06' => 0 ,'07' => 0 ,'08' => 0 ,'09' => 0 ,'10' => 0 ,'11' => 0 ,'12' => 0 ,'13' => 0 ,'14' => 0 ,'15' => 0 ,'16' => 0 ,'17' => 0 ,'18' => 0 ,'19' => 0 ,'20' => 0 ,'21' => 0 ,'22' => 0 ,'23' => 0);
+      $day_likes_array = $array;
+
+      $today_start = strtotime(date('M')." ".date('d').", ".date('Y')." 12:00am");
+      $today_end = strtotime(date('M')." ".date('d').", ".date('Y')." 11:59pm");
+
+      $today_likes = $db->where('active','1')->where('time',$today_start,'>=')->where('time',$today_end,'<=')->where('page_id',$wo['setting']['page_id'])->get(T_PAGES_LIKES);
+      foreach ($today_likes as $key => $value) {
+         $hour = date('H',$value->time);
+         if (in_array($hour, array_keys($day_likes_array))) {
+            $day_likes_array[$hour] += 1; 
+         }
+      }
+      $wo['likes_array'] = implode(', ', $day_likes_array);
+   }
+   elseif ($wo['type'] == 'week') {
+      $time = strtotime(date('l').", ".date('M')." ".date('d').", ".date('Y'));
+
+      if (date('l') == 'Saturday') {
+         $week_start = strtotime(date('M')." ".date('d').", ".date('Y')." 12:00am");
+      }
+      else{
+         $week_start = strtotime('last saturday, 12:00am', $time);
+      }
+
+      if (date('l') == 'Friday') {
+         $week_end = strtotime(date('M')." ".date('d').", ".date('Y')." 11:59pm");
+      }
+      else{
+         $week_end = strtotime('next Friday, 11:59pm', $time);
+      }
+      
+      $array = array('Saturday' => 0 , 'Sunday' => 0 , 'Monday' => 0 , 'Tuesday' => 0 , 'Wednesday' => 0 , 'Thursday' => 0 , 'Friday' => 0);
+
+      $week_likes_array = $array;
+
+      $week_likes = $db->where('active','1')->where('time',$week_start,'>=')->where('time',$week_end,'<=')->where('page_id',$wo['setting']['page_id'])->get(T_PAGES_LIKES);
+
+      foreach ($week_likes as $key => $value) {
+         $day_week = date('l',$value->time);
+         if (in_array($day_week, array_keys($week_likes_array))) {
+            $week_likes_array[$day_week] += 1; 
+         }
+      }
+      $wo['likes_array'] = implode(', ', $week_likes_array);
+   }
+   elseif ($wo['type'] == 'month') {
+      $this_month_start = strtotime("1 ".date('M')." ".date('Y')." 12:00am");
+      $this_month_end = strtotime(cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y'))." ".date('M')." ".date('Y')." 11:59pm");
+      $array = array_fill(1, cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y')),0);
+      if (cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y')) == 31) {
+         $array = array('01' => 0 ,'02' => 0 ,'03' => 0 ,'04' => 0 ,'05' => 0 ,'06' => 0 ,'07' => 0 ,'08' => 0 ,'09' => 0 ,'10' => 0 ,'11' => 0 ,'12' => 0 ,'13' => 0 ,'14' => 0 ,'15' => 0 ,'16' => 0 ,'17' => 0 ,'18' => 0 ,'19' => 0 ,'20' => 0 ,'21' => 0 ,'22' => 0 ,'23' => 0,'24' => 0 ,'25' => 0 ,'26' => 0 ,'27' => 0 ,'28' => 0 ,'29' => 0 ,'30' => 0 ,'31' => 0);
+      }elseif (cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y')) == 30) {
+         $array = array('01' => 0 ,'02' => 0 ,'03' => 0 ,'04' => 0 ,'05' => 0 ,'06' => 0 ,'07' => 0 ,'08' => 0 ,'09' => 0 ,'10' => 0 ,'11' => 0 ,'12' => 0 ,'13' => 0 ,'14' => 0 ,'15' => 0 ,'16' => 0 ,'17' => 0 ,'18' => 0 ,'19' => 0 ,'20' => 0 ,'21' => 0 ,'22' => 0 ,'23' => 0,'24' => 0 ,'25' => 0 ,'26' => 0 ,'27' => 0 ,'28' => 0 ,'29' => 0 ,'30' => 0);
+      }elseif (cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y')) == 29) {
+         $array = array('01' => 0 ,'02' => 0 ,'03' => 0 ,'04' => 0 ,'05' => 0 ,'06' => 0 ,'07' => 0 ,'08' => 0 ,'09' => 0 ,'10' => 0 ,'11' => 0 ,'12' => 0 ,'13' => 0 ,'14' => 0 ,'15' => 0 ,'16' => 0 ,'17' => 0 ,'18' => 0 ,'19' => 0 ,'20' => 0 ,'21' => 0 ,'22' => 0 ,'23' => 0,'24' => 0 ,'25' => 0 ,'26' => 0 ,'27' => 0 ,'28' => 0 ,'29' => 0);
+      }elseif (cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y')) == 28) {
+         $array = array('01' => 0 ,'02' => 0 ,'03' => 0 ,'04' => 0 ,'05' => 0 ,'06' => 0 ,'07' => 0 ,'08' => 0 ,'09' => 0 ,'10' => 0 ,'11' => 0 ,'12' => 0 ,'13' => 0 ,'14' => 0 ,'15' => 0 ,'16' => 0 ,'17' => 0 ,'18' => 0 ,'19' => 0 ,'20' => 0 ,'21' => 0 ,'22' => 0 ,'23' => 0,'24' => 0 ,'25' => 0 ,'26' => 0 ,'27' => 0 ,'28' => 0);
+      }
+
+      $wo['month_days'] = count($array);
+
+
+      $month_likes_array = $array;
+      $month_likes = $db->where('active','1')->where('time',$this_month_start,'>=')->where('time',$this_month_end,'<=')->where('page_id',$wo['setting']['page_id'])->get(T_PAGES_LIKES);
+
+      foreach ($month_likes as $key => $value) {
+         $day = date('d',$value->time);
+         if (in_array($day, array_keys($month_likes_array))) {
+            $month_likes_array[$day] += 1; 
+         }
+      }
+      $wo['likes_array'] = implode(', ', $month_likes_array);
+   }
+   elseif ($wo['type'] == 'year') {
+      $this_year_start = strtotime("1 January ".date('Y')." 12:00am");
+      $this_year_end = strtotime("31 December ".date('Y')." 11:59pm");
+      $array = array('01' => 0 ,'02' => 0 ,'03' => 0 ,'04' => 0 ,'05' => 0 ,'06' => 0 ,'07' => 0 ,'08' => 0 ,'09' => 0 ,'10' => 0 ,'11' => 0 ,'12' => 0);
+      $year_likes_array = $array;
+
+      $year_likes = $db->where('active','1')->where('time',$this_year_start,'>=')->where('time',$this_year_end,'<=')->where('page_id',$wo['setting']['page_id'])->get(T_PAGES_LIKES);
+
+      foreach ($year_likes as $key => $value) {
+         $day = date('m',$value->time);
+         if (in_array($day, array_keys($year_likes_array))) {
+            $year_likes_array[$day] += 1; 
+         }
+      }
+      $wo['likes_array'] = implode(', ', $year_likes_array);
+
+   }
+}
+if ($wo['setting_page'] == 'admins' && !empty($_GET['name'])) {
+   $user_id = Wo_UserIdFromUsername($_GET['name']);
+   if (!empty($user_id)) {
+      $wo['admin_info'] = Wo_GetPageAdminInfo($user_id,$wo['setting']['page_id']);
+      if (!empty($wo['admin_info'])) {
+         $wo['setting_page'] = 'privileges';
+      }
+   }
+}
+?>
+
+<div class="page-margin tag_grpage_sett">
+	<div class="container-fluid tag_cont_fluid">
+		<?php if (Wo_IsMobile() == false) { ?>
+		<div class="tag_hide_prof_sett_hdr">
+			<div class="profile-container tag_cover_bg">
+				<button class="btn btn-mat btn_goback" onclick="window.history.back();"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path fill="currentColor" d="M19 11H7.83l4.88-4.88c.39-.39.39-1.03 0-1.42-.39-.39-1.02-.39-1.41 0l-6.59 6.59c-.39.39-.39 1.02 0 1.41l6.59 6.59c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L7.83 13H19c.55 0 1-.45 1-1s-.45-1-1-1z"></path></svg></button>
+				<div class="tag_cover_sec_bg">
+					<img src="<?php echo $wo['setting']['cover']?>">
+					<div class="tag_cover_bg_grad"></div>
+				</div>
+				<div class="container">
+					<div class="card hovercard">
+						<div class="wow_content cardheader user-cover">
+							<img src="<?php echo $wo['setting']['cover']?>" alt="<?php echo $wo['setting']['page_title']?>"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="container">
+				<div class="valign wow_content p15 tag_event_name_hdr tag_group_name_hdr">
+					<div class="event-info-cont-small">
+						<div class="user-avatar">
+							<img id="group-avatar-image" src="<?php echo $wo['setting']['avatar']?>">
+						</div>
+						<h3><?php echo $wo['setting']['page_title']?></h3>
+					</div>
+					<div class="wow_event_page_btns">
+						<a href="<?php echo Wo_SeoLink('index.php?link1=?link1=timeline&u=' . $wo['setting']['page_name'] . '');?>" class="btn btn-default btn-mat"><?php echo $wo['lang']['view']?></a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<?php } ?>
+		<div class="container">
+			<div class="page-margin wow_content">
+				<h2 class="tag_page_title text-center">
+					<?php echo ($wo['setting_page'] == 'general-setting') ? '' . $wo['lang']['general_setting'] . '': '';?>
+					<?php echo ($wo['setting_page'] == 'profile-setting') ? '' . $wo['lang']['profile_setting'] . '': '';?>
+					<?php echo ($wo['setting_page'] == 'avatar-setting') ? '' . $wo['lang']['avatar_and_cover'] . '': '';?>
+					<?php echo ($wo['setting_page'] == 'social-links') ? '' . $wo['lang']['social_links'] . '': '';?>
+					<?php echo ($wo['setting_page'] == 'analytics') ? '' . $wo['lang']['page_analytics'] . '': '';?>
+					<?php echo ($wo['setting_page'] == 'design-setting') ? '' . $wo['lang']['design'] . ' ' . $wo['lang']['setting'] .'': '';?>
+					<?php echo ($wo['setting_page'] == 'delete-page') ? '' . $wo['lang']['delete_page'] . '': '';?>
+					<?php echo ($wo['setting_page'] == 'admins') ? '' . $wo['lang']['page'] . ' ' . $wo['lang']['admin'] .'': '';?>
+					<?php echo ($wo['setting_page'] == 'privileges') ? '' . $wo['lang']['privileges'] . '': '';?>
+				</h2>
+				<?php echo Wo_LoadPage('page-setting/page-setting-sidebar');?>
+				<div class="row">
+					<div class="col-xl-1"></div>
+					<div class="col-xl-10">
+						<?php echo Wo_LoadPage("page-setting/" . $wo['setting_page']); ?>
+					</div>
+					<div class="col-xl-1"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

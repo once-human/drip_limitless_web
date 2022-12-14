@@ -1,0 +1,15 @@
+<div class="notification-list pointer messages-list messages-recipients-list mobileopenlist {{#if active}} active {{/if}}" id="messages-group-{{groupId}}" onclick="Wo_GetGroupMessages({{groupId}},'{{groupName}}');">
+	<div class="valign">
+		<div class="notification-user-avatar avatar">
+			<img alt="{{groupName}}" src="{{groupAvatar}}">
+			{{#if online}}
+				<div class="valign online_dot"><div class="dot"></div></div>
+			{{/if}}
+		</div>
+		<div class="notification-text">
+			<div class="ajax-time">{{time}}</div>
+			<span class="truncate">{{groupName}}</span>
+			<div class="header-message truncate">{{messageText}}</div>
+		</div>
+	</div>
+</div>

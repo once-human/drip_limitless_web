@@ -1,0 +1,51 @@
+<?php
+$message_count = Wo_CountMessages(array(
+    'new' => true,
+    'user_id' => $wo['recipient']['user_id'],
+    'page_id' => $wo['page_message']['message']['page_id']
+));
+
+$page_info = Wo_PageData($wo['page_message']['message']['page_id']);
+$avatar = $page_info['avatar'];
+$name = $page_info['page_name'];
+if ($page_info['is_page_onwer'] == 1) {
+   if ($page_info['user_id'] != $wo['page_message']['message']['from_id']) {
+      $user_info = Wo_UserData($wo['page_message']['message']['from_id']);
+   }
+   else{
+      $user_info = Wo_UserData($wo['page_message']['message']['to_id']);
+   }
+   
+   $avatar = $user_info['avatar'];
+   $name = $user_info['name'].' ('.$page_info['page_name'].')';
+}
+
+$user_id = $wo['page_message']['message']['page_id'].'_'.$wo['page_message']['message']['from_id'];
+if ($page_info['user_id'] == $wo['page_message']['message']['from_id']) {
+    $user_id = $wo['page_message']['message']['page_id'].'_'.$wo['page_message']['message']['to_id'];
+}
+
+if ($page_info['user_id'] == $wo['page_message']['message']['from_id']) {
+   $page_user = $wo['page_message']['message']['to_id'];
+}
+else{
+   $page_user = $wo['page_message']['message']['from_id'];
+}
+?>
+
+<div class="notification-list pointer messages-list messages-recipients-list mobileopenlist <?php echo ((!empty($wo['session_active_page_background']) && $wo['session_active_page_background'] == $user_id) || (!empty($_GET['page']) && $_GET['page'] == $wo['page_message']['message']['page_id'])) ? 'active' : ''; ?>" id="messages-recipient-<?php echo $user_id; ?>" onclick="Wo_GetPageMessages(<?php echo $page_info['page_id']; ?>,<?php echo $page_user; ?>,'<?php echo $name; ?>','<?php echo $user_id; ?>');" title="<?php echo $name; ?>">
+	<div class="valign">
+		<div class="notification-user-avatar avatar">
+			<span class="new-message-alert <?php echo ($message_count == 0) ? 'hidden' : ''; ?>"></span>
+			<img alt="<?php echo $name; ?>" src="<?php echo $avatar;?>">
+			<?php if ($wo['recipient']['lastseen'] > (time() - 60)) { ?>
+				<div class="valign online_dot"><div class="dot"></div></div>
+			<?php }?>
+		</div>
+		<div class="notification-text">
+			<div class="ajax-time"></div>
+            <span class="truncate"><?php echo $name; ?></span>
+			<div class="header-message truncate"><?php echo Wo_UserStatus($wo['recipient']['user_id'],$wo['recipient']['lastseen']); ?></div>
+		</div>
+	</div>
+</div>

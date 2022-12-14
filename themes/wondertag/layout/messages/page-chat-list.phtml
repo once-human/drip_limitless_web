@@ -1,0 +1,106 @@
+<?php $reactions = Wo_GetPostReactions($wo['message']['id'],'message'); ?>
+<div class="message-contnaier valign" id="messageId_<?php echo $wo['message']['id']; ?>">
+	<?php if ($wo['message']['onwer'] == 0): ?>
+		<?php 
+			$page_info = Wo_PageData($wo['message']['page_id']);
+			$avatar = $page_info['avatar'];
+			if ($page_info['user_id'] != $wo['message']['from_id']) {
+				$avatar = $wo['message']['user_data']['avatar'];
+			}
+		?>
+		<a><img class="message-user-image" src="<?php echo $avatar?>" alt="User image"></a>
+	<?php endif ?>
+	<div class="messages-wrapper messages-text tag_msg_wrapper message-model <?php echo ($wo['message']['onwer'] == 0) ? 'incoming' : 'outgoing';?>" data-message-id="<?php echo $wo['message']['id'] ?>" data-toggle="tooltip" title="<?php echo Wo_Time_Elapsed_String($wo['message']['time']);?>" data-placement="<?php echo ($wo['message']['onwer'] == 0) ? 'right': 'left';?>">
+		<?php if (!empty($wo['message']['reply_id']) && !empty($wo['message']['reply'])) { ?>
+			<div class="valign tag_reply_msg_bg">
+				<p class="message-text tag_reply_msg_text" dir="auto"><?php echo $wo['message']['reply']['text'] ?></p>
+				<div class="clear"></div>
+				<div class="message-media">
+					<?php
+						if (isset($wo['message']['reply']['media']) && !empty($wo['message']['reply']['media'])) {
+							$media = array(
+								'type' => 'message',
+								'storyId' => $wo['message']['reply']['id'],
+								'filename' => $wo['message']['reply']['media'],
+								'name' => $wo['message']['reply']['mediaFileName']
+							);
+							echo Wo_DisplaySharedFile($media, 'message');
+						}
+					?>
+					<?php if (!empty($wo['message']['reply']['stickers'])): ?>
+					<?php if (strpos('.mp4', $wo['message']['reply']['stickers'])) { ?>
+						<video autoplay loop><source src="<?php echo $wo['message']['reply']['stickers']; ?>" type="video/mp4"></video>
+					<?php } else { ?>
+						<img src="<?php echo $wo['message']['reply']['stickers']; ?>" alt="GIF">
+					<?php } ?>
+					<?php endif; ?>
+				</div>
+			</div>
+			<div class="clear"></div>
+		<?php } ?>
+
+		<?php if (!empty($wo['message']['text'])): ?>
+			<p class="message-text" id="message_text_reply_<?php echo $wo['message']['id'] ?>" dir="auto"><?php echo $wo['message']['text'] ?></p>
+		<?php endif ?>
+		<div class="clear"></div>
+		<div class="message-media" id="message_media_reply_<?php echo $wo['message']['id'] ?>">
+			<div class="clear"></div>
+			<?php
+				if (isset($wo['message']['media']) && !empty($wo['message']['media'])) {
+					$media = array(
+						'type' => 'message',
+						'storyId' => $wo['message']['id'],
+						'filename' => $wo['message']['media'],
+						'name' => $wo['message']['mediaFileName']
+					);
+					echo Wo_DisplaySharedFile($media, 'message');
+				}
+			?>
+			<?php if (!empty($wo['message']['stickers'])): ?>
+				<img src="<?php echo $wo['message']['stickers']; ?>" style="max-height: 100px;">
+			<?php endif; ?>
+		</div>
+		<div class="valign like-stat stat-item post-like-status">
+			<span class="like-emo post-reactions-icons-m-<?php echo $wo['message']['id']; ?>"><?php echo $reactions;?></span>
+		</div>
+		<div class="clear"></div>
+		
+		<!--<div class="time ajax-time <?php echo ($wo['message']['onwer'] == 0) ? '' : 'text-right';?>" title="<?php echo date('c',$wo['message']['time']); ?>"><?php echo Wo_Time_Elapsed_String($wo['message']['time']);?></div>-->
+	</div>
+	<div class="dropup valign tag_chat_opts">
+		<div class="pointer deleteMessage" onclick="Wo_ReplyMessage(<?php echo $wo['message']['id'] ?>);">
+			<svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" opacity="0.5"><path fill="currentColor" d="M11 20L1 12l10-8v5c5.523 0 10 4.477 10 10 0 .273-.01.543-.032.81-1.463-2.774-4.33-4.691-7.655-4.805L13 15h-2v5zm-2-7h4.034l.347.007c1.285.043 2.524.31 3.676.766C15.59 12.075 13.42 11 11 11H9V8.161L4.202 12 9 15.839V13z" /></svg>
+		</div>
+		<?php //if ($wo['chatMessage']['onwer'] == 0) { ?>
+			<div class="pointer deleteMessage dropdown-toggle" data-toggle="dropdown" role="button">
+				<svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" opacity="0.5"><path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm-5-7h2a3 3 0 0 0 6 0h2a5 5 0 0 1-10 0zm1-2a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm8 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" /></svg>
+			</div>
+			<div class="dropdown-menu tag_chat_reacts">
+				<ul class="reactions-box" data-id="<?php echo $wo['message']['id']; ?>">
+					<?php if (!empty($wo['reactions_types'])) {
+						foreach ($wo['reactions_types'] as $key => $value) {
+							if ($value['status'] == 1) {
+					?>
+						<li class="valign reaction reaction-<?php echo $value['id'];?>" data-reaction="<?php echo $value['name'];?>" data-reaction-id="<?php echo $value['id'];?>" data-reaction-lang="<?php echo $value['name'];?>" title="<?php echo $value['name'];?>" data-post-id="<?php echo $wo['message']['id']; ?>" onclick="Wo_RegisterMessageReaction(this,'<?php echo($value['wowonder_small_icon']) ?>',<?php echo($value['is_html']) ?>);">
+							<?php if (preg_match("/<[^<]+>/",$value['wowonder_icon'],$m)) {
+									echo($value['wowonder_icon']);
+								 }
+								 else{ ?>
+								<img src="<?php echo($value['wowonder_icon']) ?>">
+							<?php } ?>
+						</li>
+					<?php } } } ?>
+				</ul>
+			</div>
+		<?php //} ?>
+		<div class="pointer deleteMessage" onclick="Wo_DeleteMessage(<?php echo $wo['message']['id'] ?>);">
+			<svg xmlns="http://www.w3.org/2000/svg" height="19" viewBox="0 0 24 24" width="19" opacity="0.5"><path fill="currentColor" d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm-5-9h10v2H7v-2z"></path></svg>
+		</div>
+	</div>
+	
+	<div class="clear"></div>
+	<?php if($wo['message']['user_data']['user_id'] == $wo['user']['user_id']) { ?>
+		<div class="message-seen"></div>
+	<?php } ?>
+</div>
+<div class="clear"></div>

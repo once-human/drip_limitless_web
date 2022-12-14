@@ -1,0 +1,8 @@
+<div class="container">
+	<div class="valign navbar-default">
+		<a class="logo" href="<?php echo $wo['config']['site_url'];?>"><img src="<?php echo $wo['config']['theme_url'];?>/img/logo.<?php echo $wo['config']['logo_extension'];?>" alt="Logo"> </a>
+		<?php if ($wo['config']['user_registration'] == 1): ?>
+			<a class="btn btn-main btn-mat" href="<?php echo Wo_SeoLink('index.php?link1=register');?>"><?php echo $wo['lang']['register']?></a>
+		<?php endif ?>
+	</div>
+</div>

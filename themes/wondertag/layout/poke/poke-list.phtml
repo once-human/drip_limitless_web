@@ -1,0 +1,13 @@
+<div class="col-6 col-md-4 col-lg-3 nearby_user_wrapper user-data wo_poke_users" id="<?php echo $wo['poke']['poke_id'];?>">
+	<div class="nearby_user_wrapper_innr text-center">
+		<div class="avatar">
+			<a href="<?php echo $wo['poke']['url'];?>" data-ajax="?link1=timeline&amp;u=<?php echo $wo['poke']['username']?>"><img src="<?php echo $wo['poke']['avatar']?>" alt="<?php echo $wo['poke']['name']; ?>"></a>
+		</div>
+		<span class="user-popover" data-id="<?php echo $wo['poke']['user_id'];?>" data-type="user">
+			<a href="<?php echo $wo['poke']['url'];?>" data-ajax="?link1=timeline&amp;u=<?php echo $wo['poke']['username']?>" class="truncate user_wrapper_link"><?php echo $wo['poke']['name']; ?></a>
+		</span>
+		<div class="user-follow-button">
+			<button type="button" onclick="Wo_RegisterPokeBack(<?php echo $wo['poke']['user_id'];?>,this,<?php echo $wo['user']['user_id'];?>,<?php echo $wo['poke']['id'];?>)" class="btn btn-default btn-mat"><?php echo $wo['lang']['poke_back'];?></button>
+		</div>
+	</div>
+</div>

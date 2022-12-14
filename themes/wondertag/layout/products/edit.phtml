@@ -1,0 +1,249 @@
+<div class="page-margin">
+	<div class="container">
+		<h2 class="tag_page_title m5"><?php echo $wo['lang']['market'];?></h2>
+		<div class="page-margin wow_content wow_sett_content">
+			<div class="wo_page_hdng">
+				<span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M12,13A5,5 0 0,1 7,8H9A3,3 0 0,0 12,11A3,3 0 0,0 15,8H17A5,5 0 0,1 12,13M12,3A3,3 0 0,1 15,6H9A3,3 0 0,1 12,3M19,6H17A5,5 0 0,0 12,1A5,5 0 0,0 7,6H5C3.89,6 3,6.89 3,8V20A2,2 0 0,0 5,22H19A2,2 0 0,0 21,20V8C21,6.89 20.1,6 19,6Z"></path></svg></span> <?php echo $wo['lang']['edit_product'];?>
+			</div>
+			<form class="create-album-form form-horizontal tag_field_full_margin" method="post">
+				<label class="tag_field">
+					<input id="name" name="name" type="text" placeholder=" " value="<?php echo $wo['product']['name']?>">
+					<span><?php echo $wo['lang']['name'] ?></span>
+				</label>
+				<label class="tag_field">
+					<textarea name="description" rows="5" id="description" placeholder=" "><?php echo $wo['product']['edit_description']?></textarea>
+					<span><?php echo $wo['lang']['description'] ?></span>
+				</label>
+				<div class="help-block"><?php echo $wo['lang']['please_describe_your_product'] ?></div>
+				<div class="row">
+					<div class="col-xl-4">
+						<label class="tag_field">
+							<select name="currency" id="currency">
+								<?php foreach ($wo['currencies'] as $key => $currency) { ?>
+									<option value="<?php echo $key; ?>" <?php echo ($wo['product']['currency'] == $key) ? 'selected' : ''; ?>><?php echo  $currency['text'] ?> (<?php echo  $currency['symbol'] ?>)</option>
+								<?php } ?>
+							</select>
+							<span><?php echo $wo['lang']['currency'] ?></span>
+						</label>
+					</div>
+					<div class="col-xl-4">
+						<label class="tag_field">
+							<input id="price" name="price" type="text" placeholder=" " value="<?php echo $wo['product']['price']?>">
+							<span><?php echo $wo['lang']['price'] ?></span>
+						</label>
+					</div>
+					<div class="col-xl-4">
+						<label class="tag_field">
+							<select name="type" id="type">
+								<option value="0" <?php echo ($wo['product']['type'] == 0) ? 'selected' : '';?>><?php echo $wo['lang']['new'] ?></option>
+								<option value="1" <?php echo ($wo['product']['type'] == 1) ? 'selected' : '';?>><?php echo $wo['lang']['used'] ?></option>
+							</select>
+							<span><?php echo $wo['lang']['type'] ?></span>
+						</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-6">
+						<label class="tag_field">
+							<input id="location" name="location" type="text" placeholder=" " value="<?php echo $wo['product']['location']?>">
+							<span><?php echo $wo['lang']['location'] ?></span>
+						</label>
+					</div>
+					<div class="col-lg-6">
+						<label class="tag_field">
+							<select name="category" id="category" onchange="GetProductSubCategory(this)">
+								<?php 
+									foreach ($wo['products_categories'] as $key => $category) {
+										$selected = ($key == $wo['product']['category']) ? 'selected' : '';
+										if ($key > 0) {
+								?>
+									<option value="<?php echo $key;?>" <?php echo $selected?>><?php echo $category;?></option>
+								<?php } } ?>
+							</select>
+							<span><?php echo $wo['lang']['category'] ?></span>
+						</label>
+					</div>
+				</div>
+				<label class="tag_field">
+					<select name="product_sub_category" id="product_sub_category">
+						<?php
+						unset($wo['products_categories'][1]);
+						if (!empty($wo['products_sub_categories'][$wo['product']['category']])) {
+						foreach ($wo['products_sub_categories'][$wo['product']['category']] as $id => $sub_category) { 
+							$sub_selected = ($sub_category['id'] == $wo['product']['sub_category']) ? ' selected' : '' ;
+							?>
+							<option value="<?php echo $sub_category['id']?>" <?php echo $sub_selected; ?>><?php echo $sub_category['lang']; ?></option>
+						<?php } } ?>
+					</select>
+					<span><?php echo $wo['lang']['sub_category'] ?></span>
+				</label>
+				<?php $fields = Wo_GetCustomFields('product'); 
+					if (!empty($fields)) {
+						foreach ($fields as $key => $wo['field']) {
+							echo Wo_LoadPage('products/edit_fields');
+						}
+					}
+				?>
+				<input type="hidden" name="product_id" value="<?php echo $wo['product']['id'];?>">
+				<div class="tag_alone_label">
+					<label><?php echo $wo['lang']['photos'];?></label>
+				</div>
+				<div id="uploaded-productimage-holder" class="valign tag_slide_upload_img">
+					<?php if (!empty($wo['product']['images'])) { 
+						foreach ($wo['product']['images'] as $key => $value) {
+					?>
+						<span class="thumb-image" id="delete_image_by_id_<?php echo $value['id']; ?>">
+							<span onclick="DeleteProductImageById(<?php echo $value['id']; ?>)" class="btn btn-mat thumb-image-delete-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" /></svg></span>
+							<div class="background_image_product" style="background-image: url('<?php echo $value['image']; ?>');"></div>
+						</span>
+					<?php } } ?>
+					<div class="upload-product-image pointer" onclick="document.getElementById('publisher-photos').click(); return false">
+						<div class="valign">
+							<svg height="28" viewBox="0 0 512 512" width="28" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" opacity=".7" d="m149.332031 149.332031c0 23.566407-19.101562 42.667969-42.664062 42.667969-23.566407 0-42.667969-19.101562-42.667969-42.667969 0-23.5625 19.101562-42.664062 42.667969-42.664062 23.5625 0 42.664062 19.101562 42.664062 42.664062zm0 0"/><path fill="currentColor" opacity=".7" d="m202.667969 373.332031c0-83.15625 59.816406-152.511719 138.664062-167.550781v-141.78125c0-35.285156-28.714843-64-64-64h-213.332031c-35.285156 0-64 28.714844-64 64v298.667969c0 35.285156 28.714844 64 64 64h147.328125c-5.546875-16.8125-8.660156-34.6875-8.660156-53.335938zm-101.546875-113.492187c-14.082032-14.078125-38.828125-14.078125-52.90625 0l-5.546875 5.527344v-201.367188c0-11.777344 9.554687-21.332031 21.332031-21.332031h213.332031c11.777344 0 21.335938 9.554687 21.335938 21.332031v137.367188l-16.214844-16.214844c-14.589844-14.59375-38.335937-14.59375-52.90625 0l-101.546875 101.546875zm0 0"/><path fill="currentColor" opacity=".7" d="m373.332031 234.667969c-76.457031 0-138.664062 62.207031-138.664062 138.664062 0 76.460938 62.207031 138.667969 138.664062 138.667969 76.460938 0 138.667969-62.207031 138.667969-138.667969 0-76.457031-62.207031-138.664062-138.667969-138.664062zm58.667969 160h-37.332031v37.332031c0 11.796875-9.539063 21.332031-21.335938 21.332031s-21.332031-9.535156-21.332031-21.332031v-37.332031h-37.332031c-11.796875 0-21.335938-9.539063-21.335938-21.335938s9.539063-21.332031 21.335938-21.332031h37.332031v-37.332031c0-11.796875 9.535156-21.335938 21.332031-21.335938s21.335938 9.539063 21.335938 21.335938v37.332031h37.332031c11.796875 0 21.332031 9.535156 21.332031 21.332031s-9.535156 21.335938-21.332031 21.335938zm0 0"/></svg>
+						</div>
+					</div>
+				</div>
+				<div class="hidden">
+					<input type="file" id="publisher-photos" accept="image/x-png, image/gif, image/jpeg" name="postPhotos[]" multiple="multiple">
+				</div>
+
+				<div class="app-general-alert setting-update-alert"></div>
+				<input type="hidden" name="id" class="form-control input-md" value="">
+				<input type="hidden" name="hash_id" value="<?php echo Wo_CreateSession();?>">
+				<div class="text-center">
+					<a class="btn btn-mat disable_btn" href="<?php echo Wo_SeoLink('index.php?link1=my-products'); ?>"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"></path></svg> <?php echo $wo['lang']['go_back'];?></a>
+					<button class="btn btn-main btn-mat btn-mat-raised disable_btn" type="submit"><?php echo $wo['lang']['save']; ?></button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	<?php 
+$js_array = json_encode($wo['products_sub_categories']);
+echo "var sub_categories_array = ". $js_array . ";\n";
+?>
+	function GetProductSubCategory(self) {
+		id = $(self).val();
+		var text = "";
+		if (typeof(sub_categories_array[id]) == 'undefined') {
+		    $('#product_sub_category').html('');
+		}
+		else{
+		   	sub_categories_array[id].forEach(function(entry) {
+				text = text + "<option value='"+entry.id+"'>"+entry.lang+"</option>";
+			});
+		    $('#product_sub_category').html(text);
+		}
+	}
+var deleted_images_ids = [];
+function DeleteProductImageById(image_id) {
+	deleted_images_ids.push(image_id);
+	$('#delete_image_by_id_'+image_id).remove();
+}
+var uploaded_deleted_images = [];
+function DeleteUploadedImageById(name,id) {
+	uploaded_deleted_images.push(name);
+	$('#delete_uploaded_image_by_id_'+id).remove();
+}
+$(document).ready(function() {
+	$("#publisher-photos").on('change', function() {
+	uploaded_deleted_images = [];
+	//Get count of selected files
+	var product_countFiles = $(this)[0].files.length;
+	var product_imgPath = $(this)[0].value;
+	var extn = product_imgPath.substring(product_imgPath.lastIndexOf('.') + 1).toLowerCase();
+	var product_image_holder = $("#uploaded-productimage-holder");
+	product_image_holder.find('img').remove();
+	if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
+		if (typeof(FileReader) != "undefined") {
+		//loop for each file selected for uploaded.
+		for (var i = 0; i < product_countFiles; i++) 
+		{
+			var product_reader = new FileReader();
+			var ii = 0;
+			product_reader.onload = function(e) {
+				name = "'"+$("#publisher-photos")[0].files[ii].name+"'";
+				src = "'"+e.target.result+"'";
+				$(product_image_holder).prepend('<span class="thumb-image" id="delete_uploaded_image_by_id_'+ii+'"><span class="btn btn-mat thumb-image-delete-btn" onclick="DeleteUploadedImageById('+name+','+ii+')"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" /></svg></span><div class="background_image_product" style="background-image: url('+src+');"></div></span>');
+				ii = ii +1;
+                }
+                product_image_holder.show();
+                product_reader.readAsDataURL($(this)[0].files[i]);
+              }
+            } else {
+              product_image_holder.html("<p>This browser does not support FileReader.</p>");
+            }
+         }
+	});
+});
+
+   $(function() {
+    var status = $('#status');
+    var publisher_button = $('#publisher-button');
+     $('form.create-album-form').ajaxForm({
+       url: Wo_Ajax_Requests_File() + '?f=products&s=edit',
+       beforeSend: function() {
+         $('.create-album-form').find('.disable_btn').attr('disabled','disabled');
+       },
+		beforeSubmit: function (a,b,c) {
+    	for (var i = 0 ;i < a.length ; i++) {
+    		if (a[i].name == 'postPhotos[]') {
+    			for (var b = 0 ;b < uploaded_deleted_images.length ; b++) {
+    				if (a[i].value.name == uploaded_deleted_images[b]) {
+    					a[i] = {name:'',value:''};
+    				}
+    			}
+    		}
+    	}
+    	a.push({'name' : 'deleted_images_ids' , 'value' : deleted_images_ids});
+    	deleted_images_ids = [];
+    	uploaded_deleted_images = [];
+    },
+       success: function(data) {
+         if (data.status == 200) {
+           window.location.href = data.href;
+         } else {
+             var errors = data.errors.join("<br>");
+             $('.app-general-alert').html('<div class="alert alert-danger">' + errors + '</div>');
+             $('.alert-danger').fadeIn(300);
+         }
+         $('.create-album-form').find('.disable_btn').removeAttr("disabled");
+       }
+     });
+   });
+  var pac_input = document.getElementById('address');
+  (function pacSelectFirst(input) {
+    // store the original event binding function
+    var _addEventListener = (input.addEventListener) ? input.addEventListener : input.attachEvent;
+    function addEventListenerWrapper(type, listener) {
+      // Simulate a 'down arrow' keypress on hitting 'return' when no pac suggestion is selected,
+      // and then trigger the original listener.
+      if(type == "keydown") {
+        var orig_listener = listener;
+        listener = function (event) {
+          var suggestion_selected = $(".pac-item-selected").length > 0;
+          if(event.which == 13 && !suggestion_selected) {
+            var simulated_downarrow = $.Event("keydown", {
+              keyCode: 40,
+              which: 40
+            });
+            orig_listener.apply(input, [simulated_downarrow]);
+          }
+          orig_listener.apply(input, [event]);
+        };
+      }
+      // add the modified listener
+      _addEventListener.apply(input, [type, listener]);
+    }
+    if(input.addEventListener)
+      input.addEventListener = addEventListenerWrapper;
+    else if(input.attachEvent)
+      input.attachEvent = addEventListenerWrapper;
+  })(pac_input);
+
+  $(function () {
+     var autocomplete = new google.maps.places.Autocomplete(pac_input);
+  });
+</script>

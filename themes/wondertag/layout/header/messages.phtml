@@ -1,0 +1,36 @@
+<?php
+$unread_class = '';
+$message = Wo_GetMessagesHeader(array('user_id' => $wo['message']['user_id']), 'user');
+
+if (!empty($message['from_id'])) {
+   if ($message['seen'] == 0 && $wo['message']['user_id'] == $message['from_id']) {
+    $unread_class = ' unread';
+   }
+   //$message['text'] = mb_substr( $message['text'], 0, 70, "utf-8") . '...';
+}
+$message['text'] = Wo_Emo($message['text']);
+
+$message_event = "Wo_OpenChatTab({$wo['message']['user_id']});";
+
+if (strpos($_SERVER["HTTP_REFERER"], 'messages') !== false) {
+   $message_event = "Wo_GetUserMessages({$wo['message']['user_id']},'{$wo['message']['name']}');";
+}
+
+?>
+<div class="notification-list pointer messages-list <?php echo $unread_class;?>" onclick="<?php echo $message_event ?>">
+	<div class="valign">
+		<div class="notification-user-avatar">
+			<img src="<?php echo $wo['message']['avatar']; ?>" alt="<?php echo $wo['message']['name']; ?>">
+		</div>
+		<div class="notification-text">
+			<div class="ajax-time" title="<?php echo (!empty($message['time'])) ? date('c',$message['time']) : '';?>"><?php echo (!empty($message['time'])) ? Wo_Time_Elapsed_String($message['time']) : '';?></div>
+            <span><?php echo $wo['message']['name']; ?></span>
+            <?php if (!empty($message['from_id'])): ?>
+				<div class="header-message">
+					<?php echo ($wo['message']['user_id'] != $message['from_id']) ? $wo['lang']['me'] . ': ' : '';?>
+					<?php echo (!empty($message['media']) && !empty($message['product_id'])) ? '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"><path fill="#000000" d="M7.5,18A5.5,5.5 0 0,1 2,12.5A5.5,5.5 0 0,1 7.5,7H18A4,4 0 0,1 22,11A4,4 0 0,1 18,15H9.5A2.5,2.5 0 0,1 7,12.5A2.5,2.5 0 0,1 9.5,10H17V11.5H9.5A1,1 0 0,0 8.5,12.5A1,1 0 0,0 9.5,13.5H18A2.5,2.5 0 0,0 20.5,11A2.5,2.5 0 0,0 18,8.5H7.5A4,4 0 0,0 3.5,12.5A4,4 0 0,0 7.5,16.5H17V18H7.5Z" /></svg> ' . $wo['lang']['file_n_label'] : (!empty($message['product_id']) ? $wo['lang']['sent_product_to_you'] : $message['text']); ?>
+				</div>
+            <?php endif ?>
+		</div>
+	</div>
+</div>

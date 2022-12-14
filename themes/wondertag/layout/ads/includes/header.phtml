@@ -1,0 +1,11 @@
+<ul class="list-unstyled tag_page_nav">
+	<?php if ($wo['config']['user_ads'] == 1) { ?>
+		<li class="<?php echo ($wo['ap'] == 'ads') ? 'active' : ''; ?>">
+			<a href="<?php echo Wo_SeoLink('index.php?link1=advertise'); ?>" data-ajax="?link1=advertise" data-ajax="?link1=advertise" class="btn-mat"><?php echo $wo['lang']['my_campaigns']; ?></a>
+		</li>
+		<li class="<?php echo ($wo['ap'] == 'wallet') ? 'active' : ''; ?>">
+			<a href="<?php echo Wo_SeoLink('index.php?link1=wallet'); ?>" data-ajax="?link1=wallet" data-ajax="?link1=wallet" class="btn-mat"><?php echo $wo['lang']['my_wallet']; ?></a>
+		</li>
+	<?php } ?>
+</ul>
+<div class="clear"></div>

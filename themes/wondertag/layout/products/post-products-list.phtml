@@ -1,0 +1,10 @@
+<div class="col-6 col-md-4 col-lg-4 col-xl-3 product tag_prods_list" id="product-<?php echo $wo['product']['id']?>" data-id="<?php echo $wo['product']['id']?>">
+	<div class="wow_content product_main">
+		<a href="<?php echo $wo['product']['url']?>" class="product_image"><img src="<?php echo $wo['product']['images'][0]['image_org'];?>"></a>
+		<div class="product_info">
+			<h2 class="truncate"><a href="<?php echo $wo['product']['url']?>" title="<?php echo $wo['product']['name']?>"><?php echo $wo['product']['name']?></a></h2>
+			<b class="truncate"><?php echo (!empty($wo['currencies'][$wo['product']['currency']]['symbol'])) ? $wo['currencies'][$wo['product']['currency']]['symbol'] : $wo['config']['classified_currency_s'];?><?php echo $wo['product']['price']?></b>
+		</div>
+	</div>
+	<div class="clear"></div>
+</div>

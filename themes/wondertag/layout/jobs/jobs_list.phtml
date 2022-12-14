@@ -1,0 +1,32 @@
+<div class="product col-xl-4 col-md-6" id="product-<?php echo $wo['job']['id']?>" data-id="<?php echo $wo['job']['id']?>">
+	<div class="wow_content p15 tag_job_list">
+		<span class="job_type"><?php if (!empty($wo['job']['job_type']) && in_array($wo['job']['job_type'], array('full_time','part_time','internship','volunteer','contract'))) {echo $wo['lang'][$wo['job']['job_type']];} ?></span>
+		<div class="avatar">
+			<a href="<?php echo $wo['job']['page']['url']?>"><img src="<?php echo $wo['job']['page']['avatar'];?>"></a>
+		</div>
+		<h4 class="truncate"><a href="<?php echo $wo['job']['url']?>" title="<?php echo $wo['job']['title']?>"><?php echo $wo['job']['title']?></a></h4>
+		<p><?php echo stripslashes(mb_substr($wo['job']['description'], 0, 115, "UTF-8")) . '...';?></p>
+		<?php
+			$product_by_ = $wo['job']['category'];
+			$product_by_ = str_replace('{product_category_name}', $wo['job_categories'][$wo['job']['category']], $product_by_);
+		?>
+		<div>
+			<a class="job_cat" href="<?php echo Wo_SeoLink('index.php?link1=jobs');?>?c_id=<?php echo($wo['job']['category']) ?>"><svg xmlns="http://www.w3.org/2000/svg" height="17" viewBox="0 0 24 24" width="17"><path fill="currentColor" d="M7 11.5a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9zm0 10a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9zm10-10a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9zm0 10a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9z"></path></svg> <?php echo $wo['job_categories'][$wo['job']['category']];?></a>
+		</div>
+		<div class="valign job_foot">
+			<?php if (Wo_IsModerator() || Wo_IsAdmin()) { ?>
+				<a class="btn btn-danger btn-mat" href="javascript:void(0);" onclick="Wo_OpenJobDeleteBox(<?php echo $wo['job']['id']; ?>);"><?php echo $wo['lang']['delete'] ?></a>
+			<?php } ?>
+			<?php if ($wo['loggedin'] == true) { ?>
+				<?php if ($wo['job']['user_id'] != $wo['user']['id']) { ?>
+					<?php if ($wo['job']['apply'] == false) { ?>
+						<button type="button" class="btn btn-main btn-mat" onclick="ApplyJobNow(<?php echo $wo['job']['id']; ?>)"><?php echo $wo['lang']['apply_now'] ?></button>
+					<?php }else{ ?>
+						<button type="button" class="btn btn-main btn-mat" disabled><?php echo $wo['lang']['job_applied'] ?></button>
+					<?php } ?>
+				<?php } ?>
+			<?php } ?>
+			<a class="btn btn-default btn-mat" href="<?php echo $wo['job']['url']?>"><?php echo $wo['lang']['view'] ?></a>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,14 @@
+<div class="col-lg-4 tag_main_blog_col recommended-articles">
+	<div class="tag_main_blog">
+		<a href="<?php echo $wo['blog-style']['url'] ?>" class="avatar">
+			<img src="<?php echo $wo['blog-style']['thumbnail']; ?>" alt="<?php echo $wo['blog-style']['title']; ?>">
+		</a>
+		<a class="postCategory" href="<?php echo $wo['blog-style']['category_link']; ?>" data-ajax="?link1=blog-category&id=<?php echo $wo['blog-style']['category']; ?>"><?php echo $wo['blog_categories'][$wo['blog-style']['category']]; ?></a>
+		<div class="info">
+			<h2 class="art-title"><a href="<?php echo $wo['blog-style']['url']; ?>"><?php echo $wo['blog-style']['title']; ?></a></h2>
+			<div class="postMeta--author-text truncate">
+				<time><?php echo date("d M Y",$wo['blog-style']['posted']); ?></time>
+			</div>
+		</div>
+	</div>
+</div>

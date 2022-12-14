@@ -1,0 +1,42 @@
+<div class="page-margin">
+	<div class="container-fluid tag_cont_fluid">
+		<div class="valign tag_app_request">
+			<div class="form-horizontal wow_content p30 text-center" method="post">
+				<div class="avatar">
+					<img src="<?php echo $wo['app']['app_avatar'];?>" alt="<?php echo $wo['app']['app_name']; ?>" width="100" height="100"/>
+				</div>
+				<h3><?php echo $wo['app']['app_name']; ?></h3>
+				<p><?php echo $wo['app']['app_description']?></p>
+				<div class="clear"></div>
+				<hr class="style-two">
+				<h5><span class="bold"><?php echo $wo['app']['app_name']; ?></span> would like to receive the following info: <br><small>(email, profile info, posts)</small></h5>
+				<hr class="style-two">
+				<button onclick="Wo_AcceptPermissions(<?php echo $wo['app']['id'];?>);" class="btn btn-mat btn-main disable_btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" /></svg> <?php echo $wo['lang']['accept'];?></button>
+				<?php 
+					$url = $wo['app']['app_website_url'];
+					if (isset($_GET['redirect_uri']) && !empty($_GET['redirect_uri'])) {
+						$url = $_GET['redirect_uri'];
+					} else if (!empty($wo['app']['app_callback_url'])) {
+						$url = $wo['app']['app_callback_url'];
+					}
+				?>
+				<input type="hidden" id="url" name="url" value="<?php echo urlencode($url);?>">
+				<div class="form-inline">
+					<a href="<?php echo $wo['app']['app_website_url'];?>" class="btn btn-mat disable_btn"><?php echo $wo['lang']['go_back'];?></a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	function Wo_AcceptPermissions(id) {
+		$('.disable_btn').attr('disabled','disabled');
+		var url = $('#url').val();
+		$.post(Wo_Ajax_Requests_File() + '?f=apps&s=acceptPermissions', {id:id, url:url}, function (data) {
+			if (data.status == 200) {
+				window.location.href = data.location;
+			}
+		});
+	}
+</script>

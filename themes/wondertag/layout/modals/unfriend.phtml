@@ -1,0 +1,16 @@
+<div class="modal fade" id="un_friend_modal" role="dialog">
+	<div class="modal-dialog wow_mat_mdl modal-md">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title"><?php echo $wo['lang']['unfriend']; ?></h4>
+			</div>
+			<div class="modal-body">
+				<p><?php echo $wo['lang']['are_you_sure_unfriend']; ?></p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default btn-mat disable_btn" data-dismiss="modal" aria-label="Close"><?php echo $wo['lang']['cancel'] ?></button>
+				<button id="unfriend_btn" type="button" onclick="Wo_RegisterFollow(<?php echo $wo['follow']['user_id'];?>)" class="btn btn-main btn-mat"><?php echo $wo['lang']['yes']; ?></button>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,19 @@
+<div class="dropdown recipient-chat-user" id="online_{{chat_list_user_id}}">
+	<div class="pointer user-info" data-toggle="dropdown" data-display="static" role="button" onclick="Wo_OpenChatTab({{chat_list_user_id}});">
+		<img src="{{chat_list_avatar}}" alt="{{chat_list_name}}" />
+		<span class="new-message-alert {{#if is_message_count_zero}} hidden {{/if}}">{{message_count_per_user}}</span>
+		<span class="valign chat-loading-icon"></span>
+	</div>
+	<ul class="dropdown-menu" role="menu">
+		<div class="valign">
+			<img src="{{chat_list_avatar}}" alt="{{chat_list_name}}" />
+			<div>
+				<div class="chat-user-text" id="chat-tab-id">{{chat_list_name}}</div>
+				{{#if last_seen_condition}}
+					<small>{{lastseen}}</small>
+				{{/if}}
+			</div>
+		</div>
+	</ul>
+</div>
+<div class="clear"></div>

@@ -1,0 +1,219 @@
+<div class="modal-dialog wow_mat_mdl">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h4 class="modal-title"><?php echo $wo['job']['title'] ?></h4>
+		</div>
+		<form class="apply-job-form form-horizontal" method="post">
+			<div class="modal-body tag_field_full_margin">
+				<div class="apply-job-general-alert setting-update-alert"></div>
+				<div class="clear"></div>
+				<div class="row">
+					<div class="col-xl-6">
+						<label class="tag_field">
+							<input id="user_name" name="user_name" type="text" placeholder=" " value="<?php echo($wo['user']['name']) ?>">
+							<span><?php echo $wo['lang']['name'] ?></span>
+						</label>
+					</div>
+					<div class="col-xl-6">
+						<label class="tag_field">
+							<input id="email" name="email" type="email" placeholder=" " value="<?php echo($wo['user']['email']) ?>">
+							<span><?php echo $wo['lang']['email'] ?></span>
+						</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xl-6">
+						<label class="tag_field">
+							<input id="phone_number" name="phone_number" type="tel" placeholder=" " value="<?php echo($wo['user']['phone_number']) ?>">
+							<span><?php echo $wo['lang']['phone_number'] ?></span>
+						</label>
+					</div>
+					<div class="col-xl-6">
+						<label class="tag_field">
+							<input id="location" name="location" type="text" placeholder=" " value="<?php echo($wo['user']['address']) ?>">
+							<span><?php echo $wo['lang']['location'] ?></span>
+						</label>
+					</div>
+				</div>
+				<hr class="mb-15">
+				<p class="bold"><?php echo $wo['lang']['experience'] ?></p>
+				<div class="row">
+					<div class="col-xl-6">
+						<label class="tag_field">
+							<input id="position" name="position" type="text" placeholder=" ">
+							<span><?php echo $wo['lang']['position'] ?></span>
+						</label>
+					</div>
+					<div class="col-xl-6">
+						<label class="tag_field">
+							<input id="where_did_you_work" name="where_did_you_work" type="text" placeholder=" " value="<?php echo($wo['user']['working']) ?>">
+							<span><?php echo $wo['lang']['where_did_you_work'] ?></span>
+						</label>
+					</div>
+				</div>
+				<label class="tag_field">
+					<textarea placeholder=" " name="experience_description" rows="3" id="experience_description"></textarea>
+					<span><?php echo $wo['lang']['description'] ?></span>
+				</label>
+				<div class="valign row">
+					<div class="col-lg-3">
+						<label class="tag_field">
+							<select id="experience_start_date" name="experience_start_date">
+								<?php for ($i=date('Y'); $i > (date('Y')-50); $i--) {  ?>
+									<option value="<?php echo $i ?>"><?php echo $i ?></option>
+								<?php } ?>
+							</select>
+							<span class="tag_mem_link"><?php echo $wo['lang']['year'] ?></span>
+						</label>
+					</div>
+					<div class="col-lg-3" id="experience_end_date">
+						<label class="tag_field">
+							<select name="experience_end_date">
+								<?php for ($i=date('Y'); $i > (date('Y')-50); $i--) {  ?>
+									<option value="<?php echo $i ?>"><?php echo $i ?></option>
+								<?php } ?>
+							</select>
+							<span><?php echo $wo['lang']['to'] ?></span>
+						</label>
+					</div>
+					<div class="col-xl-6">
+						<div class="round-check mb-15">
+							<input type="checkbox" name="i_currently_work" id="i_currently_work">
+							<label for="i_currently_work"><?php echo $wo['lang']['i_currently_work']; ?></label>
+						</div>
+					</div>
+				</div>
+				<?php if (!empty($wo['job']['question_one']) || !empty($wo['job']['question_two']) || !empty($wo['job']['question_three'])) { ?>
+					<hr class="mb-15">
+					<?php if (!empty($wo['job']['question_one'])) { ?>
+						<?php if ($wo['job']['question_one_type'] == 'free_text_question') { ?>
+							<label class="tag_field">
+								<textarea placeholder=" " name="question_one_answer" rows="3" id="question_one_answer"></textarea>
+								<span><?php echo $wo['job']['question_one'] ?></span>
+							</label>
+						<?php }elseif ($wo['job']['question_one_type'] == 'yes_no_question') { ?>
+							<p class="bold"><?php echo $wo['job']['question_one'] ?></p>
+							<div class="row mb-15">
+								<div class="col-md-12 round-check">
+									<input type="radio" value="yes" name="question_one_answer" id="appl_job_qs_yes">
+									<label for="appl_job_qs_yes"><?php echo $wo['lang']['yes']; ?></label>
+								</div>
+								<div class="col-md-12 round-check">
+									<input type="radio" value="no" name="question_one_answer" id="appl_job_qs_no">
+									<label for="appl_job_qs_no"><?php echo $wo['lang']['no']; ?></label>
+								</div>
+							</div>
+						<?php }elseif ($wo['job']['question_one_type'] == 'multiple_choice_question' && !empty($wo['job']['question_one_answers'])) { ?>
+							<label class="tag_field">
+								<select id="question_one_answer" name="question_one_answer">
+									<?php foreach ($wo['job']['question_one_answers'] as $key => $value) {  ?>
+										<option value="<?php echo $key ?>"><?php echo $value ?></option>
+									<?php } ?>
+								</select>
+								<span><?php echo $wo['job']['question_one'] ?></span>
+							</label>
+						<?php } ?>
+					<?php } ?>
+					<?php if (!empty($wo['job']['question_two'])) { ?>
+						<?php if ($wo['job']['question_two_type'] == 'free_text_question') { ?>
+							<label class="tag_field">
+								<textarea placeholder=" " name="question_two_answer" rows="3" id="question_two_answer"></textarea>
+								<span><?php echo $wo['job']['question_two'] ?></span>
+							</label>
+						<?php }elseif ($wo['job']['question_two_type'] == 'yes_no_question') { ?>
+							<p class="bold"><?php echo $wo['job']['question_two'] ?></p>
+							<div class="row mb-15">
+								<div class="col-md-12 round-check">
+									<input type="radio" value="yes" name="question_two_answer" id="appl_job_qs_yes_2">
+									<label for="appl_job_qs_yes_2"><?php echo $wo['lang']['yes']; ?></label>
+								</div>
+								<div class="col-md-12 round-check">
+									<input type="radio" value="no" name="question_two_answer" id="appl_job_qs_no_2">
+									<label for="appl_job_qs_no_2"><?php echo $wo['lang']['no']; ?></label>
+								</div>
+							</div>
+						<?php }elseif ($wo['job']['question_two_type'] == 'multiple_choice_question' && !empty($wo['job']['question_two_answers'])) { ?>
+							<label class="tag_field">
+								<select id="question_two_answer" name="question_two_answer">
+									<?php foreach ($wo['job']['question_two_answers'] as $key => $value) {  ?>
+										<option value="<?php echo $key ?>"><?php echo $value ?></option>
+									<?php } ?>
+								</select>
+								<span><?php echo $wo['job']['question_two'] ?></span>
+							</label>
+						<?php } ?>
+					<?php } ?>
+					<?php if (!empty($wo['job']['question_three'])) { ?>
+						<?php if ($wo['job']['question_three_type'] == 'free_text_question') { ?>
+							<label class="tag_field">
+								<textarea placeholder=" " name="question_three_answer" rows="3" id="question_three_answer"></textarea>
+								<span><?php echo $wo['job']['question_three'] ?></span>
+							</label>
+						<?php }elseif ($wo['job']['question_three_type'] == 'yes_no_question') { ?>
+							<p class="bold"><?php echo $wo['job']['question_three'] ?></p>
+							<div class="row mb-15">
+								<div class="col-md-12 round-check">
+									<input type="radio" value="yes" name="question_three_answer" id="appl_job_qs_yes_3">
+									<label for="appl_job_qs_yes_3"><?php echo $wo['lang']['yes']; ?></label>
+								</div>
+								<div class="col-md-12 round-check">
+									<input type="radio" value="no" name="question_three_answer" id="appl_job_qs_no_3">
+									<label for="appl_job_qs_no_3"><?php echo $wo['lang']['no']; ?></label>
+								</div>
+							</div>
+						<?php }elseif ($wo['job']['question_three_type'] == 'multiple_choice_question' && !empty($wo['job']['question_three_answers'])) { ?>
+							<label class="tag_field">
+								<select id="question_three_answer" name="question_three_answer">
+									<?php foreach ($wo['job']['question_three_answers'] as $key => $value) {  ?>
+										<option value="<?php echo $key ?>"><?php echo $value ?></option>
+									<?php } ?>
+								</select>
+								<span><?php echo $wo['job']['question_three'] ?></span>
+							</label>
+						<?php } ?>
+					<?php } ?>
+				<?php } ?>
+				<input type="hidden" name="job_id" value="<?php echo $wo['job']['id'] ?>">
+				<input type="hidden" name="hash_id" value="<?php echo Wo_CreateSession();?>">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default btn-mat disable_btn" data-dismiss="modal" aria-label="Close"><?php echo $wo['lang']['cancel'] ?></button>
+				<button type="submit" class="btn btn-main btn-mat disable_btn"><?php echo $wo['lang']['send'] ?></button>
+			</div>
+		</form>
+	</div>
+</div>
+
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	$('form.apply-job-form').ajaxForm({
+		url: Wo_Ajax_Requests_File() + '?f=job&s=apply_job',
+		beforeSend: function() {
+			$('form.apply-job-form').find('.disable_btn').attr('disabled','disabled');
+		},
+		success: function(data) {
+			if (data.status == 200) {
+				$('.apply-job-general-alert').html("<div class='alert alert-success'><?php echo($wo['lang']['apply_job_successfully']) ?></div>");
+				$('.apply-job-general-alert').find('.alert-success').fadeIn(300);
+				if (node_socket_flow == "1") {
+			        socket.emit("user_notification", { to_id: data.user_id, user_id: _getCookie("user_id"), type: "added" });
+			    }
+				setTimeout(function (argument) {
+					$('.apply-job-general-alert').find('.alert-success').fadeOut(300);
+					window.location.reload(true);
+				},3000);
+			} else {
+				$('#apply-job-modal').animate({
+					scrollTop: $('html, body').offset().top //#DIV_ID is an example. Use the id of your destination on the page
+				});
+				$('.apply-job-general-alert').html('<div class="alert alert-danger">' + data.error + '</div>');
+				$('.alert-danger').fadeIn(300);
+				setTimeout(function (argument) {
+					$('.alert-danger').fadeOut(300);
+				},3000);
+			}
+			$('form.apply-job-form').find('.disable_btn').removeAttr("disabled");
+		}
+	});
+});
+</script>

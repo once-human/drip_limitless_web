@@ -1,0 +1,107 @@
+<div class="wow_sett_content">
+	<form  method="post" class="form-horizontal setting-information-form tag_field_full_margin">
+		<div class="setting-information-alert setting-update-alert"></div>
+		<div class="row">
+			<div class="col-xl-6">
+				<label class="tag_field">
+					<input name="company" id="company" type="text" placeholder=" " value="<?php echo $wo['setting']['company']?>" autocomplete="off">
+					<span><?php echo $wo['lang']['company'] ?></span>
+				</label>
+			</div>
+			<div class="col-xl-6">
+				<label class="tag_field">
+					<input id="address" name="address" type="text" placeholder=" " value="<?php echo $wo['setting']['address']?>" autocomplete="off">
+					<span><?php echo $wo['lang']['location'] ?></span>
+				</label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xl-6">
+				<label class="tag_field">
+					<input name="phone" id="phone" type="tel" placeholder=" " value="<?php echo $wo['setting']['phone']?>" autocomplete="off">
+					<span><?php echo $wo['lang']['phone_number'] ?></span>
+				</label>
+			</div>
+			<div class="col-xl-6">
+				<label class="tag_field">
+					<input id="website" name="website" type="url" placeholder=" " value="<?php echo $wo['setting']['website']?>" autocomplete="off">
+					<span><?php echo $wo['lang']['website'] ?></span>
+				</label>
+				<div class="help-block"><?php echo $wo['lang']['site_eg'];?></div>
+			</div>
+		</div>
+		<label class="tag_field">
+			<?php $text = br2nl($wo['setting']['about']); ?>         
+			<textarea id="page_description" name="page_description" placeholder=" " rows="4"><?php echo $text;?></textarea>
+			<span><?php echo $wo['lang']['about'] ?></span>
+		</label>
+
+		<div class="text-center">
+			<button type="submit" class="btn btn-main btn-mat btn-mat-raised disable_btn"><?php echo $wo['lang']['save']; ?></button>
+		</div>
+		<input type="hidden" name="page_id" value="<?php echo $wo['setting']['page_id'];?>">
+		<input type="hidden" name="hash_id" value="<?php echo Wo_CreateSession();?>">
+	</form>
+</div>
+<script type="text/javascript">
+   $(function() {
+     $('form.setting-information-form').ajaxForm({
+       url: Wo_Ajax_Requests_File() + '?f=pages&s=update_information_setting',
+       beforeSend: function() {
+         $('.setting-information-form').find('.disable_btn').attr('disabled','disabled');
+       },
+       success: function(data) {
+         if (data.status == 200) {
+           scrollToTop();
+           $('.setting-information-alert').html('<div class="alert alert-success">' + data.message + '</div>');
+           $('.alert-success').fadeIn('fast', function() {
+             $(this).delay(2500).slideUp(500, function() {
+               $(this).remove();
+             });
+           });
+         } else {
+           var errors = data.errors.join("<br>");
+           scrollToTop();
+           $('.setting-profile-alert').html('<div class="alert alert-danger">' + errors + '</div>');
+           $('.alert-danger').fadeIn(300);
+         }
+         $('.setting-information-form').find('.disable_btn').removeAttr("disabled");
+       }
+     });
+   });
+   <?php if ($wo['config']['google_map'] == 1) { ?>
+   var pac_input = document.getElementById('address');
+     (function pacSelectFirst(input) {
+       // store the original event binding function
+       var _addEventListener = (input.addEventListener) ? input.addEventListener : input.attachEvent;
+       function addEventListenerWrapper(type, listener) {
+         // Simulate a 'down arrow' keypress on hitting 'return' when no pac suggestion is selected,
+         // and then trigger the original listener.
+         if(type == "keydown") {
+           var orig_listener = listener;
+           listener = function (event) {
+             var suggestion_selected = $(".pac-item-selected").length > 0;
+             if(event.which == 13 && !suggestion_selected) {
+               var simulated_downarrow = $.Event("keydown", {
+                 keyCode: 40,
+                 which: 40
+               });
+               orig_listener.apply(input, [simulated_downarrow]);
+             }
+             orig_listener.apply(input, [event]);
+           };
+         }
+         // add the modified listener
+         _addEventListener.apply(input, [type, listener]);
+       }
+       if(input.addEventListener)
+         input.addEventListener = addEventListenerWrapper;
+       else if(input.attachEvent)
+         input.attachEvent = addEventListenerWrapper;
+     })(pac_input);
+   
+     $(function () {
+        var autocomplete = new google.maps.places.Autocomplete(pac_input);
+     });
+   <?php } ?>
+</script>
