@@ -21,7 +21,7 @@
     <protos.protobuf.version>2.6.1</protos.protobuf.version>
 
     <more_protos.protoc.path>${protoc.path}</more_protos.protoc.path>
-    <more_protos.protobuf.version>${protobuf.version}</more_protos.protobuf.version>
+    <more_protos.protobuf.version>2.6.1</more_protos.protobuf.version>
 
     <tests.protobuf.version>${protobuf.version}</tests.protobuf.version>
 
