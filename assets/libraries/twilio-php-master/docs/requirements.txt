@@ -1,3 +1,4 @@
 sphinxcontrib-phpdomain
 hg+https://bitbucket.org/tk0miya/tk.phpautodoc
 
+sphinx>=3.0.4 # not directly required, pinned by Snyk to avoid a vulnerability
